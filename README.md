@@ -1,4 +1,4 @@
-# 普通物理 AI 助教 (NYCU 電物系 · 楊本立老師)
+# 普通物理 AI 助教 (NYCU 電物系)
 
 基於 RAG (Retrieval-Augmented Generation) 架構的 AI 助教系統，專為陽明交通大學電子物理系「普通物理」課程（楊本立老師）設計。範圍：University Physics (Young & Freedman) Ch01–Ch31，涵蓋力學、振盪、流體、波動、聲學、熱學、電磁學與電路。
 
