@@ -86,7 +86,30 @@ def extract_page(pdf_path: str, page_idx: int, max_retries: int = 3) -> str:
                 ],
                 generation_config=genai.types.GenerationConfig(temperature=0, max_output_tokens=4096),
             )
+            # Check if model blocked output (RECITATION=4, SAFETY=3, OTHER=5)
+            try:
+                cand = response.candidates[0]
+                fr = getattr(cand, "finish_reason", None)
+                fr_int = int(fr) if fr is not None else 1
+                if fr_int in (3, 4, 5):
+                    reason = {3: "SAFETY", 4: "RECITATION", 5: "OTHER"}[fr_int]
+                    print(f"\n    ⚠️  Page {page_idx+1} blocked ({reason}); writing placeholder.", end=" ", flush=True)
+                    return f"[Page blocked by Gemini content filter: {reason}. Original slide preserved as image.]"
+            except (IndexError, AttributeError):
+                pass
             return response.text
+        except ValueError as e:
+            # response.text raised ValueError because of finish_reason 3/4/5
+            msg = str(e)
+            if "finish_reason" in msg or "RECITATION" in msg or "copyrighted" in msg or "safety" in msg.lower():
+                print(f"\n    ⚠️  Page {page_idx+1} blocked: {msg[:120]}; writing placeholder.", end=" ", flush=True)
+                return "[Page blocked by Gemini content filter. Original slide preserved as image.]"
+            if attempt < max_retries - 1:
+                wait = 2 ** (attempt + 1)
+                print(f"\n    ⚠️  {e}. Retry in {wait}s...", end=" ", flush=True)
+                time.sleep(wait)
+            else:
+                raise
         except Exception as e:
             if attempt < max_retries - 1:
                 wait = 2 ** (attempt + 1)
