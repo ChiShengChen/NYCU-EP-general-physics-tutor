@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Parsed outputs (regenerable)
+parsed_output/
+parsed_lectures/
+vision_poc_pages/
+
+# Supabase CLI cache
+supabase/.temp/
+
+# Source PDFs (too large for git, not needed for deployment)
+普通物理_楊本立老師/
+雷射導論課程講義/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+
+# POC outputs
+*.png
+
+# Allow docs screenshots
+!docs/*.png

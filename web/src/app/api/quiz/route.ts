@@ -1,0 +1,202 @@
+import { google } from "@ai-sdk/google";
+import { generateObject } from "ai";
+import { z } from "zod";
+import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
+import { createServiceClient } from "@/lib/supabase/server";
+import { NextResponse } from "next/server";
+
+export const maxDuration = 60;
+
+/* ─── Zod schemas for structured quiz output ─── */
+
+const QuizQuestionSchema = z.object({
+  id: z.number().describe("Question number starting from 1"),
+  type: z.enum(["multiple_choice", "short_answer"]),
+  concept: z.string().describe("The physics concept this question tests"),
+  difficulty: z.enum(["easy", "medium", "hard"]),
+  question: z.string().describe("The question text, may include LaTeX"),
+  options: z
+    .array(z.string())
+    .optional()
+    .describe("4 options for multiple choice (A/B/C/D), null for short answer"),
+  correctAnswer: z.string().describe("The correct answer: A/B/C/D for MC, or expected answer for short answer"),
+  explanation: z.string().describe("Detailed explanation of why the answer is correct, with LaTeX if needed"),
+  sourceChapter: z.number().describe("Which chapter (1..31) this question is based on"),
+});
+
+const QuizSchema = z.object({
+  title: z.string().describe("Quiz title in Traditional Chinese"),
+  description: z.string().describe("Brief description of what this quiz covers"),
+  questions: z.array(QuizQuestionSchema).describe("5 quiz questions"),
+});
+
+const GradeResultSchema = z.object({
+  results: z.array(
+    z.object({
+      questionId: z.number(),
+      isCorrect: z.boolean(),
+      score: z.number().min(0).max(1).describe("0=wrong, 0.5=partial, 1=correct"),
+      feedback: z.string().describe("Specific feedback for this answer in Traditional Chinese"),
+    }),
+  ),
+  overallFeedback: z.string().describe("Overall encouragement and study advice in Traditional Chinese"),
+});
+
+/* ─── POST /api/quiz — Generate or Grade ─── */
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const { action } = body;
+
+  if (action === "generate") return handleGenerate(body);
+  if (action === "grade") return handleGrade(body);
+
+  return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+}
+
+/* ─── Generate Quiz ─── */
+
+async function handleGenerate(body: { studentId?: string }) {
+  const { studentId } = body;
+  const supabase = createServiceClient();
+
+  // 1. Fetch weak concepts (mastery < 0.6) for this student
+  let weakConcepts: { concept: string; mastery_score: number; last_misconception: string | null }[] = [];
+
+  if (studentId) {
+    const { data } = await supabase
+      .from("student_state")
+      .select("concept, mastery_score, last_misconception")
+      .eq("student_id", studentId)
+      .lt("mastery_score", 0.6)
+      .order("mastery_score", { ascending: true })
+      .limit(5);
+
+    weakConcepts = data ?? [];
+  }
+
+  // 2. If no weak concepts found, pick general concepts for an introductory quiz
+  const isIntroQuiz = weakConcepts.length === 0;
+  const conceptQueries = isIntroQuiz
+    ? ["Newton's Laws of Motion", "Conservation of Energy", "Conservation of Momentum", "Gauss's Law", "Faraday's Law"]
+    : weakConcepts.map((wc) => wc.concept);
+
+  // 3. Retrieve relevant lecture chunks for each concept via RAG
+  const allChunks = await Promise.all(
+    conceptQueries.slice(0, 5).map((q) => retrieveChunks(q, { matchCount: 3, matchThreshold: 0.5 })),
+  );
+  const mergedChunks = allChunks.flat();
+
+  // Deduplicate by chunk ID
+  const seen = new Set<number>();
+  const uniqueChunks = mergedChunks.filter((c) => {
+    if (seen.has(c.id)) return false;
+    seen.add(c.id);
+    return true;
+  });
+  const context = formatChunksForPrompt(uniqueChunks);
+
+  // 4. Build the prompt for Gemini
+  const weakConceptInfo = isIntroQuiz
+    ? "這是新同學的入門測驗，請出基礎題目。"
+    : `學生的薄弱概念：\n${weakConcepts.map((wc) => `- ${wc.concept}（掌握度：${(wc.mastery_score * 100).toFixed(0)}%${wc.last_misconception ? `，迷思概念：${wc.last_misconception}` : ""}）`).join("\n")}`;
+
+  // 5. Generate structured quiz using Gemini
+  const { object: quiz } = await generateObject({
+    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    schema: QuizSchema,
+    prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請根據以下資訊生成測驗。
+
+${weakConceptInfo}
+
+以下是相關教材內容：
+${context}
+
+請生成一份包含 5 題的測驗：
+- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
+- 2 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
+- 難度根據學生掌握度調整：掌握度低的概念出簡單題幫助建立信心，掌握度中等的出有挑戰性的題目
+- 題目用繁體中文，公式用 LaTeX（$..$ 行內，$$...$$ 獨立）
+- 每題都要有詳細解釋，引用教材的具體章節（Ch 幾）
+- sourceChapter 必須填入 1..31 之間的章節編號
+- 如果學生有迷思概念，請針對該迷思設計題目來糾正`,
+  });
+
+  return NextResponse.json({ quiz, isIntroQuiz });
+}
+
+/* ─── Grade Quiz ─── */
+
+async function handleGrade(body: {
+  studentId?: string;
+  questions: z.infer<typeof QuizSchema>["questions"];
+  answers: Record<number, string>;
+}) {
+  const { studentId, questions, answers } = body;
+
+  // Build grading prompt
+  const questionsWithAnswers = questions.map((q) => ({
+    id: q.id,
+    type: q.type,
+    concept: q.concept,
+    question: q.question,
+    correctAnswer: q.correctAnswer,
+    studentAnswer: answers[q.id] ?? "(未作答)",
+  }));
+
+  const { object: gradeResult } = await generateObject({
+    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    schema: GradeResultSchema,
+    prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
+
+學生的作答：
+${JSON.stringify(questionsWithAnswers, null, 2)}
+
+批改規則：
+- 選擇題：完全正確 score=1，錯誤 score=0
+- 簡答題：完全正確 score=1，部分正確 score=0.5，完全錯誤 score=0
+- 簡答題評分寬鬆一些，只要核心概念正確即可
+- 每題給具體的繁體中文回饋，解釋為什麼對或錯
+- 如果學生答錯，引用正確的概念和公式
+- 整體回饋要鼓勵學生，並建議接下來可以複習哪些概念`,
+  });
+
+  // Update student mastery scores based on quiz results
+  if (studentId) {
+    const supabase = createServiceClient();
+
+    for (const result of gradeResult.results) {
+      const question = questions.find((q) => q.id === result.questionId);
+      if (!question) continue;
+
+      // Fetch current mastery
+      const { data: existing } = await supabase
+        .from("student_state")
+        .select("mastery_score, attempt_count")
+        .eq("student_id", studentId)
+        .eq("concept", question.concept)
+        .single();
+
+      const currentMastery = existing?.mastery_score ?? 0;
+      const currentAttempts = existing?.attempt_count ?? 0;
+
+      // Weighted update: blend current mastery with quiz performance
+      // New mastery = 0.6 * current + 0.4 * quiz_score (quiz has meaningful weight)
+      const newMastery = Math.min(1, Math.max(0, 0.6 * currentMastery + 0.4 * result.score));
+
+      await supabase.from("student_state").upsert(
+        {
+          student_id: studentId,
+          concept: question.concept,
+          mastery_score: newMastery,
+          attempt_count: currentAttempts + 1,
+          last_misconception: result.isCorrect ? null : result.feedback.slice(0, 200),
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "student_id,concept" },
+      );
+    }
+  }
+
+  return NextResponse.json({ gradeResult });
+}
