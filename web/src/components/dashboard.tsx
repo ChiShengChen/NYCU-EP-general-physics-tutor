@@ -243,7 +243,7 @@ function TrendSection({ trendLine }: { trendLine: TrendItem[] }) {
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#64748b" }} />
             <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "#94a3b8" }} unit="%" />
             <Tooltip
-              formatter={(value: number | string | undefined) => [`${value}%`, "平均掌握度"]}
+              formatter={(value) => [`${value}%`, "平均掌握度"] as [string, string]}
               labelFormatter={(label) => `日期：${label}`}
               contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }}
             />
@@ -284,7 +284,7 @@ function ActivitySection({ activity }: { activity: ActivityItem[] }) {
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#64748b" }} />
             <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} allowDecimals={false} />
             <Tooltip
-              formatter={(value: number | string | undefined) => [`${value} 則訊息`, "活動量"]}
+              formatter={(value) => [`${value} 則訊息`, "活動量"] as [string, string]}
               labelFormatter={(label) => `日期：${label}`}
               contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }}
             />
