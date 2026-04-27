@@ -131,8 +131,9 @@ async function handleGrade(body: {
   studentId?: string;
   questions: z.infer<typeof QuizSchema>["questions"];
   answers: Record<number, string>;
+  quizTitle?: string;
 }) {
-  const { studentId, questions, answers } = body;
+  const { studentId, questions, answers, quizTitle } = body;
 
   // Build grading prompt
   const questionsWithAnswers = questions.map((q) => ({
@@ -196,6 +197,24 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
         { onConflict: "student_id,concept" },
       );
     }
+
+    // Persist the full attempt for later review. Score = sum of per-question scores
+    // expressed as a percentage (max_score = number of questions; total = sum of scores).
+    const total = gradeResult.results.reduce((s, r) => s + r.score, 0);
+    const maxScore = questions.length;
+    await supabase.from("attempts").insert({
+      student_id: studentId,
+      kind: "quiz",
+      exam_type: null,
+      title: quizTitle ?? "自動測驗",
+      questions,
+      answers,
+      results: gradeResult.results,
+      total_score: total,
+      max_score: maxScore,
+      grade: null,
+      overall_feedback: gradeResult.overallFeedback,
+    });
   }
 
   return NextResponse.json({ gradeResult });

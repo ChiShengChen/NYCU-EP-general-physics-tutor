@@ -84,29 +84,69 @@ async function handleGenerate(body: { examType: string }) {
   const uniqueChunks = allChunks.flat().filter((c) => { if (seen.has(c.id)) return false; seen.add(c.id); return true; });
   const context = formatChunksForPrompt(uniqueChunks);
 
-  const { object: exam } = await generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
-    schema: ExamSchema,
-    prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的出題教授，請出一份${isMidterm ? "期中考" : "期末考"}模擬試題。
+  // Generate 15 questions in two parallel batches to stay under 60s.
+  // Batch A: 8 MC questions (5 pts each = 40 pts).
+  // Batch B: 7 questions = 4 MC (5 pts) + 3 short-answer (10 pts) = 50 pts.
+  // Total 15 questions, 90 pts.
+  const buildPrompt = (
+    label: string,
+    count: number,
+    breakdown: string,
+    difficultyDist: string,
+    idStart: number,
+  ) => `你是交通大學電物系「普通物理」課程（楊本立老師）的出題教授，請出一份${isMidterm ? "期中考" : "期末考"}模擬試題的「${label}」。
 
 範圍：${chapterRange}
 主要主題：${topicListForPrompt}
 
 要求：
-- 共 10 題：7 題選擇題（每題 8 分）+ 3 題簡答題（每題 10 分，需要推導或解釋）
-- 總分 86 分（模擬真實考試不一定滿 100）
-- 難度分布：3 題 easy、4 題 medium、3 題 hard
+- 共 ${count} 題：${breakdown}
+- 難度分布：${difficultyDist}
+- 題目 id 從 ${idStart} 開始連續編號
 - 選擇題每題 4 個選項 A/B/C/D
 - 簡答題需要完整推導或解釋
 - 數學公式用 LaTeX
 - 題目用繁體中文，專有名詞可附英文
 - 每題標注對應的 sourceChapter（1..31）
+- 整份試題的 title 訂為「普通物理 ${isMidterm ? "(I) 期中考" : "(II) 期末考"}模擬試題」
 
 教材內容：
-${context}`,
-  });
+${context}`;
 
-  return NextResponse.json({ exam, examType, timeLimit: isMidterm ? 50 : 60 });
+  const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+  const [partA, partB] = await Promise.all([
+    generateObject({
+      model,
+      schema: ExamSchema,
+      prompt: buildPrompt(
+        "選擇題部分",
+        8,
+        "8 題選擇題（每題 5 分，總計 40 分）",
+        "3 題 easy、3 題 medium、2 題 hard",
+        1,
+      ),
+    }),
+    generateObject({
+      model,
+      schema: ExamSchema,
+      prompt: buildPrompt(
+        "進階與簡答部分",
+        7,
+        "4 題選擇題（每題 5 分）+ 3 題簡答題（每題 10 分），總計 50 分",
+        "1 題 easy、3 題 medium、3 題 hard",
+        9,
+      ),
+    }),
+  ]);
+
+  const merged = [...partA.object.questions, ...partB.object.questions]
+    .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..15 just in case the model drifted
+  const exam = {
+    title: partA.object.title || partB.object.title || `普通物理 ${isMidterm ? "(I) 期中考" : "(II) 期末考"}模擬試題`,
+    questions: merged,
+  };
+
+  return NextResponse.json({ exam, examType, timeLimit: isMidterm ? 75 : 90 });
 }
 
 async function handleGrade(body: {
@@ -114,8 +154,9 @@ async function handleGrade(body: {
   questions: z.infer<typeof ExamSchema>["questions"];
   answers: Record<number, string>;
   examType: string;
+  examTitle?: string;
 }) {
-  const { studentId, questions, answers, examType } = body;
+  const { studentId, questions, answers, examType, examTitle } = body;
 
   const qa = questions.map((q) => ({
     id: q.id, type: q.type, concept: q.concept, question: q.question,
@@ -139,9 +180,10 @@ ${JSON.stringify(qa, null, 2)}
 - 整體回饋包含學習建議`,
   });
 
-  // Update student_state
   if (studentId) {
     const supabase = createServiceClient();
+
+    // Update mastery per concept.
     for (const r of result.results) {
       const q = questions.find((x) => x.id === r.questionId);
       if (!q) continue;
@@ -158,6 +200,21 @@ ${JSON.stringify(qa, null, 2)}
         updated_at: new Date().toISOString(),
       }, { onConflict: "student_id,concept" });
     }
+
+    // Persist the full attempt for later review.
+    await supabase.from("attempts").insert({
+      student_id: studentId,
+      kind: "exam",
+      exam_type: examType,
+      title: examTitle ?? (examType === "midterm" ? "期中考模擬" : "期末考模擬"),
+      questions,
+      answers,
+      results: result.results,
+      total_score: result.totalScore,
+      max_score: result.maxScore,
+      grade: result.grade,
+      overall_feedback: result.overallFeedback,
+    });
   }
 
   return NextResponse.json({ result });
