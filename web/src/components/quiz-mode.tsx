@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { FormulaHelp } from "./formula-help";
 
 /* ─── Types ─── */
 
@@ -331,12 +332,15 @@ function AnsweringState({
             })}
           </div>
         ) : (
-          <textarea
-            value={answers[q.id] ?? ""}
-            onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-            placeholder="在此輸入你的答案..."
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-32"
-          />
+          <div className="space-y-2">
+            <textarea
+              value={answers[q.id] ?? ""}
+              onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
+              placeholder="在此輸入你的答案...（公式可用 $..$ 或 $$..$$ 包住）"
+              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-32"
+            />
+            <FormulaHelp />
+          </div>
         )}
       </div>
 

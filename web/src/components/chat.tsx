@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
 import { useRef, useEffect, useState, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { FormulaHelp } from "./formula-help";
 
 const SUGGESTED_QUESTIONS = [
   "解釋牛頓第二定律的向量形式",
@@ -131,12 +132,13 @@ export function Chat({ onBack }: { onBack?: () => void } = {}) {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="shrink-0 border-t border-slate-200 bg-white px-4 py-3">
+      <form onSubmit={handleSubmit} className="shrink-0 border-t border-slate-200 bg-white px-4 py-3 space-y-2">
+        <FormulaHelp />
         <div className="flex gap-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="輸入問題..."
+            placeholder="輸入問題...（公式可用 $..$ 或 $$..$$）"
             className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
             disabled={isBusy}
           />
