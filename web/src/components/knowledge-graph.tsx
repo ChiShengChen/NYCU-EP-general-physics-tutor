@@ -109,11 +109,11 @@ const EDGES: ConceptEdge[] = [
   { from: "ch26", to: "ch31" },
 ];
 
-const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string }> = {
-  mechanics: { bg: "bg-blue-50", border: "border-blue-300", text: "text-blue-700", label: "力學" },
-  waves_fluid: { bg: "bg-emerald-50", border: "border-emerald-300", text: "text-emerald-700", label: "振盪、流體與波動" },
-  thermo: { bg: "bg-amber-50", border: "border-amber-300", text: "text-amber-700", label: "熱學" },
-  em: { bg: "bg-purple-50", border: "border-purple-300", text: "text-purple-700", label: "電磁學" },
+const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
+  mechanics:   { bg: "bg-blue-50",    border: "border-blue-300",    text: "text-blue-700",    label: "力學",            svgFill: "#eff6ff", svgStroke: "#93c5fd", svgFillSelected: "#dbeafe", svgStrokeSelected: "#3b82f6" },
+  waves_fluid: { bg: "bg-emerald-50", border: "border-emerald-300", text: "text-emerald-700", label: "振盪、流體與波動", svgFill: "#ecfdf5", svgStroke: "#6ee7b7", svgFillSelected: "#d1fae5", svgStrokeSelected: "#10b981" },
+  thermo:      { bg: "bg-amber-50",   border: "border-amber-300",   text: "text-amber-700",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
+  em:          { bg: "bg-purple-50",  border: "border-purple-300",  text: "text-purple-700",  label: "電磁學",          svgFill: "#faf5ff", svgStroke: "#d8b4fe", svgFillSelected: "#f3e8ff", svgStrokeSelected: "#a855f7" },
 };
 
 const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em"];
@@ -236,6 +236,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                 const active = hoveredNode ?? selectedNode;
                 const isHighlighted = !active || connectedNodes.has(node.id);
                 const isSelected = selectedNode === node.id;
+                const palette = CATEGORY_COLORS[node.category];
 
                 return (
                   <g
@@ -252,8 +253,8 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                       width={112}
                       height={44}
                       rx={12}
-                      fill={isSelected ? "#eef2ff" : "white"}
-                      stroke={isSelected ? "#6366f1" : "#e2e8f0"}
+                      fill={isSelected ? palette.svgFillSelected : palette.svgFill}
+                      stroke={isSelected ? palette.svgStrokeSelected : palette.svgStroke}
                       strokeWidth={isSelected ? 2.5 : 1.5}
                       className="transition-all duration-200"
                     />
