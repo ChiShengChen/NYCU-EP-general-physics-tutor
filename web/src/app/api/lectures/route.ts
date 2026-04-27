@@ -52,12 +52,20 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // No params: return overview of all chapters
-  const { data, error } = await supabase
-    .from("lecture_chunks")
-    .select("chapter_number, page_number, section_title");
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  // No params: return overview of all chapters.
+  // Page through Supabase's 1000-row default cap so all chapters are included.
+  const data: { chapter_number: number; page_number: number; section_title: string }[] = [];
+  const pageSize = 1000;
+  for (let from = 0; ; from += pageSize) {
+    const { data: rows, error } = await supabase
+      .from("lecture_chunks")
+      .select("chapter_number, page_number, section_title")
+      .range(from, from + pageSize - 1);
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!rows || rows.length === 0) break;
+    data.push(...rows);
+    if (rows.length < pageSize) break;
+  }
 
   const chapters: Record<number, { chapter_number: number; page_count: number; sections: string[] }> = {};
   for (const row of data ?? []) {
