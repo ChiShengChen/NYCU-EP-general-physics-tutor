@@ -55,22 +55,30 @@ async function handleGenerate(body: { examType: string }) {
 
   const isMidterm = examType === "midterm";
   const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch31（熱學、電磁學、電路）";
-  const topics = isMidterm
+
+  // Topic blurb for the prompt (full breadth shown to the model).
+  const topicListForPrompt = isMidterm
+    ? "Kinematics, Newton's Laws, Work & Energy, Conservation of Energy, Momentum & Collisions, Rotational Motion, Angular Momentum, Static Equilibrium, Gravitation, Simple Harmonic Motion, Fluid Mechanics, Mechanical Waves, Sound"
+    : "Temperature & Heat, Ideal Gas, First Law of Thermodynamics, Second Law of Thermodynamics, Electric Field, Gauss's Law, Electric Potential, Capacitance, Current & Resistance, DC Circuits, Magnetic Field, Ampere's Law, Electromagnetic Induction, Inductance, AC Circuits";
+
+  // Retrieval queries: collapsed to 4 broad themes (was 14–15 fine-grained,
+  // which exhausted the 60s Vercel Hobby timeout).
+  const retrievalQueries = isMidterm
     ? [
-        "Vectors", "Kinematics", "Newton's Laws of Motion", "Work and Kinetic Energy",
-        "Conservation of Energy", "Momentum and Collisions", "Rotational Motion",
-        "Angular Momentum", "Static Equilibrium", "Gravitation",
-        "Simple Harmonic Motion", "Fluid Mechanics", "Mechanical Waves", "Sound",
+        "kinematics, Newton's laws, free-body diagrams, friction",
+        "work, kinetic energy, potential energy, conservation of energy, momentum, collisions",
+        "rotational motion, torque, angular momentum, static equilibrium, gravitation",
+        "simple harmonic motion, fluid mechanics, mechanical waves, sound, beats, Doppler",
       ]
     : [
-        "Temperature and Heat", "Ideal Gas", "First Law of Thermodynamics", "Second Law of Thermodynamics",
-        "Electric Field", "Gauss's Law", "Electric Potential", "Capacitance",
-        "Current and Resistance", "DC Circuits", "Magnetic Field", "Ampere's Law",
-        "Electromagnetic Induction", "Inductance", "AC Circuits",
+        "temperature, heat, ideal gas, kinetic theory, equipartition",
+        "first and second laws of thermodynamics, entropy, heat engines, Carnot cycle",
+        "electric charge, electric field, Gauss's law, electric potential, capacitance, dielectrics",
+        "current, resistance, DC circuits, magnetic field, Ampere's law, electromagnetic induction, inductance, AC circuits",
       ];
 
   const allChunks = await Promise.all(
-    topics.map((t) => retrieveChunks(t, { matchCount: 3, matchThreshold: 0.45 })),
+    retrievalQueries.map((q) => retrieveChunks(q, { matchCount: 6, matchThreshold: 0.45 })),
   );
   const seen = new Set<number>();
   const uniqueChunks = allChunks.flat().filter((c) => { if (seen.has(c.id)) return false; seen.add(c.id); return true; });
@@ -82,7 +90,7 @@ async function handleGenerate(body: { examType: string }) {
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的出題教授，請出一份${isMidterm ? "期中考" : "期末考"}模擬試題。
 
 範圍：${chapterRange}
-主要主題：${topics.join("、")}
+主要主題：${topicListForPrompt}
 
 要求：
 - 共 10 題：7 題選擇題（每題 8 分）+ 3 題簡答題（每題 10 分，需要推導或解釋）
