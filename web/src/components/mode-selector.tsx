@@ -1,7 +1,7 @@
 "use client";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -110,8 +110,8 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </button>
         </div>
 
-        {/* Bottom row: 3 utility modes */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl w-full">
+        {/* Bottom row: 4 utility modes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full">
           <button
             onClick={() => onSelectMode("dashboard")}
             className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
@@ -131,6 +131,17 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <div>
               <h3 className="text-base font-semibold text-slate-800">測驗紀錄</h3>
               <p className="text-xs text-slate-500 mt-0.5">回顧每次測驗 / 考試的對錯與 AI 回饋</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelectMode("wrong")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-rose-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">📕</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">錯題本</h3>
+              <p className="text-xs text-slate-500 mt-0.5">所有答錯題目集中複習，依章節篩選</p>
             </div>
           </button>
 

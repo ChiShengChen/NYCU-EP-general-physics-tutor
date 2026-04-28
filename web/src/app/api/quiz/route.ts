@@ -140,7 +140,7 @@ ${context}
     : weakConcepts.map((wc) => wc.concept);
 
   const allChunks = await Promise.all(
-    conceptQueries.slice(0, 5).map((q) => retrieveChunks(q, { matchCount: 3, matchThreshold: 0.5 })),
+    conceptQueries.slice(0, 5).map((q) => retrieveChunks(q, { matchCount: 4, matchThreshold: 0.5 })),
   );
   const mergedChunks = allChunks.flat();
 
@@ -156,25 +156,71 @@ ${context}
     ? "這是新同學的入門測驗，請出基礎題目。"
     : `學生的薄弱概念：\n${weakConcepts.map((wc) => `- ${wc.concept}（掌握度：${(wc.mastery_score * 100).toFixed(0)}%${wc.last_misconception ? `，迷思概念：${wc.last_misconception}` : ""}）`).join("\n")}`;
 
-  const { object: quiz } = await generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
-    schema: QuizSchema,
-    prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請根據以下資訊生成測驗。
+  // Generate 20 questions in two parallel batches (10+10) to stay under 60s.
+  const buildFullPrompt = (
+    label: string,
+    mcCount: number,
+    saCount: number,
+    idStart: number,
+    difficultyDist: string,
+    extraGuidance: string,
+  ) => `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請根據以下資訊生成測驗的「${label}」。
 
 ${weakConceptInfo}
 
 以下是相關教材內容：
 ${context}
 
-請生成一份包含 5 題的測驗：
-- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
-- 2 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
-- 難度根據學生掌握度調整：掌握度低的概念出簡單題幫助建立信心，掌握度中等的出有挑戰性的題目
+請生成 ${mcCount + saCount} 題：
+- title 訂為「全範圍綜合測驗」
+- ${mcCount} 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
+- ${saCount} 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
+- 題目 id 從 ${idStart} 開始連續編號
+- 難度分布：${difficultyDist}
 - 題目用繁體中文，公式用 LaTeX（$..$ 行內，$$...$$ 獨立）
 - 每題都要有詳細解釋，引用教材的具體章節（Ch 幾）
 - sourceChapter 必須填入 1..31 之間的章節編號
-- 如果學生有迷思概念，請針對該迷思設計題目來糾正`,
-  });
+${extraGuidance}`;
+
+  const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+  const [partA, partB] = await Promise.all([
+    generateObject({
+      model,
+      schema: QuizSchema,
+      prompt: buildFullPrompt(
+        "基礎部分",
+        6,
+        4,
+        1,
+        "3 題 easy、4 題 medium、3 題 hard",
+        isIntroQuiz
+          ? "- 對新同學請以基本概念建立題為主"
+          : "- 重點放在掌握度最低的概念上，幫學生鞏固基礎",
+      ),
+    }),
+    generateObject({
+      model,
+      schema: QuizSchema,
+      prompt: buildFullPrompt(
+        "進階與應用部分",
+        6,
+        4,
+        11,
+        "1 題 easy、4 題 medium、5 題 hard",
+        isIntroQuiz
+          ? "- 出一些應用題與公式運算題，但仍以基礎概念為核心"
+          : "- 偏向應用、推導與多概念綜合題；如有迷思概念請針對它設計糾正題",
+      ),
+    }),
+  ]);
+
+  const merged = [...partA.object.questions, ...partB.object.questions]
+    .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..20
+  const quiz = {
+    title: partA.object.title || partB.object.title || "全範圍綜合測驗",
+    description: partA.object.description || "依薄弱概念出 20 題綜合測驗",
+    questions: merged,
+  };
 
   return NextResponse.json({ quiz, isIntroQuiz });
 }
