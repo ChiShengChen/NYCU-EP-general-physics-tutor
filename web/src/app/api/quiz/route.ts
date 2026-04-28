@@ -61,33 +61,60 @@ async function handleGenerate(body: { studentId?: string; chapter?: number }) {
   const supabase = createServiceClient();
 
   // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
+  // Generate 20 questions in two parallel batches to stay under Vercel's 60s limit.
   if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 31) {
     const chunks = await retrieveChunks(
       "key concepts, formulas, derivations, worked examples",
-      { matchCount: 12, matchThreshold: 0.3, filterChapter: chapter },
+      { matchCount: 16, matchThreshold: 0.3, filterChapter: chapter },
     );
     const context = formatChunksForPrompt(chunks);
     const chLabel = `Ch${String(chapter).padStart(2, "0")}`;
 
-    const { object: quiz } = await generateObject({
-      model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
-      schema: QuizSchema,
-      prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**${chLabel} 章節測驗**。
+    const buildPrompt = (
+      label: string,
+      mcCount: number,
+      saCount: number,
+      idStart: number,
+      difficultyDist: string,
+    ) => `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**${chLabel} 章節測驗**的「${label}」。
 
 範圍限定：第 ${chapter} 章（${chLabel}）。所有題目都必須以這一章的內容為主，不可超出範圍。
 
 以下是該章節的教材內容：
 ${context}
 
-請生成一份包含 5 題的測驗：
+請生成 ${mcCount + saCount} 題：
 - title 訂為「${chLabel} 章節測驗」
-- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
-- 2 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
-- 難度分布：2 題 easy、2 題 medium、1 題 hard
+- ${mcCount} 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
+- ${saCount} 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
+- 題目 id 從 ${idStart} 開始連續編號
+- 難度分布：${difficultyDist}
 - 題目用繁體中文，公式用 LaTeX（$..$ 行內，$$...$$ 獨立）
 - 每題都要有詳細解釋
-- 所有題目的 sourceChapter 都填 ${chapter}`,
-    });
+- 所有題目的 sourceChapter 都填 ${chapter}
+- 同一份內題目主題盡量分散，不要集中考同一個觀念`;
+
+    const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+    const [partA, partB] = await Promise.all([
+      generateObject({
+        model,
+        schema: QuizSchema,
+        prompt: buildPrompt("選擇題部分", 6, 4, 1, "3 題 easy、4 題 medium、3 題 hard"),
+      }),
+      generateObject({
+        model,
+        schema: QuizSchema,
+        prompt: buildPrompt("進階與應用部分", 6, 4, 11, "1 題 easy、4 題 medium、5 題 hard"),
+      }),
+    ]);
+
+    const merged = [...partA.object.questions, ...partB.object.questions]
+      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..20
+    const quiz = {
+      title: partA.object.title || partB.object.title || `${chLabel} 章節測驗`,
+      description: partA.object.description || `針對第 ${chapter} 章的 20 題測驗`,
+      questions: merged,
+    };
 
     return NextResponse.json({ quiz, isIntroQuiz: false, chapter });
   }
