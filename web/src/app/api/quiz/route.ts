@@ -56,11 +56,43 @@ export async function POST(req: Request) {
 
 /* ─── Generate Quiz ─── */
 
-async function handleGenerate(body: { studentId?: string }) {
-  const { studentId } = body;
+async function handleGenerate(body: { studentId?: string; chapter?: number }) {
+  const { studentId, chapter } = body;
   const supabase = createServiceClient();
 
-  // 1. Fetch weak concepts (mastery < 0.6) for this student
+  // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
+  if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 31) {
+    const chunks = await retrieveChunks(
+      "key concepts, formulas, derivations, worked examples",
+      { matchCount: 12, matchThreshold: 0.3, filterChapter: chapter },
+    );
+    const context = formatChunksForPrompt(chunks);
+    const chLabel = `Ch${String(chapter).padStart(2, "0")}`;
+
+    const { object: quiz } = await generateObject({
+      model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+      schema: QuizSchema,
+      prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**${chLabel} 章節測驗**。
+
+範圍限定：第 ${chapter} 章（${chLabel}）。所有題目都必須以這一章的內容為主，不可超出範圍。
+
+以下是該章節的教材內容：
+${context}
+
+請生成一份包含 5 題的測驗：
+- title 訂為「${chLabel} 章節測驗」
+- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D）
+- 2 題簡答題（short_answer）：需要簡短的文字、公式或數值回答
+- 難度分布：2 題 easy、2 題 medium、1 題 hard
+- 題目用繁體中文，公式用 LaTeX（$..$ 行內，$$...$$ 獨立）
+- 每題都要有詳細解釋
+- 所有題目的 sourceChapter 都填 ${chapter}`,
+    });
+
+    return NextResponse.json({ quiz, isIntroQuiz: false, chapter });
+  }
+
+  // === Default: full-range quiz driven by weak concepts ===
   let weakConcepts: { concept: string; mastery_score: number; last_misconception: string | null }[] = [];
 
   if (studentId) {
@@ -75,19 +107,16 @@ async function handleGenerate(body: { studentId?: string }) {
     weakConcepts = data ?? [];
   }
 
-  // 2. If no weak concepts found, pick general concepts for an introductory quiz
   const isIntroQuiz = weakConcepts.length === 0;
   const conceptQueries = isIntroQuiz
     ? ["Newton's Laws of Motion", "Conservation of Energy", "Conservation of Momentum", "Gauss's Law", "Faraday's Law"]
     : weakConcepts.map((wc) => wc.concept);
 
-  // 3. Retrieve relevant lecture chunks for each concept via RAG
   const allChunks = await Promise.all(
     conceptQueries.slice(0, 5).map((q) => retrieveChunks(q, { matchCount: 3, matchThreshold: 0.5 })),
   );
   const mergedChunks = allChunks.flat();
 
-  // Deduplicate by chunk ID
   const seen = new Set<number>();
   const uniqueChunks = mergedChunks.filter((c) => {
     if (seen.has(c.id)) return false;
@@ -96,12 +125,10 @@ async function handleGenerate(body: { studentId?: string }) {
   });
   const context = formatChunksForPrompt(uniqueChunks);
 
-  // 4. Build the prompt for Gemini
   const weakConceptInfo = isIntroQuiz
     ? "這是新同學的入門測驗，請出基礎題目。"
     : `學生的薄弱概念：\n${weakConcepts.map((wc) => `- ${wc.concept}（掌握度：${(wc.mastery_score * 100).toFixed(0)}%${wc.last_misconception ? `，迷思概念：${wc.last_misconception}` : ""}）`).join("\n")}`;
 
-  // 5. Generate structured quiz using Gemini
   const { object: quiz } = await generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: QuizSchema,

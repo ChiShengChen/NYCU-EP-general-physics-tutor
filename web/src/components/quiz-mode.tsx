@@ -36,7 +36,13 @@ interface GradeResult {
   overallFeedback: string;
 }
 
-type QuizState = "loading" | "answering" | "grading" | "results";
+type QuizState = "select" | "loading" | "answering" | "grading" | "results";
+
+interface ChapterInfo {
+  chapter_number: number;
+  page_count: number;
+  sections: string[];
+}
 
 /* ─── Component ─── */
 
@@ -45,9 +51,11 @@ interface QuizModeProps {
 }
 
 export function QuizMode({ onBack }: QuizModeProps) {
-  const [state, setState] = useState<QuizState>("loading");
+  const [state, setState] = useState<QuizState>("select");
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isIntroQuiz, setIsIntroQuiz] = useState(false);
+  const [scopeChapter, setScopeChapter] = useState<number | null>(null);  // null = full range
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,23 +70,27 @@ export function QuizMode({ onBack }: QuizModeProps) {
     return id;
   });
 
-  // Generate quiz on mount
+  // Load chapter list once for the picker
   useEffect(() => {
-    generateQuiz();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    fetch("/api/lectures")
+      .then((r) => r.json())
+      .then((d) => setChapters(d.chapters ?? []))
+      .catch(() => {});
+  }, []);
 
-  const generateQuiz = useCallback(async () => {
+  const generateQuiz = useCallback(async (chapter: number | null) => {
     setState("loading");
     setError(null);
     setAnswers({});
     setGradeResult(null);
     setCurrentQuestion(0);
+    setScopeChapter(chapter);
 
     try {
       const res = await fetch("/api/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "generate", studentId }),
+        body: JSON.stringify({ action: "generate", studentId, chapter: chapter ?? undefined }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -90,8 +102,18 @@ export function QuizMode({ onBack }: QuizModeProps) {
     } catch (err) {
       setError("測驗生成失敗，請稍後再試");
       console.error("Quiz generation error:", err);
+      setState("select");
     }
   }, [studentId]);
+
+  const restart = useCallback(() => {
+    setState("select");
+    setQuiz(null);
+    setAnswers({});
+    setGradeResult(null);
+    setCurrentQuestion(0);
+    setScopeChapter(null);
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     if (!quiz) return;
@@ -106,6 +128,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           studentId,
           questions: quiz.questions,
           answers,
+          quizTitle: quiz.title,
         }),
       });
 
@@ -143,7 +166,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
         </h1>
         {state === "answering" && (
           <span className="text-xs text-slate-400 ml-2">
-            已答 {answeredCount}/{totalQuestions}
+            {scopeChapter ? `Ch${String(scopeChapter).padStart(2, "0")} · ` : ""}已答 {answeredCount}/{totalQuestions}
           </span>
         )}
         <span className="text-xs text-slate-400 ml-auto">NYCU 電物系</span>
@@ -151,7 +174,10 @@ export function QuizMode({ onBack }: QuizModeProps) {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        {state === "loading" && <LoadingState />}
+        {state === "select" && (
+          <ScopeSelector chapters={chapters} onPick={generateQuiz} />
+        )}
+        {state === "loading" && <LoadingState scopeChapter={scopeChapter} />}
         {state === "answering" && quiz && (
           <AnsweringState
             quiz={quiz}
@@ -170,7 +196,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
             quiz={quiz}
             answers={answers}
             gradeResult={gradeResult}
-            onRetry={generateQuiz}
+            onRetry={restart}
             onBack={onBack}
           />
         )}
@@ -178,7 +204,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           <div className="flex flex-col items-center justify-center h-full gap-4">
             <p className="text-red-500">{error}</p>
             <button
-              onClick={generateQuiz}
+              onClick={restart}
               className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors"
             >
               重試
@@ -190,17 +216,84 @@ export function QuizMode({ onBack }: QuizModeProps) {
   );
 }
 
+/* ─── Scope Selector (initial screen) ─── */
+
+function ScopeSelector({
+  chapters,
+  onPick,
+}: {
+  chapters: ChapterInfo[];
+  onPick: (chapter: number | null) => void;
+}) {
+  return (
+    <div className="px-4 py-6 max-w-3xl mx-auto space-y-6">
+      <div className="text-center">
+        <p className="text-3xl mb-2">📝</p>
+        <h2 className="text-xl font-bold text-slate-800">選擇測驗範圍</h2>
+        <p className="text-sm text-slate-500 mt-1">每份測驗 5 題（3 選擇題 + 2 簡答題）</p>
+      </div>
+
+      {/* Full-range option */}
+      <button
+        onClick={() => onPick(null)}
+        className="w-full text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 transition-all group"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🌐</span>
+          <div className="flex-1">
+            <h3 className="font-semibold text-slate-800">全範圍（依薄弱概念）</h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              AI 根據你過去答題狀況挑出最薄弱的概念出題；新同學會收到入門題。
+            </p>
+          </div>
+          <span className="text-indigo-500 group-hover:translate-x-0.5 transition-transform">→</span>
+        </div>
+      </button>
+
+      {/* Chapter grid */}
+      <div>
+        <h3 className="text-sm font-medium text-slate-600 mb-2">或選擇特定章節（單章測驗）</h3>
+        {chapters.length === 0 ? (
+          <div className="text-center text-sm text-slate-400 py-8">載入章節列表中...</div>
+        ) : (
+          <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-7 gap-2">
+            {chapters.map((c) => (
+              <button
+                key={c.chapter_number}
+                onClick={() => onPick(c.chapter_number)}
+                className="p-2.5 bg-white border border-slate-200 rounded-xl text-center hover:border-indigo-300 hover:bg-indigo-50/50 transition-all"
+              >
+                <div className="text-sm font-semibold text-slate-700">
+                  Ch{String(c.chapter_number).padStart(2, "0")}
+                </div>
+                <div className="text-[10px] text-slate-400">{c.page_count} 頁</div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ─── Loading State ─── */
 
-function LoadingState() {
+function LoadingState({ scopeChapter }: { scopeChapter: number | null }) {
+  const isChapter = scopeChapter !== null;
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4">
       <div className="relative w-16 h-16">
         <div className="absolute inset-0 rounded-full border-4 border-slate-200" />
         <div className="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin" />
       </div>
-      <p className="text-slate-600 font-medium">正在根據你的學習狀況生成測驗...</p>
-      <p className="text-sm text-slate-400">AI 正在分析薄弱概念並出題</p>
+      <p className="text-slate-600 font-medium">
+        {isChapter
+          ? `正在從 Ch${String(scopeChapter).padStart(2, "0")} 出題...`
+          : "正在根據你的學習狀況生成測驗..."}
+      </p>
+      <p className="text-sm text-slate-400">
+        {isChapter ? "AI 正在閱讀該章教材" : "AI 正在分析薄弱概念並出題"}
+      </p>
     </div>
   );
 }
