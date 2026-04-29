@@ -3,6 +3,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 
+/** Auto-wrap raw LaTeX in $$..$$ when the model forgot the delimiters,
+ *  so KaTeX renders instead of showing literal backslashes. */
+function ensureMathBlock(raw: string): string {
+  const s = raw.trim();
+  if (!s) return s;
+  if (s.includes("$")) return s; // already has $..$ or $$..$$ — leave it
+  return `$$${s}$$`;
+}
+
 /* ─── Types ─── */
 
 interface ChapterInfo {
@@ -234,7 +243,7 @@ function ConceptCardView({
 
       {concept.formula && concept.formula.trim() && (
         <div className="mb-3 px-3 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm overflow-x-auto">
-          <MarkdownRenderer content={concept.formula} />
+          <MarkdownRenderer content={ensureMathBlock(concept.formula)} />
         </div>
       )}
 
