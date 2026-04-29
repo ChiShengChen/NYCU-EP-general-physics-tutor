@@ -1,7 +1,7 @@
 "use client";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -20,8 +20,22 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           <p className="text-slate-500">請選擇學習模式</p>
         </div>
 
-        {/* Top row: 3 main learning modes */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl w-full mb-5">
+        {/* Top row: 4 main learning modes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">
+          <button
+            onClick={() => onSelectMode("preview")}
+            className="group flex flex-col items-center text-center p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+          >
+            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🔭</span>
+            <h3 className="text-lg font-semibold text-slate-800 mb-1.5">章節預習</h3>
+            <p className="text-sm text-slate-500 mb-5 leading-relaxed">
+              5–7 張概念卡，1 分鐘掃完一章重點
+            </p>
+            <span className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium group-hover:bg-indigo-700 transition-colors">
+              快速 overview
+            </span>
+          </button>
+
           <button
             onClick={() => onSelectMode("teaching")}
             className="group flex flex-col items-center text-center p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -57,7 +71,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📝</span>
             <h3 className="text-lg font-semibold text-slate-800 mb-1.5">自動測驗</h3>
             <p className="text-sm text-slate-500 mb-5 leading-relaxed">
-              AI 根據薄弱概念自動生成測驗
+              AI 根據薄弱概念或單一章節出題
             </p>
             <span className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium group-hover:bg-indigo-700 transition-colors">
               開始測驗

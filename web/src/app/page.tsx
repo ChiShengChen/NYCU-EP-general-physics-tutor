@@ -12,8 +12,9 @@ import { Dashboard } from "@/components/dashboard";
 import { ChatHistory } from "@/components/chat-history";
 import { AttemptsHistory } from "@/components/attempts-history";
 import { WrongNotebook } from "@/components/wrong-notebook";
+import { ChapterPreview } from "@/components/chapter-preview";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | null;
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>(null);
@@ -39,6 +40,7 @@ export default function Home() {
   if (mode === "history") return <ChatHistory onBack={goHome} />;
   if (mode === "attempts") return <AttemptsHistory onBack={goHome} />;
   if (mode === "wrong") return <WrongNotebook onBack={goHome} />;
+  if (mode === "preview") return <ChapterPreview onBack={goHome} />;
 
   return <ModeSelector onSelectMode={setMode} />;
 }
