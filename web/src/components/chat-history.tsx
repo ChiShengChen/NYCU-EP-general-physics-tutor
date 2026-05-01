@@ -25,8 +25,9 @@ interface Session {
 interface ChatHistoryProps {
   onBack: () => void;
   /** Resume a past session in the chat ("自由問答") view with its messages
-   *  pre-loaded so the next user turn includes them in LLM context. */
-  onResume?: (sessionId: number, messages: ChatMessage[]) => void;
+   *  pre-loaded so the next user turn includes them in LLM context.
+   *  Optional pendingMessage is auto-sent once the chat mounts. */
+  onResume?: (sessionId: number, messages: ChatMessage[], pendingMessage?: string) => void;
 }
 
 export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
@@ -63,7 +64,11 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
         session={selectedSession}
         onBack={() => setSelectedSession(null)}
         onBackToHome={onBack}
-        onResume={onResume ? () => onResume(selectedSession.id, selectedSession.messages) : undefined}
+        onResume={
+          onResume
+            ? (pendingMessage) => onResume(selectedSession.id, selectedSession.messages, pendingMessage)
+            : undefined
+        }
       />
     );
   }
@@ -147,8 +152,15 @@ function SessionDetail({
   session: Session;
   onBack: () => void;
   onBackToHome: () => void;
-  onResume?: () => void;
+  onResume?: (pendingMessage?: string) => void;
 }) {
+  const [followUp, setFollowUp] = useState("");
+  const handleFollowUpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = followUp.trim();
+    if (!text) return;
+    onResume?.(text);
+  };
   return (
     <div className="flex flex-col h-screen">
       <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
@@ -170,7 +182,7 @@ function SessionDetail({
         </span>
         {onResume && (
           <button
-            onClick={onResume}
+            onClick={() => onResume()}
             className="ml-auto px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700 transition-colors flex items-center gap-1"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -216,6 +228,29 @@ function SessionDetail({
           </div>
         ))}
       </div>
+
+      {onResume && (
+        <form
+          onSubmit={handleFollowUpSubmit}
+          className="shrink-0 border-t border-slate-200 bg-white px-4 py-3"
+        >
+          <div className="max-w-3xl mx-auto flex gap-2">
+            <input
+              value={followUp}
+              onChange={(e) => setFollowUp(e.target.value)}
+              placeholder="繼續這段對話...（按下送出後會跳到自由問答介面）"
+              className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+            <button
+              type="submit"
+              disabled={!followUp.trim()}
+              className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              送出
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

@@ -18,8 +18,11 @@ import { ChapterPreview } from "@/components/chapter-preview";
 type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | null;
 
 interface ResumeState {
-  sessionId: number;
+  /** Unique key per resume action, used to re-init useChat. */
+  key: number;
   messages: UIMessage[];
+  /** If set, chat auto-sends this message once after mount. */
+  pendingMessage?: string;
 }
 
 export default function Home() {
@@ -36,7 +39,8 @@ export default function Home() {
       <Chat
         onBack={goHome}
         initialMessages={resume?.messages}
-        resumeKey={resume?.sessionId}
+        resumeKey={resume?.key}
+        pendingMessage={resume?.pendingMessage}
       />
     );
   }
@@ -59,14 +63,14 @@ export default function Home() {
     return (
       <ChatHistory
         onBack={goHome}
-        onResume={(sessionId, messages) => {
+        onResume={(_sessionId, messages, pendingMessage) => {
           // Convert DB rows to UIMessage shape that useChat expects.
           const uiMessages: UIMessage[] = messages.map((m) => ({
             id: `hist-${m.id}`,
             role: m.role,
             parts: [{ type: "text", text: m.content }],
           }));
-          setResume({ sessionId, messages: uiMessages });
+          setResume({ key: Date.now(), messages: uiMessages, pendingMessage });
           setMode("qa");
         }}
       />

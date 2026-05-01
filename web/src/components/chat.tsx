@@ -28,9 +28,12 @@ interface ChatProps {
   /** Distinct key per resumed session — forces useChat to re-init when user
    *  resumes a different past session. */
   resumeKey?: string | number;
+  /** If set, this message is auto-sent once after the chat mounts.
+   *  Used when 對話歷史 detail view's bottom input submits a follow-up. */
+  pendingMessage?: string;
 }
 
-export function Chat({ onBack, initialMessages, resumeKey }: ChatProps = {}) {
+export function Chat({ onBack, initialMessages, resumeKey, pendingMessage }: ChatProps = {}) {
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     const stored = localStorage.getItem("physics_tutor_student_id");
@@ -58,6 +61,15 @@ export function Chat({ onBack, initialMessages, resumeKey }: ChatProps = {}) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Auto-send a pending follow-up message exactly once when chat resumes.
+  const sentPendingRef = useRef(false);
+  useEffect(() => {
+    if (!pendingMessage || sentPendingRef.current) return;
+    if (isBusy) return;
+    sentPendingRef.current = true;
+    sendMessage({ text: pendingMessage });
+  }, [pendingMessage, isBusy, sendMessage]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
