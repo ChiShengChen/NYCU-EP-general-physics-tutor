@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { UIMessage } from "ai";
 import { Chat } from "@/components/chat";
 import { ModeSelector } from "@/components/mode-selector";
 import { TeachingMode } from "@/components/teaching-mode";
@@ -16,12 +17,29 @@ import { ChapterPreview } from "@/components/chapter-preview";
 
 type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | null;
 
+interface ResumeState {
+  sessionId: number;
+  messages: UIMessage[];
+}
+
 export default function Home() {
   const [mode, setMode] = useState<Mode>(null);
+  const [resume, setResume] = useState<ResumeState | null>(null);
 
-  const goHome = () => setMode(null);
+  const goHome = () => {
+    setMode(null);
+    setResume(null);
+  };
 
-  if (mode === "qa") return <Chat onBack={goHome} />;
+  if (mode === "qa") {
+    return (
+      <Chat
+        onBack={goHome}
+        initialMessages={resume?.messages}
+        resumeKey={resume?.sessionId}
+      />
+    );
+  }
   if (mode === "teaching") return <TeachingMode onBack={goHome} />;
   if (mode === "quiz") return <QuizMode onBack={goHome} />;
   if (mode === "exam") return <ExamMode onBack={goHome} />;
@@ -37,7 +55,23 @@ export default function Home() {
   }
   if (mode === "study-plan") return <StudyPlanView onBack={goHome} />;
   if (mode === "dashboard") return <Dashboard onBack={goHome} />;
-  if (mode === "history") return <ChatHistory onBack={goHome} />;
+  if (mode === "history") {
+    return (
+      <ChatHistory
+        onBack={goHome}
+        onResume={(sessionId, messages) => {
+          // Convert DB rows to UIMessage shape that useChat expects.
+          const uiMessages: UIMessage[] = messages.map((m) => ({
+            id: `hist-${m.id}`,
+            role: m.role,
+            parts: [{ type: "text", text: m.content }],
+          }));
+          setResume({ sessionId, messages: uiMessages });
+          setMode("qa");
+        }}
+      />
+    );
+  }
   if (mode === "attempts") return <AttemptsHistory onBack={goHome} />;
   if (mode === "wrong") return <WrongNotebook onBack={goHome} />;
   if (mode === "preview") return <ChapterPreview onBack={goHome} />;

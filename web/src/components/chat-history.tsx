@@ -24,9 +24,12 @@ interface Session {
 
 interface ChatHistoryProps {
   onBack: () => void;
+  /** Resume a past session in the chat ("自由問答") view with its messages
+   *  pre-loaded so the next user turn includes them in LLM context. */
+  onResume?: (sessionId: number, messages: ChatMessage[]) => void;
 }
 
-export function ChatHistory({ onBack }: ChatHistoryProps) {
+export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [totalMessages, setTotalMessages] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -60,6 +63,7 @@ export function ChatHistory({ onBack }: ChatHistoryProps) {
         session={selectedSession}
         onBack={() => setSelectedSession(null)}
         onBackToHome={onBack}
+        onResume={onResume ? () => onResume(selectedSession.id, selectedSession.messages) : undefined}
       />
     );
   }
@@ -138,10 +142,12 @@ function SessionDetail({
   session,
   onBack,
   onBackToHome,
+  onResume,
 }: {
   session: Session;
   onBack: () => void;
   onBackToHome: () => void;
+  onResume?: () => void;
 }) {
   return (
     <div className="flex flex-col h-screen">
@@ -162,9 +168,20 @@ function SessionDetail({
         <span className="text-xs text-slate-400">
           {session.messages.length} 則訊息
         </span>
+        {onResume && (
+          <button
+            onClick={onResume}
+            className="ml-auto px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700 transition-colors flex items-center gap-1"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            繼續對話
+          </button>
+        )}
         <button
           onClick={onBackToHome}
-          className="ml-auto text-xs text-slate-500 hover:text-indigo-600 transition-colors"
+          className={`text-xs text-slate-500 hover:text-indigo-600 transition-colors ${onResume ? "" : "ml-auto"}`}
         >
           返回首頁
         </button>

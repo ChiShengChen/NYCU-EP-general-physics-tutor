@@ -12,11 +12,15 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServiceClient();
 
+  // Sort by (created_at, id). user + assistant are bulk-inserted in one
+  // statement so they share the same created_at; id is monotonic and breaks
+  // the tie in insertion order, preventing flipped user/assistant ordering.
   const { data, error } = await supabase
     .from("chat_messages")
     .select("id, role, content, created_at")
     .eq("student_id", studentId)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
+    .order("id", { ascending: true });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

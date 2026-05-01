@@ -19,7 +19,18 @@ function getTextContent(message: UIMessage): string {
     .join("");
 }
 
-export function Chat({ onBack }: { onBack?: () => void } = {}) {
+interface ChatProps {
+  onBack?: () => void;
+  /** Pre-load messages to resume a previous session. When set, the chat starts
+   *  with these messages already on screen and subsequent sends include them
+   *  in context for the LLM. */
+  initialMessages?: UIMessage[];
+  /** Distinct key per resumed session — forces useChat to re-init when user
+   *  resumes a different past session. */
+  resumeKey?: string | number;
+}
+
+export function Chat({ onBack, initialMessages, resumeKey }: ChatProps = {}) {
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     const stored = localStorage.getItem("physics_tutor_student_id");
@@ -33,7 +44,11 @@ export function Chat({ onBack }: { onBack?: () => void } = {}) {
     () => new DefaultChatTransport({ body: () => ({ studentId }) }),
   );
 
-  const { messages, sendMessage, status } = useChat({ transport });
+  const { messages, sendMessage, status } = useChat({
+    id: `qa-${resumeKey ?? "fresh"}`,
+    transport,
+    messages: initialMessages,
+  });
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const isBusy = status === "streaming" || status === "submitted";
