@@ -23,15 +23,31 @@ interface ResumeState {
   messages: UIMessage[];
   /** If set, chat auto-sends this message once after mount. */
   pendingMessage?: string;
+  /** Original DB session_id of the resumed conversation, so new turns
+   *  written during the resume join the same session group. */
+  sessionId?: string;
 }
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>(null);
   const [resume, setResume] = useState<ResumeState | null>(null);
+  /** Active session id for the 自由問答 view. Fresh QA entry mints a new
+   *  one; resume reuses the original. Stamped on every chat_messages row. */
+  const [chatSessionId, setChatSessionId] = useState<string | null>(null);
 
   const goHome = () => {
     setMode(null);
     setResume(null);
+    setChatSessionId(null);
+  };
+
+  // ModeSelector dispatcher: intercept "qa" cold-entry to mint a new session.
+  const onSelectMode = (m: NonNullable<Mode>) => {
+    if (m === "qa") {
+      setResume(null);
+      setChatSessionId(crypto.randomUUID());
+    }
+    setMode(m);
   };
 
   if (mode === "qa") {
@@ -41,6 +57,7 @@ export default function Home() {
         initialMessages={resume?.messages}
         resumeKey={resume?.key}
         pendingMessage={resume?.pendingMessage}
+        sessionId={chatSessionId ?? undefined}
       />
     );
   }
@@ -63,14 +80,17 @@ export default function Home() {
     return (
       <ChatHistory
         onBack={goHome}
-        onResume={(_sessionId, messages, pendingMessage) => {
+        onResume={(_idx, messages, pendingMessage, sessionDbId) => {
           // Convert DB rows to UIMessage shape that useChat expects.
           const uiMessages: UIMessage[] = messages.map((m) => ({
             id: `hist-${m.id}`,
             role: m.role,
             parts: [{ type: "text", text: m.content }],
           }));
-          setResume({ key: Date.now(), messages: uiMessages, pendingMessage });
+          setResume({ key: Date.now(), messages: uiMessages, pendingMessage, sessionId: sessionDbId ?? undefined });
+          // Continue writing into the same DB session if we have it; mint a
+          // fresh one only for legacy null-session_id resumes.
+          setChatSessionId(sessionDbId ?? crypto.randomUUID());
           setMode("qa");
         }}
       />
@@ -80,5 +100,5 @@ export default function Home() {
   if (mode === "wrong") return <WrongNotebook onBack={goHome} />;
   if (mode === "preview") return <ChapterPreview onBack={goHome} />;
 
-  return <ModeSelector onSelectMode={setMode} />;
+  return <ModeSelector onSelectMode={onSelectMode} />;
 }

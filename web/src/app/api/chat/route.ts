@@ -45,7 +45,7 @@ const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課
 {context}`;
 
 export async function POST(req: Request) {
-  const { messages, studentId, mode, chapterNumber, pageNumber } = await req.json();
+  const { messages, studentId, mode, chapterNumber, pageNumber, sessionId } = await req.json();
 
   // Lazy-create anonymous student profile if needed
   if (studentId) {
@@ -181,8 +181,8 @@ export async function POST(req: Request) {
       if (!studentId || !text) return;
       const supabase = createServiceClient();
       await supabase.from("chat_messages").insert([
-        { student_id: studentId, role: "user", content: query, chunks_used: chunkIds },
-        { student_id: studentId, role: "assistant", content: text, chunks_used: chunkIds },
+        { student_id: studentId, role: "user", content: query, chunks_used: chunkIds, session_id: sessionId ?? null },
+        { student_id: studentId, role: "assistant", content: text, chunks_used: chunkIds, session_id: sessionId ?? null },
       ]);
     },
   });

@@ -14,6 +14,8 @@ interface ChatMessage {
 
 interface Session {
   id: number;
+  /** DB session_id for new (post-migration-004) sessions, null for legacy. */
+  sessionId: string | null;
   startTime: string;
   endTime: string;
   messages: ChatMessage[];
@@ -26,8 +28,17 @@ interface ChatHistoryProps {
   onBack: () => void;
   /** Resume a past session in the chat ("自由問答") view with its messages
    *  pre-loaded so the next user turn includes them in LLM context.
-   *  Optional pendingMessage is auto-sent once the chat mounts. */
-  onResume?: (sessionId: number, messages: ChatMessage[], pendingMessage?: string) => void;
+   *  - `idx`: list index (UI key)
+   *  - `messages`: full message history of that session
+   *  - `pendingMessage`: optional, auto-sent once chat mounts
+   *  - `sessionDbId`: real DB session_id if available — when set, new
+   *    turns join the same DB session; null for legacy data. */
+  onResume?: (
+    idx: number,
+    messages: ChatMessage[],
+    pendingMessage?: string,
+    sessionDbId?: string | null,
+  ) => void;
 }
 
 export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
@@ -66,7 +77,13 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
         onBackToHome={onBack}
         onResume={
           onResume
-            ? (pendingMessage) => onResume(selectedSession.id, selectedSession.messages, pendingMessage)
+            ? (pendingMessage) =>
+                onResume(
+                  selectedSession.id,
+                  selectedSession.messages,
+                  pendingMessage,
+                  selectedSession.sessionId,
+                )
             : undefined
         }
       />

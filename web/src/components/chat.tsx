@@ -31,9 +31,13 @@ interface ChatProps {
   /** If set, this message is auto-sent once after the chat mounts.
    *  Used when 對話歷史 detail view's bottom input submits a follow-up. */
   pendingMessage?: string;
+  /** UUID stamped on every chat_messages row written during this chat. A
+   *  fresh QA entry generates a new one; resuming an old session passes the
+   *  original session_id so new turns join the same group. */
+  sessionId?: string;
 }
 
-export function Chat({ onBack, initialMessages, resumeKey, pendingMessage }: ChatProps = {}) {
+export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessionId }: ChatProps = {}) {
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     const stored = localStorage.getItem("physics_tutor_student_id");
@@ -43,8 +47,17 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage }: Cha
     return id;
   });
 
+  // Use refs so the transport's body callback always reads the latest values
+  // (useState lazy init captures the initial closure once).
+  const sessionIdRef = useRef(sessionId);
+  sessionIdRef.current = sessionId;
+  const studentIdRef = useRef(studentId);
+  studentIdRef.current = studentId;
+
   const [transport] = useState(
-    () => new DefaultChatTransport({ body: () => ({ studentId }) }),
+    () => new DefaultChatTransport({
+      body: () => ({ studentId: studentIdRef.current, sessionId: sessionIdRef.current }),
+    }),
   );
 
   const { messages, sendMessage, status } = useChat({
