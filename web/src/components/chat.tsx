@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
-import { useRef, useEffect, useState, type FormEvent } from "react";
+import { useRef, useEffect, useState, type FormEvent, type ChangeEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 
@@ -12,6 +12,8 @@ const SUGGESTED_QUESTIONS = [
   "簡諧運動和等速圓周運動有什麼關係？",
 ];
 
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB per image
+
 function getTextContent(message: UIMessage): string {
   return message.parts
     .filter((p): p is { type: "text"; text: string } => p.type === "text")
@@ -19,21 +21,29 @@ function getTextContent(message: UIMessage): string {
     .join("");
 }
 
+/** Extract image attachments (data URL or remote URL) from a UIMessage's parts.
+ *  AI SDK v6 represents uploaded images as `file` parts with mediaType image/*. */
+function getImageParts(message: UIMessage): { url: string; mediaType: string }[] {
+  const out: { url: string; mediaType: string }[] = [];
+  for (const p of message.parts) {
+    // file parts (uploaded via sendMessage({ files }))
+    if (p.type === "file" && typeof (p as { mediaType?: string }).mediaType === "string") {
+      const mt = (p as { mediaType: string }).mediaType;
+      if (!mt.startsWith("image/")) continue;
+      const url = (p as { url?: string; data?: string }).url
+        ?? (p as { url?: string; data?: string }).data
+        ?? "";
+      if (url) out.push({ url, mediaType: mt });
+    }
+  }
+  return out;
+}
+
 interface ChatProps {
   onBack?: () => void;
-  /** Pre-load messages to resume a previous session. When set, the chat starts
-   *  with these messages already on screen and subsequent sends include them
-   *  in context for the LLM. */
   initialMessages?: UIMessage[];
-  /** Distinct key per resumed session — forces useChat to re-init when user
-   *  resumes a different past session. */
   resumeKey?: string | number;
-  /** If set, this message is auto-sent once after the chat mounts.
-   *  Used when 對話歷史 detail view's bottom input submits a follow-up. */
   pendingMessage?: string;
-  /** UUID stamped on every chat_messages row written during this chat. A
-   *  fresh QA entry generates a new one; resuming an old session passes the
-   *  original session_id so new turns join the same group. */
   sessionId?: string;
 }
 
@@ -47,7 +57,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
     return id;
   });
 
-  // Use refs so the transport's body callback always reads the latest values
+  // Refs so the transport's body callback always reads the latest values
   // (useState lazy init captures the initial closure once).
   const sessionIdRef = useRef(sessionId);
   sessionIdRef.current = sessionId;
@@ -66,6 +76,9 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
     messages: initialMessages,
   });
   const [input, setInput] = useState("");
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isBusy = status === "streaming" || status === "submitted";
 
@@ -84,12 +97,52 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
     sendMessage({ text: pendingMessage });
   }, [pendingMessage, isBusy, sendMessage]);
 
+  const handleFilePick = (e: ChangeEvent<HTMLInputElement>) => {
+    setFileError(null);
+    const picked = Array.from(e.target.files ?? []);
+    e.target.value = "";  // allow re-selecting the same file later
+    const accepted: File[] = [];
+    for (const f of picked) {
+      if (!f.type.startsWith("image/")) {
+        setFileError(`只能上傳圖片：${f.name}`);
+        continue;
+      }
+      if (f.size > MAX_IMAGE_BYTES) {
+        setFileError(`圖片太大（>${(MAX_IMAGE_BYTES / 1024 / 1024) | 0}MB）：${f.name}`);
+        continue;
+      }
+      accepted.push(f);
+    }
+    setPendingFiles((prev) => [...prev, ...accepted].slice(0, 4));  // max 4 per message
+  };
+
+  const removePendingFile = (idx: number) => {
+    setPendingFiles((prev) => prev.filter((_, i) => i !== idx));
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (isBusy) return;
     const text = input.trim();
-    if (!text || isBusy) return;
+    const hasFiles = pendingFiles.length > 0;
+    if (!text && !hasFiles) return;
     setInput("");
-    sendMessage({ text });
+    const filesToSend = pendingFiles;
+    setPendingFiles([]);
+    setFileError(null);
+
+    // useChat's sendMessage({ text, files }) wraps files into multimodal parts.
+    // It expects FileList — build one from File[] via DataTransfer.
+    if (hasFiles) {
+      const dt = new DataTransfer();
+      filesToSend.forEach((f) => dt.items.add(f));
+      sendMessage({
+        text: text || "請看這張圖，幫我說明這道題或這個公式。",
+        files: dt.files,
+      });
+    } else {
+      sendMessage({ text });
+    }
   };
 
   const handleChipClick = (question: string) => {
@@ -121,7 +174,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
             <div>
               <p className="text-2xl mb-2">👋</p>
               <p className="text-lg text-slate-600">嗨！我是普通物理的 AI 助教</p>
-              <p className="text-sm text-slate-400">有什麼問題嗎？</p>
+              <p className="text-sm text-slate-400">有什麼問題嗎？打字或上傳公式照片皆可</p>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
               {SUGGESTED_QUESTIONS.map((q) => (
@@ -138,20 +191,34 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
         ) : (
           messages.map((m) => {
             const text = getTextContent(m);
-            if (!text) return null;
+            const images = getImageParts(m);
+            if (!text && images.length === 0) return null;
             return (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 space-y-2 ${
                     m.role === "user"
                       ? "bg-indigo-600 text-white rounded-br-sm"
                       : "bg-white border border-slate-200 shadow-sm rounded-bl-sm"
                   }`}
                 >
-                  {m.role === "user" ? (
-                    <p className="whitespace-pre-wrap">{text}</p>
-                  ) : (
-                    <MarkdownRenderer content={text} />
+                  {images.length > 0 && (
+                    <div className={`flex flex-wrap gap-2 ${text ? "" : "mb-0"}`}>
+                      {images.map((img, i) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={i}
+                          src={img.url}
+                          alt="附圖"
+                          className="rounded-lg max-h-48 object-contain border border-slate-200/50"
+                        />
+                      ))}
+                    </div>
+                  )}
+                  {text && (
+                    m.role === "user"
+                      ? <p className="whitespace-pre-wrap">{text}</p>
+                      : <MarkdownRenderer content={text} />
                   )}
                 </div>
               </div>
@@ -174,17 +241,70 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
 
       <form onSubmit={handleSubmit} className="shrink-0 border-t border-slate-200 bg-white px-4 py-3 space-y-2">
         <FormulaHelp />
-        <div className="flex gap-2">
+
+        {/* Pending file thumbnails */}
+        {pendingFiles.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {pendingFiles.map((f, i) => {
+              const url = URL.createObjectURL(f);
+              return (
+                <div key={i} className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt={f.name}
+                    className="h-16 w-16 object-cover rounded-lg border border-slate-200"
+                    onLoad={() => URL.revokeObjectURL(url)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removePendingFile(i)}
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-slate-700 text-white text-xs flex items-center justify-center hover:bg-slate-900"
+                    aria-label="移除"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {fileError && (
+          <p className="text-xs text-rose-600">{fileError}</p>
+        )}
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={handleFilePick}
+        />
+
+        <div className="flex gap-2 items-end">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isBusy}
+            title="附加公式 / 題目照片"
+            className="shrink-0 rounded-xl border border-slate-300 bg-white p-2 text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </button>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="輸入問題...（公式可用 $..$ 或 $$..$$）"
+            placeholder="輸入問題或附公式照片...（$..$ / $$..$$ 寫公式）"
             className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
             disabled={isBusy}
           />
           <button
             type="submit"
-            disabled={isBusy || !input.trim()}
+            disabled={isBusy || (!input.trim() && pendingFiles.length === 0)}
             className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             送出

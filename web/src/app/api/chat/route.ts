@@ -20,6 +20,10 @@ const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（
 3. 推導公式時，保持完整的邏輯鏈，不跳步驟（特別是向量與微積分形式的推導）
 4. 如果學生的理解有誤，溫和地指出並引導到正確概念
 5. 適時鼓勵學生，讓學習過程有正向回饋
+6. 如果學生附了圖片（公式照片、題目截圖、自由體圖、電路圖等）：
+   - 仔細辨識圖中的公式與符號，先在回答開頭用 LaTeX 把辨識到的內容打出來給學生確認
+   - 如果圖片模糊或字跡不清楚，明確指出你不確定的部分，請學生補充
+   - 結合教材內容回答學生想問的問題
 
 以下是從教材中檢索到的相關內容：
 
@@ -39,6 +43,7 @@ const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課
 4. 如果內容有標記為 ⚠️ 反例的部分，務必說明那是錯誤示範並解釋原因
 5. 鼓勵學生提出問題，並針對當前頁面的內容回答追問
 6. 適時連結前後章節的概念，幫助學生建立完整的物理直覺
+7. 如果學生附了圖片（公式照片、自己的解題過程等），先用 LaTeX 把辨識到的公式打出來給學生確認，再結合該頁內容說明
 
 當前講義內容（Ch{chapter}, Page {page}）：
 
@@ -58,13 +63,18 @@ export async function POST(req: Request) {
 
   // v6 DefaultChatTransport sends UIMessage format (parts[]) — extract query text
   const lastUserMessage = [...messages].reverse().find((m: { role: string }) => m.role === "user");
+  type Part = { type: string; text?: string; mediaType?: string };
+  const lastParts = (lastUserMessage?.parts as Part[] | undefined) ?? [];
   const query =
     typeof lastUserMessage?.content === "string"
       ? lastUserMessage.content
-      : (lastUserMessage?.parts as { type: string; text: string }[] | undefined)
-          ?.filter((p) => p.type === "text")
-          .map((p) => p.text)
-          .join("") ?? "";
+      : lastParts.filter((p) => p.type === "text").map((p) => p.text ?? "").join("");
+
+  // Count image attachments on the latest user turn (used both for the
+  // RAG query and for tagging the persisted chat_messages row).
+  const imageCount = lastParts.filter(
+    (p) => p.type === "file" && typeof p.mediaType === "string" && p.mediaType.startsWith("image/"),
+  ).length;
 
   let context: string;
   let chunkIds: number[];
@@ -180,8 +190,14 @@ export async function POST(req: Request) {
     onFinish: async ({ text }) => {
       if (!studentId || !text) return;
       const supabase = createServiceClient();
+      // Persist user content with an "[已附圖 N]" prefix when images were
+      // attached, so the history view can show that an image existed even
+      // though we don't store the bytes themselves.
+      const userContentForDb = imageCount > 0
+        ? `[已附圖 ×${imageCount}] ${query}`.trim()
+        : query;
       await supabase.from("chat_messages").insert([
-        { student_id: studentId, role: "user", content: query, chunks_used: chunkIds, session_id: sessionId ?? null },
+        { student_id: studentId, role: "user", content: userContentForDb, chunks_used: chunkIds, session_id: sessionId ?? null },
         { student_id: studentId, role: "assistant", content: text, chunks_used: chunkIds, session_id: sessionId ?? null },
       ]);
     },
