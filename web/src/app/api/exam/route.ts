@@ -54,12 +54,12 @@ async function handleGenerate(body: { examType: string }) {
   const { examType } = body as { examType: "midterm" | "final" };
 
   const isMidterm = examType === "midterm";
-  const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch31（熱學、電磁學、電路）";
+  const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch32（熱學、電磁學、電路、電磁波）";
 
   // Topic blurb for the prompt (full breadth shown to the model).
   const topicListForPrompt = isMidterm
     ? "Kinematics, Newton's Laws, Work & Energy, Conservation of Energy, Momentum & Collisions, Rotational Motion, Angular Momentum, Static Equilibrium, Gravitation, Simple Harmonic Motion, Fluid Mechanics, Mechanical Waves, Sound"
-    : "Temperature & Heat, Ideal Gas, First Law of Thermodynamics, Second Law of Thermodynamics, Electric Field, Gauss's Law, Electric Potential, Capacitance, Current & Resistance, DC Circuits, Magnetic Field, Ampere's Law, Electromagnetic Induction, Inductance, AC Circuits";
+    : "Temperature & Heat, Ideal Gas, First Law of Thermodynamics, Second Law of Thermodynamics, Electric Field, Gauss's Law, Electric Potential, Capacitance, Current & Resistance, DC Circuits, Magnetic Field, Ampere's Law, Electromagnetic Induction, Inductance, AC Circuits, Maxwell's Equations, Electromagnetic Waves";
 
   // Retrieval queries: collapsed to 4 broad themes (was 14–15 fine-grained,
   // which exhausted the 60s Vercel Hobby timeout).
@@ -75,6 +75,7 @@ async function handleGenerate(body: { examType: string }) {
         "first and second laws of thermodynamics, entropy, heat engines, Carnot cycle",
         "electric charge, electric field, Gauss's law, electric potential, capacitance, dielectrics",
         "current, resistance, DC circuits, magnetic field, Ampere's law, electromagnetic induction, inductance, AC circuits",
+        "Maxwell's equations, displacement current, electromagnetic waves, Poynting vector, polarization",
       ];
 
   const allChunks = await Promise.all(
@@ -107,7 +108,7 @@ async function handleGenerate(body: { examType: string }) {
 - 簡答題需要完整推導或解釋
 - 數學公式用 LaTeX
 - 題目用繁體中文，專有名詞可附英文
-- 每題標注對應的 sourceChapter（1..31）
+- 每題標注對應的 sourceChapter（1..32）
 - 整份試題的 title 訂為「普通物理 ${isMidterm ? "(I) 期中考" : "(II) 期末考"}模擬試題」
 
 教材內容：

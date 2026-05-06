@@ -60,12 +60,13 @@ const NODES: ConceptNode[] = [
   { id: "ch24", label: "電容與介電質", chapter: 24, category: "em", x: 510, y: 520 },
   { id: "ch25", label: "電流與電阻", chapter: 25, category: "em", x: 650, y: 520 },
   { id: "ch26", label: "直流電路", chapter: 26, category: "em", x: 790, y: 520 },
-  // EM — row 6 (Ch27–Ch31)
+  // EM — row 6 (Ch27–Ch32)
   { id: "ch27", label: "磁場與磁力", chapter: 27, category: "em", x: 90, y: 640 },
   { id: "ch28", label: "磁場來源", chapter: 28, category: "em", x: 230, y: 640 },
   { id: "ch29", label: "電磁感應", chapter: 29, category: "em", x: 370, y: 640 },
   { id: "ch30", label: "電感", chapter: 30, category: "em", x: 510, y: 640 },
   { id: "ch31", label: "交流電路", chapter: 31, category: "em", x: 650, y: 640 },
+  { id: "ch32", label: "電磁波", chapter: 32, category: "em", x: 790, y: 640 },
 ];
 
 const EDGES: ConceptEdge[] = [
@@ -107,6 +108,9 @@ const EDGES: ConceptEdge[] = [
   { from: "ch29", to: "ch30" },
   { from: "ch30", to: "ch31" },
   { from: "ch26", to: "ch31" },
+  // EM waves draw on Faraday's law (induction) and AC oscillation
+  { from: "ch29", to: "ch32" },
+  { from: "ch31", to: "ch32" },
 ];
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {

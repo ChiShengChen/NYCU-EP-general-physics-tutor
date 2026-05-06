@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "chapter required" }, { status: 400 });
   }
   const chapter = parseInt(chapterParam);
-  if (!Number.isInteger(chapter) || chapter < 1 || chapter > 31) {
+  if (!Number.isInteger(chapter) || chapter < 1 || chapter > 32) {
     return NextResponse.json({ error: "invalid chapter" }, { status: 400 });
   }
 

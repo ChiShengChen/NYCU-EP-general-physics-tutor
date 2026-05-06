@@ -21,7 +21,7 @@ const QuizQuestionSchema = z.object({
     .describe("4 options for multiple choice (A/B/C/D), null for short answer"),
   correctAnswer: z.string().describe("The correct answer: A/B/C/D for MC, or expected answer for short answer"),
   explanation: z.string().describe("Detailed explanation of why the answer is correct, with LaTeX if needed"),
-  sourceChapter: z.number().describe("Which chapter (1..31) this question is based on"),
+  sourceChapter: z.number().describe("Which chapter (1..32) this question is based on"),
 });
 
 const QuizSchema = z.object({
@@ -62,7 +62,7 @@ async function handleGenerate(body: { studentId?: string; chapter?: number }) {
 
   // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
   // Generate 20 questions in two parallel batches to stay under Vercel's 60s limit.
-  if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 31) {
+  if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 32) {
     const chunks = await retrieveChunks(
       "key concepts, formulas, derivations, worked examples",
       { matchCount: 16, matchThreshold: 0.3, filterChapter: chapter },
@@ -179,7 +179,7 @@ ${context}
 - 難度分布：${difficultyDist}
 - 題目用繁體中文，公式用 LaTeX（$..$ 行內，$$...$$ 獨立）
 - 每題都要有詳細解釋，引用教材的具體章節（Ch 幾）
-- sourceChapter 必須填入 1..31 之間的章節編號
+- sourceChapter 必須填入 1..32 之間的章節編號
 ${extraGuidance}`;
 
   const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");

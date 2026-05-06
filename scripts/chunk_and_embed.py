@@ -1,6 +1,7 @@
 import os
-import json
 import re
+import json
+import argparse
 import numpy as np
 from pathlib import Path
 from dotenv import load_dotenv
@@ -23,12 +24,25 @@ supabase = create_client(
 COURSE_SUMMARY = (
     "This is content from '普通物理' (General Physics, taught by 楊本立 at NYCU "
     "Department of Electrophysics). The course follows University Physics (Young & Freedman) "
-    "and covers Ch01–Ch31: kinematics, Newton's laws, work and energy, momentum, "
+    "and covers Ch01–Ch32: kinematics, Newton's laws, work and energy, momentum, "
     "rotational motion, gravitation, oscillations, fluid mechanics, mechanical waves, "
     "sound, thermodynamics, electric charge and field, Gauss's law, electric potential, "
     "capacitance, current and resistance, DC circuits, magnetic fields and forces, "
-    "electromagnetic induction, inductance, and AC circuits."
+    "electromagnetic induction, inductance, AC circuits, and electromagnetic waves."
 )
+
+
+def parse_chapter_range(spec: str) -> set[int]:
+    """'1-3' -> {1,2,3}; '5' -> {5}; '1,3,7' -> {1,3,7}."""
+    chapters: set[int] = set()
+    for part in spec.split(","):
+        part = part.strip()
+        if "-" in part:
+            a, b = part.split("-")
+            chapters.update(range(int(a), int(b) + 1))
+        elif part:
+            chapters.add(int(part))
+    return chapters
 
 
 def chunk_page_markdown(markdown: str, chapter: int, page: int) -> list[dict]:
@@ -104,6 +118,17 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--chapters",
+        help="Embed only these chapters, e.g. '32' or '1-3' or '1,3,7'. "
+             "Default: all parsed files. When set, existing rows for those chapters "
+             "are deleted first to avoid duplicates.",
+    )
+    args = ap.parse_args()
+
+    wanted = parse_chapter_range(args.chapters) if args.chapters else None
+
     json_files = sorted(PARSED_DIR.glob("*.json"))
     print(f"Found {len(json_files)} parsed lecture files")
 
@@ -111,11 +136,22 @@ def main():
     for jf in json_files:
         data = json.loads(jf.read_text(encoding="utf-8"))
         chapter = data["chapter_number"]
+        if wanted is not None and chapter not in wanted:
+            continue
         for page_data in data["pages"]:
             page_chunks = chunk_page_markdown(page_data["markdown"], chapter, page_data["page"])
             all_chunks.extend(page_chunks)
 
+    if wanted is not None:
+        # Idempotent re-runs: clear out any prior rows for the targeted chapters.
+        targets = sorted(wanted)
+        print(f"Filter: chapters {targets}. Deleting any existing rows for these chapters first...")
+        supabase.table("lecture_chunks").delete().in_("chapter_number", targets).execute()
+
     print(f"Total chunks: {len(all_chunks)}")
+    if not all_chunks:
+        print("Nothing to do.")
+        return
 
     texts_to_embed = [c["contextualized_content"] for c in all_chunks]
     print("Generating embeddings...")
