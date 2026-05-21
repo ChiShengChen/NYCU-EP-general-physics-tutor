@@ -5,6 +5,7 @@ import { type UIMessage, DefaultChatTransport } from "ai";
 import { useRef, useEffect, useState, type FormEvent, type ChangeEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
+import { AiSketch } from "./ai-sketch";
 
 const SUGGESTED_QUESTIONS = [
   "解釋牛頓第二定律的向量形式",
@@ -35,6 +36,29 @@ function getImageParts(message: UIMessage): { url: string; mediaType: string }[]
         ?? "";
       if (url) out.push({ url, mediaType: mt });
     }
+  }
+  return out;
+}
+
+/** Extract sketchVisualUnderstanding tool outputs from a UIMessage's parts.
+ *  AI SDK v6 represents tool calls as parts of type `tool-{toolName}` once
+ *  the tool's execute has resolved (state == 'output-available'). */
+function getSketchParts(
+  message: UIMessage,
+): { title: string; svg: string; notes?: string; key: string }[] {
+  const out: { title: string; svg: string; notes?: string; key: string }[] = [];
+  for (const p of message.parts) {
+    const part = p as { type: string; state?: string; output?: unknown; toolCallId?: string };
+    if (part.type !== "tool-sketchVisualUnderstanding") continue;
+    if (part.state !== "output-available") continue;
+    const o = part.output as { title?: unknown; svg?: unknown; notes?: unknown } | null | undefined;
+    if (!o || typeof o.svg !== "string") continue;
+    out.push({
+      title: typeof o.title === "string" ? o.title : "AI 對圖的理解",
+      svg: o.svg,
+      notes: typeof o.notes === "string" && o.notes ? o.notes : undefined,
+      key: part.toolCallId ?? `${out.length}`,
+    });
   }
   return out;
 }
@@ -192,7 +216,8 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
           messages.map((m) => {
             const text = getTextContent(m);
             const images = getImageParts(m);
-            if (!text && images.length === 0) return null;
+            const sketches = m.role === "assistant" ? getSketchParts(m) : [];
+            if (!text && images.length === 0 && sketches.length === 0) return null;
             return (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
@@ -220,6 +245,9 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
                       ? <p className="whitespace-pre-wrap">{text}</p>
                       : <MarkdownRenderer content={text} />
                   )}
+                  {sketches.map((s) => (
+                    <AiSketch key={s.key} title={s.title} svg={s.svg} notes={s.notes} />
+                  ))}
                 </div>
               </div>
             );

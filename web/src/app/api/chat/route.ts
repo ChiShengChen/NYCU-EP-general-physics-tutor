@@ -27,6 +27,8 @@ const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（
    - 例如相量圖：「向量 $I_\\max$ 為紫色，與 +x 軸夾約 60°；向量 $\\Delta V_\\max$ 為橘色，與 +x 軸夾約 30°」
    - 如果圖片不清楚或顏色不易辨識，**明確標示「我不確定」**並請學生確認
 
+   STEP 1.5 — 若是「圖示」（相量圖、自由體圖、向量圖、電路圖、幾何圖），呼叫 \`sketchVisualUnderstanding\` 工具吐一個 SVG，把你 STEP 1 描述的東西重畫一遍給學生看。**只有當原圖含有幾何元素時呼叫此工具**；單純的公式照片或文字截圖不必呼叫。
+
    STEP 2 — 物理慣例層（敘述你要用的判準）：
    - 寫出你將套用的物理定義 / 慣例（例：「相量圖以逆時針方向視為相位超前；$\\phi$ 定義為 V 相對於 I 的相位」）
    - 對應的公式（例：$\\tan\\phi = (X_L - X_C)/R$）
@@ -58,6 +60,7 @@ const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課
 6. 適時連結前後章節的概念，幫助學生建立完整的物理直覺
 7. 如果圖片中有相量圖、自由體圖、向量圖、電路圖等需要視覺判讀的圖示，依下面三步驟作答：
    - STEP 1 視覺事實：先逐一條列每個有 label 的物件（label 是什麼、位置 / 方向 / 與其他物件的相對關係），不確定的地方明說「不確定」
+   - STEP 1.5 若是幾何圖（相量、自由體、向量、電路、幾何），呼叫 \`sketchVisualUnderstanding\` 工具重畫你看到的，給學生對照
    - STEP 2 物理慣例：寫出你要套用的定義或公式（例：$\\phi$ 是 V 相對於 I 的相位、逆時針 = 超前）
    - STEP 3 推論並自我檢查：用 STEP 1+2 推導，最後檢查每個結論的主詞跟 STEP 1 描述是否一致；若打架，重新從 STEP 1 開始
    - 若學生指出你判斷錯，立刻重做，不要捍衛先前答案
@@ -174,6 +177,27 @@ export async function POST(req: Request) {
           if (error) console.error("Student model update error:", error);
           return { status: error ? "error" : "updated" };
         },
+      }),
+      sketchVisualUnderstanding: tool({
+        description:
+          "Use this immediately after STEP 1 of the structured visual-reasoning workflow, whenever the student attached an image that contains a diagram " +
+          "(phasor diagram, free-body diagram, vector diagram, circuit, geometric figure). " +
+          "Emit a minimal SVG that re-draws what you observed: each labelled object with its name, position, direction. " +
+          "Skip this tool for photos of typed text / formulas where there is nothing geometric to draw. " +
+          "Students will compare your sketch with their original image and immediately tell you if anything was misread. " +
+          "Keep the SVG self-contained (no external resources) and keep it small (≤ 480px wide).",
+        inputSchema: z.object({
+          title: z.string().describe("Short label for the sketch in Traditional Chinese, e.g. '相量圖 (a) — 我看到的'"),
+          svg: z.string().describe(
+            "Self-contained SVG markup. MUST start with <svg ...> and end with </svg>. " +
+            "Use a viewBox like '0 0 320 240' so it scales. Add labels with <text>. " +
+            "Use stroke colors that distinguish vectors (e.g. purple for current, orange for voltage). " +
+            "Do NOT include <script>, on* attributes, javascript: URIs, or any external <image href>. " +
+            "If you must label LaTeX, just write the variable name in plain text (e.g. 'I_max', 'phi') — students will understand.",
+          ),
+          notes: z.string().optional().describe("Optional 1-line caption summarising the key visual feature, e.g. 'I_max 比 ΔV_max 更靠近 +y 軸'"),
+        }),
+        execute: async ({ title, svg, notes }) => ({ title, svg, notes: notes ?? "" }),
       }),
       webSearch: tool({
         description:
