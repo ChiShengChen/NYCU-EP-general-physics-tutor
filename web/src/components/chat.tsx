@@ -244,7 +244,11 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
 
         {/* Pending file thumbnails */}
         {pendingFiles.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-2">
+            <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1.5">
+              ⚠️ AI 視覺判讀可能會誤判（例如向量方向、相量超前後落、字跡辨識）。看到回答時請對照原圖確認；若 AI 寫的觀察跟圖不符，告訴它「你看錯了」它會重判。
+            </p>
+            <div className="flex flex-wrap gap-2">
             {pendingFiles.map((f, i) => {
               const url = URL.createObjectURL(f);
               return (
@@ -267,6 +271,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
                 </div>
               );
             })}
+            </div>
           </div>
         )}
 
