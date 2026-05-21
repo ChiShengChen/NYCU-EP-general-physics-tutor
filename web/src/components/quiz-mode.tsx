@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { ConfidenceSelector } from "./confidence-selector";
+import { HintPanel } from "./hint-panel";
 
 /* ─── Types ─── */
 
@@ -59,6 +60,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
+  const [hintUsage, setHintUsage] = useState<Record<number, number>>({});
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -85,6 +87,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setError(null);
     setAnswers({});
     setConfidences({});
+    setHintUsage({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(chapter);
@@ -114,6 +117,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setQuiz(null);
     setAnswers({});
     setConfidences({});
+    setHintUsage({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(null);
@@ -133,6 +137,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           questions: quiz.questions,
           answers,
           confidences,
+          hintUsage,
           quizTitle: quiz.title,
         }),
       });
@@ -191,6 +196,8 @@ export function QuizMode({ onBack }: QuizModeProps) {
             setAnswers={setAnswers}
             confidences={confidences}
             setConfidences={setConfidences}
+            hintUsage={hintUsage}
+            setHintUsage={setHintUsage}
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
@@ -328,6 +335,8 @@ function AnsweringState({
   setAnswers,
   confidences,
   setConfidences,
+  hintUsage,
+  setHintUsage,
   currentQuestion,
   setCurrentQuestion,
   onSubmit,
@@ -339,6 +348,8 @@ function AnsweringState({
   setAnswers: (a: Record<number, string>) => void;
   confidences: Record<number, number>;
   setConfidences: (c: Record<number, number>) => void;
+  hintUsage: Record<number, number>;
+  setHintUsage: (h: Record<number, number>) => void;
   currentQuestion: number;
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
@@ -444,6 +455,14 @@ function AnsweringState({
               className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-32"
             />
             <FormulaHelp />
+            <HintPanel
+              key={`hint-${q.id}`}
+              question={q.question}
+              correctAnswer={q.correctAnswer}
+              sourceChapter={q.sourceChapter ?? null}
+              draftAnswer={answers[q.id] ?? ""}
+              onLevelChange={(lvl) => setHintUsage({ ...hintUsage, [q.id]: lvl })}
+            />
           </div>
         )}
 

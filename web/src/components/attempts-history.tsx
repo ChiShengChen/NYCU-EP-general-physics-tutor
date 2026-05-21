@@ -43,6 +43,7 @@ interface AttemptDetail extends AttemptSummary {
   questions: Question[];
   answers: Record<string, string>;
   confidences?: Record<string, number>;
+  hint_usage?: Record<string, number>;
   results: ResultEntry[];
   overall_feedback: string | null;
 }
@@ -260,6 +261,7 @@ function AttemptDetailView({
             const userAnswer = attempt.answers[String(q.id)] ?? "(未作答)";
             const correct = r?.isCorrect ?? false;
             const conf = attempt.confidences?.[String(q.id)] ?? null;
+            const hints = attempt.hint_usage?.[String(q.id)] ?? 0;
             const dangerousMisconception = conf !== null && conf >= 4 && !correct;
             const underconfidentWin = conf !== null && conf <= 2 && correct;
             return (
@@ -282,6 +284,11 @@ function AttemptDetailView({
                   {underconfidentWin && (
                     <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
                       💪 低自信但答對 — 其實你會
+                    </span>
+                  )}
+                  {hints > 0 && (
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200">
+                      💡 用了 {hints}/3 提示
                     </span>
                   )}
                   {r && (

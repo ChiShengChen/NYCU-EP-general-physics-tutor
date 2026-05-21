@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { ConfidenceSelector } from "./confidence-selector";
+import { HintPanel } from "./hint-panel";
 
 /* ─── Types ─── */
 
@@ -57,6 +58,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
+  const [hintUsage, setHintUsage] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +105,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
     setError(null);
     setAnswers({});
     setConfidences({});
+    setHintUsage({});
     setGradeResult(null);
     setCurrentQuestion(0);
 
@@ -142,6 +145,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
           questions: exam.questions,
           answers,
           confidences,
+          hintUsage,
           examType,
           examTitle: exam.title,
         }),
@@ -205,6 +209,8 @@ export function ExamMode({ onBack }: ExamModeProps) {
             setAnswers={setAnswers}
             confidences={confidences}
             setConfidences={setConfidences}
+            hintUsage={hintUsage}
+            setHintUsage={setHintUsage}
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
@@ -368,6 +374,8 @@ function ExamView({
   setAnswers,
   confidences,
   setConfidences,
+  hintUsage,
+  setHintUsage,
   currentQuestion,
   setCurrentQuestion,
   onSubmit,
@@ -378,6 +386,8 @@ function ExamView({
   setAnswers: (a: Record<number, string>) => void;
   confidences: Record<number, number>;
   setConfidences: (c: Record<number, number>) => void;
+  hintUsage: Record<number, number>;
+  setHintUsage: (h: Record<number, number>) => void;
   currentQuestion: number;
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
@@ -470,6 +480,14 @@ function ExamView({
               className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-40"
             />
             <FormulaHelp />
+            <HintPanel
+              key={`exam-hint-${q.id}`}
+              question={q.question}
+              correctAnswer={q.correctAnswer}
+              sourceChapter={q.sourceChapter ?? null}
+              draftAnswer={answers[q.id] ?? ""}
+              onLevelChange={(lvl) => setHintUsage({ ...hintUsage, [q.id]: lvl })}
+            />
           </div>
         )}
 
