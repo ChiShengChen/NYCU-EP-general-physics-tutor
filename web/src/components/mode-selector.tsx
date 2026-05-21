@@ -1,7 +1,7 @@
 "use client";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -138,8 +138,8 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </button>
         </div>
 
-        {/* Bottom row: 4 utility modes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full">
+        {/* Bottom row: 5 utility modes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 max-w-6xl w-full">
           <button
             onClick={() => onSelectMode("dashboard")}
             className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
@@ -148,6 +148,17 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <div>
               <h3 className="text-base font-semibold text-slate-800">學習儀表板</h3>
               <p className="text-xs text-slate-500 mt-0.5">掌握度雷達圖、學習趨勢與統計</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelectMode("calibration")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">🎯</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">信心校準</h3>
+              <p className="text-xs text-slate-500 mt-0.5">「自信高但答錯」= 你真正的迷思</p>
             </div>
           </button>
 

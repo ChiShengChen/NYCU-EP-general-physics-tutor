@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { ConfidenceSelector } from "./confidence-selector";
 
 /* ─── Types ─── */
 
@@ -41,6 +42,7 @@ interface ResultEntry {
 interface AttemptDetail extends AttemptSummary {
   questions: Question[];
   answers: Record<string, string>;
+  confidences?: Record<string, number>;
   results: ResultEntry[];
   overall_feedback: string | null;
 }
@@ -257,9 +259,12 @@ function AttemptDetailView({
             const r = resultMap.get(q.id);
             const userAnswer = attempt.answers[String(q.id)] ?? "(未作答)";
             const correct = r?.isCorrect ?? false;
+            const conf = attempt.confidences?.[String(q.id)] ?? null;
+            const dangerousMisconception = conf !== null && conf >= 4 && !correct;
+            const underconfidentWin = conf !== null && conf <= 2 && correct;
             return (
               <div key={q.id} className={`bg-white border rounded-2xl p-5 shadow-sm ${correct ? "border-emerald-200" : "border-rose-200"}`}>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
                   <span className={`shrink-0 w-7 h-7 inline-flex items-center justify-center rounded-full text-xs font-semibold ${correct ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
                     {correct ? "✓" : "✗"}
                   </span>
@@ -269,12 +274,28 @@ function AttemptDetailView({
                     {q.sourceChapter ? ` · Ch${String(q.sourceChapter).padStart(2, "0")}` : ""}
                     {q.points ? ` · ${q.points} 分` : ""}
                   </span>
+                  {dangerousMisconception && (
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">
+                      ⚠️ 高自信但答錯 — 可能的迷思
+                    </span>
+                  )}
+                  {underconfidentWin && (
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
+                      💪 低自信但答對 — 其實你會
+                    </span>
+                  )}
                   {r && (
                     <span className="ml-auto text-xs text-slate-500">
                       {r.earnedPoints !== undefined ? `${r.earnedPoints.toFixed(0)} 分` : `score ${r.score.toFixed(2)}`}
                     </span>
                   )}
                 </div>
+
+                {conf !== null && (
+                  <div className="mb-3">
+                    <ConfidenceSelector value={conf} onChange={() => { /* read-only */ }} variant="after" />
+                  </div>
+                )}
 
                 <div className="text-sm text-slate-800 mb-3">
                   <MarkdownRenderer content={q.question} />

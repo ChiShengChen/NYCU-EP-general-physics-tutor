@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
+import { ConfidenceSelector } from "./confidence-selector";
 
 /* ─── Types ─── */
 
@@ -55,6 +56,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
   const [timeLimit, setTimeLimit] = useState(50);
   const [timeLeft, setTimeLeft] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [confidences, setConfidences] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -100,6 +102,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
     setState("loading");
     setError(null);
     setAnswers({});
+    setConfidences({});
     setGradeResult(null);
     setCurrentQuestion(0);
 
@@ -138,7 +141,9 @@ export function ExamMode({ onBack }: ExamModeProps) {
           studentId,
           questions: exam.questions,
           answers,
+          confidences,
           examType,
+          examTitle: exam.title,
         }),
       });
 
@@ -198,6 +203,8 @@ export function ExamMode({ onBack }: ExamModeProps) {
             exam={exam}
             answers={answers}
             setAnswers={setAnswers}
+            confidences={confidences}
+            setConfidences={setConfidences}
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
@@ -359,6 +366,8 @@ function ExamView({
   exam,
   answers,
   setAnswers,
+  confidences,
+  setConfidences,
   currentQuestion,
   setCurrentQuestion,
   onSubmit,
@@ -367,6 +376,8 @@ function ExamView({
   exam: Exam;
   answers: Record<number, string>;
   setAnswers: (a: Record<number, string>) => void;
+  confidences: Record<number, number>;
+  setConfidences: (c: Record<number, number>) => void;
   currentQuestion: number;
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
@@ -461,6 +472,14 @@ function ExamView({
             <FormulaHelp />
           </div>
         )}
+
+        {/* Confidence calibration */}
+        <div className="mt-3 pt-3 border-t border-slate-100">
+          <ConfidenceSelector
+            value={confidences[q.id] ?? null}
+            onChange={(v) => setConfidences({ ...confidences, [q.id]: v })}
+          />
+        </div>
       </div>
 
       {/* Navigation */}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
+import { ConfidenceSelector } from "./confidence-selector";
 
 /* ─── Types ─── */
 
@@ -57,6 +58,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
   const [scopeChapter, setScopeChapter] = useState<number | null>(null);  // null = full range
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [confidences, setConfidences] = useState<Record<number, number>>({});
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -82,6 +84,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setState("loading");
     setError(null);
     setAnswers({});
+    setConfidences({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(chapter);
@@ -110,6 +113,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setState("select");
     setQuiz(null);
     setAnswers({});
+    setConfidences({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(null);
@@ -128,6 +132,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           studentId,
           questions: quiz.questions,
           answers,
+          confidences,
           quizTitle: quiz.title,
         }),
       });
@@ -184,6 +189,8 @@ export function QuizMode({ onBack }: QuizModeProps) {
             isIntroQuiz={isIntroQuiz}
             answers={answers}
             setAnswers={setAnswers}
+            confidences={confidences}
+            setConfidences={setConfidences}
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
@@ -319,6 +326,8 @@ function AnsweringState({
   isIntroQuiz,
   answers,
   setAnswers,
+  confidences,
+  setConfidences,
   currentQuestion,
   setCurrentQuestion,
   onSubmit,
@@ -328,6 +337,8 @@ function AnsweringState({
   isIntroQuiz: boolean;
   answers: Record<number, string>;
   setAnswers: (a: Record<number, string>) => void;
+  confidences: Record<number, number>;
+  setConfidences: (c: Record<number, number>) => void;
   currentQuestion: number;
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
@@ -435,6 +446,14 @@ function AnsweringState({
             <FormulaHelp />
           </div>
         )}
+
+        {/* Confidence calibration — feeds dashboard + flags misconceptions */}
+        <div className="mt-3 pt-3 border-t border-slate-100">
+          <ConfidenceSelector
+            value={confidences[q.id] ?? null}
+            onChange={(v) => setConfidences({ ...confidences, [q.id]: v })}
+          />
+        </div>
       </div>
 
       {/* Navigation */}

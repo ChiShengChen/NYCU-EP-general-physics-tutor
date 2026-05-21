@@ -231,9 +231,10 @@ async function handleGrade(body: {
   studentId?: string;
   questions: z.infer<typeof QuizSchema>["questions"];
   answers: Record<number, string>;
+  confidences?: Record<number, number>;
   quizTitle?: string;
 }) {
-  const { studentId, questions, answers, quizTitle } = body;
+  const { studentId, questions, answers, confidences, quizTitle } = body;
 
   // Build grading prompt
   const questionsWithAnswers = questions.map((q) => ({
@@ -309,6 +310,7 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
       title: quizTitle ?? "自動測驗",
       questions,
       answers,
+      confidences: confidences ?? {},
       results: gradeResult.results,
       total_score: total,
       max_score: maxScore,

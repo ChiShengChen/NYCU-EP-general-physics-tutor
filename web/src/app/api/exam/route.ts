@@ -154,10 +154,11 @@ async function handleGrade(body: {
   studentId?: string;
   questions: z.infer<typeof ExamSchema>["questions"];
   answers: Record<number, string>;
+  confidences?: Record<number, number>;
   examType: string;
   examTitle?: string;
 }) {
-  const { studentId, questions, answers, examType, examTitle } = body;
+  const { studentId, questions, answers, confidences, examType, examTitle } = body;
 
   const qa = questions.map((q) => ({
     id: q.id, type: q.type, concept: q.concept, question: q.question,
@@ -210,6 +211,7 @@ ${JSON.stringify(qa, null, 2)}
       title: examTitle ?? (examType === "midterm" ? "期中考模擬" : "期末考模擬"),
       questions,
       answers,
+      confidences: confidences ?? {},
       results: result.results,
       total_score: result.totalScore,
       max_score: result.maxScore,
