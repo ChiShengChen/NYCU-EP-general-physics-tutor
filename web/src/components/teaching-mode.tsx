@@ -211,6 +211,22 @@ function PageViewer({
   const [chatKey, setChatKey] = useState(0);
   const hasSentInitial = useRef(false);
 
+  // Slide pane visibility — collapsed gives the chat full width, which is
+  // much friendlier for long math expressions and AI explanations.
+  // Preference persists across page navigation.
+  const [slideVisible, setSlideVisibleState] = useState<boolean>(true);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem("physics_tutor_slide_visible");
+    if (stored === "0") setSlideVisibleState(false);
+  }, []);
+  const setSlideVisible = useCallback((v: boolean) => {
+    setSlideVisibleState(v);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("physics_tutor_slide_visible", v ? "1" : "0");
+    }
+  }, []);
+
   // Create transport that passes teaching mode params
   const [transport, setTransport] = useState(
     () =>
@@ -337,29 +353,49 @@ function PageViewer({
         </button>
       </header>
 
-      {/* Main Content: Side-by-side on desktop, stacked on mobile */}
+      {/* Main Content: Side-by-side on desktop, stacked on mobile.
+          Slide pane is collapsible so chat can take the full width — much
+          friendlier for long math expressions that wrap awkwardly in half. */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Left: Original Slide Image */}
-        <div className="md:w-1/2 border-b md:border-b-0 md:border-r border-slate-200 flex flex-col">
-          <div className="px-3 py-2 bg-slate-50 border-b border-slate-200 shrink-0">
-            <h2 className="text-sm font-medium text-slate-600">📄 講義投影片</h2>
+        {slideVisible && (
+          <div className="md:w-1/2 border-b md:border-b-0 md:border-r border-slate-200 flex flex-col">
+            <div className="flex items-center px-3 py-2 bg-slate-50 border-b border-slate-200 shrink-0">
+              <h2 className="text-sm font-medium text-slate-600">📄 講義投影片</h2>
+              <button
+                onClick={() => setSlideVisible(false)}
+                title="收合投影片，讓 AI 對話佔滿畫面"
+                className="ml-auto text-xs px-2 py-0.5 rounded-md text-slate-500 hover:text-indigo-600 hover:bg-white border border-transparent hover:border-slate-200 transition-colors"
+              >
+                收合 ▸
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto flex items-start justify-center bg-slate-100 p-2">
+              <img
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/slides/ch_${chapterNumber}_page_${currentPage}.jpg`}
+                alt={`Ch${String(chapterNumber).padStart(2, "0")} Page ${currentPage}`}
+                className="max-w-full h-auto rounded-lg shadow-sm"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                  (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex items-center justify-center h-32 text-slate-400">此頁無投影片</div>';
+                }}
+              />
+            </div>
           </div>
-          <div className="flex-1 overflow-y-auto flex items-start justify-center bg-slate-100 p-2">
-            <img
-              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/slides/ch_${chapterNumber}_page_${currentPage}.jpg`}
-              alt={`Ch${String(chapterNumber).padStart(2, "0")} Page ${currentPage}`}
-              className="max-w-full h-auto rounded-lg shadow-sm"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-                (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex items-center justify-center h-32 text-slate-400">此頁無投影片</div>';
-              }}
-            />
-          </div>
-        </div>
+        )}
 
         {/* Right: AI Chat */}
-        <div className="md:w-1/2 flex flex-col">
-          <div className="px-3 py-2 bg-slate-50 border-b border-slate-200 shrink-0">
+        <div className={`${slideVisible ? "md:w-1/2" : "w-full"} flex flex-col`}>
+          <div className="flex items-center px-3 py-2 bg-slate-50 border-b border-slate-200 shrink-0">
+            {!slideVisible && (
+              <button
+                onClick={() => setSlideVisible(true)}
+                title="展開投影片"
+                className="mr-2 text-xs px-2 py-0.5 rounded-md text-slate-500 hover:text-indigo-600 hover:bg-white border border-slate-200 transition-colors"
+              >
+                ◂ 顯示投影片
+              </button>
+            )}
             <h2 className="text-sm font-medium text-slate-600">🤖 AI 解說</h2>
           </div>
 
