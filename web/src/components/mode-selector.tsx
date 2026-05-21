@@ -1,10 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useDailyStatus } from "./daily-review";
+
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
+  // Read studentId once on mount so the daily banner can show today's status
+  // + streak for this browser's anonymous student profile.
+  const [studentId, setStudentId] = useState<string | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setStudentId(localStorage.getItem("physics_tutor_student_id"));
+  }, []);
+  const { todayDone, streak } = useDailyStatus(studentId);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
@@ -19,6 +31,39 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           <h2 className="text-2xl font-bold text-slate-800 mb-2">歡迎使用普通物理 AI 助教</h2>
           <p className="text-slate-500">請選擇學習模式</p>
         </div>
+
+        {/* Daily review banner: visible reminder + one-click entry to today's
+            spaced-repetition session. Visual treatment swaps between
+            「待完成」(amber) and 「已完成」(emerald) so a returning student can
+            see at a glance whether today's habit is checked off. */}
+        <button
+          onClick={() => onSelectMode("daily")}
+          className={`w-full max-w-5xl mb-6 flex items-center gap-4 text-left p-4 rounded-2xl border shadow-sm hover:shadow-md transition-all ${
+            todayDone
+              ? "bg-emerald-50 border-emerald-200 hover:border-emerald-300"
+              : "bg-amber-50 border-amber-200 hover:border-amber-300"
+          }`}
+        >
+          <span className="text-3xl shrink-0">📅</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-slate-800 text-sm">
+              {todayDone ? "今日 5 分鐘已完成 ✓" : "今日 5 分鐘小複習"}
+            </div>
+            <div className="text-xs text-slate-600 mt-0.5">
+              {todayDone
+                ? "明天再來，保持連續紀錄。"
+                : "AI 從你的錯題裡，依遺忘曲線挑出最該再看的 3–5 題，現在花 5 分鐘搞定。"}
+            </div>
+          </div>
+          {streak > 0 && (
+            <div className="shrink-0 px-3 py-1.5 rounded-xl bg-white border border-amber-300 text-xs">
+              🔥 連續 <strong className="text-amber-700">{streak}</strong> 天
+            </div>
+          )}
+          <span className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white ${todayDone ? "bg-emerald-600" : "bg-amber-600"}`}>
+            {todayDone ? "再做一次" : "開始 →"}
+          </span>
+        </button>
 
         {/* Top row: 4 main learning modes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">

@@ -16,8 +16,9 @@ import { WrongNotebook } from "@/components/wrong-notebook";
 import { ChapterPreview } from "@/components/chapter-preview";
 import { FeynmanMode } from "@/components/feynman-mode";
 import { CalibrationView } from "@/components/calibration-view";
+import { DailyReview } from "@/components/daily-review";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -103,6 +104,7 @@ export default function Home() {
   if (mode === "preview") return <ChapterPreview onBack={goHome} />;
   if (mode === "feynman") return <FeynmanMode onBack={goHome} />;
   if (mode === "calibration") return <CalibrationView onBack={goHome} />;
+  if (mode === "daily") return <DailyReview onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }
