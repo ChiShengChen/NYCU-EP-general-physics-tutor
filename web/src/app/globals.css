@@ -24,3 +24,24 @@ body {
   overflow-y: hidden;
   padding: 0.5rem 0;
 }
+
+/* Promote ALL math to its own line so long formulas don't wrap mid-symbol
+ * and short ones get visual breathing room. Applies to chat answers,
+ * concept cards, attempt reviews, wrong-question notebook, etc. Inline
+ * KaTeX (rendered by remark-math + rehype-katex from $..$) is shown as a
+ * block; horizontal overflow scrolls instead of wrapping. */
+.katex {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0.4em 0;
+}
+
+/* The display-math wrapper already block-displays its inner .katex; keep
+ * its centred / padded look intact. */
+.katex-display .katex {
+  display: inline-block;  /* inside the wrapper, don't double-block */
+  margin: 0;
+}
