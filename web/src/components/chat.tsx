@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
-import { useRef, useEffect, useState, type FormEvent, type ChangeEvent } from "react";
+import { useRef, useEffect, useState, useCallback, type FormEvent, type ChangeEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { AiSketch } from "./ai-sketch";
@@ -81,16 +81,36 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
     return id;
   });
 
+  // Socratic mode: AI doesn't give direct answers, asks guiding questions
+  // first. Preference persists in localStorage.
+  const [socratic, setSocraticState] = useState<boolean>(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (localStorage.getItem("physics_tutor_socratic") === "1") setSocraticState(true);
+  }, []);
+  const setSocratic = useCallback((v: boolean) => {
+    setSocraticState(v);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("physics_tutor_socratic", v ? "1" : "0");
+    }
+  }, []);
+
   // Refs so the transport's body callback always reads the latest values
   // (useState lazy init captures the initial closure once).
   const sessionIdRef = useRef(sessionId);
   sessionIdRef.current = sessionId;
   const studentIdRef = useRef(studentId);
   studentIdRef.current = studentId;
+  const socraticRef = useRef(socratic);
+  socraticRef.current = socratic;
 
   const [transport] = useState(
     () => new DefaultChatTransport({
-      body: () => ({ studentId: studentIdRef.current, sessionId: sessionIdRef.current }),
+      body: () => ({
+        studentId: studentIdRef.current,
+        sessionId: sessionIdRef.current,
+        socratic: socraticRef.current,
+      }),
     }),
   );
 
@@ -189,6 +209,21 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
         )}
         <span className="text-xl">🔬</span>
         <h1 className="text-lg font-semibold text-slate-800">普通物理 AI 助教</h1>
+        <button
+          onClick={() => setSocratic(!socratic)}
+          title={
+            socratic
+              ? "蘇格拉底模式：AI 會反問引導你思考，不直接給答案。點此關閉。"
+              : "啟用蘇格拉底模式：AI 會先反問引導你自己推導，而不是直接給答案。"
+          }
+          className={`ml-2 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+            socratic
+              ? "bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100"
+              : "bg-white text-slate-500 border-slate-200 hover:bg-slate-50"
+          }`}
+        >
+          🦉 蘇格拉底 {socratic ? "ON" : "OFF"}
+        </button>
         <span className="text-xs text-slate-400 ml-auto">NYCU 電物系 · 楊本立老師</span>
       </header>
 
@@ -199,6 +234,11 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
               <p className="text-2xl mb-2">👋</p>
               <p className="text-lg text-slate-600">嗨！我是普通物理的 AI 助教</p>
               <p className="text-sm text-slate-400">有什麼問題嗎？打字或上傳公式照片皆可</p>
+              {socratic && (
+                <p className="mt-3 inline-block text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
+                  🦉 蘇格拉底模式啟用中 — 我會先反問引導你思考，請放心試錯
+                </p>
+              )}
             </div>
             <div className="flex flex-wrap justify-center gap-2">
               {SUGGESTED_QUESTIONS.map((q) => (

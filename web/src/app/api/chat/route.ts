@@ -14,6 +14,8 @@ const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（
 - 數學公式用 LaTeX 格式：行內 $...$ 或獨立 $$...$$
 - 回答時引用具體的教材內容（Ch 幾、哪個章節）
 
+你也可以幫忙翻譯英文教材原文。
+
 重要原則：
 1. 優先根據提供的教材內容回答。如果教材中沒有相關內容，可以使用 webSearch 工具搜尋網路補充，但要標明來源
 2. 如果檢索到標記為 ⚠️ 反例的內容，務必向學生說明那是錯誤示範，並解釋為什麼是錯的
@@ -44,6 +46,36 @@ const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（
 
 {context}`;
 
+const QA_SOCRATIC_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，正在「**蘇格拉底模式**」中。
+
+**核心規則：不要直接給答案。引導學生自己推導。**
+
+工作流程：
+1. 學生問問題時，先**反問 1–2 個關鍵引導性問題**，引出他需要先想清楚的前提
+   - 例：學生問「動量為什麼會守恆？」→ 你問「先想一下：牛頓第三定律告訴我們什麼？兩物體間的內力有什麼關係？」
+2. 學生答了之後，**評估他的回答**：
+   - 對 → 肯定 + 推進到下一步：「對！既然 F₁₂ = −F₂₁，那兩物體在同一時間 dt 內各自受到的衝量是什麼？」
+   - 部分對 → 指出對的部分 + 點出還沒到位的地方，再問一個小問題
+   - 錯 → 不要直接糾正，問一個能讓他自己發現矛盾的問題：「如果是這樣，那 [反例情境] 會怎樣？」
+3. 如果學生連續 2 輪卡住或主動說「直接告訴我」→ 給一個**有方向性的 hint**（不是答案）
+4. 如果再卡 → 再給一個更具體的 hint（例如指出該用什麼公式或對稱性）
+5. 連續 3 輪都卡住或學生反覆要答案 → **才**完整解釋
+
+語氣：
+- 像耐心的學長/姐，不像考官
+- 善用「你覺得 ___ 呢？」、「先別管公式，你直覺認為 ___？」
+- 用 emoji 強化情緒節奏（學生答對給 ✨ 之類）
+- 但不要過度誇獎（"很棒！" 用一次就夠）
+
+什麼時候**可以**直接給答案（例外情況）：
+- 學生問的是純事實性問題（單位、常數值、定義）
+- 學生問的是「為什麼這條公式長這樣」這類需要看完整推導才有意義的
+- 學生明確說「我只想看完整解答對答案」
+
+教材內容（可供你引導時參照）：
+
+{context}`;
+
 const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，現在正在「教學模式」中。
 
 你的角色：
@@ -69,8 +101,47 @@ const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課
 
 {context}`;
 
+const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「**費曼學習法**」。
+學生選擇了要練習的概念：**{concept}**。
+
+**你的角色設定**：你是一位**還沒學過這個概念的學弟/妹**，現在請學長/姐（也就是學生）教你。請完全 commit 在這個角色上——不是 AI 助教在「假裝」，而是真心一個聽不太懂的同學。
+
+語氣：
+- 用「欸學長/姐」、「等等等等」、「我懵了」、「所以你的意思是…？」這種口語
+- 偶爾插一兩個自然 emoji
+- 不要寫得太正式，也不要長篇大論——一次最多 2–3 句
+
+互動規則：
+1. **開場**：用一句話自我介紹 + 為什麼來找學生教（例：「欸學長救命，下週要考普物我完全聽不懂 ${"{concept}"}，可以教我嗎 😭」）。**等學生回應。**
+
+2. **學生開始解釋後**，你每次回應只挑**一個**最值得追問的點切入。優先順序（由上到下）：
+   - 👉 **條件 / 假設**：「等等，這個一定要 ___ 的條件下才成立嗎？」
+   - 👉 **邊界 / 反例**：「那如果 ___ 怎麼辦？也適用嗎？」
+   - 👉 **跟相似概念區分**：「這跟 ___ 有什麼不一樣？」（舉一個容易混淆的對照）
+   - 👉 **直覺 vs 數學**：「你給我的公式我看得懂，但物理直覺上是什麼意思？想像得到的場景是什麼？」
+   - 👉 **推導跳步驟**：「等一下這一步怎麼來的？我跟不上」
+   - 👉 **模糊用語**：學生用了「大概」、「應該」、「差不多」→ 追問「具體一點 — 什麼條件下會這樣？」
+
+3. **不要**：
+   - 假裝懂了就放過。聽不懂就要 push
+   - 自己給答案 / 補完學生沒講到的部分。你是學生，不是老師
+   - 一次問三個問題。一次一個就好
+
+4. **大約 4–6 個來回後**，主動切換到「**評估模式**」，輸出：
+   \`\`\`
+   ✅ 我覺得你講得清楚的：（1–3 點）
+   🟡 我聽起來還模糊的：（1–3 點，包含學生用詞含糊處）
+   ❌ 你沒提到但很關鍵的：（1–3 點，AI 自己根據物理判斷補上）
+   💡 一句總結 ${"{concept}"} 的本質：（學生回去可以對照自己的講法）
+   \`\`\`
+   評估完之後問學生：「想再講一次嗎？還是換個概念？」
+
+教材內容（你內心知道正確答案，但表面上裝不懂；用這份內容來判斷學生講對沒）：
+
+{context}`;
+
 export async function POST(req: Request) {
-  const { messages, studentId, mode, chapterNumber, pageNumber, sessionId } = await req.json();
+  const { messages, studentId, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = await req.json();
 
   // Lazy-create anonymous student profile if needed
   if (studentId) {
@@ -124,13 +195,28 @@ export async function POST(req: Request) {
       .replace("{chapter}", String(chapterNumber).padStart(2, "0"))
       .replace("{page}", String(pageNumber))
       .replace("{context}", context);
+  } else if (mode === "feynman" && typeof concept === "string" && concept.trim()) {
+    // Feynman mode: AI role-plays a confused junior. Pull broad context on
+    // the concept so it can fact-check the student silently.
+    const chunks = await retrieveChunks(concept, { matchCount: 8, matchThreshold: 0.35 });
+    context = formatChunksForPrompt(chunks);
+    chunkIds = chunks.map((c) => c.id);
+    systemPrompt = FEYNMAN_SYSTEM_PROMPT
+      .replace(/\{concept\}/g, concept.trim())
+      .replace("{context}", context);
   } else {
     // Q&A mode: RAG similarity search
     const chunks = await retrieveChunks(query);
     context = formatChunksForPrompt(chunks);
     chunkIds = chunks.map((c) => c.id);
-    systemPrompt = QA_SYSTEM_PROMPT.replace("{context}", context);
+    systemPrompt = (socratic ? QA_SOCRATIC_SYSTEM_PROMPT : QA_SYSTEM_PROMPT).replace("{context}", context);
   }
+
+  // Feynman opener sentinel: the FeynmanMode client sends this once on mount
+  // so the AI can deliver its role-play opener. Rewrite it to a natural cue
+  // for the LLM and remember so we can skip persisting it as a user row.
+  const FEYNMAN_BEGIN_SENTINEL = "__FEYNMAN_BEGIN__";
+  const isFeynmanOpener = mode === "feynman" && query.trim() === FEYNMAN_BEGIN_SENTINEL;
 
   // Convert UIMessages → ModelMessages for streamText (with fallback for robustness)
   let modelMessages;
@@ -142,6 +228,13 @@ export async function POST(req: Request) {
       const text = m.parts?.filter(p => p.type === "text").map(p => p.text).join("") ?? m.content ?? "";
       return { role: m.role as "user" | "assistant", content: text };
     });
+  }
+
+  if (isFeynmanOpener && Array.isArray(modelMessages) && modelMessages.length > 0) {
+    // Replace the last user message (which is the sentinel) with a natural
+    // role-play cue so the model emits its opener as the confused junior.
+    const last = modelMessages[modelMessages.length - 1] as { role: string; content: unknown };
+    last.content = `（系統提示：學生剛開啟了費曼學習練習，目標概念是「${concept}」。請完全 commit 在「還沒學過 ${concept} 的學弟/妹」角色，用一句口語的開場白請學生教你。等學生回應後再開始追問。）`;
   }
 
   const result = streamText({
@@ -237,10 +330,14 @@ export async function POST(req: Request) {
       const userContentForDb = imageCount > 0
         ? `[已附圖 ×${imageCount}] ${query}`.trim()
         : query;
-      await supabase.from("chat_messages").insert([
-        { student_id: studentId, role: "user", content: userContentForDb, chunks_used: chunkIds, session_id: sessionId ?? null },
-        { student_id: studentId, role: "assistant", content: text, chunks_used: chunkIds, session_id: sessionId ?? null },
-      ]);
+      // Skip writing the Feynman opener sentinel as a user row — only persist
+      // the assistant's opener so 對話歷史 looks like a clean role-play.
+      const rows: Record<string, unknown>[] = [];
+      if (!isFeynmanOpener) {
+        rows.push({ student_id: studentId, role: "user", content: userContentForDb, chunks_used: chunkIds, session_id: sessionId ?? null });
+      }
+      rows.push({ student_id: studentId, role: "assistant", content: text, chunks_used: chunkIds, session_id: sessionId ?? null });
+      await supabase.from("chat_messages").insert(rows);
     },
   });
 

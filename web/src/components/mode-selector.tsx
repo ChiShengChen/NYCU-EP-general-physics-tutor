@@ -1,7 +1,7 @@
 "use client";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -79,13 +79,27 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </button>
         </div>
 
-        {/* Middle row: 3 advanced features */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl w-full mb-5">
+        {/* Middle row: 4 advanced features */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">
+          <button
+            onClick={() => onSelectMode("feynman")}
+            className="group flex flex-col items-center text-center p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+          >
+            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎓</span>
+            <h3 className="text-lg font-semibold text-slate-800 mb-1.5">教 AI（費曼法）</h3>
+            <p className="text-sm text-slate-500 mb-5 leading-relaxed">
+              你來教 AI 學弟妹，他會挑模糊點追問
+            </p>
+            <span className="px-5 py-2 rounded-xl bg-amber-600 text-white text-sm font-medium group-hover:bg-amber-700 transition-colors">
+              開始教學
+            </span>
+          </button>
+
           <button
             onClick={() => onSelectMode("exam")}
             className="group flex flex-col items-center text-center p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎓</span>
+            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📋</span>
             <h3 className="text-lg font-semibold text-slate-800 mb-1.5">考試模擬</h3>
             <p className="text-sm text-slate-500 mb-5 leading-relaxed">
               限時模擬期中期末考，交卷後統一批改
