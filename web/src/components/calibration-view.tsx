@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line, Legend } from "recharts";
+import { useChartColors } from "./theme-provider";
 
 interface Bucket {
   confidence: number;
@@ -63,6 +64,8 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
       .catch(() => setLoading(false));
   }, [studentId]);
 
+  const colors = useChartColors();
+
   // Build comparison series for the line chart: ideal (perfect calibration)
   // vs. actual accuracy. Perfect calibration ≈ (conf 1: 20%, 2: 40%, 3: 60%, 4: 80%, 5: 100%).
   const ideal = [
@@ -81,10 +84,10 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,8 +95,8 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
           </svg>
         </button>
         <span className="text-xl">🎯</span>
-        <h1 className="text-lg font-semibold text-slate-800">信心校準</h1>
-        <span className="text-xs text-slate-400 ml-auto">
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">信心校準</h1>
+        <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">
           {data ? `已記錄 ${data.totalWithConfidence}/${data.totalAnswered} 題` : ""}
         </span>
       </header>
@@ -101,29 +104,29 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
       <div className="flex-1 overflow-y-auto px-4 py-6">
         <div className="max-w-3xl mx-auto space-y-5">
           {loading ? (
-            <div className="text-center text-slate-400 py-12">載入中...</div>
+            <div className="text-center text-slate-400 dark:text-slate-500 py-12">載入中...</div>
           ) : !data || data.totalWithConfidence === 0 ? (
-            <div className="text-center text-slate-400 py-12">
+            <div className="text-center text-slate-400 dark:text-slate-500 py-12">
               <p className="text-3xl mb-2">📊</p>
               <p>還沒有信心評分資料</p>
               <p className="text-xs mt-1">在「自動測驗」或「考試模擬」答題前，先選一下「我有多確定」，這裡就會出現校準分析。</p>
             </div>
           ) : (
             <>
-              <p className="text-xs text-slate-500 leading-relaxed bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
                 💡 <strong>信心校準</strong>是後設認知（metacognition）訓練的核心：你「以為懂的」和「真的懂的」差距，就是你還需要補強的地方。
                 <strong>理想狀況</strong>下，自信 5 的題正確率應該接近 100%、自信 1 的題接近隨機。
                 若你的自信 4–5 卻常答錯，可能藏著危險的迷思。
               </p>
 
               {/* Bucket bar chart */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-slate-700 mb-3">各信心等級的實際正確率</h2>
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">各信心等級的實際正確率</h2>
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={data.buckets}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis dataKey="confidence" tick={{ fontSize: 11, fill: "#64748b" }} />
-                    <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "#94a3b8" }} unit="%" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
+                    <XAxis dataKey="confidence" tick={{ fontSize: 11, fill: colors.axisTick }} />
+                    <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: colors.axisLine }} unit="%" />
                     <Tooltip
                       formatter={(value, name) =>
                         name === "accuracy"
@@ -139,7 +142,7 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
-                <div className="flex justify-around text-[10px] text-slate-400 mt-1">
+                <div className="flex justify-around text-[10px] text-slate-400 dark:text-slate-500 mt-1">
                   {data.buckets.map((b) => (
                     <span key={b.confidence}>{b.total > 0 ? `n=${b.total}` : "—"}</span>
                   ))}
@@ -147,41 +150,41 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
               </div>
 
               {/* Ideal vs actual */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-slate-700 mb-3">你的校準線 vs 理想線</h2>
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">你的校準線 vs 理想線</h2>
                 <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={ideal}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis dataKey="confidence" tick={{ fontSize: 11, fill: "#64748b" }} />
-                    <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "#94a3b8" }} unit="%" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
+                    <XAxis dataKey="confidence" tick={{ fontSize: 11, fill: colors.axisTick }} />
+                    <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: colors.axisLine }} unit="%" />
                     <Tooltip formatter={(v) => [`${v}%`, ""] as [string, string]} />
                     <Legend wrapperStyle={{ fontSize: "11px" }} />
                     <Line dataKey="ideal"  name="理想"  stroke="#94a3b8" strokeDasharray="4 4" dot={false} />
                     <Line dataKey="actual" name="你的"  stroke="#6366f1" strokeWidth={2.5} />
                   </LineChart>
                 </ResponsiveContainer>
-                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                   你的線若在理想線<strong>上方</strong> = 自信「過低」（其實會但沒信心）；
                   在<strong>下方</strong> = 自信「過高」（以為懂但其實沒）。
                 </p>
               </div>
 
               {/* Dangerous misconceptions */}
-              <div className="bg-white border border-rose-200 rounded-2xl p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-rose-700 mb-2">⚠️ 危險迷思（高自信卻答錯）</h2>
+              <div className="bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-800 rounded-2xl p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">⚠️ 危險迷思（高自信卻答錯）</h2>
                 {data.dangerous.length === 0 ? (
-                  <p className="text-xs text-slate-400 py-3 text-center">目前沒有 — 很棒！</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 py-3 text-center">目前沒有 — 很棒！</p>
                 ) : (
                   <ul className="space-y-2">
                     {data.dangerous.map((f) => (
                       <li key={`d-${f.attemptId}-${f.questionId}`} className="text-xs">
-                        <div className="flex items-center gap-2 text-slate-500 mb-0.5">
-                          <span className="px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium">自信 {f.confidence}</span>
+                        <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-0.5">
+                          <span className="px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-medium">自信 {f.confidence}</span>
                           {f.sourceChapter && <span>Ch{String(f.sourceChapter).padStart(2, "0")}</span>}
                           {f.concept && <span className="truncate">{f.concept}</span>}
                           <span className="ml-auto">{formatDate(f.attemptCreatedAt)}</span>
                         </div>
-                        <p className="text-slate-700 line-clamp-2">{f.questionPreview}{f.questionPreview.length >= 80 ? "..." : ""}</p>
+                        <p className="text-slate-700 dark:text-slate-200 line-clamp-2">{f.questionPreview}{f.questionPreview.length >= 80 ? "..." : ""}</p>
                       </li>
                     ))}
                   </ul>
@@ -189,21 +192,21 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
               </div>
 
               {/* Underconfident wins */}
-              <div className="bg-white border border-emerald-200 rounded-2xl p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-emerald-700 mb-2">💪 其實你會（低自信卻答對）</h2>
+              <div className="bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2">💪 其實你會（低自信卻答對）</h2>
                 {data.shaky.length === 0 ? (
-                  <p className="text-xs text-slate-400 py-3 text-center">沒記錄 — 答題時不妨大膽一點！</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 py-3 text-center">沒記錄 — 答題時不妨大膽一點！</p>
                 ) : (
                   <ul className="space-y-2">
                     {data.shaky.map((f) => (
                       <li key={`s-${f.attemptId}-${f.questionId}`} className="text-xs">
-                        <div className="flex items-center gap-2 text-slate-500 mb-0.5">
-                          <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-medium">自信 {f.confidence}</span>
+                        <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-0.5">
+                          <span className="px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-medium">自信 {f.confidence}</span>
                           {f.sourceChapter && <span>Ch{String(f.sourceChapter).padStart(2, "0")}</span>}
                           {f.concept && <span className="truncate">{f.concept}</span>}
                           <span className="ml-auto">{formatDate(f.attemptCreatedAt)}</span>
                         </div>
-                        <p className="text-slate-700 line-clamp-2">{f.questionPreview}{f.questionPreview.length >= 80 ? "..." : ""}</p>
+                        <p className="text-slate-700 dark:text-slate-200 line-clamp-2">{f.questionPreview}{f.questionPreview.length >= 80 ? "..." : ""}</p>
                       </li>
                     ))}
                   </ul>

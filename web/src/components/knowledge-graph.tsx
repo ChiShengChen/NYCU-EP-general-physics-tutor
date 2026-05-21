@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTheme } from "./theme-provider";
 
 /* ─── Concept Graph Data ─── */
 /* Initial draft auto-generated from Ch01–Ch31 chapter titles.
@@ -114,10 +115,10 @@ const EDGES: ConceptEdge[] = [
 ];
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
-  mechanics:   { bg: "bg-blue-50",    border: "border-blue-300",    text: "text-blue-700",    label: "力學",            svgFill: "#eff6ff", svgStroke: "#93c5fd", svgFillSelected: "#dbeafe", svgStrokeSelected: "#3b82f6" },
-  waves_fluid: { bg: "bg-emerald-50", border: "border-emerald-300", text: "text-emerald-700", label: "振盪、流體與波動", svgFill: "#ecfdf5", svgStroke: "#6ee7b7", svgFillSelected: "#d1fae5", svgStrokeSelected: "#10b981" },
-  thermo:      { bg: "bg-amber-50",   border: "border-amber-300",   text: "text-amber-700",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
-  em:          { bg: "bg-purple-50",  border: "border-purple-300",  text: "text-purple-700",  label: "電磁學",          svgFill: "#faf5ff", svgStroke: "#d8b4fe", svgFillSelected: "#f3e8ff", svgStrokeSelected: "#a855f7" },
+  mechanics:   { bg: "bg-blue-50 dark:bg-blue-950/30",    border: "border-blue-300 dark:border-blue-700",    text: "text-blue-700 dark:text-blue-300",    label: "力學",            svgFill: "#eff6ff", svgStroke: "#93c5fd", svgFillSelected: "#dbeafe", svgStrokeSelected: "#3b82f6" },
+  waves_fluid: { bg: "bg-emerald-50 dark:bg-emerald-950/30", border: "border-emerald-300 dark:border-emerald-700", text: "text-emerald-700 dark:text-emerald-300", label: "振盪、流體與波動", svgFill: "#ecfdf5", svgStroke: "#6ee7b7", svgFillSelected: "#d1fae5", svgStrokeSelected: "#10b981" },
+  thermo:      { bg: "bg-amber-50 dark:bg-amber-950/30",   border: "border-amber-300 dark:border-amber-700",   text: "text-amber-700 dark:text-amber-300",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
+  em:          { bg: "bg-purple-50 dark:bg-purple-950/30",  border: "border-purple-300 dark:border-purple-700",  text: "text-purple-700 dark:text-purple-300",  label: "電磁學",          svgFill: "#faf5ff", svgStroke: "#d8b4fe", svgFillSelected: "#f3e8ff", svgStrokeSelected: "#a855f7" },
 };
 
 const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em"];
@@ -132,6 +133,11 @@ interface KnowledgeGraphProps {
 export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const { effective: theme } = useTheme();
+  // Node label / sub-label colors flip in dark mode so they stay readable
+  // on slate-900 backgrounds inside the card.
+  const nodeTextColor = theme === "dark" ? "#e2e8f0" : "#334155";
+  const nodeSubColor = theme === "dark" ? "#94a3b8" : "#94a3b8";
 
   const nodeMap = useMemo(() => {
     const m = new Map<string, ConceptNode>();
@@ -157,10 +163,10 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,8 +174,8 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
           </svg>
         </button>
         <span className="text-xl">🧠</span>
-        <h1 className="text-lg font-semibold text-slate-800">概念知識圖譜</h1>
-        <span className="text-xs text-slate-400 ml-auto">NYCU 電物系 · 普通物理</span>
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">概念知識圖譜</h1>
+        <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系 · 普通物理</span>
       </header>
 
       <div className="flex-1 overflow-auto px-4 py-6">
@@ -179,17 +185,17 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
             {Object.entries(CATEGORY_COLORS).map(([key, val]) => (
               <div key={key} className="flex items-center gap-1.5">
                 <div className={`w-3 h-3 rounded-full ${val.bg} border ${val.border}`} />
-                <span className="text-xs text-slate-600">{val.label}</span>
+                <span className="text-xs text-slate-600 dark:text-slate-300">{val.label}</span>
               </div>
             ))}
             <div className="flex items-center gap-1.5">
               <svg width="20" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="#94a3b8" strokeWidth="2" markerEnd="url(#arrowhead-legend)" /><defs><marker id="arrowhead-legend" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#94a3b8" /></marker></defs></svg>
-              <span className="text-xs text-slate-600">先修關係</span>
+              <span className="text-xs text-slate-600 dark:text-slate-300">先修關係</span>
             </div>
           </div>
 
           {/* ── Desktop: SVG Graph ── */}
-          <div className="hidden md:block bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+          <div className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
             <svg
               viewBox={`0 0 ${svgWidth} ${svgHeight}`}
               className="w-full"
@@ -268,7 +274,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                       textAnchor="middle"
                       fontSize={11}
                       fontWeight={600}
-                      fill="#334155"
+                      fill={nodeTextColor}
                     >
                       {node.label}
                     </text>
@@ -277,7 +283,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                       y={node.y + 13}
                       textAnchor="middle"
                       fontSize={9}
-                      fill="#94a3b8"
+                      fill={nodeSubColor}
                     >
                       Ch{String(node.chapter).padStart(2, "0")}
                     </text>
@@ -306,24 +312,24 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                           onClick={() => setSelectedNode(isSelected ? null : node.id)}
                           className={`w-full text-left rounded-xl px-4 py-3 transition-all duration-200 ${
                             isSelected
-                              ? "bg-white ring-2 ring-indigo-400 shadow-sm"
-                              : "bg-white/70 hover:bg-white"
+                              ? "bg-white dark:bg-slate-900 ring-2 ring-indigo-400 shadow-sm"
+                              : "bg-white/70 hover:bg-white dark:bg-slate-900"
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="font-medium text-slate-800 text-sm">{node.label}</span>
-                            <span className="text-xs text-slate-400">Ch{String(node.chapter).padStart(2, "0")}</span>
+                            <span className="font-medium text-slate-800 dark:text-slate-100 text-sm">{node.label}</span>
+                            <span className="text-xs text-slate-400 dark:text-slate-500">Ch{String(node.chapter).padStart(2, "0")}</span>
                           </div>
                           {isSelected && (
                             <div className="mt-2 space-y-1.5 text-xs">
                               {prereqs.length > 0 && (
                                 <div className="flex flex-wrap items-center gap-1">
-                                  <span className="text-slate-500">先修：</span>
+                                  <span className="text-slate-500 dark:text-slate-400">先修：</span>
                                   {prereqs.map((n) => (
                                     <span
                                       key={n.id}
                                       onClick={(e) => { e.stopPropagation(); setSelectedNode(n.id); }}
-                                      className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 cursor-pointer"
+                                      className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-100 dark:bg-indigo-900/40 hover:text-indigo-700 dark:text-indigo-300 cursor-pointer"
                                     >
                                       {n.label}
                                     </span>
@@ -332,12 +338,12 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                               )}
                               {nexts.length > 0 && (
                                 <div className="flex flex-wrap items-center gap-1">
-                                  <span className="text-slate-500">後續：</span>
+                                  <span className="text-slate-500 dark:text-slate-400">後續：</span>
                                   {nexts.map((n) => (
                                     <span
                                       key={n.id}
                                       onClick={(e) => { e.stopPropagation(); setSelectedNode(n.id); }}
-                                      className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 cursor-pointer"
+                                      className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-100 dark:bg-indigo-900/40 hover:text-indigo-700 dark:text-indigo-300 cursor-pointer"
                                     >
                                       {n.label}
                                     </span>
@@ -345,7 +351,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                                 </div>
                               )}
                               {prereqs.length === 0 && nexts.length === 0 && (
-                                <span className="text-slate-400">獨立概念</span>
+                                <span className="text-slate-400 dark:text-slate-500">獨立概念</span>
                               )}
                               {onNavigate && (
                                 <button
@@ -373,14 +379,14 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                 <h3 className={`text-base font-semibold ${CATEGORY_COLORS[selectedNodeData.category].text}`}>
                   {selectedNodeData.label}
                 </h3>
-                <span className="text-xs text-slate-500">Ch{String(selectedNodeData.chapter).padStart(2, "0")}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Ch{String(selectedNodeData.chapter).padStart(2, "0")}</span>
               </div>
 
-              <div className="space-y-2 text-sm text-slate-600">
+              <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
                 <div>
                   <span className="font-medium">先修概念：</span>
                   {EDGES.filter((e) => e.to === selectedNodeData.id).length === 0 ? (
-                    <span className="text-slate-400">無（起始概念）</span>
+                    <span className="text-slate-400 dark:text-slate-500">無（起始概念）</span>
                   ) : (
                     EDGES.filter((e) => e.to === selectedNodeData.id).map((e) => {
                       const n = nodeMap.get(e.from)!;
@@ -388,7 +394,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                         <button
                           key={e.from}
                           onClick={() => setSelectedNode(e.from)}
-                          className="inline-block ml-1 px-2 py-0.5 rounded-full bg-white border border-slate-200 text-xs hover:border-indigo-300 transition-colors"
+                          className="inline-block ml-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs hover:border-indigo-300 dark:border-indigo-700 transition-colors"
                         >
                           {n.label}
                         </button>
@@ -400,7 +406,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                 <div>
                   <span className="font-medium">後續概念：</span>
                   {EDGES.filter((e) => e.from === selectedNodeData.id).length === 0 ? (
-                    <span className="text-slate-400">無（終端概念）</span>
+                    <span className="text-slate-400 dark:text-slate-500">無（終端概念）</span>
                   ) : (
                     EDGES.filter((e) => e.from === selectedNodeData.id).map((e) => {
                       const n = nodeMap.get(e.to)!;
@@ -408,7 +414,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
                         <button
                           key={e.to}
                           onClick={() => setSelectedNode(e.to)}
-                          className="inline-block ml-1 px-2 py-0.5 rounded-full bg-white border border-slate-200 text-xs hover:border-indigo-300 transition-colors"
+                          className="inline-block ml-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs hover:border-indigo-300 dark:border-indigo-700 transition-colors"
                         >
                           {n.label}
                         </button>
@@ -431,7 +437,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
 
           {/* Instructions */}
           {!selectedNode && (
-            <div className="text-center text-sm text-slate-400 pb-4">
+            <div className="text-center text-sm text-slate-400 dark:text-slate-500 pb-4">
               點擊任一概念節點查看詳情與先後關係
             </div>
           )}

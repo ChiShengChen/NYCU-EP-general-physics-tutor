@@ -93,10 +93,10 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
   // Session list view
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,22 +104,22 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
           </svg>
         </button>
         <span className="text-xl">🕒</span>
-        <h1 className="text-lg font-semibold text-slate-800">對話歷史</h1>
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">對話歷史</h1>
         {totalMessages > 0 && (
-          <span className="text-xs text-slate-400 ml-1">
+          <span className="text-xs text-slate-400 dark:text-slate-500 ml-1">
             共 {totalMessages} 則訊息，{sessions.length} 個對話
           </span>
         )}
-        <span className="text-xs text-slate-400 ml-auto">NYCU 電物系</span>
+        <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系</span>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
         {loading ? (
-          <div className="flex items-center justify-center h-64 text-slate-400">載入中...</div>
+          <div className="flex items-center justify-center h-64 text-slate-400 dark:text-slate-500">載入中...</div>
         ) : sessions.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
             <p className="text-4xl">📭</p>
-            <p className="text-slate-500">還沒有對話紀錄</p>
+            <p className="text-slate-500 dark:text-slate-400">還沒有對話紀錄</p>
             <button
               onClick={onBack}
               className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors"
@@ -133,18 +133,18 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
               <button
                 key={session.id}
                 onClick={() => setSelectedSession(session)}
-                className="w-full text-left bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-200"
+                className="w-full text-left bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md hover:border-indigo-200 dark:border-indigo-800 transition-all duration-200"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-slate-400 dark:text-slate-500">
                     {formatDate(session.startTime)}
                   </span>
-                  <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">
                     {session.messages.length} 則訊息
                   </span>
                 </div>
-                <p className="text-sm text-slate-700 line-clamp-2">{session.preview}</p>
-                <div className="flex items-center gap-3 mt-2 text-xs text-slate-400">
+                <p className="text-sm text-slate-700 dark:text-slate-200 line-clamp-2">{session.preview}</p>
+                <div className="flex items-center gap-3 mt-2 text-xs text-slate-400 dark:text-slate-500">
                   <span>
                     {formatTime(session.startTime)} - {formatTime(session.endTime)}
                   </span>
@@ -180,10 +180,10 @@ function SessionDetail({
   };
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回列表"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,10 +191,10 @@ function SessionDetail({
           </svg>
         </button>
         <span className="text-xl">💬</span>
-        <h1 className="text-lg font-semibold text-slate-800">
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
           {formatDate(session.startTime)}
         </h1>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-400 dark:text-slate-500">
           {session.messages.length} 則訊息
         </span>
         {onResume && (
@@ -210,7 +210,7 @@ function SessionDetail({
         )}
         <button
           onClick={onBackToHome}
-          className={`text-xs text-slate-500 hover:text-indigo-600 transition-colors ${onResume ? "" : "ml-auto"}`}
+          className={`text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:text-indigo-300 transition-colors ${onResume ? "" : "ml-auto"}`}
         >
           返回首頁
         </button>
@@ -226,7 +226,7 @@ function SessionDetail({
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                 msg.role === "user"
                   ? "bg-indigo-600 text-white rounded-br-sm"
-                  : "bg-white border border-slate-200 shadow-sm rounded-bl-sm"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm rounded-bl-sm"
               }`}
             >
               {msg.role === "user" ? (
@@ -236,7 +236,7 @@ function SessionDetail({
               )}
               <p
                 className={`text-[10px] mt-1 ${
-                  msg.role === "user" ? "text-indigo-200" : "text-slate-300"
+                  msg.role === "user" ? "text-indigo-200" : "text-slate-300 dark:text-slate-600"
                 }`}
               >
                 {formatTime(msg.created_at)}
@@ -249,14 +249,14 @@ function SessionDetail({
       {onResume && (
         <form
           onSubmit={handleFollowUpSubmit}
-          className="shrink-0 border-t border-slate-200 bg-white px-4 py-3"
+          className="shrink-0 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3"
         >
           <div className="max-w-3xl mx-auto flex gap-2">
             <input
               value={followUp}
               onChange={(e) => setFollowUp(e.target.value)}
               placeholder="繼續這段對話...（按下送出後會跳到自由問答介面）"
-              className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+              className="flex-1 rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
             />
             <button
               type="submit"

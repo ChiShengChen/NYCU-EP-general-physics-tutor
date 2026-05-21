@@ -61,20 +61,20 @@ export function ReportQuestionButton({ attemptId, questionId, question }: Report
         type="button"
         onClick={() => setOpen(!open)}
         title="這題有問題？告訴我們"
-        className="text-xs text-slate-400 hover:text-rose-600 transition-colors"
+        className="text-xs text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:text-rose-300 transition-colors"
       >
         🚩
       </button>
 
       {open && (
-        <div className="absolute right-0 top-6 z-20 w-72 rounded-2xl bg-white border border-slate-200 shadow-lg p-3 space-y-2">
+        <div className="absolute right-0 top-6 z-20 w-72 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg p-3 space-y-2">
           {submitted ? (
-            <p className="text-xs text-emerald-700 py-3 text-center">✓ 已回報，感謝！</p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-300 py-3 text-center">✓ 已回報，感謝！</p>
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-700">這題有什麼問題？</span>
-                <button onClick={() => setOpen(false)} className="ml-auto text-slate-400 hover:text-slate-600 text-xs">✕</button>
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">這題有什麼問題？</span>
+                <button onClick={() => setOpen(false)} className="ml-auto text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:text-slate-300 text-xs">✕</button>
               </div>
               <div className="grid grid-cols-2 gap-1.5">
                 {REASONS.map((r) => (
@@ -83,8 +83,8 @@ export function ReportQuestionButton({ attemptId, questionId, question }: Report
                     onClick={() => setReason(r.value)}
                     className={`text-[11px] px-2 py-1.5 rounded-lg border text-left transition-colors ${
                       reason === r.value
-                        ? "bg-rose-50 border-rose-300 text-rose-700"
-                        : "bg-white border-slate-200 text-slate-700 hover:border-rose-300"
+                        ? "bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300"
+                        : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-rose-300 dark:border-rose-700"
                     }`}
                   >
                     {r.label}
@@ -95,7 +95,7 @@ export function ReportQuestionButton({ attemptId, questionId, question }: Report
                 value={detail}
                 onChange={(e) => setDetail(e.target.value)}
                 placeholder="補充說明（選填）"
-                className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs h-16 resize-none focus:outline-none focus:ring-2 focus:ring-rose-300"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-2 py-1.5 text-xs h-16 resize-none focus:outline-none focus:ring-2 focus:ring-rose-300"
               />
               <button
                 onClick={submit}

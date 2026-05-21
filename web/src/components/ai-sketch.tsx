@@ -38,18 +38,21 @@ interface AiSketchProps {
 export function AiSketch({ title, svg, notes }: AiSketchProps) {
   const safe = sanitizeSvg(svg);
   return (
-    <div className="my-2 rounded-xl border border-amber-200 bg-amber-50/40 px-3 py-2 text-xs">
-      <div className="flex items-center gap-2 mb-1.5 text-amber-800">
+    <div className="my-2 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50/40 px-3 py-2 text-xs">
+      <div className="flex items-center gap-2 mb-1.5 text-amber-800 dark:text-amber-200">
         <span>🎨</span>
         <span className="font-medium">{title}</span>
-        <span className="ml-auto text-[10px] text-amber-700">請對照原圖確認</span>
+        <span className="ml-auto text-[10px] text-amber-700 dark:text-amber-300">請對照原圖確認</span>
       </div>
+      {/* Force a white background for the AI sketch regardless of theme.
+       *  Gemini-generated SVGs assume dark strokes on a light page; on a
+       *  slate-900 surface those strokes would be invisible. */}
       <div
-        className="bg-white rounded-lg border border-amber-100 px-2 py-2 [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:mx-auto"
+        className="bg-white text-slate-800 rounded-lg border border-amber-100 dark:border-amber-900/40 px-2 py-2 [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:mx-auto"
         dangerouslySetInnerHTML={{ __html: safe }}
       />
       {notes && (
-        <p className="mt-1.5 text-[11px] text-amber-800 leading-relaxed">{notes}</p>
+        <p className="mt-1.5 text-[11px] text-amber-800 dark:text-amber-200 leading-relaxed">{notes}</p>
       )}
     </div>
   );

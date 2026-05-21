@@ -34,7 +34,7 @@ export function ConfidenceSelector({ value, onChange, variant = "before", label 
   const readOnly = variant === "after";
   return (
     <div className="flex items-center gap-2 text-xs">
-      <span className="text-slate-500 shrink-0">
+      <span className="text-slate-500 dark:text-slate-400 shrink-0">
         {label ?? (readOnly ? "你的信心" : "答前先想：我有多確定？")}
       </span>
       <div className="flex gap-1">
@@ -51,7 +51,7 @@ export function ConfidenceSelector({ value, onChange, variant = "before", label 
               className={
                 selected
                   ? `${palette.active} w-7 h-7 rounded-md text-xs font-semibold transition-colors`
-                  : `bg-white text-slate-600 w-7 h-7 rounded-md border border-slate-300 text-xs font-medium hover:bg-slate-50 transition-colors ${readOnly ? "opacity-60 cursor-default" : ""}`
+                  : `bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 w-7 h-7 rounded-md border border-slate-300 dark:border-slate-600 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${readOnly ? "opacity-60 cursor-default" : ""}`
               }
             >
               {short}
@@ -60,7 +60,7 @@ export function ConfidenceSelector({ value, onChange, variant = "before", label 
         })}
       </div>
       {value !== null && (
-        <span className="text-slate-500 hidden sm:inline">
+        <span className="text-slate-500 dark:text-slate-400 hidden sm:inline">
           {LEVELS.find((l) => l.v === value)?.long}
         </span>
       )}

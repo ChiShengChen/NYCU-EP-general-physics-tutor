@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
+/* Tailwind v4: enable class-based dark variant. `dark:...` classes apply
+ * whenever an ancestor has the `.dark` class. The <ThemeProvider /> in
+ * src/app/layout.tsx adds/removes that class on <html> based on the
+ * user's pick stored in localStorage. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f8fafc;
   --foreground: #1e293b;
+}
+
+.dark {
+  --background: #0f172a;   /* slate-900 */
+  --foreground: #e2e8f0;   /* slate-200 */
+  color-scheme: dark;       /* native scrollbars / form controls */
 }
 
 @theme inline {
@@ -26,10 +38,7 @@ body {
 }
 
 /* Promote ALL math to its own line so long formulas don't wrap mid-symbol
- * and short ones get visual breathing room. Applies to chat answers,
- * concept cards, attempt reviews, wrong-question notebook, etc. Inline
- * KaTeX (rendered by remark-math + rehype-katex from $..$) is shown as a
- * block; horizontal overflow scrolls instead of wrapping. */
+ * and short ones get visual breathing room. */
 .katex {
   display: block;
   width: max-content;
@@ -39,9 +48,14 @@ body {
   margin: 0.4em 0;
 }
 
-/* The display-math wrapper already block-displays its inner .katex; keep
- * its centred / padded look intact. */
 .katex-display .katex {
-  display: inline-block;  /* inside the wrapper, don't double-block */
+  display: inline-block;
   margin: 0;
+}
+
+/* KaTeX in dark mode: its default colour is black, which is invisible on
+ * slate-900. Force it to inherit so it picks up our --foreground. */
+.dark .katex,
+.dark .katex * {
+  color: inherit;
 }

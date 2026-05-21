@@ -88,10 +88,10 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,13 +99,13 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
           </svg>
         </button>
         <span className="text-xl">🪞</span>
-        <h1 className="text-lg font-semibold text-slate-800">反思日誌</h1>
-        <span className="text-xs text-slate-400 ml-auto">後設認知訓練</span>
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">反思日誌</h1>
+        <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">後設認知訓練</span>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-5">
         <div className="max-w-3xl mx-auto space-y-5">
-          <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-900 leading-relaxed">
+          <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-4 text-sm text-amber-900 dark:text-amber-200 leading-relaxed">
             <p className="font-medium mb-1">為什麼寫？</p>
             <p className="text-xs">
               研究上叫 <strong>metacognition</strong> — 學生願意寫下自己學什麼、卡哪裡，會比只做題進步更快。
@@ -115,19 +115,19 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
 
           {/* Today's prompt + textarea */}
           <form onSubmit={submit} className="space-y-3">
-            <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-3">
               <div>
-                <div className="text-xs font-semibold text-indigo-700 mb-1">本日引導題</div>
-                <p className="text-sm text-slate-800">{promptOfTheDay}</p>
+                <div className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">本日引導題</div>
+                <p className="text-sm text-slate-800 dark:text-slate-100">{promptOfTheDay}</p>
               </div>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="（想到什麼就寫，不必潤稿。3–5 句即可。公式可用 $..$）"
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-36"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none h-36"
               />
               <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-400">{content.length} 字</span>
+                <span className="text-xs text-slate-400 dark:text-slate-500">{content.length} 字</span>
                 <button
                   type="submit"
                   disabled={!content.trim() || submitting}
@@ -139,12 +139,12 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
             </div>
           </form>
 
-          {error && <p className="text-sm text-rose-600">{error}</p>}
+          {error && <p className="text-sm text-rose-600 dark:text-rose-300">{error}</p>}
 
           {latestFeedback && (
-            <div className="bg-white border border-emerald-200 rounded-2xl p-4 space-y-2">
-              <div className="text-xs font-semibold text-emerald-700">🤖 AI 回饋</div>
-              <div className="text-sm text-slate-800 leading-relaxed">
+            <div className="bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 space-y-2">
+              <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">🤖 AI 回饋</div>
+              <div className="text-sm text-slate-800 dark:text-slate-100 leading-relaxed">
                 <MarkdownRenderer content={latestFeedback} />
               </div>
             </div>
@@ -152,33 +152,33 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
 
           {/* History */}
           <div className="space-y-2">
-            <h2 className="text-sm font-semibold text-slate-700">過去的反思 {list ? `(${list.length})` : ""}</h2>
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">過去的反思 {list ? `(${list.length})` : ""}</h2>
             {list === null ? (
-              <p className="text-xs text-slate-400">載入中...</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">載入中...</p>
             ) : list.length === 0 ? (
-              <p className="text-xs text-slate-400">還沒有紀錄 — 寫第一則開始吧。</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">還沒有紀錄 — 寫第一則開始吧。</p>
             ) : (
               <ul className="space-y-2">
                 {list.map((r) => (
-                  <li key={r.id} className="bg-white border border-slate-200 rounded-2xl">
+                  <li key={r.id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl">
                     <details className="group">
                       <summary className="cursor-pointer px-4 py-3 list-none flex items-center gap-2">
-                        <span className="text-xs text-slate-400 shrink-0">{formatDate(r.created_at)}</span>
-                        <span className="text-sm text-slate-800 line-clamp-1 flex-1">
+                        <span className="text-xs text-slate-400 dark:text-slate-500 shrink-0">{formatDate(r.created_at)}</span>
+                        <span className="text-sm text-slate-800 dark:text-slate-100 line-clamp-1 flex-1">
                           {r.content.slice(0, 100)}{r.content.length > 100 ? "..." : ""}
                         </span>
-                        <svg className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-slate-400 dark:text-slate-500 group-open:rotate-180 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </summary>
-                      <div className="px-4 pb-4 pt-1 space-y-3 border-t border-slate-100">
+                      <div className="px-4 pb-4 pt-1 space-y-3 border-t border-slate-100 dark:border-slate-700">
                         {r.prompt_used && (
-                          <div className="text-xs text-slate-500 italic">引導題：{r.prompt_used}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400 italic">引導題：{r.prompt_used}</div>
                         )}
-                        <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{r.content}</div>
+                        <div className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">{r.content}</div>
                         {r.ai_feedback && (
-                          <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-3 py-2 text-sm text-slate-800">
-                            <div className="text-[11px] font-semibold text-emerald-700 mb-1">🤖 AI 回饋</div>
+                          <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-3 py-2 text-sm text-slate-800 dark:text-slate-100">
+                            <div className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 mb-1">🤖 AI 回饋</div>
                             <MarkdownRenderer content={r.ai_feedback} />
                           </div>
                         )}

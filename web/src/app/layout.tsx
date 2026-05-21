@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "katex/dist/katex.min.css";
 import "./globals.css";
+import { THEME_INIT_SCRIPT } from "@/components/theme-provider";
 
 const SITE_URL = "https://nycu-ep-general-physics-tutor.vercel.app";
 const SITE_TITLE = "普通物理 AI 助教";
@@ -34,7 +35,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-Hant">
+    <html lang="zh-Hant" suppressHydrationWarning>
+      <head>
+        {/* Apply stored theme before React hydrates to avoid FOUC. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

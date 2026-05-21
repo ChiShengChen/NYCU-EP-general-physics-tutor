@@ -53,11 +53,11 @@ export function RegenerateQuestionButton<Q extends { id: number; type: string; c
         onClick={regen}
         disabled={loading}
         title="覺得這題不好？讓 AI 重出一題"
-        className="text-xs text-slate-400 hover:text-indigo-600 transition-colors disabled:opacity-40"
+        className="text-xs text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:text-indigo-300 transition-colors disabled:opacity-40"
       >
         {loading ? "重生中..." : "🔁"}
       </button>
-      {error && <span className="text-[10px] text-rose-600">{error}</span>}
+      {error && <span className="text-[10px] text-rose-600 dark:text-rose-300">{error}</span>}
     </span>
   );
 }

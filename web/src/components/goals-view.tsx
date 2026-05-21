@@ -110,10 +110,10 @@ export function GoalsView({ onBack }: GoalsViewProps) {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
+      <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <button
           onClick={onBack}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+          className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
           aria-label="返回"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ export function GoalsView({ onBack }: GoalsViewProps) {
           </svg>
         </button>
         <span className="text-xl">🎯</span>
-        <h1 className="text-lg font-semibold text-slate-800">學習目標</h1>
+        <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">學習目標</h1>
         <button
           onClick={() => setShowForm(!showForm)}
           className="ml-auto px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700"
@@ -132,26 +132,26 @@ export function GoalsView({ onBack }: GoalsViewProps) {
 
       <div className="flex-1 overflow-y-auto px-4 py-5">
         <div className="max-w-3xl mx-auto space-y-5">
-          <p className="text-xs text-slate-500 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <p className="text-xs text-slate-500 dark:text-slate-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
             研究上叫 <strong>goal-setting theory</strong>：寫下具體、有期限、可驗證的目標，平均完成率比沒寫下來的高 60%+。
             目標可以綁定章節或概念，進度條會根據你的測驗自動填上。
           </p>
 
           {/* New-goal form */}
           {showForm && (
-            <form onSubmit={submit} className="bg-white border border-indigo-200 rounded-2xl p-4 space-y-3">
+            <form onSubmit={submit} className="bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 rounded-2xl p-4 space-y-3">
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="目標標題（例：「本週搞懂 Ch08 動量守恆」）"
-                className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 required
               />
               <div className="grid sm:grid-cols-3 gap-2">
                 <select
                   value={chapter}
                   onChange={(e) => setChapter(e.target.value === "" ? "" : Number(e.target.value))}
-                  className="rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="rounded-xl border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 >
                   <option value="">— 章節 (選填) —</option>
                   {chapters.map((c) => (
@@ -164,13 +164,13 @@ export function GoalsView({ onBack }: GoalsViewProps) {
                   value={concept}
                   onChange={(e) => setConcept(e.target.value)}
                   placeholder="關聯概念 (選填)"
-                  className="rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="rounded-xl border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
                 <input
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="rounded-xl border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
               </div>
               <button
@@ -185,11 +185,11 @@ export function GoalsView({ onBack }: GoalsViewProps) {
 
           {/* Active goals */}
           <div>
-            <h2 className="text-sm font-semibold text-slate-700 mb-2">進行中 ({active.length})</h2>
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">進行中 ({active.length})</h2>
             {goals === null ? (
-              <p className="text-xs text-slate-400">載入中...</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">載入中...</p>
             ) : active.length === 0 ? (
-              <p className="text-xs text-slate-400">沒有進行中的目標 — 上方新增一個吧。</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">沒有進行中的目標 — 上方新增一個吧。</p>
             ) : (
               <ul className="space-y-2">
                 {active.map((g) => (
@@ -202,7 +202,7 @@ export function GoalsView({ onBack }: GoalsViewProps) {
           {/* Closed goals */}
           {closed.length > 0 && (
             <details>
-              <summary className="cursor-pointer text-sm font-semibold text-slate-500 hover:text-slate-700">
+              <summary className="cursor-pointer text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-200">
                 已完成 / 放棄 ({closed.length})
               </summary>
               <ul className="space-y-2 mt-2">
@@ -232,19 +232,19 @@ function GoalCard({
   const isDone = goal.status === "done";
   const isAbandoned = goal.status === "abandoned";
   return (
-    <li className={`bg-white border rounded-2xl p-4 space-y-2 ${
-      isDone ? "border-emerald-200" : isAbandoned ? "border-slate-200 opacity-70" : "border-indigo-200"
+    <li className={`bg-white dark:bg-slate-900 border rounded-2xl p-4 space-y-2 ${
+      isDone ? "border-emerald-200 dark:border-emerald-800" : isAbandoned ? "border-slate-200 dark:border-slate-700 opacity-70" : "border-indigo-200 dark:border-indigo-800"
     }`}>
       <div className="flex items-start gap-2">
         <span className="text-lg shrink-0">{isDone ? "✅" : isAbandoned ? "🗑️" : "🎯"}</span>
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-slate-800 text-sm">{goal.title}</h3>
-          <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500">
+          <h3 className="font-medium text-slate-800 dark:text-slate-100 text-sm">{goal.title}</h3>
+          <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500 dark:text-slate-400">
             {goal.target_chapter && (
-              <span className="px-1.5 py-0.5 rounded bg-slate-100">Ch{String(goal.target_chapter).padStart(2, "0")}</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800">Ch{String(goal.target_chapter).padStart(2, "0")}</span>
             )}
             {goal.target_concept && (
-              <span className="px-1.5 py-0.5 rounded bg-slate-100">{goal.target_concept}</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800">{goal.target_concept}</span>
             )}
             {goal.target_date && (
               <span>{formatDate(goal.target_date)}{goal.progress.daysRemaining !== null && goal.progress.daysRemaining >= 0
@@ -281,16 +281,16 @@ function GoalCard({
       {/* Actions */}
       <div className="flex items-center gap-2 pt-1">
         {goal.status === "active" && onComplete && (
-          <button onClick={onComplete} className="text-xs px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100">
+          <button onClick={onComplete} className="text-xs px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:bg-emerald-900/40">
             ✓ 完成
           </button>
         )}
         {goal.status === "active" && onAbandon && (
-          <button onClick={onAbandon} className="text-xs px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100">
+          <button onClick={onAbandon} className="text-xs px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
             放棄
           </button>
         )}
-        <button onClick={onDelete} className="text-xs px-2 py-1 rounded-lg text-slate-400 hover:text-rose-600 ml-auto">
+        <button onClick={onDelete} className="text-xs px-2 py-1 rounded-lg text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:text-rose-300 ml-auto">
           刪除
         </button>
       </div>
@@ -302,11 +302,11 @@ function ProgressBar({ label, detail, percent }: { label: string; detail: string
   const p = percent ?? 0;
   return (
     <div>
-      <div className="flex items-center text-[11px] text-slate-600 mb-0.5">
+      <div className="flex items-center text-[11px] text-slate-600 dark:text-slate-300 mb-0.5">
         <span>{label}</span>
-        <span className="ml-auto text-slate-400">{detail}</span>
+        <span className="ml-auto text-slate-400 dark:text-slate-500">{detail}</span>
       </div>
-      <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+      <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
         <div
           className={`h-full transition-all ${
             percent === null ? "bg-slate-300"
@@ -317,7 +317,7 @@ function ProgressBar({ label, detail, percent }: { label: string; detail: string
           style={{ width: `${percent === null ? 0 : p}%` }}
         />
       </div>
-      <div className="text-[10px] text-slate-500 mt-0.5">
+      <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
         {percent === null ? "尚無資料" : `${p}%`}
       </div>
     </div>
