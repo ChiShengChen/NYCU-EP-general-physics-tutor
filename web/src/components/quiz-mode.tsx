@@ -57,6 +57,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isIntroQuiz, setIsIntroQuiz] = useState(false);
   const [scopeChapter, setScopeChapter] = useState<number | null>(null);  // null = full range
+  const [scopeAppliedChapters, setScopeAppliedChapters] = useState<number[] | null>(null);  // 2–3 chapters for synthesis quiz
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
@@ -82,7 +83,11 @@ export function QuizMode({ onBack }: QuizModeProps) {
       .catch(() => {});
   }, []);
 
-  const generateQuiz = useCallback(async (chapter: number | null) => {
+  /** Trigger generation. `mode === "applied"` runs the multi-chapter synthesis
+   *  branch; other modes are full-range or single-chapter (existing behaviour). */
+  const generateQuiz = useCallback(async (
+    spec: { mode: "full" | "chapter" | "applied"; chapter?: number; chapters?: number[] },
+  ) => {
     setState("loading");
     setError(null);
     setAnswers({});
@@ -90,13 +95,19 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setHintUsage({});
     setGradeResult(null);
     setCurrentQuestion(0);
-    setScopeChapter(chapter);
+    setScopeChapter(spec.mode === "chapter" ? (spec.chapter ?? null) : null);
+    setScopeAppliedChapters(spec.mode === "applied" ? (spec.chapters ?? null) : null);
 
     try {
       const res = await fetch("/api/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "generate", studentId, chapter: chapter ?? undefined }),
+        body: JSON.stringify({
+          action: "generate",
+          studentId,
+          chapter: spec.mode === "chapter" ? spec.chapter : undefined,
+          chapters: spec.mode === "applied" ? spec.chapters : undefined,
+        }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -121,6 +132,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(null);
+    setScopeAppliedChapters(null);
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -176,7 +188,12 @@ export function QuizMode({ onBack }: QuizModeProps) {
         </h1>
         {state === "answering" && (
           <span className="text-xs text-slate-400 ml-2">
-            {scopeChapter ? `Ch${String(scopeChapter).padStart(2, "0")} · ` : ""}已答 {answeredCount}/{totalQuestions}
+            {scopeChapter
+              ? `Ch${String(scopeChapter).padStart(2, "0")} · `
+              : scopeAppliedChapters
+                ? `${scopeAppliedChapters.map((c) => `Ch${String(c).padStart(2, "0")}`).join("+")} 綜合 · `
+                : ""}
+            已答 {answeredCount}/{totalQuestions}
           </span>
         )}
         <span className="text-xs text-slate-400 ml-auto">NYCU 電物系</span>
@@ -187,7 +204,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
         {state === "select" && (
           <ScopeSelector chapters={chapters} onPick={generateQuiz} />
         )}
-        {state === "loading" && <LoadingState scopeChapter={scopeChapter} />}
+        {state === "loading" && <LoadingState scopeChapter={scopeChapter} scopeAppliedChapters={scopeAppliedChapters} />}
         {state === "answering" && quiz && (
           <AnsweringState
             quiz={quiz}
@@ -237,8 +254,18 @@ function ScopeSelector({
   onPick,
 }: {
   chapters: ChapterInfo[];
-  onPick: (chapter: number | null) => void;
+  onPick: (spec: { mode: "full" | "chapter" | "applied"; chapter?: number; chapters?: number[] }) => void;
 }) {
+  // Multi-select state for the applied-synthesis branch (2–3 chapters).
+  const [appliedPicks, setAppliedPicks] = useState<number[]>([]);
+  const toggleApplied = (ch: number) => {
+    setAppliedPicks((prev) => {
+      if (prev.includes(ch)) return prev.filter((x) => x !== ch);
+      if (prev.length >= 3) return prev;
+      return [...prev, ch].sort((a, b) => a - b);
+    });
+  };
+
   return (
     <div className="px-4 py-6 max-w-3xl mx-auto space-y-6">
       <div className="text-center">
@@ -249,7 +276,7 @@ function ScopeSelector({
 
       {/* Full-range option */}
       <button
-        onClick={() => onPick(null)}
+        onClick={() => onPick({ mode: "full" })}
         className="w-full text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 transition-all group"
       >
         <div className="flex items-center gap-3">
@@ -266,7 +293,7 @@ function ScopeSelector({
 
       {/* Chapter grid */}
       <div>
-        <h3 className="text-sm font-medium text-slate-600 mb-2">或選擇特定章節（單章測驗）</h3>
+        <h3 className="text-sm font-medium text-slate-600 mb-2">或選擇特定章節（單章測驗，20 題）</h3>
         {chapters.length === 0 ? (
           <div className="text-center text-sm text-slate-400 py-8">載入章節列表中...</div>
         ) : (
@@ -274,7 +301,7 @@ function ScopeSelector({
             {chapters.map((c) => (
               <button
                 key={c.chapter_number}
-                onClick={() => onPick(c.chapter_number)}
+                onClick={() => onPick({ mode: "chapter", chapter: c.chapter_number })}
                 className="p-2.5 bg-white border border-slate-200 rounded-xl text-center hover:border-indigo-300 hover:bg-indigo-50/50 transition-all"
               >
                 <div className="text-sm font-semibold text-slate-700">
@@ -286,14 +313,68 @@ function ScopeSelector({
           </div>
         )}
       </div>
+
+      {/* Multi-chapter applied (synthesis) */}
+      {chapters.length > 0 && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/40 p-4 space-y-3">
+          <div>
+            <h3 className="text-sm font-semibold text-amber-800 flex items-center gap-1.5">
+              🧩 跨章節綜合應用題 <span className="text-xs font-normal text-amber-700">(選 2–3 章)</span>
+            </h3>
+            <p className="text-xs text-amber-700/80 mt-0.5">
+              出 5 題真的需要綜合運用所選章節的應用題（例：滾球＝能量＋角動量，RLC＝SHM＋電路）。難度偏高，考前複習神器。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-1.5">
+            {chapters.map((c) => {
+              const picked = appliedPicks.includes(c.chapter_number);
+              return (
+                <button
+                  key={c.chapter_number}
+                  onClick={() => toggleApplied(c.chapter_number)}
+                  className={`p-1.5 rounded-lg text-xs font-medium transition-all border ${
+                    picked
+                      ? "bg-amber-500 text-white border-amber-600"
+                      : "bg-white text-slate-700 border-slate-200 hover:border-amber-300"
+                  }`}
+                >
+                  Ch{String(c.chapter_number).padStart(2, "0")}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-3 pt-1">
+            <span className="text-xs text-amber-800">
+              已選 <strong>{appliedPicks.length}</strong> / 最多 3 章
+              {appliedPicks.length > 0 && `：${appliedPicks.map((c) => `Ch${String(c).padStart(2, "0")}`).join(" + ")}`}
+            </span>
+            <button
+              onClick={() => onPick({ mode: "applied", chapters: appliedPicks })}
+              disabled={appliedPicks.length < 2}
+              className="ml-auto px-4 py-1.5 rounded-xl bg-amber-600 text-white text-xs font-medium hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              出綜合應用題 →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 /* ─── Loading State ─── */
 
-function LoadingState({ scopeChapter }: { scopeChapter: number | null }) {
+function LoadingState({
+  scopeChapter,
+  scopeAppliedChapters,
+}: {
+  scopeChapter: number | null;
+  scopeAppliedChapters: number[] | null;
+}) {
   const isChapter = scopeChapter !== null;
+  const isApplied = scopeAppliedChapters !== null && scopeAppliedChapters.length > 0;
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4">
       <div className="relative w-16 h-16">
@@ -301,12 +382,18 @@ function LoadingState({ scopeChapter }: { scopeChapter: number | null }) {
         <div className="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin" />
       </div>
       <p className="text-slate-600 font-medium">
-        {isChapter
-          ? `正在從 Ch${String(scopeChapter).padStart(2, "0")} 出題...`
-          : "正在根據你的學習狀況生成測驗..."}
+        {isApplied
+          ? `正在出 ${scopeAppliedChapters.map((c) => `Ch${String(c).padStart(2, "0")}`).join(" + ")} 的綜合應用題...`
+          : isChapter
+            ? `正在從 Ch${String(scopeChapter).padStart(2, "0")} 出題...`
+            : "正在根據你的學習狀況生成測驗..."}
       </p>
       <p className="text-sm text-slate-400">
-        {isChapter ? "AI 正在閱讀該章教材" : "AI 正在分析薄弱概念並出題"}
+        {isApplied
+          ? "AI 正在交織多章節概念設計綜合題（這類題比較難，請耐心等）"
+          : isChapter
+            ? "AI 正在閱讀該章教材"
+            : "AI 正在分析薄弱概念並出題"}
       </p>
     </div>
   );

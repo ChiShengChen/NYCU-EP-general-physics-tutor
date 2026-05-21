@@ -56,9 +56,62 @@ export async function POST(req: Request) {
 
 /* ─── Generate Quiz ─── */
 
-async function handleGenerate(body: { studentId?: string; chapter?: number }) {
-  const { studentId, chapter } = body;
+async function handleGenerate(body: { studentId?: string; chapter?: number; chapters?: number[] }) {
+  const { studentId, chapter, chapters } = body;
   const supabase = createServiceClient();
+
+  // === Multi-chapter applied (synthesis) quiz ===
+  // Generates 5 problems that REQUIRE combining concepts from 2–3 chapters
+  // — the most exam-critical kind of question that single-chapter quizzes
+  // can't capture (e.g. rolling-ball = energy + angular momentum;
+  // RLC = SHM + circuit laws).
+  if (Array.isArray(chapters) && chapters.length >= 2 && chapters.length <= 3 && chapters.every((c) => Number.isInteger(c) && c >= 1 && c <= 32)) {
+    const sortedChapters = [...chapters].sort((a, b) => a - b);
+    const chunksPerChapter = await Promise.all(
+      sortedChapters.map((ch) =>
+        retrieveChunks(
+          "key concepts, formulas, derivations, worked examples",
+          { matchCount: 8, matchThreshold: 0.3, filterChapter: ch },
+        ),
+      ),
+    );
+    const allChunks = chunksPerChapter.flat();
+    const seen = new Set<number>();
+    const uniqueChunks = allChunks.filter((c) => { if (seen.has(c.id)) return false; seen.add(c.id); return true; });
+    const context = formatChunksForPrompt(uniqueChunks);
+    const chLabels = sortedChapters.map((ch) => `Ch${String(ch).padStart(2, "0")}`).join(" + ");
+
+    const { object: quiz } = await generateObject({
+      model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+      schema: QuizSchema,
+      prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**跨章節綜合應用測驗**。
+
+涵蓋章節：${chLabels}（即 ${sortedChapters.join(", ")}）
+
+**最重要的規則：每一題都必須需要綜合運用至少 2 個章節的概念才能解出來**，而不是任何一章單獨就能搞定。
+舉例（普物經典綜合題）：
+- 滾動圓盤上斜面 → 能量守恆 + 角動量
+- 帶電粒子在磁場中圓周運動 → 牛二 + 圓周運動 + 磁力
+- RLC 共振 → 簡諧運動類比 + 電磁感應 + 電容/電感
+- 流體中物體浮沉 + 簡諧振盪
+- 熱機效率 + 卡諾循環
+
+以下是相關教材內容：
+${context}
+
+請生成 5 題綜合應用題：
+- title 訂為「${chLabels} 綜合應用」
+- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D），場景需要結合 2+ 章節
+- 2 題簡答題（short_answer）：完整推導題，明確需要用到多章節的概念
+- 難度分布：1 題 medium、4 題 hard（綜合題本來就難）
+- 每題在 explanation 開頭寫一行「綜合考點」，列出涉及哪些章節哪些概念
+- sourceChapter 填**最主要**的那一章（從 ${sortedChapters.join(", ")} 中選）
+- 題目用繁體中文，公式用 LaTeX
+- 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`,
+    });
+
+    return NextResponse.json({ quiz, isIntroQuiz: false, chapters: sortedChapters });
+  }
 
   // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
   // Generate 20 questions in two parallel batches to stay under Vercel's 60s limit.
