@@ -20,8 +20,11 @@ const StudyPlanSchema = z.object({
     suggestedChapter: z.number(),
     exercise: z.string().describe("具體的練習建議"),
   })).describe("建議加強的概念"),
-  weeklyPlan: z.string().describe("本週學習計畫，用 Markdown 格式"),
-  encouragement: z.string().describe("鼓勵的話"),
+  weeklyPlan: z.string().describe(
+    "本週學習計畫，用 Markdown 格式。**必須使用真正的換行字元（按 Enter）**，不要寫成 \\n 字串。" +
+    "標題用 ## 開頭，列表用 - 或 * 開頭。所有物理公式**必須**包在 $..$（行內）或 $$..$$（獨立）裡，例如 $d \\propto v^2$。",
+  ),
+  encouragement: z.string().describe("鼓勵的話，公式請包在 $..$ 中"),
 });
 
 /** GET /api/study-plan?studentId=xxx */
@@ -69,7 +72,14 @@ ${reviewDue.map((c) => `- ${c.concept}：${c.daysSince} 天前練習，預估記
 1. reviewConcepts：需要複習的概念（記憶衰退或掌握度低的）
 2. strengthenConcepts：需要加強的概念（有迷思或掌握度 < 60%），附帶具體練習建議
 3. weeklyPlan：本週學習計畫（具體到每天做什麼，用繁體中文 Markdown）
-4. 用繁體中文回答，語氣友善鼓勵`,
+4. 用繁體中文回答，語氣友善鼓勵
+
+**重要格式規則（避免輸出顯示成亂碼）**：
+- weeklyPlan 用「真正的換行」分段，不要把 \\n 當字串寫進去
+- 標題用 \`## 第一天：...\`，列表用 \`- 上午：...\` 開頭
+- 任何物理公式、變數名、數學符號**一定**要包在 $..$ 裡：
+   - ✅ 正確：「煞車距離 $d$ 與初速度 $v$ 的關係：$d \\propto v^2$」
+   - ❌ 錯誤：「d_ext 正比於 v_i^2」（沒包 $..$ 會被當成普通文字排版錯亂）`,
   });
 
   return NextResponse.json({

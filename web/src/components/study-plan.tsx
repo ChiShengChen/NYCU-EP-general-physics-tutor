@@ -3,6 +3,21 @@
 import { useState, useEffect } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 
+/** Defensive un-escape: Gemini occasionally double-escapes JSON strings so
+ *  what the API returns contains literal backslash-n / backslash-t /
+ *  backslash-r instead of real whitespace. Convert those back to real
+ *  newlines / tabs so MarkdownRenderer can parse them. We do NOT touch \\
+ *  sequences because LaTeX needs them (e.g. \\frac, \\vec, \\\\ for line
+ *  breaks inside math). */
+function normalizeAiText(s: string): string {
+  if (!s) return s;
+  if (!s.includes("\\n") && !s.includes("\\t")) return s;
+  return s
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "\t");
+}
+
 /* ─── Types ─── */
 
 interface ReviewConcept {
@@ -200,14 +215,16 @@ export function StudyPlanView({ onBack }: StudyPlanProps) {
             <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
               <h3 className="text-sm font-semibold text-slate-700 mb-3">📅 本週學習計畫</h3>
               <div className="prose-sm">
-                <MarkdownRenderer content={plan.weeklyPlan} />
+                <MarkdownRenderer content={normalizeAiText(plan.weeklyPlan)} />
               </div>
             </div>
 
             {/* Encouragement */}
             <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-5 text-center">
               <p className="text-2xl mb-2">✨</p>
-              <p className="text-slate-700 font-medium">{plan.encouragement}</p>
+              <div className="text-slate-700 font-medium">
+                <MarkdownRenderer content={normalizeAiText(plan.encouragement)} />
+              </div>
             </div>
 
             {/* Back button */}
