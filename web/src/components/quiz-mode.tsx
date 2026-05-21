@@ -5,6 +5,8 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { ConfidenceSelector } from "./confidence-selector";
 import { HintPanel } from "./hint-panel";
+import { ReportQuestionButton } from "./report-question-button";
+import { RegenerateQuestionButton } from "./regenerate-question-button";
 
 /* ─── Types ─── */
 
@@ -219,6 +221,17 @@ export function QuizMode({ onBack }: QuizModeProps) {
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
             answeredCount={answeredCount}
+            onReplaceQuestion={(oldId, newQ) => {
+              setQuiz({
+                ...quiz,
+                questions: quiz.questions.map((qq) => (qq.id === oldId ? { ...newQ, id: oldId } : qq)),
+              });
+            }}
+            onResetForQuestion={(qid) => {
+              const a = { ...answers }; delete a[qid]; setAnswers(a);
+              const c = { ...confidences }; delete c[qid]; setConfidences(c);
+              const h = { ...hintUsage }; delete h[qid]; setHintUsage(h);
+            }}
           />
         )}
         {state === "grading" && <GradingState />}
@@ -428,6 +441,8 @@ function AnsweringState({
   setCurrentQuestion,
   onSubmit,
   answeredCount,
+  onReplaceQuestion,
+  onResetForQuestion,
 }: {
   quiz: Quiz;
   isIntroQuiz: boolean;
@@ -441,6 +456,8 @@ function AnsweringState({
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
   answeredCount: number;
+  onReplaceQuestion: (oldId: number, newQ: QuizQuestion) => void;
+  onResetForQuestion: (qid: number) => void;
 }) {
   const q = quiz.questions[currentQuestion];
   const total = quiz.questions.length;
@@ -501,6 +518,17 @@ function AnsweringState({
             {q.difficulty === "easy" ? "基礎" : q.difficulty === "medium" ? "中等" : "進階"}
           </span>
           <span className="text-xs text-slate-400">Ch{String(q.sourceChapter).padStart(2, "0")}</span>
+          <span className="ml-auto flex items-center gap-2">
+            <RegenerateQuestionButton
+              question={q}
+              onReplace={(newQ) => onReplaceQuestion(q.id, newQ as QuizQuestion)}
+              onResetForQuestion={onResetForQuestion}
+            />
+            <ReportQuestionButton
+              questionId={q.id}
+              question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
+            />
+          </span>
         </div>
 
         <div className="mb-5">

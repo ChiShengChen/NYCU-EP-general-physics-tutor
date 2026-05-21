@@ -20,8 +20,9 @@ import { DailyReview } from "@/components/daily-review";
 import { ConceptCompare } from "@/components/concept-compare";
 import { ReflectionJournal } from "@/components/reflection-journal";
 import { LibraryView } from "@/components/library-view";
+import { GoalsView } from "@/components/goals-view";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -111,6 +112,7 @@ export default function Home() {
   if (mode === "compare") return <ConceptCompare onBack={goHome} />;
   if (mode === "reflection") return <ReflectionJournal onBack={goHome} />;
   if (mode === "library") return <LibraryView onBack={goHome} />;
+  if (mode === "goals") return <GoalsView onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }

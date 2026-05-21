@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ConfidenceSelector } from "./confidence-selector";
+import { ReportQuestionButton } from "./report-question-button";
 
 /* ─── Types ─── */
 
@@ -296,6 +297,11 @@ function AttemptDetailView({
                       {r.earnedPoints !== undefined ? `${r.earnedPoints.toFixed(0)} 分` : `score ${r.score.toFixed(2)}`}
                     </span>
                   )}
+                  <ReportQuestionButton
+                    attemptId={attempt.id}
+                    questionId={q.id}
+                    question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
+                  />
                 </div>
 
                 {conf !== null && (

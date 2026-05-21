@@ -4,7 +4,19 @@ import { useEffect, useState } from "react";
 import { useDailyStatus } from "./daily-review";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals") => void;
+}
+
+function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-2 rounded-xl bg-white border border-slate-200 px-3 py-2">
+      <span className="text-2xl">{emoji}</span>
+      <div className="min-w-0">
+        <div className="text-[10px] text-slate-500 truncate">{label}</div>
+        <div className="text-sm font-semibold text-slate-800">{value}</div>
+      </div>
+    </div>
+  );
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -17,6 +29,20 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
   }, []);
   const { todayDone, streak } = useDailyStatus(studentId);
 
+  // Homepage headline numbers — single small API call.
+  const [stats, setStats] = useState<{
+    attemptsCount: number; avgAccuracy: number | null;
+    reviewedConcepts: number; avgMastery: number | null;
+    dailyDueCount: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!studentId) return;
+    fetch(`/api/home-stats?studentId=${studentId}`)
+      .then((r) => r.json())
+      .then((d) => setStats(d))
+      .catch(() => {});
+  }, [studentId]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 bg-white shrink-0">
@@ -26,11 +52,21 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <p className="text-3xl mb-3">👋</p>
           <h2 className="text-2xl font-bold text-slate-800 mb-2">歡迎使用普通物理 AI 助教</h2>
           <p className="text-slate-500">請選擇學習模式</p>
         </div>
+
+        {/* Compact stats strip — only renders once we have any signal. */}
+        {stats && (stats.attemptsCount > 0 || stats.reviewedConcepts > 0) && (
+          <div className="w-full max-w-5xl mb-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <StatPill emoji="🧪" label="完成測驗" value={`${stats.attemptsCount} 份`} />
+            <StatPill emoji="🎯" label="平均答對率" value={stats.avgAccuracy !== null ? `${stats.avgAccuracy}%` : "—"} />
+            <StatPill emoji="🧠" label="練過的概念" value={`${stats.reviewedConcepts} 個`} />
+            <StatPill emoji="📈" label="平均掌握度" value={stats.avgMastery !== null ? `${stats.avgMastery}%` : "—"} />
+          </div>
+        )}
 
         {/* Daily review banner: visible reminder + one-click entry to today's
             spaced-repetition session. Visual treatment swaps between
@@ -184,8 +220,19 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         </div>
 
         {/* Learning-support row: tools that aren't a full study session,
-            but help students clarify, look up, or reflect. */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl w-full mb-5">
+            but help students clarify, look up, plan or reflect. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">
+          <button
+            onClick={() => onSelectMode("goals")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">🎯</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">學習目標</h3>
+              <p className="text-xs text-slate-500 mt-0.5">設定本週目標，自動追蹤進度</p>
+            </div>
+          </button>
+
           <button
             onClick={() => onSelectMode("compare")}
             className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"

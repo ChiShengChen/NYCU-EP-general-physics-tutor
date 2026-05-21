@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Indigo rounded square background -->
+  <rect width="64" height="64" rx="14" fill="#6366f1"/>
+  <!-- Atom orbits (rotated ellipses) suggest physics; pi symbol in centre. -->
+  <g transform="translate(32 32)" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.9">
+    <ellipse rx="22" ry="9" />
+    <ellipse rx="22" ry="9" transform="rotate(60)" />
+    <ellipse rx="22" ry="9" transform="rotate(-60)" />
+  </g>
+  <text x="32" y="40" text-anchor="middle" fill="#ffffff" font-family="Georgia, serif" font-weight="bold" font-size="22">π</text>
+</svg>

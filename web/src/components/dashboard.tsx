@@ -103,7 +103,20 @@ export function Dashboard({ onBack }: DashboardProps) {
         </button>
         <span className="text-xl">📊</span>
         <h1 className="text-lg font-semibold text-slate-800">學習儀表板</h1>
-        <span className="text-xs text-slate-400 ml-auto">NYCU 電物系</span>
+        <button
+          onClick={() => {
+            if (typeof window === "undefined") return;
+            const sid = localStorage.getItem("physics_tutor_student_id");
+            if (!sid) return;
+            // Browser-driven download: opens the API URL which returns
+            // Content-Disposition: attachment so it triggers a save.
+            window.location.href = `/api/export-report?studentId=${sid}`;
+          }}
+          className="ml-auto px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-medium hover:bg-slate-50 transition-colors flex items-center gap-1.5"
+          title="把你的學習資料整理成一份 Markdown 報告下載"
+        >
+          📤 匯出報告
+        </button>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
