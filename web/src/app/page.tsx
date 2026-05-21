@@ -17,8 +17,11 @@ import { ChapterPreview } from "@/components/chapter-preview";
 import { FeynmanMode } from "@/components/feynman-mode";
 import { CalibrationView } from "@/components/calibration-view";
 import { DailyReview } from "@/components/daily-review";
+import { ConceptCompare } from "@/components/concept-compare";
+import { ReflectionJournal } from "@/components/reflection-journal";
+import { LibraryView } from "@/components/library-view";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -105,6 +108,9 @@ export default function Home() {
   if (mode === "feynman") return <FeynmanMode onBack={goHome} />;
   if (mode === "calibration") return <CalibrationView onBack={goHome} />;
   if (mode === "daily") return <DailyReview onBack={goHome} />;
+  if (mode === "compare") return <ConceptCompare onBack={goHome} />;
+  if (mode === "reflection") return <ReflectionJournal onBack={goHome} />;
+  if (mode === "library") return <LibraryView onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDailyStatus } from "./daily-review";
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library") => void;
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
@@ -180,6 +180,43 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <span className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium group-hover:bg-indigo-700 transition-colors">
               查看計畫
             </span>
+          </button>
+        </div>
+
+        {/* Learning-support row: tools that aren't a full study session,
+            but help students clarify, look up, or reflect. */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl w-full mb-5">
+          <button
+            onClick={() => onSelectMode("compare")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">🔗</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">概念對比</h3>
+              <p className="text-xs text-slate-500 mt-0.5">選兩個概念 → AI 生並列對比表</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelectMode("library")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">📝</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">例題庫 / 公式速查</h3>
+              <p className="text-xs text-slate-500 mt-0.5">關鍵字搜尋例題與公式</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelectMode("reflection")}
+            className="group flex flex-row items-center text-left p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">🪞</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">反思日誌</h3>
+              <p className="text-xs text-slate-500 mt-0.5">每週 3 句反思 + AI 回饋</p>
+            </div>
           </button>
         </div>
 
