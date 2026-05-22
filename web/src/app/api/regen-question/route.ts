@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
     other:           "請完全重新出一題，不要重複上一版的問法。",
   };
 
-  const { object } = await generateObject({
+  const { object } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: SingleQuestionSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，請**重新生成一題**取代學生回報有問題的題目。
@@ -90,7 +91,7 @@ ${context}
 - ${prev.type === "multiple_choice" ? "options 共 4 個（A/B/C/D），correctAnswer 寫字母 A/B/C/D" : "correctAnswer 寫完整參考答案"}
 - explanation 需引用教材具體段落，逐步說明
 - 全部繁體中文`,
-  });
+  }), { label: "regen-question" });
 
   return NextResponse.json({ question: restoreLatexInObject(object.question) });
 }

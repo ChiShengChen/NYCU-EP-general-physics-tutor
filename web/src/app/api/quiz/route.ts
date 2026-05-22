@@ -4,6 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -82,7 +83,7 @@ async function handleGenerate(body: { studentId?: string; chapter?: number; chap
     const context = formatChunksForPrompt(uniqueChunks);
     const chLabels = sortedChapters.map((ch) => `Ch${String(ch).padStart(2, "0")}`).join(" + ");
 
-    const { object: quiz } = await generateObject({
+    const { object: quiz } = await withLLMRetry(() => generateObject({
       model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
       schema: QuizSchema,
       prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**跨章節綜合應用測驗**。
@@ -109,7 +110,7 @@ ${context}
 - sourceChapter 填**最主要**的那一章（從 ${sortedChapters.join(", ")} 中選）
 - 題目用繁體中文，公式用 LaTeX
 - 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`,
-    });
+    }), { label: "quiz/synthesis" });
 
     return NextResponse.json({ quiz: restoreLatexInObject(quiz), isIntroQuiz: false, chapters: sortedChapters });
   }
@@ -150,16 +151,16 @@ ${context}
 
     const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
     const [partA, partB] = await Promise.all([
-      generateObject({
+      withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
         prompt: buildPrompt("選擇題部分", 6, 4, 1, "3 題 easy、4 題 medium、3 題 hard"),
-      }),
-      generateObject({
+      }), { label: "quiz/chapter-A" }),
+      withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
         prompt: buildPrompt("進階與應用部分", 6, 4, 11, "1 題 easy、4 題 medium、5 題 hard"),
-      }),
+      }), { label: "quiz/chapter-B" }),
     ]);
 
     const merged = [...partA.object.questions, ...partB.object.questions]
@@ -238,7 +239,7 @@ ${extraGuidance}`;
 
   const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
   const [partA, partB] = await Promise.all([
-    generateObject({
+    withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt(
@@ -251,8 +252,8 @@ ${extraGuidance}`;
           ? "- 對新同學請以基本概念建立題為主"
           : "- 重點放在掌握度最低的概念上，幫學生鞏固基礎",
       ),
-    }),
-    generateObject({
+    }), { label: "quiz/full-A" }),
+    withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt(
@@ -265,7 +266,7 @@ ${extraGuidance}`;
           ? "- 出一些應用題與公式運算題，但仍以基礎概念為核心"
           : "- 偏向應用、推導與多概念綜合題；如有迷思概念請針對它設計糾正題",
       ),
-    }),
+    }), { label: "quiz/full-B" }),
   ]);
 
   const merged = [...partA.object.questions, ...partB.object.questions]
@@ -301,7 +302,7 @@ async function handleGrade(body: {
     studentAnswer: answers[q.id] ?? "(未作答)",
   }));
 
-  const { object: gradeResultRaw } = await generateObject({
+  const { object: gradeResultRaw } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: GradeResultSchema,
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
@@ -316,27 +317,40 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
 - 每題給具體的繁體中文回饋，解釋為什麼對或錯
 - 如果學生答錯，引用正確的概念和公式
 - 整體回饋要鼓勵學生，並建議接下來可以複習哪些概念`,
-  });
+  }), { label: "quiz/grade" });
   const gradeResult = restoreLatexInObject(gradeResultRaw);
 
   // Persist mastery + attempts AFTER the response goes out. The LLM grading
   // alone can eat 40+s of the 60s Vercel budget, so serial DB writes here
   // were tripping FUNCTION_INVOCATION_TIMEOUT. Move them off the hot path
-  // via after() and parallelise within.
+  // via after() and parallelise across concepts.
   if (studentId) {
     after(async () => {
       const supabase = createServiceClient();
 
+      // Group results by concept so a quiz that tests the same concept twice
+      // only triggers one read-modify-write per concept (avoids a within-
+      // request race where both writes SELECT the same baseline mastery
+      // and the second silently overwrites the first).
+      const byConcept = new Map<string, { scores: number[]; firstMisconception: string | null }>();
+      for (const r of gradeResult.results) {
+        const q = questions.find((x) => x.id === r.questionId);
+        if (!q) continue;
+        const slot = byConcept.get(q.concept) ?? { scores: [], firstMisconception: null };
+        slot.scores.push(r.score);
+        if (!r.isCorrect && !slot.firstMisconception) slot.firstMisconception = r.feedback.slice(0, 200);
+        byConcept.set(q.concept, slot);
+      }
+
       await Promise.all(
-        gradeResult.results.map(async (result) => {
-          const question = questions.find((q) => q.id === result.questionId);
-          if (!question) return;
+        Array.from(byConcept.entries()).map(async ([concept, { scores, firstMisconception }]) => {
+          const avgScore = scores.reduce((s, x) => s + x, 0) / scores.length;
 
           const { data: existing } = await supabase
             .from("student_state")
             .select("mastery_score, attempt_count")
             .eq("student_id", studentId)
-            .eq("concept", question.concept)
+            .eq("concept", concept)
             .single();
 
           const currentMastery = existing?.mastery_score ?? 0;
@@ -344,15 +358,15 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
 
           // Weighted update: blend current mastery with quiz performance
           // New mastery = 0.6 * current + 0.4 * quiz_score (quiz has meaningful weight)
-          const newMastery = Math.min(1, Math.max(0, 0.6 * currentMastery + 0.4 * result.score));
+          const newMastery = Math.min(1, Math.max(0, 0.6 * currentMastery + 0.4 * avgScore));
 
           await supabase.from("student_state").upsert(
             {
               student_id: studentId,
-              concept: question.concept,
+              concept,
               mastery_score: newMastery,
               attempt_count: currentAttempts + 1,
-              last_misconception: result.isCorrect ? null : result.feedback.slice(0, 200),
+              last_misconception: firstMisconception,
               updated_at: new Date().toISOString(),
             },
             { onConflict: "student_id,concept" },

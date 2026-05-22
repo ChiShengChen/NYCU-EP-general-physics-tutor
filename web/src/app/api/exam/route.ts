@@ -4,6 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -117,7 +118,7 @@ ${context}`;
 
   const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
   const [partA, partB] = await Promise.all([
-    generateObject({
+    withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
       prompt: buildPrompt(
@@ -127,8 +128,8 @@ ${context}`;
         "3 題 easy、3 題 medium、2 題 hard",
         1,
       ),
-    }),
-    generateObject({
+    }), { label: "exam/gen-A" }),
+    withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
       prompt: buildPrompt(
@@ -138,7 +139,7 @@ ${context}`;
         "1 題 easy、3 題 medium、3 題 hard",
         9,
       ),
-    }),
+    }), { label: "exam/gen-B" }),
   ]);
 
   const merged = [...partA.object.questions, ...partB.object.questions]
@@ -167,7 +168,7 @@ async function handleGrade(body: {
     correctAnswer: q.correctAnswer, studentAnswer: answers[q.id] ?? "(未作答)", points: q.points,
   }));
 
-  const { object: resultRaw } = await generateObject({
+  const { object: resultRaw } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: GradeSchema,
     prompt: `批改${examType === "midterm" ? "期中考" : "期末考"}模擬試題。
@@ -182,7 +183,7 @@ ${JSON.stringify(qa, null, 2)}
 - grade 依照：90+ A+, 85+ A, 80+ B+, 75+ B, 70+ C+, 60+ C, 50+ D, <50 F（以百分比計）
 - 每題給繁體中文回饋
 - 整體回饋包含學習建議`,
-  });
+  }), { label: "exam/grade" });
   const result = restoreLatexInObject(resultRaw);
 
   // Persist DB writes AFTER the response goes out — grading LLM already
@@ -192,21 +193,32 @@ ${JSON.stringify(qa, null, 2)}
     after(async () => {
       const supabase = createServiceClient();
 
-      // Update mastery per concept (parallelised).
+      // Group by concept so an exam that tests the same concept across
+      // multiple questions does one read-modify-write per concept rather
+      // than racing within the same request.
+      const byConcept = new Map<string, { scores: number[]; firstMisconception: string | null }>();
+      for (const r of result.results) {
+        const q = questions.find((x) => x.id === r.questionId);
+        if (!q) continue;
+        const slot = byConcept.get(q.concept) ?? { scores: [], firstMisconception: null };
+        slot.scores.push(r.score);
+        if (!r.isCorrect && !slot.firstMisconception) slot.firstMisconception = r.feedback.slice(0, 200);
+        byConcept.set(q.concept, slot);
+      }
+
       await Promise.all(
-        result.results.map(async (r) => {
-          const q = questions.find((x) => x.id === r.questionId);
-          if (!q) return;
+        Array.from(byConcept.entries()).map(async ([concept, { scores, firstMisconception }]) => {
+          const avgScore = scores.reduce((s, x) => s + x, 0) / scores.length;
           const { data: existing } = await supabase
             .from("student_state").select("mastery_score, attempt_count")
-            .eq("student_id", studentId).eq("concept", q.concept).single();
+            .eq("student_id", studentId).eq("concept", concept).single();
           const cur = existing?.mastery_score ?? 0;
           const attempts = existing?.attempt_count ?? 0;
-          const newMastery = Math.min(1, Math.max(0, 0.6 * cur + 0.4 * r.score));
+          const newMastery = Math.min(1, Math.max(0, 0.6 * cur + 0.4 * avgScore));
           await supabase.from("student_state").upsert({
-            student_id: studentId, concept: q.concept, mastery_score: newMastery,
+            student_id: studentId, concept, mastery_score: newMastery,
             attempt_count: attempts + 1,
-            last_misconception: r.isCorrect ? null : r.feedback.slice(0, 200),
+            last_misconception: firstMisconception,
             updated_at: new Date().toISOString(),
           }, { onConflict: "student_id,concept" });
         }),

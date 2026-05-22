@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
   const contextA = formatChunksForPrompt(chunksA);
   const contextB = formatChunksForPrompt(chunksB);
 
-  const { object } = await generateObject({
+  const { object } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: CompareSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，請為兩個概念做一份**並列對比表**幫學生釐清。
@@ -76,7 +77,7 @@ ${contextB}
 - 全部用繁體中文，公式用 LaTeX（$..$ 行內、$$...$$ 獨立）
 - 描述要具體可驗證，不要抽象口號
 - 若兩個概念本來就沒什麼關係（例如「重力 vs 介電質」），直接在 differences 提醒「這兩者沒有直接關聯」並建議學生改比較哪些對`,
-  });
+  }), { label: "concept-compare" });
 
   return NextResponse.json({ comparison: restoreLatexInObject(object), conceptA, conceptB });
 }

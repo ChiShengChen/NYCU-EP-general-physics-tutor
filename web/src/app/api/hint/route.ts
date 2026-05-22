@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -69,7 +70,7 @@ export async function POST(req: Request) {
     ? `\n學生目前已寫的草稿（請參考它的卡關方向，但不評分）：\n${draftAnswer}\n`
     : "";
 
-  const { object } = await generateObject({
+  const { object } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: HintSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，學生在做題卡住了，請給一個**有層級的提示**幫他自己推到答案，**絕對不要直接給答案**。
@@ -88,7 +89,7 @@ ${context}
 ${levelGuide[level]}
 
 最終輸出：1–3 句的繁體中文提示，公式用 LaTeX。`,
-  });
+  }), { label: "hint" });
 
   return NextResponse.json({ hint: restoreLatexEscapes(object.hint), level });
 }

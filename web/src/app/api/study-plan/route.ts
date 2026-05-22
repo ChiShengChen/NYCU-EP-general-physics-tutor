@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
+import { withLLMRetry } from "@/lib/llm-retry";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
   }).filter((c) => c.retention < 50 || c.mastery_score < 0.6);
 
   // Generate AI study plan
-  const { object: plan } = await generateObject({
+  const { object: plan } = await withLLMRetry(() => generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: StudyPlanSchema,
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請根據學生的學習數據生成個人化學習計畫。
@@ -81,7 +82,7 @@ ${reviewDue.map((c) => `- ${c.concept}：${c.daysSince} 天前練習，預估記
 - 任何物理公式、變數名、數學符號**一定**要包在 $..$ 裡：
    - ✅ 正確：「煞車距離 $d$ 與初速度 $v$ 的關係：$d \\propto v^2$」
    - ❌ 錯誤：「d_ext 正比於 v_i^2」（沒包 $..$ 會被當成普通文字排版錯亂）`,
-  });
+  }), { label: "study-plan" });
 
   return NextResponse.json({
     plan: restoreLatexInObject(plan),
