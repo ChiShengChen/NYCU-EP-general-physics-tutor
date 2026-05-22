@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -91,5 +92,5 @@ ${context}
 - 全部繁體中文`,
   });
 
-  return NextResponse.json({ question: object.question });
+  return NextResponse.json({ question: restoreLatexInObject(object.question) });
 }

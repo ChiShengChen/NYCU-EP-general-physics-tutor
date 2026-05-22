@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
   const context = formatChunksForPrompt(chunks);
   const chLabel = `Ch${String(chapter).padStart(2, "0")}`;
 
-  const { object } = await generateObject({
+  const { object: objectRaw } = await generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: PreviewSchema,
     prompt: `你正在為「普通物理」課程（楊本立老師）的學生準備 ${chLabel} 的「章節預習卡」。
@@ -80,6 +81,7 @@ ${context}
 - 公式用 LaTeX，繁體中文搭配必要英文
 - 不要超過 7 個概念`,
   });
+  const object = restoreLatexInObject(objectRaw);
 
   // 3) Persist to cache (best effort)
   await supabase.from("chapter_previews").upsert(

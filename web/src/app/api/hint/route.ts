@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
+import { restoreLatexEscapes } from "@/lib/restore-latex";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -89,5 +90,5 @@ ${levelGuide[level]}
 最終輸出：1–3 句的繁體中文提示，公式用 LaTeX。`,
   });
 
-  return NextResponse.json({ hint: object.hint, level });
+  return NextResponse.json({ hint: restoreLatexEscapes(object.hint), level });
 }

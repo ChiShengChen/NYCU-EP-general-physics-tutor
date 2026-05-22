@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -147,7 +148,7 @@ ${context}`;
     questions: merged,
   };
 
-  return NextResponse.json({ exam, examType, timeLimit: isMidterm ? 75 : 90 });
+  return NextResponse.json({ exam: restoreLatexInObject(exam), examType, timeLimit: isMidterm ? 75 : 90 });
 }
 
 async function handleGrade(body: {
@@ -166,7 +167,7 @@ async function handleGrade(body: {
     correctAnswer: q.correctAnswer, studentAnswer: answers[q.id] ?? "(未作答)", points: q.points,
   }));
 
-  const { object: result } = await generateObject({
+  const { object: resultRaw } = await generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: GradeSchema,
     prompt: `批改${examType === "midterm" ? "期中考" : "期末考"}模擬試題。
@@ -182,6 +183,7 @@ ${JSON.stringify(qa, null, 2)}
 - 每題給繁體中文回饋
 - 整體回饋包含學習建議`,
   });
+  const result = restoreLatexInObject(resultRaw);
 
   if (studentId) {
     const supabase = createServiceClient();

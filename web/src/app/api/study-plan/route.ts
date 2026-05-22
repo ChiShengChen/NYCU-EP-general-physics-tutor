@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -83,7 +84,7 @@ ${reviewDue.map((c) => `- ${c.concept}：${c.daysSince} 天前練習，預估記
   });
 
   return NextResponse.json({
-    plan,
+    plan: restoreLatexInObject(plan),
     reviewDue: reviewDue.map((c) => ({
       concept: c.concept,
       daysSince: c.daysSince,

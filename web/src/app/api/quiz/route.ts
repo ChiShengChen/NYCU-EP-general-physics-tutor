@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -110,7 +111,7 @@ ${context}
 - 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`,
     });
 
-    return NextResponse.json({ quiz, isIntroQuiz: false, chapters: sortedChapters });
+    return NextResponse.json({ quiz: restoreLatexInObject(quiz), isIntroQuiz: false, chapters: sortedChapters });
   }
 
   // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
@@ -169,7 +170,7 @@ ${context}
       questions: merged,
     };
 
-    return NextResponse.json({ quiz, isIntroQuiz: false, chapter });
+    return NextResponse.json({ quiz: restoreLatexInObject(quiz), isIntroQuiz: false, chapter });
   }
 
   // === Default: full-range quiz driven by weak concepts ===
@@ -275,7 +276,7 @@ ${extraGuidance}`;
     questions: merged,
   };
 
-  return NextResponse.json({ quiz, isIntroQuiz });
+  return NextResponse.json({ quiz: restoreLatexInObject(quiz), isIntroQuiz });
 }
 
 /* ─── Grade Quiz ─── */
@@ -300,7 +301,7 @@ async function handleGrade(body: {
     studentAnswer: answers[q.id] ?? "(未作答)",
   }));
 
-  const { object: gradeResult } = await generateObject({
+  const { object: gradeResultRaw } = await generateObject({
     model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
     schema: GradeResultSchema,
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
@@ -316,6 +317,7 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
 - 如果學生答錯，引用正確的概念和公式
 - 整體回饋要鼓勵學生，並建議接下來可以複習哪些概念`,
   });
+  const gradeResult = restoreLatexInObject(gradeResultRaw);
 
   // Update student mastery scores based on quiz results
   if (studentId) {

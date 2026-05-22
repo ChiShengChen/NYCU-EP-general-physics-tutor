@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
+import { restoreLatexInObject } from "@/lib/restore-latex";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -77,5 +78,5 @@ ${contextB}
 - 若兩個概念本來就沒什麼關係（例如「重力 vs 介電質」），直接在 differences 提醒「這兩者沒有直接關聯」並建議學生改比較哪些對`,
   });
 
-  return NextResponse.json({ comparison: object, conceptA, conceptB });
+  return NextResponse.json({ comparison: restoreLatexInObject(object), conceptA, conceptB });
 }
