@@ -24,15 +24,21 @@ import { createClient } from "@supabase/supabase-js";
 // ─── mirror of web/src/lib/restore-latex.ts ──────────────────────────────
 // Inlined so this script has no TS/transpile step. Keep in sync.
 
+function normalizeMathDelimiters(text) {
+  if (!text || !text.includes("$$")) return text;
+  return text.replace(/\$\$([^$\n]+?)\$\$/g, (_match, content) => "$" + content + "$");
+}
+
 function restoreLatexEscapes(text) {
-  if (!text || !text.includes("$")) return text;
-  return text.replace(/\$\$[\s\S]+?\$\$|\$[^\n$]+?\$/g, (block) =>
+  if (!text) return text;
+  const normalized = normalizeMathDelimiters(text);
+  if (!normalized.includes("$")) return normalized;
+  return normalized.replace(/\$\$[\s\S]+?\$\$|\$[^\n$]+?\$/g, (block) =>
     block
       .replace(/\f(?=[a-z])/g, "\\f")
       .replace(/[\b](?=[a-z])/g, "\\b")
       .replace(/\t(?=[a-z])/g, "\\t")
-      .replace(/\r(?=[a-z])/g, "\\r")
-      .replace(/\n(?=[a-z])/g, "\\n"),
+      .replace(/\r(?=[a-z])/g, "\\r"),
   );
 }
 
