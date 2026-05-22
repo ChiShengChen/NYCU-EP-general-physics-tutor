@@ -83,10 +83,15 @@ async function handleGenerate(body: { studentId?: string; chapter?: number; chap
     const context = formatChunksForPrompt(uniqueChunks);
     const chLabels = sortedChapters.map((ch) => `Ch${String(ch).padStart(2, "0")}`).join(" + ");
 
-    const { object: quiz } = await withLLMRetry(() => generateObject({
-      model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
-      schema: QuizSchema,
-      prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**跨章節綜合應用測驗**。
+    // Cross-chapter synthesis questions each need heavy multi-chapter
+    // reasoning, so a single 5-question call could run 40-50s and trip
+    // the 60s budget. Split into 2 parallel batches.
+    const buildSynthesisPrompt = (
+      label: string,
+      breakdown: string,
+      difficultyDist: string,
+      idStart: number,
+    ) => `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請出一份**跨章節綜合應用測驗**的「${label}」。
 
 涵蓋章節：${chLabels}（即 ${sortedChapters.join(", ")}）
 
@@ -101,16 +106,46 @@ async function handleGenerate(body: { studentId?: string; chapter?: number; chap
 以下是相關教材內容：
 ${context}
 
-請生成 5 題綜合應用題：
+請生成 ${breakdown}：
 - title 訂為「${chLabels} 綜合應用」
-- 3 題選擇題（multiple_choice）：每題 4 個選項（A/B/C/D），場景需要結合 2+ 章節
-- 2 題簡答題（short_answer）：完整推導題，明確需要用到多章節的概念
-- 難度分布：1 題 medium、4 題 hard（綜合題本來就難）
+- 題目 id 從 ${idStart} 開始連續編號
+- 難度分布：${difficultyDist}
 - 每題在 explanation 開頭寫一行「綜合考點」，列出涉及哪些章節哪些概念
 - sourceChapter 填**最主要**的那一章（從 ${sortedChapters.join(", ")} 中選）
 - 題目用繁體中文，公式用 LaTeX
-- 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`,
-    }), { label: "quiz/synthesis" });
+- 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`;
+
+    const synthModel = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+    const synthBatches = await Promise.all([
+      withLLMRetry(() => generateObject({
+        model: synthModel,
+        schema: QuizSchema,
+        prompt: buildSynthesisPrompt(
+          "選擇題部分",
+          "3 題選擇題（multiple_choice），每題 4 個選項（A/B/C/D），場景需要結合 2+ 章節",
+          "1 題 medium、2 題 hard",
+          1,
+        ),
+      }), { label: "quiz/synthesis-MC" }),
+      withLLMRetry(() => generateObject({
+        model: synthModel,
+        schema: QuizSchema,
+        prompt: buildSynthesisPrompt(
+          "簡答推導部分",
+          "2 題簡答題（short_answer），完整推導題，明確需要用到多章節的概念",
+          "2 題 hard",
+          4,
+        ),
+      }), { label: "quiz/synthesis-SA" }),
+    ]);
+
+    const synthMerged = synthBatches.flatMap((b) => b.object.questions)
+      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..5
+    const quiz = {
+      title: synthBatches.find((b) => b.object.title)?.object.title ?? `${chLabels} 綜合應用`,
+      description: synthBatches.find((b) => b.object.description)?.object.description ?? `${chLabels} 跨章節綜合應用 5 題`,
+      questions: synthMerged,
+    };
 
     return NextResponse.json({ quiz: restoreLatexInObject(quiz), isIntroQuiz: false, chapters: sortedChapters });
   }
