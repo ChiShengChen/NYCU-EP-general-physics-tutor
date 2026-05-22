@@ -20,6 +20,7 @@ type UsageSummary = {
     totalTokens: number;
     costUsd: number;
   }[];
+  daily: { date: string; tokens: number; costUsd: number }[];
 };
 
 function fmtTokens(n: number): string {
@@ -31,6 +32,38 @@ function fmtTokens(n: number): string {
 function fmtCost(usd: number): string {
   if (usd < 0.01) return `<$0.01`;
   return `$${usd.toFixed(2)}`;
+}
+
+/** Tiny SVG sparkline. Renders an area-filled polyline with circle markers
+ *  at each daily bucket. All days display even when the value is 0 so the
+ *  spacing stays uniform across the 7-day window. */
+function Sparkline({ data }: { data: { date: string; tokens: number }[] }) {
+  const W = 140;
+  const H = 36;
+  const PAD_X = 4;
+  const PAD_Y = 4;
+  if (data.length === 0) return null;
+  const max = Math.max(1, ...data.map((d) => d.tokens));
+  const stepX = data.length > 1 ? (W - PAD_X * 2) / (data.length - 1) : 0;
+  const points = data.map((d, i) => {
+    const x = PAD_X + i * stepX;
+    const y = H - PAD_Y - (d.tokens / max) * (H - PAD_Y * 2);
+    return { x, y, d };
+  });
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const areaPath = `${linePath} L${points[points.length - 1].x.toFixed(1)},${H - PAD_Y} L${points[0].x.toFixed(1)},${H - PAD_Y} Z`;
+
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="text-indigo-500 dark:text-indigo-400">
+      <path d={areaPath} fill="currentColor" opacity={0.15} />
+      <path d={linePath} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
+      {points.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={1.5} fill="currentColor">
+          <title>{`${p.d.date}: ${p.d.tokens.toLocaleString()} tokens`}</title>
+        </circle>
+      ))}
+    </svg>
+  );
 }
 
 const ENDPOINT_LABELS: Record<string, string> = {
@@ -74,9 +107,15 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
             </div>
           </div>
         </div>
-        <span className="text-xs text-slate-400 dark:text-slate-500">
-          {expanded ? "收合 ▴" : "明細 ▾"}
-        </span>
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-col items-end">
+            <Sparkline data={data.daily} />
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">近 7 日</span>
+          </div>
+          <span className="text-xs text-slate-400 dark:text-slate-500">
+            {expanded ? "收合 ▴" : "明細 ▾"}
+          </span>
+        </div>
       </button>
 
       {expanded && (
