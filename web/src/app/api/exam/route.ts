@@ -87,10 +87,11 @@ async function handleGenerate(body: { examType: string }) {
   const uniqueChunks = allChunks.flat().filter((c) => { if (seen.has(c.id)) return false; seen.add(c.id); return true; });
   const context = formatChunksForPrompt(uniqueChunks);
 
-  // Generate 15 questions in two parallel batches to stay under 60s.
-  // Batch A: 8 MC questions (5 pts each = 40 pts).
-  // Batch B: 7 questions = 4 MC (5 pts) + 3 short-answer (10 pts) = 50 pts.
-  // Total 15 questions, 90 pts.
+  // Generate 15 questions in four parallel batches to stay well under 60s.
+  // Batches 1-3: 4 MC each (5 pts each = 20 pts per batch, 60 pts total).
+  // Batch 4: 3 short-answer (10 pts each = 30 pts).
+  // Total 15 questions, 90 pts. Smaller batches finish faster (~10-15s vs
+  // ~30-40s for the old 8-question call) and avoid FUNCTION_INVOCATION_TIMEOUT.
   const buildPrompt = (
     label: string,
     count: number,
@@ -117,35 +118,57 @@ async function handleGenerate(body: { examType: string }) {
 ${context}`;
 
   const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
-  const [partA, partB] = await Promise.all([
+  const batches = await Promise.all([
     withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
       prompt: buildPrompt(
-        "選擇題部分",
-        8,
-        "8 題選擇題（每題 5 分，總計 40 分）",
-        "3 題 easy、3 題 medium、2 題 hard",
+        "基礎選擇題",
+        4,
+        "4 題選擇題（每題 5 分，總計 20 分）",
+        "3 題 easy、1 題 medium",
         1,
       ),
-    }), { label: "exam/gen-A" }),
+    }), { label: "exam/gen-1" }),
     withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
       prompt: buildPrompt(
-        "進階與簡答部分",
-        7,
-        "4 題選擇題（每題 5 分）+ 3 題簡答題（每題 10 分），總計 50 分",
-        "1 題 easy、3 題 medium、3 題 hard",
+        "中階選擇題",
+        4,
+        "4 題選擇題（每題 5 分，總計 20 分）",
+        "1 題 easy、3 題 medium",
+        5,
+      ),
+    }), { label: "exam/gen-2" }),
+    withLLMRetry(() => generateObject({
+      model,
+      schema: ExamSchema,
+      prompt: buildPrompt(
+        "進階選擇題",
+        4,
+        "4 題選擇題（每題 5 分，總計 20 分）",
+        "1 題 medium、3 題 hard",
         9,
       ),
-    }), { label: "exam/gen-B" }),
+    }), { label: "exam/gen-3" }),
+    withLLMRetry(() => generateObject({
+      model,
+      schema: ExamSchema,
+      prompt: buildPrompt(
+        "簡答推導",
+        3,
+        "3 題簡答題（每題 10 分，總計 30 分）",
+        "1 題 medium、2 題 hard",
+        13,
+      ),
+    }), { label: "exam/gen-4" }),
   ]);
 
-  const merged = [...partA.object.questions, ...partB.object.questions]
+  const merged = batches.flatMap((b) => b.object.questions)
     .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..15 just in case the model drifted
   const exam = {
-    title: partA.object.title || partB.object.title || `普通物理 ${isMidterm ? "(I) 期中考" : "(II) 期末考"}模擬試題`,
+    title: batches.find((b) => b.object.title)?.object.title ?? `普通物理 ${isMidterm ? "(I) 期中考" : "(II) 期末考"}模擬試題`,
     questions: merged,
   };
 
