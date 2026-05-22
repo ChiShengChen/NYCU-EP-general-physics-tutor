@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const StudyPlanSchema = z.object({
   summary: z.string().describe("一句話總結學習狀況"),
   reviewConcepts: z.array(z.object({
@@ -82,7 +84,7 @@ ${reviewDue.map((c) => `- ${c.concept}：${c.daysSince} 天前練習，預估記
 - 任何物理公式、變數名、數學符號**一定**要包在 $..$ 裡：
    - ✅ 正確：「煞車距離 $d$ 與初速度 $v$ 的關係：$d \\propto v^2$」
    - ❌ 錯誤：「d_ext 正比於 v_i^2」（沒包 $..$ 會被當成普通文字排版錯亂）`,
-  }), { label: "study-plan" });
+  }), { studentId, endpoint: "/api/study-plan", model: MODEL_NAME, label: "study-plan" });
 
   return NextResponse.json({
     plan: restoreLatexInObject(plan),

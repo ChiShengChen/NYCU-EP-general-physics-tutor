@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { streamText, tool, convertToModelMessages } from "ai";
+import { logUsage } from "@/lib/usage-log";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt, type RetrievedChunk } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
@@ -321,7 +322,18 @@ export async function POST(req: Request) {
         },
       }),
     },
-    onFinish: async ({ text }) => {
+    onFinish: async ({ text, usage }) => {
+      // Log token usage even when there's no studentId / text (system pings
+      // still consume tokens). The helper handles null studentId gracefully.
+      logUsage(
+        {
+          studentId: studentId ?? null,
+          endpoint: "/api/chat",
+          label: "chat/turn",
+          model: process.env.CHAT_MODEL ?? "gemini-2.5-flash",
+        },
+        usage,
+      );
       if (!studentId || !text) return;
       const supabase = createServiceClient();
       // Persist user content with an "[已附圖 N]" prefix when images were

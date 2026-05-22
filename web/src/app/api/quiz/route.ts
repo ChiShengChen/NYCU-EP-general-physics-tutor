@@ -9,6 +9,8 @@ import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 /* ─── Zod schemas for structured quiz output ─── */
 
 const QuizQuestionSchema = z.object({
@@ -126,7 +128,7 @@ ${context}
           "1 題 medium、2 題 hard",
           1,
         ),
-      }), { label: "quiz/synthesis-MC" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/synthesis-MC" }),
       withLLMRetry(() => generateObject({
         model: synthModel,
         schema: QuizSchema,
@@ -136,7 +138,7 @@ ${context}
           "2 題 hard",
           4,
         ),
-      }), { label: "quiz/synthesis-SA" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/synthesis-SA" }),
     ]);
 
     const synthMerged = synthBatches.flatMap((b) => b.object.questions)
@@ -193,22 +195,22 @@ ${context}
         model,
         schema: QuizSchema,
         prompt: buildPrompt("基礎概念", 3, 2, 1, "2 題 easy、2 題 medium、1 題 hard"),
-      }), { label: "quiz/chapter-1" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/chapter-1" }),
       withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
         prompt: buildPrompt("公式應用", 3, 2, 6, "1 題 easy、2 題 medium、2 題 hard"),
-      }), { label: "quiz/chapter-2" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/chapter-2" }),
       withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
         prompt: buildPrompt("推導與綜合", 3, 2, 11, "1 題 easy、2 題 medium、2 題 hard"),
-      }), { label: "quiz/chapter-3" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/chapter-3" }),
       withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
         prompt: buildPrompt("進階應用", 3, 2, 16, "2 題 medium、3 題 hard"),
-      }), { label: "quiz/chapter-4" }),
+      }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/chapter-4" }),
     ]);
 
     const merged = batches.flatMap((b) => b.object.questions)
@@ -298,22 +300,22 @@ ${extraGuidance}`;
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt("基礎概念", 3, 2, 1, "2 題 easy、2 題 medium、1 題 hard", basicHint),
-    }), { label: "quiz/full-1" }),
+    }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/full-1" }),
     withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt("公式應用", 3, 2, 6, "1 題 easy、2 題 medium、2 題 hard", basicHint),
-    }), { label: "quiz/full-2" }),
+    }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/full-2" }),
     withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt("推導與綜合", 3, 2, 11, "1 題 easy、2 題 medium、2 題 hard", advancedHint),
-    }), { label: "quiz/full-3" }),
+    }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/full-3" }),
     withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
       prompt: buildFullPrompt("進階應用", 3, 2, 16, "2 題 medium、3 題 hard", advancedHint),
-    }), { label: "quiz/full-4" }),
+    }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/full-4" }),
   ]);
 
   const merged = batches.flatMap((b) => b.object.questions)
@@ -364,7 +366,7 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
 - 每題給具體的繁體中文回饋，解釋為什麼對或錯
 - 如果學生答錯，引用正確的概念和公式
 - 整體回饋要鼓勵學生，並建議接下來可以複習哪些概念`,
-  }), { label: "quiz/grade" });
+  }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/grade" });
   const gradeResult = restoreLatexInObject(gradeResultRaw);
 
   // Persist mastery + attempts AFTER the response goes out. The LLM grading

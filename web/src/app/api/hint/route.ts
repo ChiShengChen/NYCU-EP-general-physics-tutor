@@ -8,6 +8,8 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const HintSchema = z.object({
   hint: z.string().describe(
     "繁體中文，1–3 句。一定要遵守該層級的指引深度（見 prompt）— 不可在此層級給出完整答案。" +
@@ -36,6 +38,7 @@ export async function POST(req: Request) {
   const draftAnswer = String(body.draftAnswer ?? "").slice(0, 2000);
   const sourceChapter = typeof body.sourceChapter === "number" ? body.sourceChapter : null;
   const level = Math.max(1, Math.min(3, Number(body.level) || 1)) as 1 | 2 | 3;
+  const studentId = typeof body.studentId === "string" ? body.studentId : null;
 
   if (!question) {
     return NextResponse.json({ error: "question required" }, { status: 400 });
@@ -89,7 +92,7 @@ ${context}
 ${levelGuide[level]}
 
 最終輸出：1–3 句的繁體中文提示，公式用 LaTeX。`,
-  }), { label: "hint" });
+  }), { studentId, endpoint: "/api/hint", model: MODEL_NAME, label: "hint" });
 
   return NextResponse.json({ hint: restoreLatexEscapes(object.hint), level });
 }

@@ -9,6 +9,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const PreviewSchema = z.object({
   concepts: z.array(
     z.object({
@@ -81,7 +83,7 @@ ${context}
 - 概念之間互不重複，盡量涵蓋整章的脈絡
 - 公式用 LaTeX，繁體中文搭配必要英文
 - 不要超過 7 個概念`,
-  }), { label: `preview/ch${chapter}` });
+  }), { studentId: null, endpoint: "/api/preview", model: MODEL_NAME, label: `preview/ch${chapter}` });
   const object = restoreLatexInObject(objectRaw);
 
   // 3) Persist to cache (best effort)

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDailyStatus } from "./daily-review";
 import { ThemeToggle } from "./theme-provider";
+import { UsageWidget } from "./usage-widget";
 
 interface ModeSelectorProps {
   onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals") => void;
@@ -69,6 +70,8 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <StatPill emoji="📈" label="平均掌握度" value={stats.avgMastery !== null ? `${stats.avgMastery}%` : "—"} />
           </div>
         )}
+
+        <UsageWidget studentId={studentId} />
 
         {/* Daily review banner: visible reminder + one-click entry to today's
             spaced-repetition session. Visual treatment swaps between

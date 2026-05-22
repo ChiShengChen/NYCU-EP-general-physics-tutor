@@ -8,6 +8,8 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const SingleQuestionSchema = z.object({
   question: z.object({
     id: z.number(),
@@ -46,6 +48,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "previous question required" }, { status: 400 });
   }
   const reason: string = typeof body.reason === "string" ? body.reason : "";
+  const studentId = typeof body.studentId === "string" ? body.studentId : null;
 
   // RAG context on the same chapter.
   const chunks = await retrieveChunks(
@@ -91,7 +94,7 @@ ${context}
 - ${prev.type === "multiple_choice" ? "options 共 4 個（A/B/C/D），correctAnswer 寫字母 A/B/C/D" : "correctAnswer 寫完整參考答案"}
 - explanation 需引用教材具體段落，逐步說明
 - 全部繁體中文`,
-  }), { label: "regen-question" });
+  }), { studentId, endpoint: "/api/regen-question", model: MODEL_NAME, label: "regen-question" });
 
   return NextResponse.json({ question: restoreLatexInObject(object.question) });
 }

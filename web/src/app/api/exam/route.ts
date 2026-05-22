@@ -9,6 +9,8 @@ import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const ExamSchema = z.object({
   title: z.string(),
   questions: z.array(
@@ -52,8 +54,8 @@ export async function POST(req: Request) {
   return NextResponse.json({ error: "Invalid action" }, { status: 400 });
 }
 
-async function handleGenerate(body: { examType: string }) {
-  const { examType } = body as { examType: "midterm" | "final" };
+async function handleGenerate(body: { examType: string; studentId?: string }) {
+  const { examType, studentId } = body as { examType: "midterm" | "final"; studentId?: string };
 
   const isMidterm = examType === "midterm";
   const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch32（熱學、電磁學、電路、電磁波）";
@@ -129,7 +131,7 @@ ${context}`;
         "3 題 easy、1 題 medium",
         1,
       ),
-    }), { label: "exam/gen-1" }),
+    }), { studentId, endpoint: "/api/exam", model: MODEL_NAME, label: "exam/gen-1" }),
     withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
@@ -140,7 +142,7 @@ ${context}`;
         "1 題 easy、3 題 medium",
         5,
       ),
-    }), { label: "exam/gen-2" }),
+    }), { studentId, endpoint: "/api/exam", model: MODEL_NAME, label: "exam/gen-2" }),
     withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
@@ -151,7 +153,7 @@ ${context}`;
         "1 題 medium、3 題 hard",
         9,
       ),
-    }), { label: "exam/gen-3" }),
+    }), { studentId, endpoint: "/api/exam", model: MODEL_NAME, label: "exam/gen-3" }),
     withLLMRetry(() => generateObject({
       model,
       schema: ExamSchema,
@@ -162,7 +164,7 @@ ${context}`;
         "1 題 medium、2 題 hard",
         13,
       ),
-    }), { label: "exam/gen-4" }),
+    }), { studentId, endpoint: "/api/exam", model: MODEL_NAME, label: "exam/gen-4" }),
   ]);
 
   const merged = batches.flatMap((b) => b.object.questions)
@@ -206,7 +208,7 @@ ${JSON.stringify(qa, null, 2)}
 - grade 依照：90+ A+, 85+ A, 80+ B+, 75+ B, 70+ C+, 60+ C, 50+ D, <50 F（以百分比計）
 - 每題給繁體中文回饋
 - 整體回饋包含學習建議`,
-  }), { label: "exam/grade" });
+  }), { studentId, endpoint: "/api/exam", model: MODEL_NAME, label: "exam/grade" });
   const result = restoreLatexInObject(resultRaw);
 
   // Persist DB writes AFTER the response goes out — grading LLM already

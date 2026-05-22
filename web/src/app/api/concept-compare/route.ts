@@ -8,6 +8,8 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
+const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+
 const CompareSchema = z.object({
   rows: z.array(
     z.object({
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const conceptA = String(body.conceptA ?? "").trim().slice(0, 200);
   const conceptB = String(body.conceptB ?? "").trim().slice(0, 200);
+  const studentId = typeof body.studentId === "string" ? body.studentId : null;
   if (!conceptA || !conceptB) {
     return NextResponse.json({ error: "both conceptA and conceptB required" }, { status: 400 });
   }
@@ -77,7 +80,7 @@ ${contextB}
 - 全部用繁體中文，公式用 LaTeX（$..$ 行內、$$...$$ 獨立）
 - 描述要具體可驗證，不要抽象口號
 - 若兩個概念本來就沒什麼關係（例如「重力 vs 介電質」），直接在 differences 提醒「這兩者沒有直接關聯」並建議學生改比較哪些對`,
-  }), { label: "concept-compare" });
+  }), { studentId, endpoint: "/api/concept-compare", model: MODEL_NAME, label: "concept-compare" });
 
   return NextResponse.json({ comparison: restoreLatexInObject(object), conceptA, conceptB });
 }
