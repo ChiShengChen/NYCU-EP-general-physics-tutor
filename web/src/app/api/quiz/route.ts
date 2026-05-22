@@ -149,25 +149,38 @@ ${context}
 - 所有題目的 sourceChapter 都填 ${chapter}
 - 同一份內題目主題盡量分散，不要集中考同一個觀念`;
 
+    // Split into 4 parallel batches of 5 questions each. Smaller batches
+    // finish faster (each ~10-15s instead of 25-40s for a 10-question call),
+    // dropping total wall time enough to stay clear of Vercel's 60s budget.
     const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
-    const [partA, partB] = await Promise.all([
+    const batches = await Promise.all([
       withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
-        prompt: buildPrompt("選擇題部分", 6, 4, 1, "3 題 easy、4 題 medium、3 題 hard"),
-      }), { label: "quiz/chapter-A" }),
+        prompt: buildPrompt("基礎概念", 3, 2, 1, "2 題 easy、2 題 medium、1 題 hard"),
+      }), { label: "quiz/chapter-1" }),
       withLLMRetry(() => generateObject({
         model,
         schema: QuizSchema,
-        prompt: buildPrompt("進階與應用部分", 6, 4, 11, "1 題 easy、4 題 medium、5 題 hard"),
-      }), { label: "quiz/chapter-B" }),
+        prompt: buildPrompt("公式應用", 3, 2, 6, "1 題 easy、2 題 medium、2 題 hard"),
+      }), { label: "quiz/chapter-2" }),
+      withLLMRetry(() => generateObject({
+        model,
+        schema: QuizSchema,
+        prompt: buildPrompt("推導與綜合", 3, 2, 11, "1 題 easy、2 題 medium、2 題 hard"),
+      }), { label: "quiz/chapter-3" }),
+      withLLMRetry(() => generateObject({
+        model,
+        schema: QuizSchema,
+        prompt: buildPrompt("進階應用", 3, 2, 16, "2 題 medium、3 題 hard"),
+      }), { label: "quiz/chapter-4" }),
     ]);
 
-    const merged = [...partA.object.questions, ...partB.object.questions]
+    const merged = batches.flatMap((b) => b.object.questions)
       .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..20
     const quiz = {
-      title: partA.object.title || partB.object.title || `${chLabel} 章節測驗`,
-      description: partA.object.description || `針對第 ${chapter} 章的 20 題測驗`,
+      title: batches.find((b) => b.object.title)?.object.title ?? `${chLabel} 章節測驗`,
+      description: batches.find((b) => b.object.description)?.object.description ?? `針對第 ${chapter} 章的 20 題測驗`,
       questions: merged,
     };
 
@@ -237,43 +250,42 @@ ${context}
 - sourceChapter 必須填入 1..32 之間的章節編號
 ${extraGuidance}`;
 
+  // 4 parallel batches of 5 questions to stay well clear of the 60s budget.
   const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
-  const [partA, partB] = await Promise.all([
+  const basicHint = isIntroQuiz
+    ? "- 對新同學請以基本概念建立題為主"
+    : "- 重點放在掌握度最低的概念上，幫學生鞏固基礎";
+  const advancedHint = isIntroQuiz
+    ? "- 出一些應用題與公式運算題，但仍以基礎概念為核心"
+    : "- 偏向應用、推導與多概念綜合題；如有迷思概念請針對它設計糾正題";
+  const batches = await Promise.all([
     withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
-      prompt: buildFullPrompt(
-        "基礎部分",
-        6,
-        4,
-        1,
-        "3 題 easy、4 題 medium、3 題 hard",
-        isIntroQuiz
-          ? "- 對新同學請以基本概念建立題為主"
-          : "- 重點放在掌握度最低的概念上，幫學生鞏固基礎",
-      ),
-    }), { label: "quiz/full-A" }),
+      prompt: buildFullPrompt("基礎概念", 3, 2, 1, "2 題 easy、2 題 medium、1 題 hard", basicHint),
+    }), { label: "quiz/full-1" }),
     withLLMRetry(() => generateObject({
       model,
       schema: QuizSchema,
-      prompt: buildFullPrompt(
-        "進階與應用部分",
-        6,
-        4,
-        11,
-        "1 題 easy、4 題 medium、5 題 hard",
-        isIntroQuiz
-          ? "- 出一些應用題與公式運算題，但仍以基礎概念為核心"
-          : "- 偏向應用、推導與多概念綜合題；如有迷思概念請針對它設計糾正題",
-      ),
-    }), { label: "quiz/full-B" }),
+      prompt: buildFullPrompt("公式應用", 3, 2, 6, "1 題 easy、2 題 medium、2 題 hard", basicHint),
+    }), { label: "quiz/full-2" }),
+    withLLMRetry(() => generateObject({
+      model,
+      schema: QuizSchema,
+      prompt: buildFullPrompt("推導與綜合", 3, 2, 11, "1 題 easy、2 題 medium、2 題 hard", advancedHint),
+    }), { label: "quiz/full-3" }),
+    withLLMRetry(() => generateObject({
+      model,
+      schema: QuizSchema,
+      prompt: buildFullPrompt("進階應用", 3, 2, 16, "2 題 medium、3 題 hard", advancedHint),
+    }), { label: "quiz/full-4" }),
   ]);
 
-  const merged = [...partA.object.questions, ...partB.object.questions]
+  const merged = batches.flatMap((b) => b.object.questions)
     .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..20
   const quiz = {
-    title: partA.object.title || partB.object.title || "全範圍綜合測驗",
-    description: partA.object.description || "依薄弱概念出 20 題綜合測驗",
+    title: batches.find((b) => b.object.title)?.object.title ?? "全範圍綜合測驗",
+    description: batches.find((b) => b.object.description)?.object.description ?? "依薄弱概念出 20 題綜合測驗",
     questions: merged,
   };
 
