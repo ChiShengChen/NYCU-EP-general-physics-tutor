@@ -52,6 +52,7 @@ export function HintPanel({ question, correctAnswer, sourceChapter, draftAnswer,
           draftAnswer,
           sourceChapter,
           level: nextLevel,
+          studentId: typeof window !== "undefined" ? localStorage.getItem("physics_tutor_student_id") : null,
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

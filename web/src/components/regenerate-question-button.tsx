@@ -31,7 +31,11 @@ export function RegenerateQuestionButton<Q extends { id: number; type: string; c
       const res = await fetch("/api/regen-question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ previous: question, reason: "other" }),
+        body: JSON.stringify({
+          previous: question,
+          reason: "other",
+          studentId: typeof window !== "undefined" ? localStorage.getItem("physics_tutor_student_id") : null,
+        }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();

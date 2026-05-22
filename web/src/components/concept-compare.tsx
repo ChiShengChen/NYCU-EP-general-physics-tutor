@@ -71,7 +71,11 @@ export function ConceptCompare({ onBack }: ConceptCompareProps) {
       const res = await fetch("/api/concept-compare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ conceptA: ax, conceptB: bx }),
+        body: JSON.stringify({
+          conceptA: ax,
+          conceptB: bx,
+          studentId: typeof window !== "undefined" ? localStorage.getItem("physics_tutor_student_id") : null,
+        }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();

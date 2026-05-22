@@ -115,7 +115,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
       const res = await fetch("/api/exam", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "generate", examType }),
+        body: JSON.stringify({ action: "generate", examType, studentId }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
