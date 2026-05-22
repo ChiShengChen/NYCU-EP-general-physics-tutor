@@ -4,7 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
@@ -185,42 +185,50 @@ ${JSON.stringify(qa, null, 2)}
   });
   const result = restoreLatexInObject(resultRaw);
 
+  // Persist DB writes AFTER the response goes out — grading LLM already
+  // burns most of the 60s Vercel budget, so serial DB calls here were
+  // tripping FUNCTION_INVOCATION_TIMEOUT. Run them off the hot path.
   if (studentId) {
-    const supabase = createServiceClient();
+    after(async () => {
+      const supabase = createServiceClient();
 
-    // Update mastery per concept.
-    for (const r of result.results) {
-      const q = questions.find((x) => x.id === r.questionId);
-      if (!q) continue;
-      const { data: existing } = await supabase
-        .from("student_state").select("mastery_score, attempt_count")
-        .eq("student_id", studentId).eq("concept", q.concept).single();
-      const cur = existing?.mastery_score ?? 0;
-      const attempts = existing?.attempt_count ?? 0;
-      const newMastery = Math.min(1, Math.max(0, 0.6 * cur + 0.4 * r.score));
-      await supabase.from("student_state").upsert({
-        student_id: studentId, concept: q.concept, mastery_score: newMastery,
-        attempt_count: attempts + 1,
-        last_misconception: r.isCorrect ? null : r.feedback.slice(0, 200),
-        updated_at: new Date().toISOString(),
-      }, { onConflict: "student_id,concept" });
-    }
+      // Update mastery per concept (parallelised).
+      await Promise.all(
+        result.results.map(async (r) => {
+          const q = questions.find((x) => x.id === r.questionId);
+          if (!q) return;
+          const { data: existing } = await supabase
+            .from("student_state").select("mastery_score, attempt_count")
+            .eq("student_id", studentId).eq("concept", q.concept).single();
+          const cur = existing?.mastery_score ?? 0;
+          const attempts = existing?.attempt_count ?? 0;
+          const newMastery = Math.min(1, Math.max(0, 0.6 * cur + 0.4 * r.score));
+          await supabase.from("student_state").upsert({
+            student_id: studentId, concept: q.concept, mastery_score: newMastery,
+            attempt_count: attempts + 1,
+            last_misconception: r.isCorrect ? null : r.feedback.slice(0, 200),
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "student_id,concept" });
+        }),
+      );
 
-    // Persist the full attempt for later review.
-    await supabase.from("attempts").insert({
-      student_id: studentId,
-      kind: "exam",
-      exam_type: examType,
-      title: examTitle ?? (examType === "midterm" ? "期中考模擬" : "期末考模擬"),
-      questions,
-      answers,
-      confidences: confidences ?? {},
-      hint_usage: hintUsage ?? {},
-      results: result.results,
-      total_score: result.totalScore,
-      max_score: result.maxScore,
-      grade: result.grade,
-      overall_feedback: result.overallFeedback,
+      // Persist the full attempt for later review.
+      const { error: insertErr } = await supabase.from("attempts").insert({
+        student_id: studentId,
+        kind: "exam",
+        exam_type: examType,
+        title: examTitle ?? (examType === "midterm" ? "期中考模擬" : "期末考模擬"),
+        questions,
+        answers,
+        confidences: confidences ?? {},
+        hint_usage: hintUsage ?? {},
+        results: result.results,
+        total_score: result.totalScore,
+        max_score: result.maxScore,
+        grade: result.grade,
+        overall_feedback: result.overallFeedback,
+      });
+      if (insertErr) console.error("Exam attempt persist error:", insertErr);
     });
   }
 

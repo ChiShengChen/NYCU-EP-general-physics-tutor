@@ -4,7 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
@@ -319,60 +319,67 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
   });
   const gradeResult = restoreLatexInObject(gradeResultRaw);
 
-  // Update student mastery scores based on quiz results
+  // Persist mastery + attempts AFTER the response goes out. The LLM grading
+  // alone can eat 40+s of the 60s Vercel budget, so serial DB writes here
+  // were tripping FUNCTION_INVOCATION_TIMEOUT. Move them off the hot path
+  // via after() and parallelise within.
   if (studentId) {
-    const supabase = createServiceClient();
+    after(async () => {
+      const supabase = createServiceClient();
 
-    for (const result of gradeResult.results) {
-      const question = questions.find((q) => q.id === result.questionId);
-      if (!question) continue;
+      await Promise.all(
+        gradeResult.results.map(async (result) => {
+          const question = questions.find((q) => q.id === result.questionId);
+          if (!question) return;
 
-      // Fetch current mastery
-      const { data: existing } = await supabase
-        .from("student_state")
-        .select("mastery_score, attempt_count")
-        .eq("student_id", studentId)
-        .eq("concept", question.concept)
-        .single();
+          const { data: existing } = await supabase
+            .from("student_state")
+            .select("mastery_score, attempt_count")
+            .eq("student_id", studentId)
+            .eq("concept", question.concept)
+            .single();
 
-      const currentMastery = existing?.mastery_score ?? 0;
-      const currentAttempts = existing?.attempt_count ?? 0;
+          const currentMastery = existing?.mastery_score ?? 0;
+          const currentAttempts = existing?.attempt_count ?? 0;
 
-      // Weighted update: blend current mastery with quiz performance
-      // New mastery = 0.6 * current + 0.4 * quiz_score (quiz has meaningful weight)
-      const newMastery = Math.min(1, Math.max(0, 0.6 * currentMastery + 0.4 * result.score));
+          // Weighted update: blend current mastery with quiz performance
+          // New mastery = 0.6 * current + 0.4 * quiz_score (quiz has meaningful weight)
+          const newMastery = Math.min(1, Math.max(0, 0.6 * currentMastery + 0.4 * result.score));
 
-      await supabase.from("student_state").upsert(
-        {
-          student_id: studentId,
-          concept: question.concept,
-          mastery_score: newMastery,
-          attempt_count: currentAttempts + 1,
-          last_misconception: result.isCorrect ? null : result.feedback.slice(0, 200),
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "student_id,concept" },
+          await supabase.from("student_state").upsert(
+            {
+              student_id: studentId,
+              concept: question.concept,
+              mastery_score: newMastery,
+              attempt_count: currentAttempts + 1,
+              last_misconception: result.isCorrect ? null : result.feedback.slice(0, 200),
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "student_id,concept" },
+          );
+        }),
       );
-    }
 
-    // Persist the full attempt for later review. Score = sum of per-question scores
-    // expressed as a percentage (max_score = number of questions; total = sum of scores).
-    const total = gradeResult.results.reduce((s, r) => s + r.score, 0);
-    const maxScore = questions.length;
-    await supabase.from("attempts").insert({
-      student_id: studentId,
-      kind: "quiz",
-      exam_type: null,
-      title: quizTitle ?? "自動測驗",
-      questions,
-      answers,
-      confidences: confidences ?? {},
-      hint_usage: hintUsage ?? {},
-      results: gradeResult.results,
-      total_score: total,
-      max_score: maxScore,
-      grade: null,
-      overall_feedback: gradeResult.overallFeedback,
+      // Persist the full attempt for later review. Score = sum of per-question scores
+      // expressed as a percentage (max_score = number of questions; total = sum of scores).
+      const total = gradeResult.results.reduce((s, r) => s + r.score, 0);
+      const maxScore = questions.length;
+      const { error: insertErr } = await supabase.from("attempts").insert({
+        student_id: studentId,
+        kind: "quiz",
+        exam_type: null,
+        title: quizTitle ?? "自動測驗",
+        questions,
+        answers,
+        confidences: confidences ?? {},
+        hint_usage: hintUsage ?? {},
+        results: gradeResult.results,
+        total_score: total,
+        max_score: maxScore,
+        grade: null,
+        overall_feedback: gradeResult.overallFeedback,
+      });
+      if (insertErr) console.error("Quiz attempt persist error:", insertErr);
     });
   }
 
