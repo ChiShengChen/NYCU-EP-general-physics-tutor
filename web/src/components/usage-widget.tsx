@@ -95,7 +95,7 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
     <div className="w-full max-w-5xl mb-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm">
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center justify-between gap-3 text-left"
+        className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-left"
       >
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-2xl">📊</span>
@@ -107,7 +107,7 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center justify-end gap-3 sm:shrink-0">
           <div className="flex flex-col items-end">
             <Sparkline data={data.daily} />
             <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">近 7 日</span>
@@ -119,8 +119,8 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
       </button>
 
       {expanded && (
-        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-          <table className="w-full text-xs">
+        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
+          <table className="w-full text-xs min-w-[280px]">
             <thead>
               <tr className="text-slate-500 dark:text-slate-400">
                 <th className="text-left font-normal pb-2">功能</th>

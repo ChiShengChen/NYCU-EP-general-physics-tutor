@@ -209,8 +209,10 @@ function ComparisonView({
         </h2>
       </div>
 
-      {/* Side-by-side table */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
+      {/* Side-by-side table (≥sm: ~640px). Fixed 3-column layout assumes
+          enough horizontal room for both concepts' MarkdownRenderer output
+          plus the dimension label, which falls apart below ~480px. */}
+      <div className="hidden sm:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
             <tr>
@@ -235,6 +237,30 @@ function ComparisonView({
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Card-stack (mobile, <sm). One card per dimension; A and B stacked
+          vertically inside each card so MarkdownRenderer gets full row width. */}
+      <div className="sm:hidden space-y-3">
+        {result.rows.map((r, idx) => (
+          <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 shadow-sm space-y-2.5">
+            <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              {r.dimension}
+            </div>
+            <div className="space-y-1">
+              <div className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">{pair.a}</div>
+              <div className="text-sm text-slate-800 dark:text-slate-100">
+                <MarkdownRenderer content={r.a} />
+              </div>
+            </div>
+            <div className="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div className="text-xs font-semibold text-rose-700 dark:text-rose-300">{pair.b}</div>
+              <div className="text-sm text-slate-800 dark:text-slate-100">
+                <MarkdownRenderer content={r.b} />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Similarities / Differences / Pitfalls */}
