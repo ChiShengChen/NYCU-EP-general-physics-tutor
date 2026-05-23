@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDailyStatus } from "./daily-review";
 import { ThemeToggle } from "./theme-provider";
 import { UsageWidget } from "./usage-widget";
+import { AuthButton } from "./auth-button";
 
 interface ModeSelectorProps {
   onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals") => void;
@@ -50,8 +51,11 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
       <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">
         <span className="text-xl">🔬</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">普通物理 AI 助教</h1>
-        <ThemeToggle className="ml-auto" />
-        <span className="text-xs text-slate-400 dark:text-slate-500 hidden sm:inline">NYCU 電物系 · 楊本立老師</span>
+        <div className="ml-auto flex items-center gap-2">
+          <AuthButton />
+          <ThemeToggle />
+        </div>
+        <span className="text-xs text-slate-400 dark:text-slate-500 hidden lg:inline">NYCU 電物系 · 楊本立老師</span>
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
