@@ -1,0 +1,600 @@
+{
+  "nodes": [
+    {
+      "id": "magnetic-poles",
+      "label": "磁極",
+      "kind": "concept",
+      "summary": "每個磁鐵都有南北兩極，同極相斥，異極相吸，且磁極總是成對出現。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "magnetic-field-lines",
+      "label": "磁力線",
+      "kind": "concept",
+      "summary": "描述磁場方向與強度的線，從N極發出進入S極，形成連續閉合迴路。",
+      "latex": "",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "magnetic-field-definition",
+      "label": "磁場定義",
+      "kind": "definition",
+      "summary": "磁場在空間某點的定義，是透過作用在移動電荷上的磁力來決定。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "magnetic-force-on-moving-charge",
+      "label": "移動電荷磁力",
+      "kind": "formula",
+      "summary": "帶電粒子在磁場中運動時所受的磁力。",
+      "latex": "\\mathbf{F}_B = q \\mathbf{v} \\times \\mathbf{B}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "right-hand-rule-magnetic-force",
+      "label": "磁力右手定則",
+      "kind": "method",
+      "summary": "用右手判斷移動正電荷在磁場中所受磁力的方向。",
+      "latex": "",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "magnitude-magnetic-force",
+      "label": "磁力大小",
+      "kind": "formula",
+      "summary": "帶電粒子在磁場中運動時所受磁力的大小。",
+      "latex": "F_B = |q| vB \\sin \\theta",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "magnetic-force-no-work",
+      "label": "磁力不做功",
+      "kind": "principle",
+      "summary": "磁力永遠垂直於電荷的速度方向，因此不對移動電荷做功，不改變其速率。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "tesla-unit",
+      "label": "特斯拉 (T)",
+      "kind": "definition",
+      "summary": "磁場的國際單位制 (SI) 單位。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "gauss-unit",
+      "label": "高斯 (G)",
+      "kind": "definition",
+      "summary": "磁場的厘米-克-秒制 (cgs) 單位。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "motion-charged-particle-uniform-b",
+      "label": "均勻磁場中電荷運動",
+      "kind": "concept",
+      "summary": "帶電粒子在均勻磁場中運動的特性，通常為圓周或螺旋路徑。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "radius-circular-motion",
+      "label": "圓周運動半徑",
+      "kind": "formula",
+      "summary": "帶電粒子在均勻磁場中做圓周運動的半徑。",
+      "latex": "r = \\frac{mv}{qB}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "cyclotron-frequency",
+      "label": "迴旋頻率",
+      "kind": "formula",
+      "summary": "帶電粒子在均勻磁場中做圓周運動的角頻率，與粒子速度無關。",
+      "latex": "\\omega = \\frac{qB}{m}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "period-circular-motion",
+      "label": "圓周運動週期",
+      "kind": "formula",
+      "summary": "帶電粒子在均勻磁場中做圓周運動的週期，與半徑無關。",
+      "latex": "T = \\frac{2\\pi m}{qB}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "helical-path",
+      "label": "螺旋路徑",
+      "kind": "concept",
+      "summary": "帶電粒子在磁場中以任意角度運動時，其路徑為螺旋形。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "cycloidal-motion",
+      "label": "擺線運動",
+      "kind": "concept",
+      "summary": "帶電粒子在互相垂直的均勻電場和磁場中，可能呈現的特殊運動路徑。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "magnetic-bottle",
+      "label": "磁瓶",
+      "kind": "concept",
+      "summary": "一種非均勻磁場配置，能將帶電粒子困在其中，用於核融合研究。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "van-allen-radiation-belts",
+      "label": "范艾倫輻射帶",
+      "kind": "concept",
+      "summary": "地球周圍甜甜圈狀的帶電粒子區域，被地球磁場捕獲。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "lorentz-force",
+      "label": "勞侖茲力",
+      "kind": "formula",
+      "summary": "帶電粒子在電場和磁場中受到的總電磁力。",
+      "latex": "\\vec{F} = q\\vec{E} + q\\vec{v} \\times \\vec{B}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "velocity-selector",
+      "label": "速度選擇器",
+      "kind": "method",
+      "summary": "利用正交電場和磁場來選擇特定速度的帶電粒子。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "velocity-selector-condition",
+      "label": "速度選擇條件",
+      "kind": "formula",
+      "summary": "帶電粒子通過速度選擇器而不偏轉的條件。",
+      "latex": "v = \\frac{E}{B}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "mass-spectrometer",
+      "label": "質譜儀",
+      "kind": "method",
+      "summary": "一種根據離子的質荷比來分離離子的裝置。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "mass-to-charge-ratio-formula",
+      "label": "質荷比公式",
+      "kind": "formula",
+      "summary": "質譜儀中用於計算離子質荷比的公式。",
+      "latex": "\\frac{m}{q} = \\frac{rB_{0,in}B_{in}}{E}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "cyclotron",
+      "label": "迴旋加速器",
+      "kind": "method",
+      "summary": "一種能將帶電粒子加速到極高速度的裝置。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "kinetic-energy-cyclotron",
+      "label": "迴旋加速器動能",
+      "kind": "formula",
+      "summary": "迴旋加速器中被加速粒子的動能。",
+      "latex": "K = \\frac{q^2 B^2 R^2}{2m}",
+      "pages": [
+        22,
+        23
+      ]
+    },
+    {
+      "id": "hall-effect",
+      "label": "霍爾效應",
+      "kind": "concept",
+      "summary": "電流導體在磁場中產生垂直於電流和磁場的電位差。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "hall-voltage-formula",
+      "label": "霍爾電壓",
+      "kind": "formula",
+      "summary": "霍爾效應中產生的電位差公式。",
+      "latex": "\\Delta V_H = \\frac{R_H B I}{t}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "hall-coefficient-formula",
+      "label": "霍爾係數",
+      "kind": "formula",
+      "summary": "霍爾效應中用於判斷電荷載子符號和密度的材料常數。",
+      "latex": "R_H = \\frac{1}{nq}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "magnetic-force-on-current-wire",
+      "label": "載流導線磁力",
+      "kind": "concept",
+      "summary": "載有電流的導線在磁場中會受到磁力作用。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "magnetic-force-wire-segment",
+      "label": "導線段磁力",
+      "kind": "formula",
+      "summary": "磁場中載流導線微小線段所受的磁力。",
+      "latex": "\\vec{F} = \\int I(d\\vec{\\ell} \\times \\vec{B})",
+      "pages": [
+        28,
+        29
+      ]
+    },
+    {
+      "id": "magnetic-force-straight-wire",
+      "label": "直導線磁力",
+      "kind": "formula",
+      "summary": "均勻磁場中直載流導線所受的磁力。",
+      "latex": "\\vec{F} = I \\vec{L}' \\times \\vec{B}",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "magnetic-force-current-loop-uniform-b",
+      "label": "均勻磁場中載流迴路磁力",
+      "kind": "principle",
+      "summary": "在均勻磁場中，任何閉合載流迴路所受的淨磁力為零。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "torque-on-current-loop",
+      "label": "載流迴路扭矩",
+      "kind": "concept",
+      "summary": "載流迴路在磁場中會受到扭矩作用，使其傾向於與磁場對齊。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "torque-on-current-loop-formula",
+      "label": "載流迴路扭矩公式",
+      "kind": "formula",
+      "summary": "載流迴路在均勻磁場中所受扭矩的公式。",
+      "latex": "\\vec{\\tau} = (I\\vec{A}) \\times \\vec{B}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "magnetic-dipole-moment-definition",
+      "label": "磁偶極矩定義",
+      "kind": "definition",
+      "summary": "描述磁偶極強度和方向的向量，定義為電流與面積向量的乘積。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "magnetic-dipole-moment-formula",
+      "label": "磁偶極矩公式",
+      "kind": "formula",
+      "summary": "載流迴路的磁偶極矩公式。",
+      "latex": "\\vec{\\mu} = I\\vec{A}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "torque-on-magnetic-dipole",
+      "label": "磁偶極扭矩",
+      "kind": "formula",
+      "summary": "磁偶極在磁場中所受的扭矩。",
+      "latex": "\\vec{\\tau} = \\vec{\\mu} \\times \\vec{B}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "potential-energy-magnetic-dipole",
+      "label": "磁偶極位能",
+      "kind": "formula",
+      "summary": "磁偶極在磁場中的位能。",
+      "latex": "U_B = -\\vec{\\mu} \\cdot \\vec{B}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "right-hand-rule-magnetic-dipole",
+      "label": "磁偶極矩右手定則",
+      "kind": "method",
+      "summary": "用右手判斷載流迴路磁偶極矩的方向。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "magnetic-moment-solenoid",
+      "label": "螺線管磁矩",
+      "kind": "formula",
+      "summary": "螺線管的磁偶極矩公式。",
+      "latex": "\\vec{\\mu} = NI\\vec{A}",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "magnetic-dipole-non-uniform-b-force",
+      "label": "非均勻磁場中磁偶極力",
+      "kind": "concept",
+      "summary": "磁偶極在非均勻磁場中除了扭矩外，還會受到淨力作用。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "magnetic-field-definition",
+      "to": "magnetic-force-on-moving-charge",
+      "reason": "磁場的定義是基於它對移動電荷施加的力。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "right-hand-rule-magnetic-force",
+      "reason": "需要先理解磁力的存在才能判斷其方向。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "magnitude-magnetic-force",
+      "reason": "磁力的向量形式是理解其大小的基礎。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "magnetic-force-no-work",
+      "reason": "磁力不做功的原理是基於磁力與速度的垂直關係。"
+    },
+    {
+      "from": "magnetic-field-definition",
+      "to": "tesla-unit",
+      "reason": "磁場定義後才能引入其單位。"
+    },
+    {
+      "from": "tesla-unit",
+      "to": "gauss-unit",
+      "reason": "高斯是特斯拉的換算單位。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "motion-charged-particle-uniform-b",
+      "reason": "帶電粒子在磁場中的運動是由磁力決定的。"
+    },
+    {
+      "from": "motion-charged-particle-uniform-b",
+      "to": "radius-circular-motion",
+      "reason": "圓周運動半徑是均勻磁場中電荷運動的具體表現。"
+    },
+    {
+      "from": "motion-charged-particle-uniform-b",
+      "to": "cyclotron-frequency",
+      "reason": "迴旋頻率是均勻磁場中電荷運動的另一個重要參數。"
+    },
+    {
+      "from": "motion-charged-particle-uniform-b",
+      "to": "period-circular-motion",
+      "reason": "圓周運動週期是均勻磁場中電荷運動的另一個重要參數。"
+    },
+    {
+      "from": "motion-charged-particle-uniform-b",
+      "to": "helical-path",
+      "reason": "螺旋路徑是均勻磁場中電荷運動的更一般情況。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "cycloidal-motion",
+      "reason": "擺線運動是電荷在電磁場中受力運動的特殊案例。"
+    },
+    {
+      "from": "magnetic-field-lines",
+      "to": "magnetic-bottle",
+      "reason": "磁瓶利用非均勻磁場線來困住粒子。"
+    },
+    {
+      "from": "magnetic-field-lines",
+      "to": "van-allen-radiation-belts",
+      "reason": "范艾倫輻射帶是地球磁場線捕獲帶電粒子的結果。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "lorentz-force",
+      "reason": "勞侖茲力是磁力與電力的結合。"
+    },
+    {
+      "from": "lorentz-force",
+      "to": "velocity-selector",
+      "reason": "速度選擇器利用勞侖茲力平衡來篩選粒子。"
+    },
+    {
+      "from": "velocity-selector",
+      "to": "velocity-selector-condition",
+      "reason": "速度選擇器的工作原理導出其條件公式。"
+    },
+    {
+      "from": "velocity-selector",
+      "to": "mass-spectrometer",
+      "reason": "質譜儀通常包含速度選擇器作為其一部分。"
+    },
+    {
+      "from": "mass-spectrometer",
+      "to": "mass-to-charge-ratio-formula",
+      "reason": "質譜儀的應用是為了測量質荷比。"
+    },
+    {
+      "from": "motion-charged-particle-uniform-b",
+      "to": "cyclotron",
+      "reason": "迴旋加速器利用磁場使粒子做圓周運動。"
+    },
+    {
+      "from": "cyclotron",
+      "to": "kinetic-energy-cyclotron",
+      "reason": "迴旋加速器加速粒子以增加其動能。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "hall-effect",
+      "reason": "霍爾效應是移動電荷在磁場中受力導致電荷分離的結果。"
+    },
+    {
+      "from": "hall-effect",
+      "to": "hall-voltage-formula",
+      "reason": "霍爾效應的結果是產生霍爾電壓。"
+    },
+    {
+      "from": "hall-effect",
+      "to": "hall-coefficient-formula",
+      "reason": "霍爾係數是霍爾效應的定量描述。"
+    },
+    {
+      "from": "magnetic-force-on-moving-charge",
+      "to": "magnetic-force-on-current-wire",
+      "reason": "導線中的電流是移動電荷的集合，因此也受磁力。"
+    },
+    {
+      "from": "magnetic-force-on-current-wire",
+      "to": "magnetic-force-wire-segment",
+      "reason": "導線段磁力是載流導線磁力的微觀形式。"
+    },
+    {
+      "from": "magnetic-force-wire-segment",
+      "to": "magnetic-force-straight-wire",
+      "reason": "直導線磁力是導線段磁力在均勻磁場中的積分結果。"
+    },
+    {
+      "from": "magnetic-force-wire-segment",
+      "to": "magnetic-force-current-loop-uniform-b",
+      "reason": "閉合迴路磁力為零是導線段磁力在閉合路徑上的積分結果。"
+    },
+    {
+      "from": "magnetic-force-wire-segment",
+      "to": "torque-on-current-loop",
+      "reason": "導線段上的磁力在迴路上產生扭矩。"
+    },
+    {
+      "from": "torque-on-current-loop",
+      "to": "torque-on-current-loop-formula",
+      "reason": "載流迴路扭矩的具體計算需要公式。"
+    },
+    {
+      "from": "torque-on-current-loop-formula",
+      "to": "magnetic-dipole-moment-definition",
+      "reason": "扭矩公式中IA的部分被定義為磁偶極矩。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "magnetic-dipole-moment-formula",
+      "reason": "磁偶極矩的定義直接給出其公式。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "torque-on-magnetic-dipole",
+      "reason": "磁偶極矩是計算磁偶極扭矩的關鍵量。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "potential-energy-magnetic-dipole",
+      "reason": "磁偶極矩是計算磁偶極位能的關鍵量。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "right-hand-rule-magnetic-dipole",
+      "reason": "磁偶極矩的方向需要右手定則來判斷。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "magnetic-moment-solenoid",
+      "reason": "螺線管的磁矩是多個迴路磁矩的疊加。"
+    },
+    {
+      "from": "magnetic-dipole-moment-definition",
+      "to": "magnetic-dipole-non-uniform-b-force",
+      "reason": "磁偶極在非均勻磁場中受力是磁偶極矩概念的延伸。"
+    }
+  ],
+  "chapter_number": 27,
+  "usage": {
+    "input_tokens": 17172,
+    "output_tokens": 5416
+  }
+}

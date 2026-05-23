@@ -1,0 +1,692 @@
+{
+  "nodes": [
+    {
+      "id": "biot-savart-law-current-element",
+      "label": "畢歐-薩伐爾定律 (電流元)",
+      "kind": "law",
+      "summary": "描述電流元 $Id\\vec{s}$ 在空間中產生微小磁場 $d\\vec{B}$ 的定律。",
+      "latex": "d\\vec{B} = \\frac{\\mu_0}{4\\pi} \\frac{Id\\vec{s} \\times \\hat{r}}{r^2}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "permeability-free-space",
+      "label": "真空磁導率",
+      "kind": "definition",
+      "summary": "描述磁場在真空中傳播能力的物理常數。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "biot-savart-law-total-field",
+      "label": "畢歐-薩伐爾定律 (總磁場)",
+      "kind": "formula",
+      "summary": "透過對所有電流元產生的微小磁場積分，計算電流分佈產生的總磁場。",
+      "latex": "\\vec{B} = \\frac{\\mu_0 I}{4\\pi} \\oint \\frac{d\\vec{s} \\times \\hat{r}}{r^2}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "mu0-epsilon0-c-relation",
+      "label": "磁導率電容率光速關係",
+      "kind": "formula",
+      "summary": "真空磁導率、真空電容率與光速之間的關係式。",
+      "latex": "\\frac{1}{\\mu_0 \\varepsilon_0} = c^2",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "magnetic-field-point-charge",
+      "label": "點電荷磁場",
+      "kind": "formula",
+      "summary": "描述以恆定速度運動的點電荷在空間中產生的磁場。",
+      "latex": "\\vec{B} = \\frac{\\mu_0}{4\\pi} \\frac{q\\vec{v} \\times \\hat{r}}{r^2}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "magnetic-field-infinite-wire",
+      "label": "無限長直導線磁場",
+      "kind": "formula",
+      "summary": "描述無限長直導線周圍磁場大小的公式。",
+      "latex": "\\vec{B} = \\frac{\\mu_0 I}{2\\pi a} \\hat{\\phi}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "right-hand-rule-b-field",
+      "label": "磁場方向右手定則",
+      "kind": "principle",
+      "summary": "用於判斷電流周圍磁場方向的規則。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "magnetic-field-circular-arc-center",
+      "label": "圓弧中心磁場",
+      "kind": "formula",
+      "summary": "計算圓弧電流在圓心處產生的磁場。",
+      "latex": "\\mathbf{B} = \\frac{\\mu_0 I \\theta}{4\\pi R}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "magnetic-field-circular-loop-center",
+      "label": "圓形線圈中心磁場",
+      "kind": "formula",
+      "summary": "計算圓形電流線圈在圓心處產生的磁場。",
+      "latex": "\\mathbf{B} = \\frac{\\mu_0 I}{2R}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "magnetic-field-circular-loop-axis",
+      "label": "圓形線圈軸線磁場",
+      "kind": "formula",
+      "summary": "計算圓形電流線圈沿其軸線產生的磁場。",
+      "latex": "B_x = \\frac{\\mu_0 Ia^2}{2(x^2+a^2)^{3/2}}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "magnetic-dipole-moment-current-loop",
+      "label": "電流迴路磁偶極矩",
+      "kind": "definition",
+      "summary": "描述電流迴路產生磁場強度的物理量，定義為電流乘以面積。",
+      "latex": "\\mu = IA",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "magnetic-field-magnetic-dipole-far-field",
+      "label": "磁偶極遠場磁場",
+      "kind": "formula",
+      "summary": "描述磁偶極在遠處產生的近似磁場。",
+      "latex": "B \\approx \\frac{\\mu_0}{2\\pi} \\frac{\\mu}{x^3}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "magnetic-force-parallel-conductors",
+      "label": "平行導線間磁力",
+      "kind": "formula",
+      "summary": "計算兩條平行載流導線之間磁力大小的公式。",
+      "latex": "F_1 = \\frac{\\mu_0 I_1 I_2}{2\\pi a} \\ell",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "magnetic-force-per-unit-length",
+      "label": "每單位長度磁力",
+      "kind": "formula",
+      "summary": "描述兩條平行載流導線之間每單位長度所受磁力。",
+      "latex": "\\frac{F_B}{\\ell} = \\frac{\\mu_0 I_1 I_2}{2\\pi a}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "ampere-unit-definition",
+      "label": "安培定義",
+      "kind": "definition",
+      "summary": "國際單位制中電流的單位，由兩平行導線間的磁力定義。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "parallel-currents-attraction-repulsion",
+      "label": "平行電流吸引排斥",
+      "kind": "principle",
+      "summary": "兩平行導線電流同向則吸引，反向則排斥。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "amperes-law",
+      "label": "安培定律",
+      "kind": "law",
+      "summary": "描述磁場沿閉合路徑的線積分與路徑所圍電流的關係。",
+      "latex": "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 I_{enc}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "enclosed-current",
+      "label": "圍繞電流",
+      "kind": "definition",
+      "summary": "閉合安培迴路所圍繞的總電流。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "amperes-law-sign-rule",
+      "label": "安培定律正負號規則",
+      "kind": "method",
+      "summary": "使用右手定則判斷安培定律中圍繞電流的正負號。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "magnetic-field-cylindrical-conductor-inside",
+      "label": "圓柱導體內部磁場",
+      "kind": "formula",
+      "summary": "計算均勻載流長圓柱導體內部磁場的公式。",
+      "latex": "B = \\left(\\frac{\\mu_0 I}{2\\pi R^2}\\right) r",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "magnetic-field-cylindrical-conductor-outside",
+      "label": "圓柱導體外部磁場",
+      "kind": "formula",
+      "summary": "計算均勻載流長圓柱導體外部磁場的公式。",
+      "latex": "B = \\frac{\\mu_0 I}{2\\pi r}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "solenoid-magnetic-field",
+      "label": "螺線管磁場",
+      "kind": "formula",
+      "summary": "計算長螺線管內部磁場的公式。",
+      "latex": "B = \\mu_0 n I",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "toroid-magnetic-field",
+      "label": "螺線環磁場",
+      "kind": "formula",
+      "summary": "計算螺線環內部磁場的公式。",
+      "latex": "\\vec{B} = \\frac{\\mu_0 N I}{2\\pi r} \\hat{\\phi}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "magnetic-field-infinite-current-plate",
+      "label": "無限大電流板磁場",
+      "kind": "formula",
+      "summary": "計算無限大均勻載流板產生的磁場。",
+      "latex": "B = \\frac{\\mu_0 J_s}{2}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "magnetic-flux",
+      "label": "磁通量",
+      "kind": "definition",
+      "summary": "穿過某一面積的磁場線總量，是磁場強度與面積的點積積分。",
+      "latex": "\\Phi_B = \\int \\vec{B} \\cdot d\\vec{A}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "weber-unit",
+      "label": "韋伯 (單位)",
+      "kind": "definition",
+      "summary": "磁通量的國際單位，等於特斯拉平方公尺。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "gauss-law-magnetism",
+      "label": "磁學高斯定律",
+      "kind": "law",
+      "summary": "描述通過任何閉合曲面的磁通量總和為零，表示不存在磁單極。",
+      "latex": "\\oint \\mathbf{B} \\cdot d\\mathbf{A} = 0",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "magnetic-monopole",
+      "label": "磁單極",
+      "kind": "concept",
+      "summary": "假設存在的單獨北極或南極，但至今未被觀測到。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "magnetism-in-matter",
+      "label": "物質磁性",
+      "kind": "concept",
+      "summary": "探討物質內部電子軌道運動和自旋如何產生磁性。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "orbital-magnetic-dipole-moment-classical",
+      "label": "軌道磁偶極矩 (古典)",
+      "kind": "formula",
+      "summary": "描述電子軌道運動產生的磁偶極矩的古典模型。",
+      "latex": "\\mu = \\frac{1}{2}evr",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "orbital-magnetic-dipole-moment-angular-momentum",
+      "label": "軌道磁偶極矩與角動量",
+      "kind": "formula",
+      "summary": "電子軌道磁偶極矩與其軌道角動量之間的關係。",
+      "latex": "\\vec{\\mu}_L = -\\left(\\frac{e}{2m_e}\\right) \\vec{L}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "spin-magnetic-dipole-moment",
+      "label": "自旋磁偶極矩",
+      "kind": "formula",
+      "summary": "電子自旋產生的磁偶極矩。",
+      "latex": "\\vec{\\mu}_S = -\\left(\\frac{e}{m_e}\\right)\\vec{S}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "bohr-magneton",
+      "label": "波耳磁子",
+      "kind": "definition",
+      "summary": "電子自旋磁偶極矩的最小單位，是基本物理常數。",
+      "latex": "\\mu_B = \\frac{e}{2m_e}\\hbar",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "total-magnetic-moment-atom",
+      "label": "原子總磁偶極矩",
+      "kind": "concept",
+      "summary": "原子中電子軌道和自旋磁偶極矩的總和。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "pauli-exclusion-principle-magnetic",
+      "label": "包立不相容原理 (磁性)",
+      "kind": "principle",
+      "summary": "影響原子中電子配對，進而決定原子是否具有淨磁偶極矩。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "paramagnetism",
+      "label": "順磁性",
+      "kind": "concept",
+      "summary": "物質的磁偶極矩傾向與外加磁場平行排列，被磁場吸引。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "diamagnetism",
+      "label": "抗磁性",
+      "kind": "concept",
+      "summary": "物質的磁偶極矩傾向與外加磁場反向排列，被磁場排斥。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "ferromagnetism",
+      "label": "鐵磁性",
+      "kind": "concept",
+      "summary": "物質具有永久磁偶極矩，且傾向彼此平行排列，產生強烈磁性。",
+      "latex": "",
+      "pages": [
+        33,
+        36
+      ]
+    },
+    {
+      "id": "antiferromagnetism",
+      "label": "反鐵磁性",
+      "kind": "concept",
+      "summary": "物質的相鄰磁偶極矩傾向彼此反向排列，總磁矩為零或很小。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "magnetic-domains",
+      "label": "磁疇",
+      "kind": "concept",
+      "summary": "鐵磁材料中磁矩方向一致的微觀區域。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "domain-walls",
+      "label": "磁疇壁",
+      "kind": "concept",
+      "summary": "分隔不同磁疇的邊界區域。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "magnetization-external-field",
+      "label": "外加磁場磁化",
+      "kind": "concept",
+      "summary": "鐵磁材料在外部磁場作用下，磁疇重新排列導致整體磁化。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "hysteresis-curve",
+      "label": "磁滯曲線",
+      "kind": "concept",
+      "summary": "描述鐵磁材料磁化強度與外加磁場強度之間非線性關係的曲線。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "hard-ferromagnetic-material",
+      "label": "硬鐵磁材料",
+      "kind": "concept",
+      "summary": "具有寬磁滯曲線，不易磁化和去磁的鐵磁材料。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "soft-ferromagnetic-material",
+      "label": "軟鐵磁材料",
+      "kind": "concept",
+      "summary": "具有窄磁滯曲線，易於磁化和去磁的鐵磁材料。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "curie-temperature",
+      "label": "居里溫度",
+      "kind": "definition",
+      "summary": "鐵磁材料失去其鐵磁性轉變為順磁性的臨界溫度。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "meissner-effect",
+      "label": "邁斯納效應",
+      "kind": "concept",
+      "summary": "超導體在超導態下將內部磁場完全排出的現象，表現為完全抗磁性。",
+      "latex": "",
+      "pages": [
+        39
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "permeability-free-space",
+      "to": "biot-savart-law-current-element",
+      "reason": "真空磁導率是畢歐-薩伐爾定律中的常數，需先理解其定義。"
+    },
+    {
+      "from": "biot-savart-law-current-element",
+      "to": "biot-savart-law-total-field",
+      "reason": "總磁場是透過對電流元產生的微小磁場積分而得。"
+    },
+    {
+      "from": "biot-savart-law-current-element",
+      "to": "magnetic-field-point-charge",
+      "reason": "點電荷磁場的公式是從電流元的畢歐-薩伐爾定律推導而來。"
+    },
+    {
+      "from": "biot-savart-law-total-field",
+      "to": "magnetic-field-infinite-wire",
+      "reason": "無限長直導線磁場的公式是畢歐-薩伐爾定律的應用。"
+    },
+    {
+      "from": "biot-savart-law-total-field",
+      "to": "magnetic-field-circular-arc-center",
+      "reason": "圓弧中心磁場的公式是畢歐-薩伐爾定律的應用。"
+    },
+    {
+      "from": "magnetic-field-circular-arc-center",
+      "to": "magnetic-field-circular-loop-center",
+      "reason": "圓形線圈中心磁場是圓弧中心磁場的特例。"
+    },
+    {
+      "from": "biot-savart-law-total-field",
+      "to": "magnetic-field-circular-loop-axis",
+      "reason": "圓形線圈軸線磁場的公式是畢歐-薩伐爾定律的應用。"
+    },
+    {
+      "from": "magnetic-field-circular-loop-axis",
+      "to": "magnetic-dipole-moment-current-loop",
+      "reason": "電流迴路磁偶極矩的概念與圓形線圈軸線磁場的推導密切相關。"
+    },
+    {
+      "from": "magnetic-dipole-moment-current-loop",
+      "to": "magnetic-field-magnetic-dipole-far-field",
+      "reason": "磁偶極遠場磁場的公式直接使用磁偶極矩的概念。"
+    },
+    {
+      "from": "magnetic-field-infinite-wire",
+      "to": "magnetic-force-parallel-conductors",
+      "reason": "平行導線間的磁力是利用一條導線產生的磁場作用於另一條導線而計算。"
+    },
+    {
+      "from": "magnetic-force-parallel-conductors",
+      "to": "magnetic-force-per-unit-length",
+      "reason": "每單位長度磁力是平行導線間磁力的直接推導。"
+    },
+    {
+      "from": "magnetic-force-per-unit-length",
+      "to": "ampere-unit-definition",
+      "reason": "安培的定義是基於兩平行導線間的磁力。"
+    },
+    {
+      "from": "right-hand-rule-b-field",
+      "to": "parallel-currents-attraction-repulsion",
+      "reason": "判斷平行電流間吸引或排斥需要使用右手定則來確定磁場方向。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "enclosed-current",
+      "reason": "理解安培定律需要先知道如何定義和計算圍繞電流。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "amperes-law-sign-rule",
+      "reason": "正確應用安培定律需要遵循其正負號規則。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "magnetic-field-cylindrical-conductor-inside",
+      "reason": "圓柱導體內部磁場的計算是安培定律的典型應用。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "magnetic-field-cylindrical-conductor-outside",
+      "reason": "圓柱導體外部磁場的計算是安培定律的典型應用。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "solenoid-magnetic-field",
+      "reason": "螺線管磁場的公式是透過安培定律推導而來。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "toroid-magnetic-field",
+      "reason": "螺線環磁場的公式是透過安培定律推導而來。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "magnetic-field-infinite-current-plate",
+      "reason": "無限大電流板磁場的公式是透過安培定律推導而來。"
+    },
+    {
+      "from": "magnetic-flux",
+      "to": "weber-unit",
+      "reason": "韋伯是磁通量的單位，需先理解磁通量。"
+    },
+    {
+      "from": "magnetic-flux",
+      "to": "gauss-law-magnetism",
+      "reason": "磁學高斯定律是關於磁通量在閉合曲面上的性質。"
+    },
+    {
+      "from": "gauss-law-magnetism",
+      "to": "magnetic-monopole",
+      "reason": "磁學高斯定律為零的結果暗示了磁單極的不存在。"
+    },
+    {
+      "from": "magnetism-in-matter",
+      "to": "orbital-magnetic-dipole-moment-classical",
+      "reason": "軌道磁偶極矩是物質磁性的主要來源之一。"
+    },
+    {
+      "from": "orbital-magnetic-dipole-moment-classical",
+      "to": "orbital-magnetic-dipole-moment-angular-momentum",
+      "reason": "軌道磁偶極矩與角動量的關係是從古典模型推導而來。"
+    },
+    {
+      "from": "magnetism-in-matter",
+      "to": "spin-magnetic-dipole-moment",
+      "reason": "自旋磁偶極矩是物質磁性的另一個主要來源。"
+    },
+    {
+      "from": "spin-magnetic-dipole-moment",
+      "to": "bohr-magneton",
+      "reason": "波耳磁子是電子自旋磁偶極矩的最小單位。"
+    },
+    {
+      "from": "orbital-magnetic-dipole-moment-angular-momentum",
+      "to": "total-magnetic-moment-atom",
+      "reason": "原子總磁偶極矩是軌道和自旋磁偶極矩的總和。"
+    },
+    {
+      "from": "spin-magnetic-dipole-moment",
+      "to": "total-magnetic-moment-atom",
+      "reason": "原子總磁偶極矩是軌道和自旋磁偶極矩的總和。"
+    },
+    {
+      "from": "total-magnetic-moment-atom",
+      "to": "pauli-exclusion-principle-magnetic",
+      "reason": "包立不相容原理影響原子總磁偶極矩的形成。"
+    },
+    {
+      "from": "total-magnetic-moment-atom",
+      "to": "paramagnetism",
+      "reason": "順磁性物質的原子具有淨磁偶極矩。"
+    },
+    {
+      "from": "total-magnetic-moment-atom",
+      "to": "diamagnetism",
+      "reason": "抗磁性物質的原子通常沒有淨磁偶極矩，但會在外場中感應出反向磁矩。"
+    },
+    {
+      "from": "total-magnetic-moment-atom",
+      "to": "ferromagnetism",
+      "reason": "鐵磁性物質的原子具有永久磁偶極矩。"
+    },
+    {
+      "from": "ferromagnetism",
+      "to": "magnetic-domains",
+      "reason": "磁疇是鐵磁性材料的特徵。"
+    },
+    {
+      "from": "magnetic-domains",
+      "to": "domain-walls",
+      "reason": "磁疇壁是磁疇之間的邊界。"
+    },
+    {
+      "from": "magnetic-domains",
+      "to": "magnetization-external-field",
+      "reason": "外加磁場磁化是透過改變磁疇結構實現的。"
+    },
+    {
+      "from": "ferromagnetism",
+      "to": "antiferromagnetism",
+      "reason": "反鐵磁性是與鐵磁性相對的一種磁序。"
+    },
+    {
+      "from": "ferromagnetism",
+      "to": "hysteresis-curve",
+      "reason": "磁滯曲線是描述鐵磁材料特性的重要工具。"
+    },
+    {
+      "from": "hysteresis-curve",
+      "to": "hard-ferromagnetic-material",
+      "reason": "硬鐵磁材料的特性由其磁滯曲線的形狀決定。"
+    },
+    {
+      "from": "hysteresis-curve",
+      "to": "soft-ferromagnetic-material",
+      "reason": "軟鐵磁材料的特性由其磁滯曲線的形狀決定。"
+    },
+    {
+      "from": "ferromagnetism",
+      "to": "curie-temperature",
+      "reason": "居里溫度是鐵磁材料失去鐵磁性的臨界點。"
+    },
+    {
+      "from": "diamagnetism",
+      "to": "meissner-effect",
+      "reason": "邁斯納效應是超導體表現出的完全抗磁性。"
+    }
+  ],
+  "chapter_number": 28,
+  "usage": {
+    "input_tokens": 16973,
+    "output_tokens": 6600
+  }
+}

@@ -1,0 +1,611 @@
+{
+  "nodes": [
+    {
+      "id": "electric-potential-energy-definition",
+      "label": "電位能定義",
+      "kind": "definition",
+      "summary": "電位能 U_E 的變化量定義為 ΔU_E = -q ∫_A^B E ⋅ dℓ。",
+      "latex": "\\Delta U_E = (-)q \\int_A^B \\vec{E} \\cdot d\\vec{\\ell}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electric-potential-definition",
+      "label": "電位定義",
+      "kind": "definition",
+      "summary": "電位 V 定義為單位電荷的電位能 U_E/q，單位為伏特 (J/C)。",
+      "latex": "V \\equiv \\frac{U_E}{q}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "potential-difference",
+      "label": "電位差",
+      "kind": "formula",
+      "summary": "兩點間的電位差 ΔV 等於單位電荷的電位能變化量，或電場的線積分。",
+      "latex": "\\Delta V = \\frac{\\Delta U_E}{q} = (-) \\int_A^B \\vec{E} \\cdot d\\vec{\\ell}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electronvolt-unit",
+      "label": "電子伏特",
+      "kind": "definition",
+      "summary": "電子伏特 (eV) 是能量單位，定義為一個電子在 1 伏特電位差下所獲得的能量。",
+      "latex": "1 \\text{eV} = 1.6 \\times 10^{-19} \\text{ J}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "coulomb-force-conservative",
+      "label": "庫侖力是保守力",
+      "kind": "principle",
+      "summary": "庫侖力所做的功與路徑無關，因此是保守力。",
+      "latex": "",
+      "pages": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "potential-reference-infinity",
+      "label": "無窮遠處電位零",
+      "kind": "principle",
+      "summary": "通常將電位參考點設在無窮遠處，即 V(∞) = 0。",
+      "latex": "",
+      "pages": [
+        6,
+        8
+      ]
+    },
+    {
+      "id": "electric-potential-point-charge-absolute",
+      "label": "點電荷電位",
+      "kind": "formula",
+      "summary": "以無窮遠處為零電位參考點時，距離 r 處的點電荷電位。",
+      "latex": "V(r) = k_e \\frac{q}{r}",
+      "pages": [
+        6,
+        8
+      ]
+    },
+    {
+      "id": "electric-potential-multiple-charges",
+      "label": "多點電荷電位",
+      "kind": "formula",
+      "summary": "多個點電荷造成的總電位是各點電荷電位的純量和。",
+      "latex": "V(r) = k_e \\sum_i \\frac{q_i}{|\\vec{r} - \\vec{r}_i|}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "electric-potential-continuous-distribution",
+      "label": "連續電荷電位",
+      "kind": "formula",
+      "summary": "連續電荷分佈造成的電位，透過對電荷元素 dq 積分求得。",
+      "latex": "V(r) = k_e \\int \\frac{dq}{r}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "potential-uniformly-charged-solid-sphere-inside",
+      "label": "均勻帶電實心球內電位",
+      "kind": "formula",
+      "summary": "均勻帶電實心球內部（r<R）的電位公式。",
+      "latex": "V_D = \\frac{k_e Q}{2R} \\left( 3 - \\frac{r^2}{R^2} \\right)",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "electric-potential-continuity",
+      "label": "電位連續性",
+      "kind": "principle",
+      "summary": "電位 V 在任何邊界處都是連續的，因為電位差是電場的線積分。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "electric-field-discontinuity",
+      "label": "電場不連續性",
+      "kind": "principle",
+      "summary": "電場的法向分量在帶電表面處可能不連續，其跳變量與表面電荷密度有關。",
+      "latex": "\\left. \\vec{E}_{above}^{\\perp} \\right|_{z=0^+} - \\left. \\vec{E}_{below}^{\\perp} \\right|_{z=0^-} = \\frac{\\sigma}{\\varepsilon_0}\\hat{n}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "potential-energy-two-charges",
+      "label": "兩電荷電位能",
+      "kind": "formula",
+      "summary": "兩個點電荷 q1, q2 之間的電位能，與它們的距離成反比。",
+      "latex": "U = k_e \\frac{q_1 q_2}{r_{12}}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "potential-energy-n-charges-sum-qV",
+      "label": "N點電荷電位能(qV形式)",
+      "kind": "formula",
+      "summary": "N 個點電荷系統的總電位能，可表示為 1/2 Σ q_i V(r_i)。",
+      "latex": "U_E = \\frac{1}{2} \\sum_{i=1}^{N} q_i V(\\vec{r}_i)",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "potential-energy-continuous-charges",
+      "label": "連續電荷電位能",
+      "kind": "formula",
+      "summary": "連續電荷分佈的總電位能，透過對體電荷密度與電位的乘積積分求得。",
+      "latex": "U_E = \\frac{1}{2} \\int \\rho(\\vec{r}) V(\\vec{r}) d\\tau",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "work-to-charge-conducting-sphere",
+      "label": "導體球充電功",
+      "kind": "formula",
+      "summary": "將半徑 R 的導體球充電至總電荷 Q 所需做的功或其電位能。",
+      "latex": "U_E = \\frac{1}{2} \\frac{k_e Q^2}{R}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "e-field-magnitude-from-potential",
+      "label": "電場強度與電位關係",
+      "kind": "principle",
+      "summary": "電場強度的大小是電位隨位置變化率的量度。",
+      "latex": "|\\vec{E}| = \\left|\\frac{\\partial V}{\\partial \\ell}\\right|",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "e-field-direction-lower-potential",
+      "label": "電場指向低電位",
+      "kind": "principle",
+      "summary": "電場 E 總是從高電位指向低電位。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "equipotential-surfaces-perpendicular-e",
+      "label": "等電位面垂直電場",
+      "kind": "principle",
+      "summary": "等電位面上的任意位移 dℓ 與電場 E 垂直。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "electric-dipole-moment-definition",
+      "label": "電偶極矩定義",
+      "kind": "definition",
+      "summary": "電偶極矩 p 定義為電荷 q 乘以從負電荷指向正電荷的位移向量 d。",
+      "latex": "\\vec{p} \\equiv q\\vec{d}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "electric-potential-electric-dipole",
+      "label": "電偶極電位",
+      "kind": "formula",
+      "summary": "在遠距離 (r >> d) 處，電偶極造成的電位與電偶極矩和位置向量的點積成正比。",
+      "latex": "V = \\frac{1}{4\\pi\\varepsilon_0} \\frac{\\vec{p} \\cdot \\hat{r}}{r^2}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "e-field-from-potential-gradient",
+      "label": "電場由電位梯度求得",
+      "kind": "formula",
+      "summary": "電場 E 是電位 V 的負梯度。",
+      "latex": "\\vec{E} = -\\nabla V",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "gradient-operator-definition",
+      "label": "梯度算子定義",
+      "kind": "definition",
+      "summary": "梯度算子 ∇ 是一個向量微分算子，用於計算純量場的梯度。",
+      "latex": "\\nabla \\equiv \\left(\\frac{\\partial}{\\partial x}\\hat{i} + \\frac{\\partial}{\\partial y}\\hat{j} + \\frac{\\partial}{\\partial z}\\hat{k}\\right)",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "electric-potential-finite-line-charge",
+      "label": "有限線電荷電位",
+      "kind": "formula",
+      "summary": "均勻帶電有限線電荷在軸外某點的電位公式。",
+      "latex": "V = \\frac{k_e Q}{\\ell} \\ln \\left( \\frac{\\ell + \\sqrt{\\ell^2 + a^2}}{a} \\right)",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "e-field-infinite-line-charge",
+      "label": "無限線電荷電場",
+      "kind": "formula",
+      "summary": "無限長均勻帶電線電荷在距離 r 處的電場公式。",
+      "latex": "\\vec{E} = \\frac{\\lambda}{2\\pi\\epsilon_0 r} \\hat{r}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "electric-potential-infinite-line-charge",
+      "label": "無限線電荷電位",
+      "kind": "formula",
+      "summary": "無限長均勻帶電線電荷在距離 r 處的電位公式，需設定參考點。",
+      "latex": "V(r) = \\frac{\\lambda}{2\\pi\\epsilon_0} \\ln \\frac{R}{r}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "electric-potential-ring-charge",
+      "label": "帶電環電位",
+      "kind": "formula",
+      "summary": "均勻帶電環在其軸線上某點的電位公式。",
+      "latex": "V(x,0) = \\frac{k_e Q}{\\sqrt{x^2 + a^2}}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "e-field-x-ring-charge-from-potential",
+      "label": "帶電環電場x分量",
+      "kind": "formula",
+      "summary": "均勻帶電環在其軸線上某點的電場 x 分量，由電位梯度求得。",
+      "latex": "E_x = \\frac{k_e Qx}{(x^2 + a^2)^{3/2}}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "electric-potential-charged-disk",
+      "label": "帶電圓盤電位",
+      "kind": "formula",
+      "summary": "均勻帶電圓盤在其軸線上某點的電位公式。",
+      "latex": "V = 2\\pi k_e \\sigma [(x^2 + a^2)^{1/2} - x]",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "e-field-x-charged-disk-from-potential",
+      "label": "帶電圓盤電場x分量",
+      "kind": "formula",
+      "summary": "均勻帶電圓盤在其軸線上某點的電場 x 分量，由電位梯度求得。",
+      "latex": "E_x = 2\\pi k_e \\sigma \\left(1 - \\frac{x}{\\sqrt{x^2 + a^2}}\\right)",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "properties-conductors-electrostatic-equilibrium",
+      "label": "導體靜電平衡性質",
+      "kind": "concept",
+      "summary": "靜電平衡時，導體內部電場為零、電荷分佈於表面、內部處處等電位、表面電場垂直。",
+      "latex": "",
+      "pages": [
+        24,
+        25
+      ]
+    },
+    {
+      "id": "e-field-conductor-surface",
+      "label": "導體表面電場",
+      "kind": "formula",
+      "summary": "靜電平衡時，導體表面外的電場大小與表面電荷密度成正比。",
+      "latex": "E = \\frac{\\sigma}{\\epsilon_0}",
+      "pages": [
+        25,
+        27
+      ]
+    },
+    {
+      "id": "two-conducting-spheres-potential-equality",
+      "label": "兩導體球電位相等",
+      "kind": "formula",
+      "summary": "兩個相連的導體球在靜電平衡時，其表面電位相等。",
+      "latex": "V = k_e \\frac{q_1}{r_1} = k_e \\frac{q_2}{r_2}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "two-conducting-spheres-e-field-ratio",
+      "label": "兩導體球電場比",
+      "kind": "formula",
+      "summary": "兩個相連的導體球在靜電平衡時，其表面電場強度與半徑成反比。",
+      "latex": "\\frac{E_1}{E_2} = \\frac{r_2}{r_1}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "conductor-cavity-properties",
+      "label": "導體空腔性質",
+      "kind": "principle",
+      "summary": "靜電平衡時，導體內部空腔若無電荷，則空腔內電場為零且處處等電位。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "e-field-conducting-sphere-shell-region2",
+      "label": "導體球殼電場(a<r<b)",
+      "kind": "formula",
+      "summary": "帶電導體球與同心導體殼之間區域的電場公式。",
+      "latex": "E_2 = \\frac{1}{2\\pi \\varepsilon_0} \\frac{Q}{r^2}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "e-field-conducting-sphere-shell-region4",
+      "label": "導體球殼電場(r>c)",
+      "kind": "formula",
+      "summary": "帶電導體球與同心導體殼外部區域的電場公式。",
+      "latex": "E_4 = \\frac{1}{4\\pi \\varepsilon_0} \\frac{Q}{r^2}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "corona-discharge",
+      "label": "電暈放電",
+      "kind": "concept",
+      "summary": "當導體附近電場夠強，使空氣電離但不形成完全擊穿時的局部放電現象。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "electrical-breakdown-sparks",
+      "label": "電氣擊穿與火花",
+      "kind": "concept",
+      "summary": "當電場強度超過介電強度時，絕緣體失去絕緣性，導致電流通過並產生火花。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "dielectric-properties",
+      "label": "介電性質",
+      "kind": "concept",
+      "summary": "描述電介質在電場中的行為，包含介電常數（極化程度）和介電強度（最大承受電場）。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "electric-potential-energy-definition",
+      "to": "electric-potential-definition",
+      "reason": "電位定義為單位電荷的電位能。"
+    },
+    {
+      "from": "electric-potential-definition",
+      "to": "potential-difference",
+      "reason": "電位差是電位的變化量。"
+    },
+    {
+      "from": "electric-potential-energy-definition",
+      "to": "potential-difference",
+      "reason": "電位差與電位能變化量直接相關。"
+    },
+    {
+      "from": "electric-potential-definition",
+      "to": "electronvolt-unit",
+      "reason": "電子伏特是基於電位定義的能量單位。"
+    },
+    {
+      "from": "coulomb-force-conservative",
+      "to": "electric-potential-energy-definition",
+      "reason": "庫侖力是保守力是電位能定義的基礎。"
+    },
+    {
+      "from": "potential-difference",
+      "to": "electric-potential-point-charge-absolute",
+      "reason": "點電荷電位是透過電位差積分導出的。"
+    },
+    {
+      "from": "potential-reference-infinity",
+      "to": "electric-potential-point-charge-absolute",
+      "reason": "點電荷絕對電位需要設定無窮遠處為零電位參考點。"
+    },
+    {
+      "from": "electric-potential-point-charge-absolute",
+      "to": "electric-potential-multiple-charges",
+      "reason": "多點電荷電位是點電荷電位的疊加。"
+    },
+    {
+      "from": "electric-potential-point-charge-absolute",
+      "to": "electric-potential-continuous-distribution",
+      "reason": "連續電荷電位是點電荷電位在連續極限下的推廣。"
+    },
+    {
+      "from": "electric-potential-continuous-distribution",
+      "to": "potential-uniformly-charged-solid-sphere-inside",
+      "reason": "均勻帶電實心球內電位是連續電荷電位的一個應用。"
+    },
+    {
+      "from": "electric-potential-continuous-distribution",
+      "to": "electric-potential-finite-line-charge",
+      "reason": "有限線電荷電位是連續電荷電位的一個應用。"
+    },
+    {
+      "from": "electric-potential-continuous-distribution",
+      "to": "electric-potential-ring-charge",
+      "reason": "帶電環電位是連續電荷電位的一個應用。"
+    },
+    {
+      "from": "electric-potential-continuous-distribution",
+      "to": "electric-potential-charged-disk",
+      "reason": "帶電圓盤電位是連續電荷電位的一個應用。"
+    },
+    {
+      "from": "potential-difference",
+      "to": "electric-potential-continuity",
+      "reason": "電位連續性是電位差定義的直接推論。"
+    },
+    {
+      "from": "electric-potential-definition",
+      "to": "potential-energy-two-charges",
+      "reason": "兩電荷電位能是將一個電荷置於另一個電荷電位場所需的功。"
+    },
+    {
+      "from": "potential-energy-two-charges",
+      "to": "potential-energy-n-charges-sum-qV",
+      "reason": "N點電荷電位能是兩電荷電位能的推廣。"
+    },
+    {
+      "from": "potential-energy-n-charges-sum-qV",
+      "to": "potential-energy-continuous-charges",
+      "reason": "連續電荷電位能是N點電荷電位能在連續極限下的推廣。"
+    },
+    {
+      "from": "potential-energy-continuous-charges",
+      "to": "work-to-charge-conducting-sphere",
+      "reason": "導體球充電功是連續電荷電位能的一個應用。"
+    },
+    {
+      "from": "potential-difference",
+      "to": "e-field-magnitude-from-potential",
+      "reason": "電場強度與電位關係是電位差定義的直接推論。"
+    },
+    {
+      "from": "potential-difference",
+      "to": "e-field-direction-lower-potential",
+      "reason": "電場指向低電位是電位差定義的直接推論。"
+    },
+    {
+      "from": "potential-difference",
+      "to": "equipotential-surfaces-perpendicular-e",
+      "reason": "等電位面垂直電場是電位差定義的直接推論。"
+    },
+    {
+      "from": "electric-dipole-moment-definition",
+      "to": "electric-potential-electric-dipole",
+      "reason": "電偶極電位公式中使用了電偶極矩的定義。"
+    },
+    {
+      "from": "electric-potential-point-charge-absolute",
+      "to": "electric-potential-electric-dipole",
+      "reason": "電偶極電位是兩個點電荷電位的疊加。"
+    },
+    {
+      "from": "electric-potential-definition",
+      "to": "e-field-from-potential-gradient",
+      "reason": "電場由電位梯度求得是電位與電場關係的核心。"
+    },
+    {
+      "from": "gradient-operator-definition",
+      "to": "e-field-from-potential-gradient",
+      "reason": "電場由電位梯度求得需要梯度算子的定義。"
+    },
+    {
+      "from": "e-field-from-potential-gradient",
+      "to": "e-field-x-ring-charge-from-potential",
+      "reason": "帶電環電場x分量是電場由電位梯度求得的一個應用。"
+    },
+    {
+      "from": "electric-potential-ring-charge",
+      "to": "e-field-x-ring-charge-from-potential",
+      "reason": "帶電環電場x分量需要先知道帶電環電位。"
+    },
+    {
+      "from": "e-field-from-potential-gradient",
+      "to": "e-field-x-charged-disk-from-potential",
+      "reason": "帶電圓盤電場x分量是電場由電位梯度求得的一個應用。"
+    },
+    {
+      "from": "electric-potential-charged-disk",
+      "to": "e-field-x-charged-disk-from-potential",
+      "reason": "帶電圓盤電場x分量需要先知道帶電圓盤電位。"
+    },
+    {
+      "from": "e-field-infinite-line-charge",
+      "to": "electric-potential-infinite-line-charge",
+      "reason": "無限線電荷電位是透過對無限線電荷電場積分求得的。"
+    },
+    {
+      "from": "properties-conductors-electrostatic-equilibrium",
+      "to": "e-field-conductor-surface",
+      "reason": "導體表面電場公式是導體靜電平衡性質的推論。"
+    },
+    {
+      "from": "properties-conductors-electrostatic-equilibrium",
+      "to": "two-conducting-spheres-potential-equality",
+      "reason": "兩導體球電位相等是導體靜電平衡性質的應用。"
+    },
+    {
+      "from": "two-conducting-spheres-potential-equality",
+      "to": "two-conducting-spheres-e-field-ratio",
+      "reason": "兩導體球電場比是從電位相等推導而來。"
+    },
+    {
+      "from": "properties-conductors-electrostatic-equilibrium",
+      "to": "conductor-cavity-properties",
+      "reason": "導體空腔性質是導體靜電平衡性質的特例。"
+    },
+    {
+      "from": "properties-conductors-electrostatic-equilibrium",
+      "to": "e-field-conducting-sphere-shell-region2",
+      "reason": "導體球殼電場的計算依賴於導體靜電平衡性質。"
+    },
+    {
+      "from": "properties-conductors-electrostatic-equilibrium",
+      "to": "e-field-conducting-sphere-shell-region4",
+      "reason": "導體球殼電場的計算依賴於導體靜電平衡性質。"
+    },
+    {
+      "from": "e-field-conductor-surface",
+      "to": "electric-field-discontinuity",
+      "reason": "導體表面電場公式是電場不連續性的一個特例。"
+    },
+    {
+      "from": "dielectric-properties",
+      "to": "electrical-breakdown-sparks",
+      "reason": "電氣擊穿與火花現象與介電性質中的介電強度直接相關。"
+    },
+    {
+      "from": "dielectric-properties",
+      "to": "corona-discharge",
+      "reason": "電暈放電與介電性質中的介電強度有關。"
+    }
+  ],
+  "chapter_number": 23,
+  "usage": {
+    "input_tokens": 15873,
+    "output_tokens": 6483
+  }
+}

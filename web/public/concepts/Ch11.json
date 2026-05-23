@@ -1,0 +1,666 @@
+{
+  "nodes": [
+    {
+      "id": "translational-equilibrium-condition",
+      "label": "平移動平衡條件",
+      "kind": "law",
+      "summary": "物體所受合力為零，使其沒有整體移動的趨勢。",
+      "latex": "\\sum \\vec{F} = 0",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "rotational-equilibrium-condition",
+      "label": "轉動平衡條件",
+      "kind": "law",
+      "summary": "物體所受合力矩為零，使其沒有整體轉動的趨勢。",
+      "latex": "\\sum \\vec{\\tau} = 0",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "static-equilibrium-definition",
+      "label": "靜力平衡",
+      "kind": "definition",
+      "summary": "物體相對於慣性參考系靜止，且無平移與轉動。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "net-force-formula",
+      "label": "合力公式",
+      "kind": "formula",
+      "summary": "計算物體所受所有力的向量和。",
+      "latex": "\\vec{F} = \\sum_i \\vec{F}_i",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "net-torque-formula",
+      "label": "合力矩公式",
+      "kind": "formula",
+      "summary": "計算物體所受所有力矩的向量和。",
+      "latex": "\\vec{\\tau} = \\sum_i \\vec{r}_i \\times \\vec{F}_i",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "force-torque-independence",
+      "label": "力矩獨立性",
+      "kind": "concept",
+      "summary": "合力為零不代表合力矩為零，反之亦然。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "torque-axis-independence-principle",
+      "label": "力矩軸心獨立原理",
+      "kind": "principle",
+      "summary": "若物體合力為零，則合力矩與選取的轉軸位置無關。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "torque-transformation-formula",
+      "label": "力矩轉換公式",
+      "kind": "formula",
+      "summary": "描述不同軸心O與O'之間力矩的關係。",
+      "latex": "\\vec{\\tau}_o = \\vec{\\tau}_{o'} + \\vec{r}' \\times \\sum_i \\vec{F}_i",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "center-of-gravity-definition",
+      "label": "重心",
+      "kind": "definition",
+      "summary": "物體所有重力力矩等效於單一力矩作用的點。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "center-of-mass-definition",
+      "label": "質心",
+      "kind": "definition",
+      "summary": "物體所有力等效於單一力作用的點。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "cg-cm-coincidence-principle",
+      "label": "重心質心重合",
+      "kind": "principle",
+      "summary": "在均勻重力場中，物體的重心與質心重合。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "center-of-mass-position-formula",
+      "label": "質心位置公式",
+      "kind": "formula",
+      "summary": "計算多質點系統質心位置的公式。",
+      "latex": "\\vec{r}_{CM} = \\frac{\\sum_i m_i \\vec{r}_i}{\\sum_i m_i}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "rigid-body-equilibrium-strategy",
+      "label": "剛體平衡解題",
+      "kind": "method",
+      "summary": "解決剛體平衡問題的系統化步驟。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "free-body-diagram-method",
+      "label": "自由體圖法",
+      "kind": "method",
+      "summary": "隔離物體並繪製所有作用力的圖示，用於力學分析。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "statically-indeterminate-structure",
+      "label": "靜不定結構",
+      "kind": "concept",
+      "summary": "未知數多於平衡方程式，無法單獨用靜力平衡求解的結構。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "elasticity-indeterminate-principle",
+      "label": "彈性學解靜不定",
+      "kind": "principle",
+      "summary": "解決靜不定平衡問題時，需輔以材料的彈性性質知識。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "deformation-concept",
+      "label": "形變",
+      "kind": "concept",
+      "summary": "物體因受力而改變形狀或尺寸的現象。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "stress-definition",
+      "label": "應力",
+      "kind": "definition",
+      "summary": "單位面積上所受的力，導致物體形變。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "strain-definition",
+      "label": "應變",
+      "kind": "definition",
+      "summary": "物體形變程度的量度。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "elastic-modulus-definition",
+      "label": "彈性模數",
+      "kind": "definition",
+      "summary": "應力與應變之間的比例常數，衡量材料抵抗形變的能力。",
+      "latex": "\\text{Elastic modulus} \\equiv \\frac{\\text{stress}}{\\text{strain}}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "hookes-law-elasticity",
+      "label": "虎克定律 (彈性)",
+      "kind": "law",
+      "summary": "在足夠小的應力下，應變與應力成正比。",
+      "latex": "\\text{stress} \\propto \\text{strain}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "youngs-modulus-definition",
+      "label": "楊氏模數",
+      "kind": "definition",
+      "summary": "衡量固體抵抗長度變化的能力。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "tensile-stress-definition",
+      "label": "拉伸應力",
+      "kind": "definition",
+      "summary": "垂直於截面施加的拉力除以截面積。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "tensile-strain-definition",
+      "label": "拉伸應變",
+      "kind": "definition",
+      "summary": "長度變化量除以初始長度。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "youngs-modulus-formula",
+      "label": "楊氏模數公式",
+      "kind": "formula",
+      "summary": "計算楊氏模數的公式，基於拉伸應力與拉伸應變。",
+      "latex": "Y = \\frac{F/A}{\\Delta L/L_i}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "tensile-compressive-stress-concept",
+      "label": "拉壓應力",
+      "kind": "concept",
+      "summary": "物體可同時承受拉伸和壓縮應力，楊氏模數可能不同。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "stress-strain-curve-concept",
+      "label": "應力應變曲線",
+      "kind": "concept",
+      "summary": "描述材料在應力作用下形變行為的圖形。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "proportional-limit-concept",
+      "label": "比例極限",
+      "kind": "concept",
+      "summary": "應力與應變之間保持線性關係的最高點。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "elastic-limit-concept",
+      "label": "彈性極限",
+      "kind": "concept",
+      "summary": "材料在移除應力後仍能恢復原狀的最高應力點。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "plastic-deformation-concept",
+      "label": "塑性形變",
+      "kind": "concept",
+      "summary": "應力移除後，材料無法完全恢復原狀的永久形變。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "fracture-point-concept",
+      "label": "斷裂點",
+      "kind": "concept",
+      "summary": "材料在應力作用下發生斷裂的點。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "elastic-hysteresis-concept",
+      "label": "彈性遲滯",
+      "kind": "concept",
+      "summary": "材料加載和卸載曲線不重合，導致能量耗散。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "shear-modulus-definition",
+      "label": "剪力模數",
+      "kind": "definition",
+      "summary": "衡量固體抵抗形狀變化的能力。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "shear-stress-definition",
+      "label": "剪應力",
+      "kind": "definition",
+      "summary": "施加於物體表面切線方向的力除以作用面積。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "shear-strain-definition",
+      "label": "剪應變",
+      "kind": "definition",
+      "summary": "頂面相對位移量除以物體高度。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "shear-modulus-formula",
+      "label": "剪力模數公式",
+      "kind": "formula",
+      "summary": "計算剪力模數的公式，基於剪應力與剪應變。",
+      "latex": "S = \\frac{F/A}{\\Delta x/h}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "bulk-modulus-definition",
+      "label": "體積模數",
+      "kind": "definition",
+      "summary": "衡量物體抵抗體積變化的能力。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "volume-stress-definition",
+      "label": "體積應力",
+      "kind": "definition",
+      "summary": "作用於物體表面單位面積上的壓力。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "volume-strain-definition",
+      "label": "體積應變",
+      "kind": "definition",
+      "summary": "體積變化量除以初始體積。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "bulk-modulus-formula",
+      "label": "體積模數公式",
+      "kind": "formula",
+      "summary": "計算體積模數的公式，基於體積應力與體積應變。",
+      "latex": "B = \\frac{(-)F/A}{\\Delta V / V_i}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "compressibility-definition",
+      "label": "可壓縮性",
+      "kind": "definition",
+      "summary": "體積模數的倒數，衡量材料抵抗壓縮的能力。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "translational-equilibrium-condition",
+      "to": "static-equilibrium-definition",
+      "reason": "靜力平衡的定義包含平移動平衡。"
+    },
+    {
+      "from": "rotational-equilibrium-condition",
+      "to": "static-equilibrium-definition",
+      "reason": "靜力平衡的定義包含轉動平衡。"
+    },
+    {
+      "from": "net-force-formula",
+      "to": "translational-equilibrium-condition",
+      "reason": "理解平移動平衡條件需要先知道如何計算合力。"
+    },
+    {
+      "from": "net-torque-formula",
+      "to": "rotational-equilibrium-condition",
+      "reason": "理解轉動平衡條件需要先知道如何計算合力矩。"
+    },
+    {
+      "from": "torque-transformation-formula",
+      "to": "torque-axis-independence-principle",
+      "reason": "力矩軸心獨立原理是從力矩轉換公式推導而來。"
+    },
+    {
+      "from": "translational-equilibrium-condition",
+      "to": "torque-axis-independence-principle",
+      "reason": "力矩軸心獨立原理的成立條件之一是合力為零。"
+    },
+    {
+      "from": "center-of-gravity-definition",
+      "to": "cg-cm-coincidence-principle",
+      "reason": "重心質心重合原理是關於重心與質心關係的。"
+    },
+    {
+      "from": "center-of-mass-definition",
+      "to": "cg-cm-coincidence-principle",
+      "reason": "重心質心重合原理是關於重心與質心關係的。"
+    },
+    {
+      "from": "center-of-mass-definition",
+      "to": "center-of-mass-position-formula",
+      "reason": "質心位置公式是計算質心的方法。"
+    },
+    {
+      "from": "free-body-diagram-method",
+      "to": "rigid-body-equilibrium-strategy",
+      "reason": "剛體平衡解題策略的第一步是繪製自由體圖。"
+    },
+    {
+      "from": "translational-equilibrium-condition",
+      "to": "rigid-body-equilibrium-strategy",
+      "reason": "剛體平衡解題策略需要應用平移動平衡條件。"
+    },
+    {
+      "from": "rotational-equilibrium-condition",
+      "to": "rigid-body-equilibrium-strategy",
+      "reason": "剛體平衡解題策略需要應用轉動平衡條件。"
+    },
+    {
+      "from": "translational-equilibrium-condition",
+      "to": "statically-indeterminate-structure",
+      "reason": "靜不定結構的判斷基於平衡方程式的數量。"
+    },
+    {
+      "from": "rotational-equilibrium-condition",
+      "to": "statically-indeterminate-structure",
+      "reason": "靜不定結構的判斷基於平衡方程式的數量。"
+    },
+    {
+      "from": "statically-indeterminate-structure",
+      "to": "elasticity-indeterminate-principle",
+      "reason": "彈性學用於解決靜不定結構問題。"
+    },
+    {
+      "from": "elastic-modulus-definition",
+      "to": "elasticity-indeterminate-principle",
+      "reason": "解決靜不定問題需要材料的彈性性質，由彈性模數衡量。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "deformation-concept",
+      "reason": "應力是導致形變的原因。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "deformation-concept",
+      "reason": "應變是形變的量度。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "elastic-modulus-definition",
+      "reason": "彈性模數的定義包含應力。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "elastic-modulus-definition",
+      "reason": "彈性模數的定義包含應變。"
+    },
+    {
+      "from": "elastic-modulus-definition",
+      "to": "hookes-law-elasticity",
+      "reason": "虎克定律描述應力與應變的比例關係，其比例常數即為彈性模數。"
+    },
+    {
+      "from": "elastic-modulus-definition",
+      "to": "youngs-modulus-definition",
+      "reason": "楊氏模數是彈性模數的一種。"
+    },
+    {
+      "from": "youngs-modulus-definition",
+      "to": "youngs-modulus-formula",
+      "reason": "楊氏模數公式用於計算楊氏模數。"
+    },
+    {
+      "from": "tensile-stress-definition",
+      "to": "youngs-modulus-formula",
+      "reason": "楊氏模數公式使用拉伸應力。"
+    },
+    {
+      "from": "tensile-strain-definition",
+      "to": "youngs-modulus-formula",
+      "reason": "楊氏模數公式使用拉伸應變。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "tensile-stress-definition",
+      "reason": "拉伸應力是應力的一種。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "tensile-strain-definition",
+      "reason": "拉伸應變是應變的一種。"
+    },
+    {
+      "from": "tensile-stress-definition",
+      "to": "tensile-compressive-stress-concept",
+      "reason": "拉壓應力概念涉及拉伸應力。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "stress-strain-curve-concept",
+      "reason": "應力應變曲線圖示應力與應變的關係。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "stress-strain-curve-concept",
+      "reason": "應力應變曲線圖示應力與應變的關係。"
+    },
+    {
+      "from": "stress-strain-curve-concept",
+      "to": "proportional-limit-concept",
+      "reason": "比例極限是應力應變曲線上的特定點。"
+    },
+    {
+      "from": "hookes-law-elasticity",
+      "to": "proportional-limit-concept",
+      "reason": "比例極限是虎克定律適用的上限。"
+    },
+    {
+      "from": "stress-strain-curve-concept",
+      "to": "elastic-limit-concept",
+      "reason": "彈性極限是應力應變曲線上的特定點。"
+    },
+    {
+      "from": "elastic-limit-concept",
+      "to": "plastic-deformation-concept",
+      "reason": "塑性形變發生在超過彈性極限之後。"
+    },
+    {
+      "from": "plastic-deformation-concept",
+      "to": "fracture-point-concept",
+      "reason": "斷裂點是塑性形變的最終結果。"
+    },
+    {
+      "from": "stress-strain-curve-concept",
+      "to": "elastic-hysteresis-concept",
+      "reason": "彈性遲滯現象透過應力應變曲線來展示。"
+    },
+    {
+      "from": "elastic-modulus-definition",
+      "to": "shear-modulus-definition",
+      "reason": "剪力模數是彈性模數的一種。"
+    },
+    {
+      "from": "shear-modulus-definition",
+      "to": "shear-modulus-formula",
+      "reason": "剪力模數公式用於計算剪力模數。"
+    },
+    {
+      "from": "shear-stress-definition",
+      "to": "shear-modulus-formula",
+      "reason": "剪力模數公式使用剪應力。"
+    },
+    {
+      "from": "shear-strain-definition",
+      "to": "shear-modulus-formula",
+      "reason": "剪力模數公式使用剪應變。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "shear-stress-definition",
+      "reason": "剪應力是應力的一種。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "shear-strain-definition",
+      "reason": "剪應變是應變的一種。"
+    },
+    {
+      "from": "elastic-modulus-definition",
+      "to": "bulk-modulus-definition",
+      "reason": "體積模數是彈性模數的一種。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "bulk-modulus-formula",
+      "reason": "體積模數公式用於計算體積模數。"
+    },
+    {
+      "from": "volume-stress-definition",
+      "to": "bulk-modulus-formula",
+      "reason": "體積模數公式使用體積應力。"
+    },
+    {
+      "from": "volume-strain-definition",
+      "to": "bulk-modulus-formula",
+      "reason": "體積模數公式使用體積應變。"
+    },
+    {
+      "from": "stress-definition",
+      "to": "volume-stress-definition",
+      "reason": "體積應力是應力的一種。"
+    },
+    {
+      "from": "strain-definition",
+      "to": "volume-strain-definition",
+      "reason": "體積應變是應變的一種。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "compressibility-definition",
+      "reason": "可壓縮性是體積模數的倒數。"
+    }
+  ],
+  "chapter_number": 11,
+  "usage": {
+    "input_tokens": 12772,
+    "output_tokens": 5667
+  }
+}

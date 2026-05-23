@@ -1,0 +1,437 @@
+{
+  "nodes": [
+    {
+      "id": "electric-flux-concept",
+      "label": "電通量",
+      "kind": "concept",
+      "summary": "電通量是穿過某曲面的電場線數量，代表電場通過該曲面的總量。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "electric-flux-uniform-field-formula",
+      "label": "均勻電場電通量",
+      "kind": "formula",
+      "summary": "在均勻電場中，電通量等於電場強度與垂直於電場的面積乘積。",
+      "latex": "\\Phi_E = EA_\\perp = \\vec{E} \\cdot \\vec{A}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "electric-flux-elemental-definition",
+      "label": "微小電通量",
+      "kind": "definition",
+      "summary": "通過微小面積元素的電通量，是電場向量與面積向量的點積。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electric-flux-open-surface-definition",
+      "label": "開放面電通量",
+      "kind": "definition",
+      "summary": "通過開放曲面的總電通量，定義為電場向量對面積向量的表面積分。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electric-flux-closed-surface-definition",
+      "label": "封閉面電通量",
+      "kind": "definition",
+      "summary": "通過封閉曲面的總電通量，定義為電場向量對面積向量的封閉表面積分。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electric-flux-uniform-field-closed-surface",
+      "label": "均勻電場封閉面通量",
+      "kind": "principle",
+      "summary": "在均勻電場中，通過任何封閉曲面的總電通量為零。",
+      "latex": "\\Phi_E = \\oint \\vec{E} \\cdot d\\vec{A} = 0",
+      "pages": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "gauss-law",
+      "label": "高斯定律",
+      "kind": "law",
+      "summary": "通過任何封閉曲面的總電通量，等於該曲面內所包圍的淨電荷除以真空電容率。",
+      "latex": "\\Phi_E = \\oint \\vec{E} \\cdot d\\vec{A} = \\frac{q_{in}}{\\epsilon_0}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "gaussian-surface",
+      "label": "高斯面",
+      "kind": "concept",
+      "summary": "高斯面是應用高斯定律時，為計算電通量而假想的封閉曲面。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "gauss-law-surface-independence",
+      "label": "高斯面形狀獨立性",
+      "kind": "principle",
+      "summary": "高斯定律表明，電通量與高斯面的形狀無關，只取決於其包圍的淨電荷。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "gauss-law-q-in-zero-e-not-zero",
+      "label": "高斯定律電荷與電場",
+      "kind": "principle",
+      "summary": "高斯定律中，高斯面內淨電荷為零不代表高斯面上的電場處處為零。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "solid-angle-definition",
+      "label": "立體角定義",
+      "kind": "definition",
+      "summary": "立體角定義為垂直於半徑的投影面積除以半徑平方，單位為球面度。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "total-solid-angle",
+      "label": "總立體角",
+      "kind": "principle",
+      "summary": "任何封閉曲面對於其內部一點所張的總立體角為 $4\\pi$ 球面度。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "gauss-law-application-method",
+      "label": "高斯定律應用法",
+      "kind": "method",
+      "summary": "利用高斯定律計算電場時，需選擇適當的高斯面以利用電荷分佈的對稱性。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "electric-field-point-charge-gauss",
+      "label": "點電荷電場（高斯）",
+      "kind": "formula",
+      "summary": "利用高斯定律推導出的點電荷電場公式，與庫侖定律一致。",
+      "latex": "\\vec{E} = \\frac{1}{4\\pi\\epsilon_0} \\frac{q}{r^2} \\hat{r}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "electric-field-uniform-sphere-outside",
+      "label": "均勻帶電球體外電場",
+      "kind": "formula",
+      "summary": "均勻帶電球體外部的電場，如同所有電荷集中於球心。",
+      "latex": "\\vec{E} = \\frac{1}{4\\pi\\epsilon_0} \\frac{Q}{r^2} \\hat{r}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "electric-field-uniform-sphere-inside",
+      "label": "均勻帶電球體內電場",
+      "kind": "formula",
+      "summary": "均勻帶電球體內部的電場，強度與距球心距離成正比。",
+      "latex": "\\vec{E} = \\frac{Q}{4\\pi\\epsilon_0 a^3} r \\hat{r}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "electric-field-spherical-shell-outside",
+      "label": "帶電球殼外電場",
+      "kind": "formula",
+      "summary": "帶電球殼外部的電場，如同所有電荷集中於球心。",
+      "latex": "\\vec{E}(r > a) = \\frac{1}{4\\pi\\epsilon_0} \\frac{Q}{r^2} \\hat{r}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "electric-field-spherical-shell-inside",
+      "label": "帶電球殼內電場",
+      "kind": "formula",
+      "summary": "帶電球殼內部的電場為零。",
+      "latex": "\\vec{E}(r \\leq a) = 0",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "electric-field-infinite-line-charge",
+      "label": "無限長線電荷電場",
+      "kind": "formula",
+      "summary": "無限長線電荷產生的電場，強度與距線距離成反比。",
+      "latex": "\\vec{E} = \\frac{\\lambda}{2\\pi\\epsilon_0 r} \\hat{r}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "electric-field-infinite-plane-charge",
+      "label": "無限大平面電荷電場",
+      "kind": "formula",
+      "summary": "無限大非導體平面電荷產生的電場，強度均勻且垂直於平面。",
+      "latex": "\\vec{E} = \\frac{\\sigma}{2\\epsilon_0} \\hat{n}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "electric-field-parallel-plates",
+      "label": "平行板電場",
+      "kind": "formula",
+      "summary": "兩無限大平行板之間，電場強度為電荷密度除以真空電容率。",
+      "latex": "E = \\frac{\\sigma}{\\epsilon_0}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "conductors-electrostatic-equilibrium",
+      "label": "導體靜電平衡",
+      "kind": "concept",
+      "summary": "導體達到靜電平衡時，內部電荷不再移動，電場為零。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "e-field-inside-conductor-zero",
+      "label": "導體內電場為零",
+      "kind": "principle",
+      "summary": "在靜電平衡狀態下，導體內部的電場處處為零。",
+      "latex": "\\vec{E}=0",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "charges-on-conductor-surface",
+      "label": "導體電荷分佈",
+      "kind": "principle",
+      "summary": "在靜電平衡狀態下，導體內部的淨電荷為零，所有自由電荷分佈在導體表面。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "e-field-perpendicular-conductor-surface",
+      "label": "導體表面電場方向",
+      "kind": "principle",
+      "summary": "在靜電平衡狀態下，導體表面的電場方向垂直於表面。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "electric-field-shielding",
+      "label": "電場遮蔽",
+      "kind": "concept",
+      "summary": "導體能阻擋外部電場進入其內部，形成電場遮蔽效應。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "faraday-cage",
+      "label": "法拉第籠",
+      "kind": "concept",
+      "summary": "法拉第籠是一種利用導體電場遮蔽原理，保護內部免受外部電場影響的裝置。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "faraday-ice-pail-experiment",
+      "label": "法拉第冰桶實驗",
+      "kind": "method",
+      "summary": "法拉第冰桶實驗驗證了高斯定律，證明導體內部的淨電荷為零。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "electric-flux-concept",
+      "to": "electric-flux-uniform-field-formula",
+      "reason": "理解均勻電場下的電通量公式，需先了解電通量的基本概念。"
+    },
+    {
+      "from": "electric-flux-concept",
+      "to": "electric-flux-elemental-definition",
+      "reason": "微小面積元素的電通量是電通量概念的基礎。"
+    },
+    {
+      "from": "electric-flux-elemental-definition",
+      "to": "electric-flux-open-surface-definition",
+      "reason": "開放曲面的總電通量是透過對微小電通量進行積分而得。"
+    },
+    {
+      "from": "electric-flux-open-surface-definition",
+      "to": "electric-flux-closed-surface-definition",
+      "reason": "封閉曲面的電通量是開放曲面電通量概念的延伸，只是積分範圍為封閉曲面。"
+    },
+    {
+      "from": "electric-flux-closed-surface-definition",
+      "to": "electric-flux-uniform-field-closed-surface",
+      "reason": "理解均勻電場中封閉曲面電通量為零的原理，需先了解封閉曲面電通量的定義。"
+    },
+    {
+      "from": "electric-flux-closed-surface-definition",
+      "to": "gauss-law",
+      "reason": "高斯定律的核心是計算通過封閉曲面的電通量。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "gaussian-surface",
+      "reason": "高斯面是應用高斯定律時必須選擇的假想曲面。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "gauss-law-surface-independence",
+      "reason": "高斯面形狀獨立性是高斯定律的重要特性。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "gauss-law-q-in-zero-e-not-zero",
+      "reason": "理解高斯定律中電荷與電場的關係，需先掌握高斯定律本身。"
+    },
+    {
+      "from": "solid-angle-definition",
+      "to": "total-solid-angle",
+      "reason": "總立體角是立體角定義的延伸概念。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "solid-angle-definition",
+      "reason": "立體角定義是高斯定律推導過程中的數學基礎。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "gauss-law-application-method",
+      "reason": "應用高斯定律計算電場，需先理解高斯定律本身。"
+    },
+    {
+      "from": "gaussian-surface",
+      "to": "gauss-law-application-method",
+      "reason": "應用高斯定律的關鍵步驟是選擇適當的高斯面。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-point-charge-gauss",
+      "reason": "點電荷電場是高斯定律應用方法的一個基本範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-uniform-sphere-outside",
+      "reason": "均勻帶電球體外部電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-uniform-sphere-inside",
+      "reason": "均勻帶電球體內部電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-spherical-shell-outside",
+      "reason": "帶電球殼外部電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-spherical-shell-inside",
+      "reason": "帶電球殼內部電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-infinite-line-charge",
+      "reason": "無限長線電荷電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "gauss-law-application-method",
+      "to": "electric-field-infinite-plane-charge",
+      "reason": "無限大平面電荷電場的計算是高斯定律應用方法的一個範例。"
+    },
+    {
+      "from": "electric-field-infinite-plane-charge",
+      "to": "electric-field-parallel-plates",
+      "reason": "平行板電場的計算是基於無限大平面電荷電場的疊加原理。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "conductors-electrostatic-equilibrium",
+      "reason": "導體靜電平衡的許多性質可透過高斯定律推導或解釋。"
+    },
+    {
+      "from": "conductors-electrostatic-equilibrium",
+      "to": "e-field-inside-conductor-zero",
+      "reason": "導體內電場為零是導體靜電平衡狀態下的基本特性。"
+    },
+    {
+      "from": "e-field-inside-conductor-zero",
+      "to": "charges-on-conductor-surface",
+      "reason": "導體內電場為零導致所有淨電荷必須分佈在導體表面。"
+    },
+    {
+      "from": "conductors-electrostatic-equilibrium",
+      "to": "e-field-perpendicular-conductor-surface",
+      "reason": "導體表面電場方向垂直於表面是導體靜電平衡狀態下的特性。"
+    },
+    {
+      "from": "e-field-inside-conductor-zero",
+      "to": "electric-field-shielding",
+      "reason": "電場遮蔽效應是導體內部電場為零的直接結果。"
+    },
+    {
+      "from": "electric-field-shielding",
+      "to": "faraday-cage",
+      "reason": "法拉第籠是電場遮蔽效應的實際應用。"
+    },
+    {
+      "from": "gauss-law",
+      "to": "faraday-ice-pail-experiment",
+      "reason": "法拉第冰桶實驗是驗證高斯定律和導體電荷分佈的重要實驗。"
+    },
+    {
+      "from": "charges-on-conductor-surface",
+      "to": "faraday-ice-pail-experiment",
+      "reason": "法拉第冰桶實驗直接證明了導體內部的淨電荷為零，電荷分佈在表面。"
+    }
+  ],
+  "chapter_number": 22,
+  "usage": {
+    "input_tokens": 8525,
+    "output_tokens": 4384
+  }
+}

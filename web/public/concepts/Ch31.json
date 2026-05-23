@@ -1,0 +1,951 @@
+{
+  "nodes": [
+    {
+      "id": "ac-source-definition",
+      "label": "交流電源定義",
+      "kind": "definition",
+      "summary": "交流電源提供隨時間正弦變化的電壓。",
+      "latex": "\\Delta v (t) = V_0 \\sin \\omega t",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "angular-frequency-ac",
+      "label": "交流角頻率",
+      "kind": "formula",
+      "summary": "交流電壓的角頻率，與頻率和週期相關。",
+      "latex": "\\omega = 2\\pi f = \\frac{2\\pi}{T}",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "voltage-resistor-ac",
+      "label": "電阻交流電壓",
+      "kind": "formula",
+      "summary": "交流電路中電阻兩端的電壓等於電流乘以電阻。",
+      "latex": "\\Delta v(t) = I(t)R",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "voltage-capacitor-ac",
+      "label": "電容交流電壓",
+      "kind": "formula",
+      "summary": "交流電路中電容兩端的電壓等於電荷量除以電容值。",
+      "latex": "\\Delta v(t) = \\frac{Q(t)}{C}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "voltage-inductor-ac",
+      "label": "電感交流電壓",
+      "kind": "formula",
+      "summary": "交流電路中電感兩端的電壓等於電感值乘以電流的變化率。",
+      "latex": "\\Delta v(t) = L \\frac{dI(t)}{dt}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "current-resistor-ac",
+      "label": "電阻交流電流",
+      "kind": "formula",
+      "summary": "交流電路中電阻的電流與電壓同相，峰值電流由峰值電壓除以電阻得到。",
+      "latex": "i_R(t) = \\left(\\frac{V_0}{R}\\right) \\sin \\omega t = I_0 \\sin \\omega t",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "peak-current-resistor",
+      "label": "電阻峰值電流",
+      "kind": "formula",
+      "summary": "交流電路中電阻的峰值電流，等於峰值電壓除以電阻。",
+      "latex": "I_0 = \\frac{V_0}{R}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "resistor-voltage-current-phase",
+      "label": "電阻電壓電流同相",
+      "kind": "principle",
+      "summary": "在交流電路中，電阻兩端的電壓與流經電阻的電流同相。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "phasor-diagram",
+      "label": "相量圖",
+      "kind": "concept",
+      "summary": "用於簡化交流電路分析的向量圖，向量長度代表最大值，垂直投影代表瞬時值。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "phasor-definition",
+      "label": "相量定義",
+      "kind": "definition",
+      "summary": "一個向量，其長度與所代表變量的最大值成比例，其垂直投影代表瞬時值。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "current-inductor-ac",
+      "label": "電感交流電流",
+      "kind": "formula",
+      "summary": "交流電路中電感的電流，其峰值由峰值電壓除以感抗得到，且電流滯後電壓90度。",
+      "latex": "i_L(t) = \\left(\\frac{V_0}{\\omega L}\\right) \\sin\\left(\\omega t - \\frac{\\pi}{2}\\right)",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "inductive-reactance",
+      "label": "感抗",
+      "kind": "formula",
+      "summary": "電感在交流電路中對電流的阻礙作用，單位為歐姆。",
+      "latex": "X_L = \\omega L",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "inductor-current-lags-voltage",
+      "label": "電感電流滯後電壓",
+      "kind": "principle",
+      "summary": "在交流電路中，電感中的電流滯後於電感兩端的電壓90度。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "current-capacitor-ac",
+      "label": "電容交流電流",
+      "kind": "formula",
+      "summary": "交流電路中電容的電流，其峰值由峰值電壓除以容抗得到，且電流超前電壓90度。",
+      "latex": "i_C(t) = \\left(\\frac{V_0}{1/\\omega C}\\right) \\sin\\left(\\omega t + \\frac{\\pi}{2}\\right)",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "capacitive-reactance",
+      "label": "容抗",
+      "kind": "formula",
+      "summary": "電容在交流電路中對電流的阻礙作用，單位為歐姆。",
+      "latex": "X_C = \\frac{1}{\\omega C}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "capacitor-current-leads-voltage",
+      "label": "電容電流超前電壓",
+      "kind": "principle",
+      "summary": "在交流電路中，電容中的電流超前於電容兩端的電壓90度。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "complex-impedance-notation",
+      "label": "複數阻抗表示法",
+      "kind": "method",
+      "summary": "使用複數表示電壓、電流和阻抗，簡化交流電路分析。",
+      "latex": "",
+      "pages": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "complex-inductive-reactance",
+      "label": "複數感抗",
+      "kind": "formula",
+      "summary": "電感在交流電路中的複數阻抗表示。",
+      "latex": "\\tilde{X}_L(\\omega) = i\\omega L",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "complex-capacitive-reactance",
+      "label": "複數容抗",
+      "kind": "formula",
+      "summary": "電容在交流電路中的複數阻抗表示。",
+      "latex": "\\tilde{X}_C(\\omega) = \\frac{1}{i\\omega C}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "rlc-series-circuit-voltage-sum",
+      "label": "串聯RLC電路總電壓",
+      "kind": "formula",
+      "summary": "串聯RLC電路中的總電壓是各元件瞬時電壓的向量和。",
+      "latex": "\\Delta v(t) = \\Delta v_R(t) + \\Delta v_L(t) + \\Delta v_C(t)",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "rlc-series-circuit-peak-voltage",
+      "label": "串聯RLC峰值電壓",
+      "kind": "formula",
+      "summary": "串聯RLC電路中的峰值電壓，由電阻電壓和淨電抗電壓的平方和開根號得到。",
+      "latex": "\\Delta V_0 = \\sqrt{\\Delta V_R^2 + (\\Delta V_L - \\Delta V_C)^2}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "impedance-definition",
+      "label": "阻抗定義",
+      "kind": "definition",
+      "summary": "交流電路中對電流的總阻礙，包含電阻和電抗的影響，單位為歐姆。",
+      "latex": "Z = \\sqrt{R^2 + (X_L - X_C)^2}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "ohm-law-ac-impedance",
+      "label": "交流歐姆定律(阻抗)",
+      "kind": "formula",
+      "summary": "交流電路中峰值電壓、峰值電流和阻抗之間的關係。",
+      "latex": "\\Delta V_0 = I_0 Z",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "impedance-triangle",
+      "label": "阻抗三角形",
+      "kind": "concept",
+      "summary": "用於視覺化電阻、電抗和阻抗之間關係的直角三角形。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "phase-angle-rlc",
+      "label": "RLC電路相位角",
+      "kind": "formula",
+      "summary": "串聯RLC電路中總電壓與電流之間的相位角。",
+      "latex": "\\varphi = \\tan^{-1}\\left(\\frac{X_L - X_C}{R}\\right)",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "inductive-capacitive-circuit-types",
+      "label": "電路電抗分類",
+      "kind": "concept",
+      "summary": "根據感抗和容抗的相對大小，將RLC電路分為感性、容性或純電阻性。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "complex-impedance-rlc",
+      "label": "RLC電路複數阻抗",
+      "kind": "formula",
+      "summary": "串聯RLC電路中總阻抗的複數表示。",
+      "latex": "\\tilde{Z} = R + i\\omega L + \\frac{1}{i\\omega C}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "rlc-series-current-complex",
+      "label": "RLC串聯電流(複數)",
+      "kind": "formula",
+      "summary": "串聯RLC電路中電流的瞬時值，使用複數阻抗推導。",
+      "latex": "i(t) = \\frac{\\Delta V_{\\text{max}}}{\\sqrt{R^2 + \\left(\\omega L - \\frac{1}{\\omega C}\\right)^2}} \\sin(\\omega t - \\phi)",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "rms-value-definition",
+      "label": "均方根值定義",
+      "kind": "definition",
+      "summary": "均方根值，是交流電壓或電流的有效值，用於表示其等效直流功率。",
+      "latex": "I_{rms} = \\sqrt{\\overline{i^2(t)}}",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "rms-sinusoidal-formula",
+      "label": "正弦交流均方根值",
+      "kind": "formula",
+      "summary": "正弦交流電壓或電流的均方根值等於其峰值除以根號2。",
+      "latex": "I_{rms} = \\frac{I_{max}}{\\sqrt{2}}",
+      "pages": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": "average-power-ac",
+      "label": "交流平均功率",
+      "kind": "formula",
+      "summary": "交流電路中平均功率的計算公式，包含均方根電流、電壓和功率因數。",
+      "latex": "P_{av} = I_{rms} \\Delta V_{rms} \\cos \\varphi",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "power-factor-definition",
+      "label": "功率因數定義",
+      "kind": "definition",
+      "summary": "交流電路中平均功率公式中的餘弦項，表示電壓和電流之間的相位差。",
+      "latex": "\\cos\\phi",
+      "pages": [
+        21,
+        22
+      ]
+    },
+    {
+      "id": "power-dissipated-resistor",
+      "label": "電阻消耗功率",
+      "kind": "formula",
+      "summary": "交流電路中電阻消耗的平均功率，只與電阻和均方根電流有關。",
+      "latex": "P_{av} = I_{rms}^2 R",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "no-power-loss-lc",
+      "label": "理想電感電容無損耗",
+      "kind": "principle",
+      "summary": "在理想情況下，純電容和純電感在交流電路中不消耗平均功率。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "resonance-condition",
+      "label": "諧振條件",
+      "kind": "definition",
+      "summary": "串聯RLC電路中電流達到最大值的頻率條件，此時感抗等於容抗。",
+      "latex": "X_L - X_C = 0",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "resonance-frequency",
+      "label": "諧振頻率",
+      "kind": "formula",
+      "summary": "串聯RLC電路發生諧振時的角頻率。",
+      "latex": "\\omega_o = \\frac{1}{\\sqrt{LC}}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "impedance-at-resonance",
+      "label": "諧振時阻抗",
+      "kind": "formula",
+      "summary": "串聯RLC電路在諧振頻率下的阻抗，此時阻抗最小且等於電阻。",
+      "latex": "Z = R",
+      "pages": [
+        25,
+        26
+      ]
+    },
+    {
+      "id": "quality-factor-definition",
+      "label": "品質因數定義",
+      "kind": "definition",
+      "summary": "描述RLC諧振電路諧振曲線尖銳程度的無量綱參數。",
+      "latex": "Q \\equiv \\omega_0 / \\Delta \\omega",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "quality-factor-formula",
+      "label": "品質因數公式",
+      "kind": "formula",
+      "summary": "描述RLC諧振電路品質因數的計算公式。",
+      "latex": "Q = (\\omega_0 L) / R",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "bandwidth-resonance",
+      "label": "諧振頻寬",
+      "kind": "definition",
+      "summary": "諧振曲線半最大功率點之間的頻率寬度。",
+      "latex": "\\Delta \\omega = R/L",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "voltage-amplification-resonance",
+      "label": "諧振電壓放大",
+      "kind": "principle",
+      "summary": "在諧振時，電容或電感兩端的電壓振幅可以大於電源電壓，表現為電壓放大。",
+      "latex": "V_{out,max} = Q \\mathcal{E}_0",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "transformer-function",
+      "label": "變壓器功能",
+      "kind": "concept",
+      "summary": "一種利用電磁感應原理改變交流電壓和電流的裝置。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "transformer-voltage-ratio",
+      "label": "變壓器電壓比",
+      "kind": "formula",
+      "summary": "理想變壓器中，次級線圈電壓與初級線圈電壓之比等於其匝數比。",
+      "latex": "\\frac{V_2}{V_1} = \\frac{N_2}{N_1}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "step-up-transformer",
+      "label": "升壓變壓器",
+      "kind": "definition",
+      "summary": "次級線圈匝數多於初級線圈，用於升高電壓的變壓器。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "step-down-transformer",
+      "label": "降壓變壓器",
+      "kind": "definition",
+      "summary": "次級線圈匝數少於初級線圈，用於降低電壓的變壓器。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "transformer-power-conservation",
+      "label": "變壓器功率守恆",
+      "kind": "principle",
+      "summary": "理想變壓器中，初級線圈的輸入功率等於次級線圈的輸出功率。",
+      "latex": "I_1 \\Delta V_1 = I_2 \\Delta V_2",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "equivalent-resistance-transformer",
+      "label": "變壓器等效電阻",
+      "kind": "formula",
+      "summary": "從變壓器初級側看，次級側負載電阻的等效電阻。",
+      "latex": "R_{eq} = \\left(\\frac{N_1}{N_2}\\right)^2 R_L",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "impedance-matching",
+      "label": "阻抗匹配",
+      "kind": "method",
+      "summary": "利用變壓器調整電路阻抗，以實現最大功率傳輸的技術。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "power-transmission-transformers",
+      "label": "變壓器電力傳輸",
+      "kind": "concept",
+      "summary": "利用升壓和降壓變壓器在高壓下傳輸電力，以減少輸電損耗。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "rectification-definition",
+      "label": "整流定義",
+      "kind": "definition",
+      "summary": "將交流電轉換為直流電的過程。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "half-wave-rectifier",
+      "label": "半波整流器",
+      "kind": "concept",
+      "summary": "一種只允許交流電半個週期通過的整流電路。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "full-wave-rectifier",
+      "label": "全波整流器",
+      "kind": "concept",
+      "summary": "一種將交流電的兩個半週期都轉換為單向脈動直流電的整流電路。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "rectified-average-current",
+      "label": "整流平均電流",
+      "kind": "formula",
+      "summary": "全波整流後脈動直流電流的平均值。",
+      "latex": "I_{rav} = \\frac{2}{\\pi} I_{max}",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "high-pass-filter",
+      "label": "高通濾波器",
+      "kind": "concept",
+      "summary": "一種允許高頻信號通過並衰減低頻信號的濾波器。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "low-pass-filter",
+      "label": "低通濾波器",
+      "kind": "concept",
+      "summary": "一種允許低頻信號通過並衰減高頻信號的濾波器。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "band-pass-filter",
+      "label": "帶通濾波器",
+      "kind": "concept",
+      "summary": "一種只允許特定頻率範圍內的信號通過並衰減其他頻率信號的濾波器。",
+      "latex": "",
+      "pages": [
+        38,
+        39
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "ac-source-definition",
+      "to": "voltage-resistor-ac",
+      "reason": "理解交流電源是分析交流電路中電阻電壓的基礎。"
+    },
+    {
+      "from": "ac-source-definition",
+      "to": "voltage-capacitor-ac",
+      "reason": "理解交流電源是分析交流電路中電容電壓的基礎。"
+    },
+    {
+      "from": "ac-source-definition",
+      "to": "voltage-inductor-ac",
+      "reason": "理解交流電源是分析交流電路中電感電壓的基礎。"
+    },
+    {
+      "from": "angular-frequency-ac",
+      "to": "inductive-reactance",
+      "reason": "角頻率是定義感抗的關鍵參數。"
+    },
+    {
+      "from": "angular-frequency-ac",
+      "to": "capacitive-reactance",
+      "reason": "角頻率是定義容抗的關鍵參數。"
+    },
+    {
+      "from": "angular-frequency-ac",
+      "to": "resonance-frequency",
+      "reason": "角頻率是計算諧振頻率的關鍵參數。"
+    },
+    {
+      "from": "voltage-resistor-ac",
+      "to": "current-resistor-ac",
+      "reason": "電阻中的電流是根據電壓和歐姆定律推導的。"
+    },
+    {
+      "from": "voltage-inductor-ac",
+      "to": "current-inductor-ac",
+      "reason": "電感中的電流是根據電壓和電感的本構關係推導的。"
+    },
+    {
+      "from": "voltage-capacitor-ac",
+      "to": "current-capacitor-ac",
+      "reason": "電容中的電流是根據電壓和電容的本構關係推導的。"
+    },
+    {
+      "from": "current-resistor-ac",
+      "to": "resistor-voltage-current-phase",
+      "reason": "電阻中電壓和電流的相位關係是電流公式的直接結果。"
+    },
+    {
+      "from": "current-inductor-ac",
+      "to": "inductor-current-lags-voltage",
+      "reason": "電感中電流滯後電壓的相位關係是電流公式的直接結果。"
+    },
+    {
+      "from": "current-capacitor-ac",
+      "to": "capacitor-current-leads-voltage",
+      "reason": "電容中電流超前電壓的相位關係是電流公式的直接結果。"
+    },
+    {
+      "from": "phasor-definition",
+      "to": "phasor-diagram",
+      "reason": "相量圖是相量概念的應用。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "current-inductor-ac",
+      "reason": "感抗是計算電感電流的關鍵量。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "impedance-definition",
+      "reason": "感抗是阻抗定義中的一個組成部分。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "rlc-series-circuit-peak-voltage",
+      "reason": "感抗用於計算RLC串聯電路中的峰值電壓。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "phase-angle-rlc",
+      "reason": "感抗是計算RLC電路相位角的關鍵參數。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "resonance-condition",
+      "reason": "感抗是定義諧振條件的關鍵參數。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "complex-inductive-reactance",
+      "reason": "複數感抗是感抗的複數表示形式。"
+    },
+    {
+      "from": "inductive-reactance",
+      "to": "band-pass-filter",
+      "reason": "感抗是LC/RLC帶通濾波器設計的關鍵參數。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "current-capacitor-ac",
+      "reason": "容抗是計算電容電流的關鍵量。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "impedance-definition",
+      "reason": "容抗是阻抗定義中的一個組成部分。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "rlc-series-circuit-peak-voltage",
+      "reason": "容抗用於計算RLC串聯電路中的峰值電壓。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "phase-angle-rlc",
+      "reason": "容抗是計算RLC電路相位角的關鍵參數。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "resonance-condition",
+      "reason": "容抗是定義諧振條件的關鍵參數。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "complex-capacitive-reactance",
+      "reason": "複數容抗是容抗的複數表示形式。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "high-pass-filter",
+      "reason": "容抗是RC高通濾波器設計的關鍵參數。"
+    },
+    {
+      "from": "capacitive-reactance",
+      "to": "low-pass-filter",
+      "reason": "容抗是RC低通濾波器設計的關鍵參數。"
+    },
+    {
+      "from": "complex-impedance-notation",
+      "to": "complex-inductive-reactance",
+      "reason": "複數感抗是複數阻抗表示法的一個應用。"
+    },
+    {
+      "from": "complex-impedance-notation",
+      "to": "complex-capacitive-reactance",
+      "reason": "複數容抗是複數阻抗表示法的一個應用。"
+    },
+    {
+      "from": "complex-impedance-notation",
+      "to": "complex-impedance-rlc",
+      "reason": "RLC電路的複數阻抗是複數阻抗表示法的一個應用。"
+    },
+    {
+      "from": "complex-impedance-notation",
+      "to": "rlc-series-current-complex",
+      "reason": "使用複數阻抗表示法可以推導RLC串聯電路中的電流。"
+    },
+    {
+      "from": "rlc-series-circuit-voltage-sum",
+      "to": "rlc-series-circuit-peak-voltage",
+      "reason": "峰值電壓的推導始於瞬時電壓的總和。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "ohm-law-ac-impedance",
+      "reason": "交流歐姆定律使用阻抗來描述電壓、電流關係。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "rlc-series-current-complex",
+      "reason": "RLC串聯電路中的電流計算需要阻抗的定義。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "impedance-triangle",
+      "reason": "阻抗三角形是阻抗概念的視覺化表示。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "inductive-capacitive-circuit-types",
+      "reason": "阻抗的特性決定了電路的電抗類型。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "impedance-at-resonance",
+      "reason": "諧振時的阻抗是阻抗概念在特定條件下的應用。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "high-pass-filter",
+      "reason": "濾波器的行為取決於電路對不同頻率的阻抗。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "low-pass-filter",
+      "reason": "濾波器的行為取決於電路對不同頻率的阻抗。"
+    },
+    {
+      "from": "impedance-definition",
+      "to": "band-pass-filter",
+      "reason": "濾波器的行為取決於電路對不同頻率的阻抗。"
+    },
+    {
+      "from": "ohm-law-ac-impedance",
+      "to": "average-power-ac",
+      "reason": "平均功率公式使用均方根電壓和電流，它們通過阻抗相關聯。"
+    },
+    {
+      "from": "phase-angle-rlc",
+      "to": "average-power-ac",
+      "reason": "相位角是計算交流平均功率的關鍵參數。"
+    },
+    {
+      "from": "phase-angle-rlc",
+      "to": "power-factor-definition",
+      "reason": "功率因數是相位角的餘弦值。"
+    },
+    {
+      "from": "phase-angle-rlc",
+      "to": "inductive-capacitive-circuit-types",
+      "reason": "相位角用於區分電路的感性或容性特徵。"
+    },
+    {
+      "from": "rms-value-definition",
+      "to": "rms-sinusoidal-formula",
+      "reason": "正弦交流電的均方根值公式是均方根值定義的具體應用。"
+    },
+    {
+      "from": "rms-value-definition",
+      "to": "average-power-ac",
+      "reason": "平均功率的計算需要使用均方根值。"
+    },
+    {
+      "from": "rms-value-definition",
+      "to": "power-dissipated-resistor",
+      "reason": "電阻消耗的功率計算需要使用均方根值。"
+    },
+    {
+      "from": "rms-sinusoidal-formula",
+      "to": "average-power-ac",
+      "reason": "平均功率的計算需要使用正弦交流電的均方根值。"
+    },
+    {
+      "from": "rms-sinusoidal-formula",
+      "to": "power-dissipated-resistor",
+      "reason": "電阻消耗的功率計算需要使用正弦交流電的均方根值。"
+    },
+    {
+      "from": "average-power-ac",
+      "to": "power-factor-definition",
+      "reason": "功率因數是平均功率公式中的一個組成部分。"
+    },
+    {
+      "from": "average-power-ac",
+      "to": "power-dissipated-resistor",
+      "reason": "電阻消耗的功率是平均功率的一個特例。"
+    },
+    {
+      "from": "resonance-condition",
+      "to": "resonance-frequency",
+      "reason": "諧振頻率是滿足諧振條件時的特定頻率。"
+    },
+    {
+      "from": "resonance-condition",
+      "to": "impedance-at-resonance",
+      "reason": "諧振時的阻抗是諧振條件下的結果。"
+    },
+    {
+      "from": "resonance-condition",
+      "to": "voltage-amplification-resonance",
+      "reason": "電壓放大現象發生在諧振條件下。"
+    },
+    {
+      "from": "resonance-frequency",
+      "to": "impedance-at-resonance",
+      "reason": "諧振時的阻抗與諧振頻率相關。"
+    },
+    {
+      "from": "resonance-frequency",
+      "to": "quality-factor-formula",
+      "reason": "品質因數公式中包含諧振頻率。"
+    },
+    {
+      "from": "resonance-frequency",
+      "to": "bandwidth-resonance",
+      "reason": "諧振頻寬與諧振頻率相關。"
+    },
+    {
+      "from": "quality-factor-definition",
+      "to": "quality-factor-formula",
+      "reason": "品質因數公式是品質因數定義的具體計算方法。"
+    },
+    {
+      "from": "quality-factor-definition",
+      "to": "voltage-amplification-resonance",
+      "reason": "品質因數用於量化諧振時的電壓放大效應。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "transformer-voltage-ratio",
+      "reason": "變壓器功能的核心是改變電壓，這由電壓比描述。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "transformer-power-conservation",
+      "reason": "變壓器在改變電壓的同時，理想情況下功率守恆。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "equivalent-resistance-transformer",
+      "reason": "變壓器功能導致負載電阻在初級側有等效電阻。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "impedance-matching",
+      "reason": "阻抗匹配是變壓器的一個重要應用功能。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "power-transmission-transformers",
+      "reason": "電力傳輸是變壓器的一個主要應用領域。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "step-up-transformer",
+      "reason": "升壓變壓器是變壓器功能的一種具體實現。"
+    },
+    {
+      "from": "transformer-function",
+      "to": "step-down-transformer",
+      "reason": "降壓變壓器是變壓器功能的一種具體實現。"
+    },
+    {
+      "from": "transformer-voltage-ratio",
+      "to": "step-up-transformer",
+      "reason": "電壓比決定了變壓器是升壓還是降壓。"
+    },
+    {
+      "from": "transformer-voltage-ratio",
+      "to": "step-down-transformer",
+      "reason": "電壓比決定了變壓器是升壓還是降壓。"
+    },
+    {
+      "from": "transformer-voltage-ratio",
+      "to": "equivalent-resistance-transformer",
+      "reason": "等效電阻的推導需要使用變壓器的電壓比。"
+    },
+    {
+      "from": "transformer-power-conservation",
+      "to": "equivalent-resistance-transformer",
+      "reason": "等效電阻的推導基於變壓器的功率守恆原理。"
+    },
+    {
+      "from": "equivalent-resistance-transformer",
+      "to": "impedance-matching",
+      "reason": "阻抗匹配的實現依賴於等效電阻的概念。"
+    },
+    {
+      "from": "rectification-definition",
+      "to": "half-wave-rectifier",
+      "reason": "半波整流器是實現整流過程的一種電路。"
+    },
+    {
+      "from": "rectification-definition",
+      "to": "full-wave-rectifier",
+      "reason": "全波整流器是實現整流過程的一種電路。"
+    },
+    {
+      "from": "full-wave-rectifier",
+      "to": "rectified-average-current",
+      "reason": "整流平均電流是全波整流器的一個重要特性。"
+    }
+  ],
+  "chapter_number": 31,
+  "usage": {
+    "input_tokens": 20987,
+    "output_tokens": 9026
+  }
+}

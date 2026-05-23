@@ -1,0 +1,824 @@
+{
+  "nodes": [
+    {
+      "id": "periodic-motion",
+      "label": "週期運動",
+      "kind": "definition",
+      "summary": "物體規律重複的運動，在固定時間間隔後回到相同位置。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "shm-definition",
+      "label": "簡諧運動定義",
+      "kind": "definition",
+      "summary": "物體所受恢復力與其相對於平衡位置的位移成正比的週期運動。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "hookes-law",
+      "label": "虎克定律",
+      "kind": "law",
+      "summary": "理想彈簧的恢復力與其位移成正比，方向相反。",
+      "latex": "\\vec{F}_s = -k\\vec{x}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "shm-force-equation",
+      "label": "簡諧運動力方程式",
+      "kind": "formula",
+      "summary": "簡諧運動中，物體所受合力與位移成正比且方向相反。",
+      "latex": "\\vec{F} = -k\\Delta\\vec{x}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "spring-mass-shm",
+      "label": "彈簧質量系統簡諧運動",
+      "kind": "concept",
+      "summary": "彈簧連接質量塊的系統，在平衡位置附近做簡諧運動。",
+      "latex": "",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "buoyancy-shm",
+      "label": "浮力簡諧運動",
+      "kind": "concept",
+      "summary": "浮體在液體中受浮力作用，在平衡位置附近做簡諧運動。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "shm-differential-equation",
+      "label": "簡諧運動微分方程",
+      "kind": "formula",
+      "summary": "描述簡諧運動的二階微分方程，其解為簡諧運動的位移函數。",
+      "latex": "\\frac{d^2x}{dt^2} = -\\omega^2x",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "angular-frequency-shm-definition",
+      "label": "角頻率定義 (簡諧運動)",
+      "kind": "definition",
+      "summary": "簡諧運動中，角頻率平方等於彈簧常數與質量之比。",
+      "latex": "\\omega^2 = \\frac{k}{m}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "shm-position-function",
+      "label": "簡諧運動位移函數",
+      "kind": "formula",
+      "summary": "描述簡諧運動物體位置隨時間變化的函數。",
+      "latex": "x(t) = A \\cos(\\omega t + \\phi)",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "shm-amplitude",
+      "label": "振幅 (簡諧運動)",
+      "kind": "concept",
+      "summary": "簡諧運動中物體偏離平衡位置的最大位移。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "shm-phase-constant",
+      "label": "相位常數 (簡諧運動)",
+      "kind": "concept",
+      "summary": "簡諧運動中，由初始條件決定的初始相位角。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "shm-period-formula",
+      "label": "簡諧運動週期公式",
+      "kind": "formula",
+      "summary": "簡諧運動完成一次完整振動所需時間的公式。",
+      "latex": "T = 2\\pi \\sqrt{\\frac{m}{k}}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "shm-frequency-formula",
+      "label": "簡諧運動頻率公式",
+      "kind": "formula",
+      "summary": "簡諧運動單位時間內完成振動次數的公式。",
+      "latex": "f = \\frac{1}{T} = \\frac{\\omega}{2\\pi}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "shm-velocity-function",
+      "label": "簡諧運動速度函數",
+      "kind": "formula",
+      "summary": "描述簡諧運動物體速度隨時間變化的函數。",
+      "latex": "v(t) = -\\omega A \\sin(\\omega t + \\phi)",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "shm-acceleration-function",
+      "label": "簡諧運動加速度函數",
+      "kind": "formula",
+      "summary": "描述簡諧運動物體加速度隨時間變化的函數。",
+      "latex": "a(t) = -\\omega^2 A \\cos(\\omega t + \\phi)",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "shm-initial-conditions",
+      "label": "簡諧運動初始條件",
+      "kind": "method",
+      "summary": "根據初始位移和速度計算簡諧運動的振幅和相位常數。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "effective-spring-constant-parallel",
+      "label": "並聯彈簧等效常數",
+      "kind": "formula",
+      "summary": "多個並聯彈簧的等效彈簧常數為各彈簧常數之和。",
+      "latex": "k_{\\text{eff}} = \\sum k_i",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "shm-kinetic-energy",
+      "label": "簡諧運動動能",
+      "kind": "formula",
+      "summary": "簡諧運動物體的動能，隨時間和位置變化。",
+      "latex": "K = \\frac{1}{2}mv^2 = \\frac{1}{2}m\\omega^2 A^2 \\sin^2(\\omega t + \\phi)",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "shm-potential-energy",
+      "label": "簡諧運動位能",
+      "kind": "formula",
+      "summary": "簡諧運動物體的彈性位能，隨時間和位置變化。",
+      "latex": "U = \\frac{1}{2}kx^2 = \\frac{1}{2}kA^2 \\cos^2(\\omega t + \\phi)",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "shm-total-mechanical-energy",
+      "label": "簡諧運動總力學能",
+      "kind": "formula",
+      "summary": "簡諧運動中動能與位能之和，為常數且與振幅平方成正比。",
+      "latex": "E = \\frac{1}{2}kA^2",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "shm-velocity-position-function",
+      "label": "簡諧運動速度-位置函數",
+      "kind": "formula",
+      "summary": "描述簡諧運動物體速度與其位置關係的函數。",
+      "latex": "v(x) = \\pm\\omega\\sqrt{A^2 - x^2}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "shm-energy-transformation",
+      "label": "簡諧運動能量轉換",
+      "kind": "concept",
+      "summary": "簡諧運動中動能與位能相互轉換，但總力學能守恆。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "molecular-model-shm",
+      "label": "簡諧運動分子模型",
+      "kind": "concept",
+      "summary": "分子間作用力在平衡位置附近可近似為彈簧力，形成簡諧運動。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "shm-circular-motion-projection",
+      "label": "簡諧運動與圓周運動投影",
+      "kind": "concept",
+      "summary": "簡諧運動可視為等速率圓周運動在直徑上的投影。",
+      "latex": "",
+      "pages": [
+        17,
+        18
+      ]
+    },
+    {
+      "id": "torsional-pendulum",
+      "label": "扭擺",
+      "kind": "concept",
+      "summary": "透過扭轉彈簧產生恢復力矩，使物體做角簡諧運動的系統。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "torsional-pendulum-period",
+      "label": "扭擺週期",
+      "kind": "formula",
+      "summary": "扭擺的週期公式，與轉動慣量和扭轉常數有關。",
+      "latex": "T = 2\\pi\\sqrt{\\frac{I}{\\kappa}}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "shm-identification-method",
+      "label": "簡諧運動判斷法",
+      "kind": "method",
+      "summary": "透過牛頓第二定律或能量守恆，判斷運動是否滿足簡諧運動微分方程。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "simple-pendulum",
+      "label": "單擺",
+      "kind": "concept",
+      "summary": "由一質量點懸掛於無質量繩索末端，在重力作用下擺動的系統。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "simple-pendulum-equation-motion",
+      "label": "單擺運動方程式",
+      "kind": "formula",
+      "summary": "描述單擺角度隨時間變化的微分方程。",
+      "latex": "\\frac{d^2 \\theta}{dt^2} = -\\frac{g}{L} \\sin \\theta",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "small-angle-approximation-pendulum",
+      "label": "單擺小角度近似",
+      "kind": "principle",
+      "summary": "當擺角很小時，$\\sin\\theta \\approx \\theta$，使單擺運動近似為簡諧運動。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "simple-pendulum-period-small-angle",
+      "label": "單擺週期 (小角度)",
+      "kind": "formula",
+      "summary": "小角度單擺的週期公式，與擺長和重力加速度有關。",
+      "latex": "T = 2\\pi\\sqrt{\\frac{L}{g}}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "simple-pendulum-period-large-angle",
+      "label": "單擺週期 (大角度)",
+      "kind": "formula",
+      "summary": "大角度單擺的週期公式，包含高階修正項，週期會比小角度時長。",
+      "latex": "T = T_0 \\left[1 + \\frac{1}{2^2}\\sin^2\\frac{1}{2}\\theta + \\frac{1^2 \\cdot 3^2}{2^2 \\cdot 4^2}\\sin^4\\frac{1}{2}\\theta + \\cdots\\right]",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "physical-pendulum",
+      "label": "複擺",
+      "kind": "concept",
+      "summary": "任何可繞固定軸擺動的剛體，其運動在小角度下近似為簡諧運動。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "physical-pendulum-period",
+      "label": "複擺週期",
+      "kind": "formula",
+      "summary": "複擺的週期公式，與轉動慣量、質量、重力加速度及質心距離有關。",
+      "latex": "T = 2\\pi \\sqrt{\\frac{I}{mgd}}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "damped-oscillation",
+      "label": "阻尼振盪",
+      "kind": "concept",
+      "summary": "振幅隨時間因阻力作用而逐漸減小的振盪。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "damped-oscillation-equation-motion",
+      "label": "阻尼振盪運動方程式",
+      "kind": "formula",
+      "summary": "描述阻尼振盪的二階微分方程，包含恢復力與阻尼力。",
+      "latex": "-kx - b\\frac{dx}{dt} = m\\frac{d^2x}{dt^2}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "damped-oscillation-position-function",
+      "label": "阻尼振盪位移函數",
+      "kind": "formula",
+      "summary": "描述阻尼振盪物體位置隨時間變化的函數，振幅呈指數衰減。",
+      "latex": "x(t) = Ae^{-\\left(\\frac{b}{2m}\\right)t} \\cos(\\omega t + \\phi)",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "damped-oscillation-angular-frequency",
+      "label": "阻尼振盪角頻率",
+      "kind": "formula",
+      "summary": "阻尼振盪的角頻率，受阻尼係數影響而小於自然頻率。",
+      "latex": "\\omega = \\sqrt{\\frac{k}{m} - \\left(\\frac{b}{2m}\\right)^2}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "underdamped-oscillation",
+      "label": "欠阻尼振盪",
+      "kind": "concept",
+      "summary": "阻尼較小，系統振盪數次後才回到平衡位置。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "critically-damped-oscillation",
+      "label": "臨界阻尼振盪",
+      "kind": "concept",
+      "summary": "阻尼恰好使系統最快回到平衡位置而不振盪。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "overdamped-oscillation",
+      "label": "過阻尼振盪",
+      "kind": "concept",
+      "summary": "阻尼過大，系統緩慢回到平衡位置而不振盪。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "tuned-mass-damper",
+      "label": "調質阻尼器",
+      "kind": "concept",
+      "summary": "利用共振原理減少結構物振動的裝置，如台北101的風阻尼器。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "damped-oscillation-power-loss",
+      "label": "阻尼振盪功率損耗",
+      "kind": "formula",
+      "summary": "阻尼力對振盪系統做負功，導致能量以熱形式散失的功率。",
+      "latex": "Power loss = -bv^2",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "forced-oscillation",
+      "label": "受迫振盪",
+      "kind": "concept",
+      "summary": "系統在週期性外力作用下產生的振盪。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "forced-oscillation-equation-motion",
+      "label": "受迫振盪運動方程式",
+      "kind": "formula",
+      "summary": "描述受迫阻尼振盪的微分方程，包含外力項。",
+      "latex": "F_0 \\sin \\omega t - b \\frac{dx}{dt} - kx = m \\frac{d^2 x}{dt^2}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "forced-oscillation-amplitude",
+      "label": "受迫振盪振幅",
+      "kind": "formula",
+      "summary": "受迫振盪的穩態振幅，與驅動頻率、阻尼和自然頻率有關。",
+      "latex": "A = \\frac{F_0 / m}{\\sqrt{(\\omega^2 - \\omega_0^2)^2 + \\left(\\frac{b\\omega}{m}\\right)^2}}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "natural-frequency-undamped",
+      "label": "自然頻率 (無阻尼)",
+      "kind": "definition",
+      "summary": "系統在無阻尼情況下自由振盪的固有頻率。",
+      "latex": "\\omega_0 = \\sqrt{\\frac{k}{m}}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "resonance",
+      "label": "共振",
+      "kind": "concept",
+      "summary": "當驅動頻率接近系統自然頻率時，振幅顯著增大的現象。",
+      "latex": "",
+      "pages": [
+        34,
+        35
+      ]
+    },
+    {
+      "id": "resonance-condition",
+      "label": "共振條件",
+      "kind": "principle",
+      "summary": "共振發生在驅動頻率接近系統自然頻率時，此時外力與速度同相。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "periodic-motion",
+      "to": "shm-definition",
+      "reason": "簡諧運動是一種特殊的週期運動。"
+    },
+    {
+      "from": "shm-definition",
+      "to": "shm-force-equation",
+      "reason": "簡諧運動的定義直接導出力與位移成正比的關係。"
+    },
+    {
+      "from": "hookes-law",
+      "to": "shm-force-equation",
+      "reason": "虎克定律是簡諧運動力方程式的具體例子。"
+    },
+    {
+      "from": "shm-force-equation",
+      "to": "spring-mass-shm",
+      "reason": "彈簧質量系統的運動符合簡諧運動的力方程式。"
+    },
+    {
+      "from": "shm-force-equation",
+      "to": "buoyancy-shm",
+      "reason": "浮體在液體中的恢復力可表示為簡諧運動的力方程式。"
+    },
+    {
+      "from": "shm-force-equation",
+      "to": "shm-differential-equation",
+      "reason": "結合牛頓第二定律與簡諧運動力方程式可導出其微分方程。"
+    },
+    {
+      "from": "shm-differential-equation",
+      "to": "angular-frequency-shm-definition",
+      "reason": "角頻率是簡諧運動微分方程中的一個關鍵參數。"
+    },
+    {
+      "from": "shm-differential-equation",
+      "to": "shm-position-function",
+      "reason": "位移函數是簡諧運動微分方程的通解。"
+    },
+    {
+      "from": "angular-frequency-shm-definition",
+      "to": "shm-position-function",
+      "reason": "位移函數中包含角頻率參數。"
+    },
+    {
+      "from": "shm-position-function",
+      "to": "shm-amplitude",
+      "reason": "振幅是簡諧運動位移函數的一個參數。"
+    },
+    {
+      "from": "shm-position-function",
+      "to": "shm-phase-constant",
+      "reason": "相位常數是簡諧運動位移函數的一個參數。"
+    },
+    {
+      "from": "angular-frequency-shm-definition",
+      "to": "shm-period-formula",
+      "reason": "週期與角頻率直接相關。"
+    },
+    {
+      "from": "shm-period-formula",
+      "to": "shm-frequency-formula",
+      "reason": "頻率是週期的倒數。"
+    },
+    {
+      "from": "shm-position-function",
+      "to": "shm-velocity-function",
+      "reason": "速度函數是位移函數對時間的導數。"
+    },
+    {
+      "from": "shm-velocity-function",
+      "to": "shm-acceleration-function",
+      "reason": "加速度函數是速度函數對時間的導數。"
+    },
+    {
+      "from": "shm-position-function",
+      "to": "shm-initial-conditions",
+      "reason": "需利用位移函數來推導初始條件。"
+    },
+    {
+      "from": "shm-velocity-function",
+      "to": "shm-initial-conditions",
+      "reason": "需利用速度函數來推導初始條件。"
+    },
+    {
+      "from": "shm-velocity-function",
+      "to": "shm-kinetic-energy",
+      "reason": "動能的定義需要速度函數。"
+    },
+    {
+      "from": "shm-position-function",
+      "to": "shm-potential-energy",
+      "reason": "位能的定義需要位移函數。"
+    },
+    {
+      "from": "hookes-law",
+      "to": "shm-potential-energy",
+      "reason": "彈性位能的定義基於虎克定律。"
+    },
+    {
+      "from": "shm-kinetic-energy",
+      "to": "shm-total-mechanical-energy",
+      "reason": "總力學能是動能與位能之和。"
+    },
+    {
+      "from": "shm-potential-energy",
+      "to": "shm-total-mechanical-energy",
+      "reason": "總力學能是動能與位能之和。"
+    },
+    {
+      "from": "shm-total-mechanical-energy",
+      "to": "shm-velocity-position-function",
+      "reason": "透過能量守恆可導出速度與位置的關係。"
+    },
+    {
+      "from": "shm-kinetic-energy",
+      "to": "shm-energy-transformation",
+      "reason": "能量轉換涉及動能的變化。"
+    },
+    {
+      "from": "shm-potential-energy",
+      "to": "shm-energy-transformation",
+      "reason": "能量轉換涉及位能的變化。"
+    },
+    {
+      "from": "shm-total-mechanical-energy",
+      "to": "shm-energy-transformation",
+      "reason": "能量轉換是在總力學能守恆下的動能與位能互換。"
+    },
+    {
+      "from": "shm-definition",
+      "to": "molecular-model-shm",
+      "reason": "分子模型是簡諧運動概念的應用。"
+    },
+    {
+      "from": "hookes-law",
+      "to": "molecular-model-shm",
+      "reason": "分子間作用力近似為彈簧力，應用虎克定律。"
+    },
+    {
+      "from": "shm-definition",
+      "to": "shm-circular-motion-projection",
+      "reason": "圓周運動的投影是理解簡諧運動的另一種方式。"
+    },
+    {
+      "from": "periodic-motion",
+      "to": "shm-circular-motion-projection",
+      "reason": "等速率圓周運動本身是一種週期運動。"
+    },
+    {
+      "from": "shm-definition",
+      "to": "torsional-pendulum",
+      "reason": "扭擺是一種做角簡諧運動的系統。"
+    },
+    {
+      "from": "shm-differential-equation",
+      "to": "torsional-pendulum",
+      "reason": "扭擺的運動方程式形式與簡諧運動微分方程相同。"
+    },
+    {
+      "from": "torsional-pendulum",
+      "to": "torsional-pendulum-period",
+      "reason": "扭擺週期是扭擺運動的重要參數。"
+    },
+    {
+      "from": "shm-period-formula",
+      "to": "torsional-pendulum-period",
+      "reason": "扭擺週期公式的推導基於簡諧運動週期公式的類比。"
+    },
+    {
+      "from": "shm-differential-equation",
+      "to": "shm-identification-method",
+      "reason": "判斷運動是否為簡諧運動的標準是看其是否滿足簡諧運動微分方程。"
+    },
+    {
+      "from": "periodic-motion",
+      "to": "simple-pendulum",
+      "reason": "單擺是一種常見的週期運動。"
+    },
+    {
+      "from": "simple-pendulum",
+      "to": "simple-pendulum-equation-motion",
+      "reason": "運動方程式描述了單擺的動態行為。"
+    },
+    {
+      "from": "simple-pendulum-equation-motion",
+      "to": "small-angle-approximation-pendulum",
+      "reason": "小角度近似是簡化單擺運動方程式的條件。"
+    },
+    {
+      "from": "small-angle-approximation-pendulum",
+      "to": "simple-pendulum-period-small-angle",
+      "reason": "在小角度近似下，單擺週期可簡化為特定公式。"
+    },
+    {
+      "from": "shm-period-formula",
+      "to": "simple-pendulum-period-small-angle",
+      "reason": "小角度單擺的週期公式是簡諧運動週期公式的應用。"
+    },
+    {
+      "from": "simple-pendulum-equation-motion",
+      "to": "simple-pendulum-period-large-angle",
+      "reason": "大角度單擺週期是單擺運動方程式的更精確解。"
+    },
+    {
+      "from": "simple-pendulum",
+      "to": "physical-pendulum",
+      "reason": "複擺是單擺概念的推廣，考慮了物體的質量分佈。"
+    },
+    {
+      "from": "shm-identification-method",
+      "to": "physical-pendulum",
+      "reason": "判斷複擺是否為簡諧運動需應用判斷法。"
+    },
+    {
+      "from": "physical-pendulum",
+      "to": "physical-pendulum-period",
+      "reason": "複擺週期是描述複擺運動的重要參數。"
+    },
+    {
+      "from": "shm-period-formula",
+      "to": "physical-pendulum-period",
+      "reason": "複擺週期公式的推導基於簡諧運動週期公式的類比。"
+    },
+    {
+      "from": "shm-definition",
+      "to": "damped-oscillation",
+      "reason": "阻尼振盪是簡諧運動在有阻力情況下的推廣。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "damped-oscillation-equation-motion",
+      "reason": "運動方程式描述了阻尼振盪的動態行為。"
+    },
+    {
+      "from": "shm-force-equation",
+      "to": "damped-oscillation-equation-motion",
+      "reason": "阻尼振盪的運動方程式在簡諧運動力方程式基礎上增加了阻尼項。"
+    },
+    {
+      "from": "damped-oscillation-equation-motion",
+      "to": "damped-oscillation-position-function",
+      "reason": "位移函數是阻尼振盪運動方程式的解。"
+    },
+    {
+      "from": "damped-oscillation-equation-motion",
+      "to": "damped-oscillation-angular-frequency",
+      "reason": "角頻率是阻尼振盪運動方程式中的一個關鍵參數。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "underdamped-oscillation",
+      "reason": "欠阻尼是阻尼振盪的一種特定情況。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "critically-damped-oscillation",
+      "reason": "臨界阻尼是阻尼振盪的一種特定情況。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "overdamped-oscillation",
+      "reason": "過阻尼是阻尼振盪的一種特定情況。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "tuned-mass-damper",
+      "reason": "調質阻尼器是利用阻尼振盪原理來減震的裝置。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "damped-oscillation-power-loss",
+      "reason": "阻尼振盪中能量會因阻尼力而損耗。"
+    },
+    {
+      "from": "damped-oscillation",
+      "to": "forced-oscillation",
+      "reason": "受迫振盪是在阻尼振盪基礎上施加外力。"
+    },
+    {
+      "from": "forced-oscillation",
+      "to": "forced-oscillation-equation-motion",
+      "reason": "運動方程式描述了受迫振盪的動態行為。"
+    },
+    {
+      "from": "damped-oscillation-equation-motion",
+      "to": "forced-oscillation-equation-motion",
+      "reason": "受迫振盪的運動方程式在阻尼振盪方程式基礎上增加了外力項。"
+    },
+    {
+      "from": "forced-oscillation-equation-motion",
+      "to": "forced-oscillation-amplitude",
+      "reason": "振幅是受迫振盪運動方程式的穩態解。"
+    },
+    {
+      "from": "angular-frequency-shm-definition",
+      "to": "natural-frequency-undamped",
+      "reason": "自然頻率是無阻尼簡諧運動的固有角頻率。"
+    },
+    {
+      "from": "forced-oscillation",
+      "to": "resonance",
+      "reason": "共振是受迫振盪在特定條件下發生的現象。"
+    },
+    {
+      "from": "natural-frequency-undamped",
+      "to": "resonance",
+      "reason": "共振現象與系統的自然頻率密切相關。"
+    },
+    {
+      "from": "resonance",
+      "to": "resonance-condition",
+      "reason": "共振條件說明了共振發生的具體情況。"
+    },
+    {
+      "from": "forced-oscillation-amplitude",
+      "to": "resonance-condition",
+      "reason": "共振條件可從受迫振盪振幅公式中看出。"
+    }
+  ],
+  "chapter_number": 13,
+  "usage": {
+    "input_tokens": 16705,
+    "output_tokens": 7764
+  }
+}

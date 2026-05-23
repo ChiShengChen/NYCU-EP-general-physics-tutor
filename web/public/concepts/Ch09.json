@@ -1,0 +1,790 @@
+{
+  "nodes": [
+    {
+      "id": "angular-position",
+      "label": "角度位置",
+      "kind": "concept",
+      "summary": "描述物體繞固定軸旋轉時的方位，通常以弧度表示。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "radian-definition",
+      "label": "弧度定義",
+      "kind": "definition",
+      "summary": "一弧度是圓弧長度等於半徑時所對應的圓心角。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "angular-displacement",
+      "label": "角位移",
+      "kind": "definition",
+      "summary": "物體旋轉時角度位置的變化量。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "average-angular-speed",
+      "label": "平均角速率",
+      "kind": "definition",
+      "summary": "角位移與所需時間間隔的比值。",
+      "latex": "\\bar{\\omega} = \\frac{\\Delta\\theta}{\\Delta t}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "instantaneous-angular-speed",
+      "label": "瞬時角速率",
+      "kind": "definition",
+      "summary": "角位置對時間的瞬時變化率。",
+      "latex": "\\omega = \\frac{d\\theta}{dt}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "average-angular-acceleration",
+      "label": "平均角加速度",
+      "kind": "definition",
+      "summary": "角速率變化量與所需時間間隔的比值。",
+      "latex": "\\bar{\\alpha} = \\frac{\\omega_f - \\omega_i}{t_f - t_i} = \\frac{\\Delta \\omega}{\\Delta t}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "instantaneous-angular-acceleration",
+      "label": "瞬時角加速度",
+      "kind": "definition",
+      "summary": "角速率對時間的瞬時變化率。",
+      "latex": "\\alpha = \\lim_{\\Delta t \\to 0} \\frac{\\Delta \\omega}{\\Delta t} = \\frac{d\\omega}{dt}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "right-hand-rule-angular-velocity",
+      "label": "角速度右手定則",
+      "kind": "method",
+      "summary": "用右手定則判斷瞬時角速度和角加速度向量的方向。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "angular-displacement-not-vector",
+      "label": "角位移非向量",
+      "kind": "concept",
+      "summary": "有限角位移不滿足向量的交換律，因此不能視為向量。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "infinitesimal-rotation-is-vector",
+      "label": "無窮小轉角是向量",
+      "kind": "concept",
+      "summary": "無窮小的轉角滿足向量的交換律，可以視為向量。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "instantaneous-angular-quantities-are-vectors",
+      "label": "瞬時角量是向量",
+      "kind": "concept",
+      "summary": "瞬時角速度和瞬時角加速度可以被視為向量。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "rotational-kinematic-eq-constant-alpha-1",
+      "label": "等角加速運動學公式一",
+      "kind": "formula",
+      "summary": "描述等角加速度下末角速度與初角速度、角加速度和時間的關係。",
+      "latex": "\\omega_f = \\omega_i + \\alpha t",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "rotational-kinematic-eq-constant-alpha-2",
+      "label": "等角加速運動學公式二",
+      "kind": "formula",
+      "summary": "描述等角加速度下末角位置與初角位置、初角速度、角加速度和時間的關係。",
+      "latex": "\\theta_f = \\theta_i + \\omega_i t + \\frac{1}{2}\\alpha t^2",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "rotational-kinematic-eq-constant-alpha-3",
+      "label": "等角加速運動學公式三",
+      "kind": "formula",
+      "summary": "描述等角加速度下末角速度與初角速度、角加速度和角位移的關係。",
+      "latex": "\\omega_f^2 = \\omega_i^2 + 2\\alpha(\\theta_f - \\theta_i)",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "rotational-kinematic-eq-constant-alpha-4",
+      "label": "等角加速運動學公式四",
+      "kind": "formula",
+      "summary": "描述等角加速度下末角位置與初角位置、平均角速度和時間的關係。",
+      "latex": "\\theta_f = \\theta_i + \\frac{1}{2}(\\omega_i + \\omega_f)t",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "angular-linear-relationship",
+      "label": "角量與線量關係",
+      "kind": "concept",
+      "summary": "描述旋轉運動中的角量與對應的線性運動量之間的關係。",
+      "latex": "",
+      "pages": [
+        7,
+        9
+      ]
+    },
+    {
+      "id": "tangential-velocity",
+      "label": "切線速度",
+      "kind": "definition",
+      "summary": "質點在圓周運動中沿圓周切線方向的速度，其大小為 $v_t = r\\omega$。",
+      "latex": "v_t = r\\omega",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "radian-for-linear-quantities",
+      "label": "弧度單位用於線量計算",
+      "kind": "principle",
+      "summary": "將角量轉換為線量時，角度單位必須使用弧度。",
+      "latex": "",
+      "pages": [
+        7,
+        9
+      ]
+    },
+    {
+      "id": "origin-rotational-axis-definition",
+      "label": "旋轉軸與原點定義",
+      "kind": "concept",
+      "summary": "在旋轉運動中，需要定義旋轉的原點和旋轉軸，旋轉軸不一定實際存在。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "tangential-velocity-vector-formula",
+      "label": "切線速度向量式",
+      "kind": "formula",
+      "summary": "以向量外積表示切線速度、角速度和位置向量的關係。",
+      "latex": "\\vec{v}_t = \\vec{\\omega} \\times \\vec{r}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "3d-rotation-concept",
+      "label": "三維旋轉運動",
+      "kind": "concept",
+      "summary": "旋轉運動不限於單一平面，可以發生在三維空間中。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "moving-rotational-axis",
+      "label": "移動的旋轉軸",
+      "kind": "concept",
+      "summary": "旋轉的原點和旋轉軸可以移動，例如滾動運動和陀螺儀。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "tangential-acceleration",
+      "label": "切線加速度",
+      "kind": "definition",
+      "summary": "質點在圓周運動中沿圓周切線方向的加速度，其大小為 $a_t = r\\alpha$。",
+      "latex": "a_t = r\\alpha",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "tangential-acceleration-vector-formula",
+      "label": "切線加速度向量式",
+      "kind": "formula",
+      "summary": "以向量外積表示切線加速度、角加速度和位置向量的關係。",
+      "latex": "\\vec{a_t} = \\vec{\\alpha} \\times \\vec{r}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "radial-acceleration",
+      "label": "徑向加速度 (向心加速度)",
+      "kind": "definition",
+      "summary": "質點在圓周運動中指向圓心的加速度，又稱向心加速度，其大小為 $a_r = a_C = \\frac{v^2}{r} = r\\omega^2$。",
+      "latex": "a_r = a_C = \\frac{v^2}{r} = r\\omega^2",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "radial-acceleration-vector-formula",
+      "label": "徑向加速度向量式",
+      "kind": "formula",
+      "summary": "以向量外積表示徑向加速度、角速度和切線速度的關係。",
+      "latex": "\\vec{a_r} = \\vec{\\omega} \\times \\vec{v}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "total-linear-acceleration-formula",
+      "label": "總線性加速度",
+      "kind": "formula",
+      "summary": "總線性加速度是切線加速度和徑向加速度的向量和。",
+      "latex": "\\vec{a} = \\vec{a_t} + \\vec{a_r}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "uniform-angular-speed-acceleration",
+      "label": "剛體角量一致性",
+      "kind": "concept",
+      "summary": "剛體上所有點具有相同的角速度和角加速度，但切線速度和切線加速度不同。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "rotational-kinetic-energy",
+      "label": "轉動動能",
+      "kind": "definition",
+      "summary": "剛體因旋轉而擁有的動能，其大小為 $K_R = \\frac{1}{2} I \\omega^2$。",
+      "latex": "K_R = \\frac{1}{2} I \\omega^2",
+      "pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "moment-of-inertia-discrete",
+      "label": "離散質點轉動慣量",
+      "kind": "definition",
+      "summary": "離散質點系統中，各質點質量與其到旋轉軸距離平方的總和。",
+      "latex": "I = \\sum_{i=1}^n m_i r_i^2",
+      "pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "moment-of-inertia-concept",
+      "label": "轉動慣量概念",
+      "kind": "concept",
+      "summary": "衡量物體抵抗角速度變化的慣性，類似於線性運動中的質量。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "moment-of-inertia-axis-dependence",
+      "label": "轉動慣量與軸相關",
+      "kind": "concept",
+      "summary": "物體的轉動慣量取決於所選擇的旋轉軸。",
+      "latex": "",
+      "pages": [
+        16,
+        18
+      ]
+    },
+    {
+      "id": "moment-of-inertia-continuous-calculation",
+      "label": "連續體轉動慣量計算",
+      "kind": "method",
+      "summary": "對於連續質量分佈的物體，轉動慣量通過積分 $I = \\int r^2 dm$ 計算。",
+      "latex": "I = \\int r^2 dm",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "volume-mass-distribution-dm",
+      "label": "體積質量分佈微元",
+      "kind": "formula",
+      "summary": "體積質量分佈中，質量微元dm表示為密度與體積微元的乘積。",
+      "latex": "dm = \\rho dV",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "area-mass-distribution-dm",
+      "label": "面積質量分佈微元",
+      "kind": "formula",
+      "summary": "面積質量分佈中，質量微元dm表示為面密度與面積微元的乘積。",
+      "latex": "dm = \\sigma dA",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "linear-mass-distribution-dm",
+      "label": "線性質量分佈微元",
+      "kind": "formula",
+      "summary": "線性質量分佈中，質量微元dm表示為線密度與長度微元的乘積。",
+      "latex": "dm = \\lambda d\\ell",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "moment-of-inertia-hoop-formula",
+      "label": "薄圓環轉動慣量",
+      "kind": "formula",
+      "summary": "均勻薄圓環繞其中心且垂直於平面的軸的轉動慣量。",
+      "latex": "I = MR^2",
+      "pages": [
+        18,
+        20
+      ]
+    },
+    {
+      "id": "moment-of-inertia-rod-center-formula",
+      "label": "均勻細桿中心軸轉動慣量",
+      "kind": "formula",
+      "summary": "均勻細桿繞其中心且垂直於桿的軸的轉動慣量。",
+      "latex": "I = \\frac{1}{12} ML^2",
+      "pages": [
+        19,
+        20
+      ]
+    },
+    {
+      "id": "moment-of-inertia-solid-cylinder-formula",
+      "label": "實心圓柱轉動慣量",
+      "kind": "formula",
+      "summary": "均勻實心圓柱繞其中心軸的轉動慣量。",
+      "latex": "I = \\frac{1}{2} MR^2",
+      "pages": [
+        19,
+        20
+      ]
+    },
+    {
+      "id": "moment-of-inertia-hollow-cylinder-formula",
+      "label": "空心圓柱轉動慣量",
+      "kind": "formula",
+      "summary": "空心圓柱繞其中心軸的轉動慣量。",
+      "latex": "I_{CM} = \\frac{1}{2} M(R_1^2 + R_2^2)",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "moment-of-inertia-rectangular-plate-formula",
+      "label": "矩形板轉動慣量",
+      "kind": "formula",
+      "summary": "矩形板繞其中心且垂直於板的軸的轉動慣量。",
+      "latex": "I_{CM} = \\frac{1}{12} M(a^2 + b^2)",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "moment-of-inertia-rod-end-formula",
+      "label": "均勻細桿端點軸轉動慣量",
+      "kind": "formula",
+      "summary": "均勻細桿繞其一端且垂直於桿的軸的轉動慣量。",
+      "latex": "I = \\frac{1}{3} ML^2",
+      "pages": [
+        20,
+        23
+      ]
+    },
+    {
+      "id": "moment-of-inertia-solid-sphere-formula",
+      "label": "實心球體轉動慣量",
+      "kind": "formula",
+      "summary": "實心球體繞通過其中心的軸的轉動慣量。",
+      "latex": "I_{CM} = \\frac{2}{5} MR^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "moment-of-inertia-thin-spherical-shell-formula",
+      "label": "薄球殼轉動慣量",
+      "kind": "formula",
+      "summary": "薄球殼繞通過其中心的軸的轉動慣量。",
+      "latex": "I_{CM} = \\frac{2}{3} MR^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "parallel-axis-theorem",
+      "label": "平行軸定理",
+      "kind": "law",
+      "summary": "描述物體繞任意軸的轉動慣量與繞平行通過質心軸的轉動慣量之間的關係。",
+      "latex": "I_O = I_{CM} + MD^2",
+      "pages": [
+        21,
+        22
+      ]
+    },
+    {
+      "id": "perpendicular-axis-theorem",
+      "label": "垂直軸定理",
+      "kind": "law",
+      "summary": "描述平面物體繞垂直於其平面的軸的轉動慣量與繞其平面內兩個互相垂直軸的轉動慣量之間的關係。",
+      "latex": "I_z = I_x + I_y",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "perpendicular-axis-theorem-2d-only",
+      "label": "垂直軸定理僅限二維",
+      "kind": "principle",
+      "summary": "垂直軸定理僅適用於平面物體。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "angular-position",
+      "to": "radian-definition",
+      "reason": "理解角度位置需要先知道弧度的定義。"
+    },
+    {
+      "from": "angular-position",
+      "to": "angular-displacement",
+      "reason": "角位移是角度位置的變化。"
+    },
+    {
+      "from": "angular-displacement",
+      "to": "average-angular-speed",
+      "reason": "平均角速率的定義基於角位移。"
+    },
+    {
+      "from": "average-angular-speed",
+      "to": "instantaneous-angular-speed",
+      "reason": "瞬時角速率是平均角速率在時間趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "average-angular-acceleration",
+      "reason": "平均角加速度的定義基於角速率的變化。"
+    },
+    {
+      "from": "average-angular-acceleration",
+      "to": "instantaneous-angular-acceleration",
+      "reason": "瞬時角加速度是平均角加速度在時間趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "right-hand-rule-angular-velocity",
+      "reason": "角速度的方向由右手定則決定。"
+    },
+    {
+      "from": "instantaneous-angular-acceleration",
+      "to": "right-hand-rule-angular-velocity",
+      "reason": "角加速度的方向也由右手定則決定。"
+    },
+    {
+      "from": "angular-displacement",
+      "to": "angular-displacement-not-vector",
+      "reason": "理解角位移的性質才能知道它不是向量。"
+    },
+    {
+      "from": "angular-displacement-not-vector",
+      "to": "infinitesimal-rotation-is-vector",
+      "reason": "區分有限角位移和無窮小轉角的向量性質。"
+    },
+    {
+      "from": "infinitesimal-rotation-is-vector",
+      "to": "instantaneous-angular-quantities-are-vectors",
+      "reason": "瞬時角量是向量的基礎是無窮小轉角是向量。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "rotational-kinematic-eq-constant-alpha-1",
+      "reason": "等角加速運動學公式一描述角速度的變化。"
+    },
+    {
+      "from": "instantaneous-angular-acceleration",
+      "to": "rotational-kinematic-eq-constant-alpha-1",
+      "reason": "等角加速運動學公式一描述角加速度與角速度的關係。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "rotational-kinematic-eq-constant-alpha-2",
+      "reason": "等角加速運動學公式二描述角位置與角速度的關係。"
+    },
+    {
+      "from": "instantaneous-angular-acceleration",
+      "to": "rotational-kinematic-eq-constant-alpha-2",
+      "reason": "等角加速運動學公式二描述角位置與角加速度的關係。"
+    },
+    {
+      "from": "rotational-kinematic-eq-constant-alpha-1",
+      "to": "rotational-kinematic-eq-constant-alpha-3",
+      "reason": "公式三可由公式一和二推導。"
+    },
+    {
+      "from": "rotational-kinematic-eq-constant-alpha-2",
+      "to": "rotational-kinematic-eq-constant-alpha-3",
+      "reason": "公式三可由公式一和二推導。"
+    },
+    {
+      "from": "rotational-kinematic-eq-constant-alpha-1",
+      "to": "rotational-kinematic-eq-constant-alpha-4",
+      "reason": "公式四可由公式一和二推導。"
+    },
+    {
+      "from": "rotational-kinematic-eq-constant-alpha-2",
+      "to": "rotational-kinematic-eq-constant-alpha-4",
+      "reason": "公式四可由公式一和二推導。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "angular-linear-relationship",
+      "reason": "角量與線量關係的基礎是角速度。"
+    },
+    {
+      "from": "angular-linear-relationship",
+      "to": "tangential-velocity",
+      "reason": "切線速度是角量與線量關係的一個具體應用。"
+    },
+    {
+      "from": "tangential-velocity",
+      "to": "radian-for-linear-quantities",
+      "reason": "計算切線速度時需要使用弧度。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "tangential-velocity-vector-formula",
+      "reason": "切線速度向量式需要角速度向量。"
+    },
+    {
+      "from": "angular-position",
+      "to": "origin-rotational-axis-definition",
+      "reason": "定義旋轉軸和原點是描述角度位置的基礎。"
+    },
+    {
+      "from": "origin-rotational-axis-definition",
+      "to": "3d-rotation-concept",
+      "reason": "旋轉軸的定義有助於理解三維旋轉。"
+    },
+    {
+      "from": "origin-rotational-axis-definition",
+      "to": "moving-rotational-axis",
+      "reason": "理解固定軸後才能理解移動軸。"
+    },
+    {
+      "from": "tangential-velocity",
+      "to": "tangential-acceleration",
+      "reason": "切線加速度是切線速度的變化率。"
+    },
+    {
+      "from": "instantaneous-angular-acceleration",
+      "to": "tangential-acceleration",
+      "reason": "切線加速度與角加速度直接相關。"
+    },
+    {
+      "from": "tangential-acceleration",
+      "to": "tangential-acceleration-vector-formula",
+      "reason": "切線加速度向量式需要切線加速度概念。"
+    },
+    {
+      "from": "tangential-velocity",
+      "to": "radial-acceleration",
+      "reason": "徑向加速度的定義基於切線速度。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "radial-acceleration",
+      "reason": "徑向加速度的定義也基於角速度。"
+    },
+    {
+      "from": "radial-acceleration",
+      "to": "radial-acceleration-vector-formula",
+      "reason": "徑向加速度向量式需要徑向加速度概念。"
+    },
+    {
+      "from": "tangential-acceleration",
+      "to": "total-linear-acceleration-formula",
+      "reason": "總線性加速度是切線加速度和徑向加速度的向量和。"
+    },
+    {
+      "from": "radial-acceleration",
+      "to": "total-linear-acceleration-formula",
+      "reason": "總線性加速度是切線加速度和徑向加速度的向量和。"
+    },
+    {
+      "from": "angular-position",
+      "to": "uniform-angular-speed-acceleration",
+      "reason": "剛體運動的特性與角量有關。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "uniform-angular-speed-acceleration",
+      "reason": "剛體運動的特性與角速度有關。"
+    },
+    {
+      "from": "instantaneous-angular-acceleration",
+      "to": "uniform-angular-speed-acceleration",
+      "reason": "剛體運動的特性與角加速度有關。"
+    },
+    {
+      "from": "instantaneous-angular-speed",
+      "to": "rotational-kinetic-energy",
+      "reason": "轉動動能的定義包含角速度。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "rotational-kinetic-energy",
+      "reason": "轉動動能的定義包含轉動慣量。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-discrete",
+      "reason": "離散質點轉動慣量是轉動慣量的一個具體計算方式。"
+    },
+    {
+      "from": "moment-of-inertia-discrete",
+      "to": "moment-of-inertia-axis-dependence",
+      "reason": "轉動慣量取決於軸，這在計算離散質點時很明顯。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-continuous-calculation",
+      "reason": "連續體轉動慣量計算是轉動慣量的一個具體計算方式。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "volume-mass-distribution-dm",
+      "reason": "體積質量分佈是連續體計算的一種情況。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "area-mass-distribution-dm",
+      "reason": "面積質量分佈是連續體計算的一種情況。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "linear-mass-distribution-dm",
+      "reason": "線性質量分佈是連續體計算的一種情況。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "moment-of-inertia-hoop-formula",
+      "reason": "薄圓環轉動慣量是連續體計算的應用。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "moment-of-inertia-rod-center-formula",
+      "reason": "均勻細桿中心軸轉動慣量是連續體計算的應用。"
+    },
+    {
+      "from": "moment-of-inertia-continuous-calculation",
+      "to": "moment-of-inertia-solid-cylinder-formula",
+      "reason": "實心圓柱轉動慣量是連續體計算的應用。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-hollow-cylinder-formula",
+      "reason": "空心圓柱轉動慣量是轉動慣量的一個具體例子。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-rectangular-plate-formula",
+      "reason": "矩形板轉動慣量是轉動慣量的一個具體例子。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-rod-end-formula",
+      "reason": "均勻細桿端點軸轉動慣量是轉動慣量的一個具體例子。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-solid-sphere-formula",
+      "reason": "實心球體轉動慣量是轉動慣量的一個具體例子。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "moment-of-inertia-thin-spherical-shell-formula",
+      "reason": "薄球殼轉動慣量是轉動慣量的一個具體例子。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "parallel-axis-theorem",
+      "reason": "平行軸定理是計算轉動慣量的重要工具。"
+    },
+    {
+      "from": "moment-of-inertia-axis-dependence",
+      "to": "parallel-axis-theorem",
+      "reason": "平行軸定理處理轉動慣量隨軸變化的問題。"
+    },
+    {
+      "from": "moment-of-inertia-rod-center-formula",
+      "to": "moment-of-inertia-rod-end-formula",
+      "reason": "均勻細桿端點軸轉動慣量可由中心軸轉動慣量和平行軸定理推導。"
+    },
+    {
+      "from": "parallel-axis-theorem",
+      "to": "moment-of-inertia-rod-end-formula",
+      "reason": "平行軸定理用於計算均勻細桿端點軸轉動慣量。"
+    },
+    {
+      "from": "moment-of-inertia-concept",
+      "to": "perpendicular-axis-theorem",
+      "reason": "垂直軸定理是計算轉動慣量的重要工具。"
+    },
+    {
+      "from": "perpendicular-axis-theorem",
+      "to": "perpendicular-axis-theorem-2d-only",
+      "reason": "垂直軸定理有其適用範圍限制。"
+    }
+  ],
+  "chapter_number": 9,
+  "usage": {
+    "input_tokens": 10057,
+    "output_tokens": 7657
+  }
+}

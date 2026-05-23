@@ -1,0 +1,627 @@
+{
+  "nodes": [
+    {
+      "id": "capacitor",
+      "label": "電容器",
+      "kind": "concept",
+      "summary": "儲存電能與電荷的裝置，由兩個導體與絕緣體組成。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "capacitance-definition",
+      "label": "電容定義",
+      "kind": "definition",
+      "summary": "電容器儲存電荷與電位差的比值，衡量其儲存電荷的能力。",
+      "latex": "C \\equiv \\frac{|Q|}{|\\Delta V|}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "farad",
+      "label": "法拉",
+      "kind": "concept",
+      "summary": "電容的國際單位，定義為每伏特一庫侖。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "parallel-plate-capacitor-capacitance",
+      "label": "平行板電容",
+      "kind": "formula",
+      "summary": "平行板電容器的電容值，與板面積成正比，與板間距成反比。",
+      "latex": "C = \\frac{\\epsilon_0 A}{d}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "fringe-fields",
+      "label": "邊緣場",
+      "kind": "concept",
+      "summary": "電容器邊緣處電場線彎曲向外，不均勻分佈。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "spherical-capacitor-capacitance",
+      "label": "球形電容",
+      "kind": "formula",
+      "summary": "球形電容器的電容值，取決於內外球半徑。",
+      "latex": "C = \\frac{ab}{k_e (b-a)}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "conducting-sphere-capacitance",
+      "label": "導體球電容",
+      "kind": "formula",
+      "summary": "單一導體球的電容值，假設另一極在無限遠處。",
+      "latex": "C = 4\\pi\\varepsilon_o a",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "cylindrical-capacitor-capacitance",
+      "label": "圓柱形電容",
+      "kind": "formula",
+      "summary": "圓柱形電容器的電容值，與長度成正比，與半徑比的對數成反比。",
+      "latex": "\\frac{C}{\\ell} = \\frac{1}{2k_e \\ln(b/a)}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "two-spheres-capacitance",
+      "label": "雙球電容",
+      "kind": "formula",
+      "summary": "兩個相距遙遠的導體球系統的電容值。",
+      "latex": "C = \\frac{4\\pi\\epsilon_0}{(1/a) + (1/b) - (2/d)}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "parallel-capacitors",
+      "label": "電容並聯",
+      "kind": "formula",
+      "summary": "電容器並聯時，總電容為各電容之和。",
+      "latex": "C_{eq} = C_1 + C_2",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "series-capacitors",
+      "label": "電容串聯",
+      "kind": "formula",
+      "summary": "電容器串聯時，總電容的倒數為各電容倒數之和。",
+      "latex": "\\frac{1}{C_{eq}} = \\frac{1}{C_1} + \\frac{1}{C_2}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "symmetry-method-capacitors",
+      "label": "電容對稱法",
+      "kind": "method",
+      "summary": "利用電路對稱性簡化電容器網路，找出等效電容。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "energy-stored-capacitor",
+      "label": "電容儲能",
+      "kind": "formula",
+      "summary": "電容器中儲存的電能，可表示為電荷、電容或電位差的函數。",
+      "latex": "U_E = \\frac{Q^2}{2C} = \\frac{1}{2} Q \\Delta V = \\frac{1}{2} C (\\Delta V)^2",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "energy-density-electric-field",
+      "label": "電場能量密度",
+      "kind": "formula",
+      "summary": "電場中每單位體積儲存的能量，與電場強度的平方成正比。",
+      "latex": "u_E = \\frac{1}{2}(\\varepsilon_0 E^2)",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "isolated-capacitor-separation-effect",
+      "label": "孤立電容板距效應",
+      "kind": "concept",
+      "summary": "孤立電容器板距增加時，電容下降，電荷不變，電場不變，電位差與儲能上升。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "connected-capacitor-separation-effect",
+      "label": "連接電容板距效應",
+      "kind": "concept",
+      "summary": "連接電池的電容器板距增加時，電容下降，電荷下降，電場下降，電位差不變，儲能下降。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "dielectric",
+      "label": "介電質",
+      "kind": "definition",
+      "summary": "一種非導電材料，置於電容器板間可增加電容。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "dielectric-constant",
+      "label": "介電常數",
+      "kind": "concept",
+      "summary": "衡量介電質增加電容能力的無單位常數，恆大於等於1。",
+      "latex": "\\kappa \\ge 1",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "capacitance-with-dielectric",
+      "label": "含介電質電容",
+      "kind": "formula",
+      "summary": "插入介電質後，電容值會增加介電常數倍。",
+      "latex": "C = \\kappa C_0",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "electric-field-with-dielectric",
+      "label": "含介電質電場",
+      "kind": "formula",
+      "summary": "插入介電質後，電場強度會減小介電常數倍。",
+      "latex": "E = \\frac{E_0}{\\kappa}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "dielectric-breakdown",
+      "label": "介電崩潰",
+      "kind": "concept",
+      "summary": "介電質在強電場下失去絕緣性，變成導體的現象。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "dielectric-strength",
+      "label": "介電強度",
+      "kind": "definition",
+      "summary": "材料在發生介電崩潰前所能承受的最大電場強度。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "tubular-capacitor",
+      "label": "管狀電容",
+      "kind": "concept",
+      "summary": "由金屬箔與絕緣紙捲繞而成的電容器。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "oil-filled-capacitor",
+      "label": "油浸電容",
+      "kind": "concept",
+      "summary": "用於高電壓，金屬板浸泡在矽油中的電容器。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "electrolytic-capacitor",
+      "label": "電解電容",
+      "kind": "concept",
+      "summary": "儲存大量電荷於低電壓，具極性，有金屬氧化層。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "variable-capacitor",
+      "label": "可變電容",
+      "kind": "concept",
+      "summary": "透過改變板間距或重疊面積來調整電容值的裝置。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "supercapacitor",
+      "label": "超級電容",
+      "kind": "concept",
+      "summary": "容量遠高於一般電容，充電快，循環壽命長。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "connected-capacitor-dielectric-effect",
+      "label": "連接電容介電質效應",
+      "kind": "concept",
+      "summary": "連接電池的電容器插入介電質時，電容與電荷上升，電場與電位差不變。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "induced-polarization",
+      "label": "感應極化",
+      "kind": "concept",
+      "summary": "分子在外部電場作用下，正負電荷中心分離產生感應偶極矩的現象。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "atomic-description-dielectrics",
+      "label": "介電質原子描述",
+      "kind": "concept",
+      "summary": "介電質中的分子偶極在外電場下部分對齊，產生內部電場。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "induced-charge-dielectric",
+      "label": "介電質感應電荷",
+      "kind": "formula",
+      "summary": "介電質表面因極化而產生的感應電荷密度，與自由電荷密度和介電常數相關。",
+      "latex": "\\sigma_{ind} = \\left(\\frac{\\kappa-1}{\\kappa}\\right)\\sigma_0",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "isolated-capacitor-dielectric-effect",
+      "label": "孤立電容介電質效應",
+      "kind": "concept",
+      "summary": "孤立電容器插入介電質時，電容上升，電荷不變，電位差下降，儲能下降。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "high-kappa-dielectric",
+      "label": "高介電常數介電質",
+      "kind": "concept",
+      "summary": "具有高介電常數的材料，用於製造更小、更高效的電子元件。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "capacitance-metallic-slab",
+      "label": "含金屬板電容",
+      "kind": "formula",
+      "summary": "平行板電容器中插入金屬板後的電容值，與金屬板厚度有關。",
+      "latex": "C = \\frac{\\epsilon_0 A}{d-a}",
+      "pages": [
+        29,
+        30
+      ]
+    },
+    {
+      "id": "capacitance-partial-dielectric-slab",
+      "label": "含部分介電質電容",
+      "kind": "formula",
+      "summary": "平行板電容器中插入部分厚度介電質後的電容值。",
+      "latex": "C = \\left( \\frac{3\\kappa}{2\\kappa+1} \\right) C_0",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "capacitance-multiple-dielectrics",
+      "label": "多介電質電容",
+      "kind": "formula",
+      "summary": "包含多種介電質的電容器系統的等效電容計算。",
+      "latex": "C = \\frac{\\epsilon_0 \\ell W}{d} \\left( \\frac{\\kappa_1}{2} + \\frac{\\kappa_2 \\kappa_3}{\\kappa_2 + \\kappa_3} \\right)",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "gauss-law-dielectrics",
+      "label": "介電質高斯定律",
+      "kind": "law",
+      "summary": "修正版的高斯定律，用於計算介電質中自由電荷產生的電場。",
+      "latex": "\\oint \\kappa \\vec{E} \\cdot d\\vec{a} = \\frac{Q_{free}}{\\epsilon_0}",
+      "pages": [
+        33
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "capacitor",
+      "to": "capacitance-definition",
+      "reason": "電容的定義是針對電容器這個裝置而言的。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "farad",
+      "reason": "法拉是電容的單位，理解電容定義才能理解其單位。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "parallel-plate-capacitor-capacitance",
+      "reason": "平行板電容的公式是電容定義在特定幾何下的應用。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "spherical-capacitor-capacitance",
+      "reason": "球形電容的公式是電容定義在特定幾何下的應用。"
+    },
+    {
+      "from": "spherical-capacitor-capacitance",
+      "to": "conducting-sphere-capacitance",
+      "reason": "導體球電容是球形電容在外部半徑趨於無限大時的特例。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "cylindrical-capacitor-capacitance",
+      "reason": "圓柱形電容的公式是電容定義在特定幾何下的應用。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "two-spheres-capacitance",
+      "reason": "雙球電容的公式是電容定義在特定幾何下的應用。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "parallel-capacitors",
+      "reason": "電容並聯的等效公式是基於電容定義推導而來。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "series-capacitors",
+      "reason": "電容串聯的等效公式是基於電容定義推導而來。"
+    },
+    {
+      "from": "parallel-capacitors",
+      "to": "symmetry-method-capacitors",
+      "reason": "電容對稱法通常將複雜電路簡化為並聯或串聯組合。"
+    },
+    {
+      "from": "series-capacitors",
+      "to": "symmetry-method-capacitors",
+      "reason": "電容對稱法通常將複雜電路簡化為並聯或串聯組合。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "energy-stored-capacitor",
+      "reason": "電容器儲存能量的公式是基於電容定義和電位差推導而來。"
+    },
+    {
+      "from": "energy-stored-capacitor",
+      "to": "energy-density-electric-field",
+      "reason": "電場能量密度是電容器儲存能量在單位體積上的分佈。"
+    },
+    {
+      "from": "parallel-plate-capacitor-capacitance",
+      "to": "energy-density-electric-field",
+      "reason": "電場能量密度的推導常以平行板電容器為例，並使用其電容公式。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "isolated-capacitor-separation-effect",
+      "reason": "理解孤立電容器板距效應需要掌握電容、電荷和電位差的基本關係。"
+    },
+    {
+      "from": "energy-stored-capacitor",
+      "to": "isolated-capacitor-separation-effect",
+      "reason": "理解孤立電容器板距效應需要掌握電容器儲能的變化。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "connected-capacitor-separation-effect",
+      "reason": "理解連接電池的電容器板距效應需要掌握電容、電荷和電位差的基本關係。"
+    },
+    {
+      "from": "energy-stored-capacitor",
+      "to": "connected-capacitor-separation-effect",
+      "reason": "理解連接電池的電容器板距效應需要掌握電容器儲能的變化。"
+    },
+    {
+      "from": "capacitor",
+      "to": "dielectric",
+      "reason": "介電質是電容器中用於增加電容的材料。"
+    },
+    {
+      "from": "dielectric",
+      "to": "dielectric-constant",
+      "reason": "介電常數是量化介電質特性的重要參數。"
+    },
+    {
+      "from": "capacitance-definition",
+      "to": "capacitance-with-dielectric",
+      "reason": "含介電質電容的公式是電容定義在引入介電質後的延伸。"
+    },
+    {
+      "from": "dielectric-constant",
+      "to": "capacitance-with-dielectric",
+      "reason": "介電常數是計算含介電質電容的關鍵參數。"
+    },
+    {
+      "from": "dielectric-constant",
+      "to": "electric-field-with-dielectric",
+      "reason": "介電常數是計算含介電質電場的關鍵參數。"
+    },
+    {
+      "from": "dielectric",
+      "to": "dielectric-breakdown",
+      "reason": "介電崩潰是介電質在特定條件下會發生的現象。"
+    },
+    {
+      "from": "dielectric-breakdown",
+      "to": "dielectric-strength",
+      "reason": "介電強度是衡量介電質抵抗崩潰能力的極限。"
+    },
+    {
+      "from": "capacitor",
+      "to": "tubular-capacitor",
+      "reason": "管狀電容是一種特定結構的電容器。"
+    },
+    {
+      "from": "capacitor",
+      "to": "oil-filled-capacitor",
+      "reason": "油浸電容是一種特定結構的電容器。"
+    },
+    {
+      "from": "capacitor",
+      "to": "electrolytic-capacitor",
+      "reason": "電解電容是一種特定結構的電容器。"
+    },
+    {
+      "from": "capacitor",
+      "to": "variable-capacitor",
+      "reason": "可變電容是一種特定結構的電容器。"
+    },
+    {
+      "from": "capacitor",
+      "to": "supercapacitor",
+      "reason": "超級電容是一種特定結構的電容器。"
+    },
+    {
+      "from": "capacitance-with-dielectric",
+      "to": "connected-capacitor-dielectric-effect",
+      "reason": "理解連接電池的電容器介電質效應需要掌握介電質如何影響電容。"
+    },
+    {
+      "from": "dielectric",
+      "to": "induced-polarization",
+      "reason": "感應極化是介電質在外電場下產生內部電場的機制。"
+    },
+    {
+      "from": "induced-polarization",
+      "to": "atomic-description-dielectrics",
+      "reason": "介電質的原子描述解釋了感應極化的微觀機制。"
+    },
+    {
+      "from": "dielectric-constant",
+      "to": "induced-charge-dielectric",
+      "reason": "介電常數是計算介電質表面感應電荷的關鍵參數。"
+    },
+    {
+      "from": "electric-field-with-dielectric",
+      "to": "induced-charge-dielectric",
+      "reason": "介電質中的感應電荷會產生一個與外部電場方向相反的電場。"
+    },
+    {
+      "from": "capacitance-with-dielectric",
+      "to": "isolated-capacitor-dielectric-effect",
+      "reason": "理解孤立電容器介電質效應需要掌握介電質如何影響電容。"
+    },
+    {
+      "from": "energy-stored-capacitor",
+      "to": "isolated-capacitor-dielectric-effect",
+      "reason": "理解孤立電容器介電質效應需要掌握電容器儲能的變化。"
+    },
+    {
+      "from": "dielectric",
+      "to": "high-kappa-dielectric",
+      "reason": "高介電常數介電質是介電質的一種特殊應用類型。"
+    },
+    {
+      "from": "dielectric-constant",
+      "to": "high-kappa-dielectric",
+      "reason": "高介電常數介電質的定義基於其高介電常數。"
+    },
+    {
+      "from": "series-capacitors",
+      "to": "capacitance-metallic-slab",
+      "reason": "含金屬板電容的推導將其視為兩個串聯電容器。"
+    },
+    {
+      "from": "parallel-plate-capacitor-capacitance",
+      "to": "capacitance-metallic-slab",
+      "reason": "含金屬板電容的推導基於平行板電容器的公式。"
+    },
+    {
+      "from": "series-capacitors",
+      "to": "capacitance-partial-dielectric-slab",
+      "reason": "含部分介電質電容的推導將其視為兩個串聯電容器。"
+    },
+    {
+      "from": "capacitance-with-dielectric",
+      "to": "capacitance-partial-dielectric-slab",
+      "reason": "含部分介電質電容的推導應用了介電質對電容的影響。"
+    },
+    {
+      "from": "parallel-capacitors",
+      "to": "capacitance-multiple-dielectrics",
+      "reason": "多介電質電容的計算通常涉及將不同區域視為並聯或串聯組合。"
+    },
+    {
+      "from": "series-capacitors",
+      "to": "capacitance-multiple-dielectrics",
+      "reason": "多介電質電容的計算通常涉及將不同區域視為並聯或串聯組合。"
+    },
+    {
+      "from": "capacitance-with-dielectric",
+      "to": "capacitance-multiple-dielectrics",
+      "reason": "多介電質電容的計算應用了介電質對電容的影響。"
+    },
+    {
+      "from": "dielectric",
+      "to": "gauss-law-dielectrics",
+      "reason": "介電質高斯定律是高斯定律在介電質存在時的修正形式。"
+    },
+    {
+      "from": "dielectric-constant",
+      "to": "gauss-law-dielectrics",
+      "reason": "介電常數是介電質高斯定律中的關鍵參數。"
+    },
+    {
+      "from": "induced-charge-dielectric",
+      "to": "gauss-law-dielectrics",
+      "reason": "介電質高斯定律隱含地考慮了介電質中的感應電荷效應。"
+    }
+  ],
+  "chapter_number": 24,
+  "usage": {
+    "input_tokens": 14771,
+    "output_tokens": 5986
+  }
+}

@@ -1,0 +1,804 @@
+{
+  "nodes": [
+    {
+      "id": "direct-current-definition",
+      "label": "直流電",
+      "kind": "definition",
+      "summary": "方向恆定不變的電流。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "alternating-current-definition",
+      "label": "交流電",
+      "kind": "definition",
+      "summary": "方向週期性改變的電流。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "resistors-in-series-concept",
+      "label": "串聯電阻",
+      "kind": "concept",
+      "summary": "電阻器首尾相連，電流路徑唯一。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "equivalent-resistance-series-formula",
+      "label": "串聯等效電阻",
+      "kind": "formula",
+      "summary": "串聯電阻的總等效電阻是各個電阻值的總和。",
+      "latex": "R_{eq} = R_1 + R_2 + R_3 + ...",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "resistors-in-series-properties",
+      "label": "串聯電阻特性",
+      "kind": "concept",
+      "summary": "串聯電阻電流相同，總電壓為各電壓和，等效電阻為各電阻和。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "resistors-in-parallel-concept",
+      "label": "並聯電阻",
+      "kind": "concept",
+      "summary": "電阻器兩端連接在相同兩點，電流有多條路徑。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "equivalent-resistance-parallel-formula",
+      "label": "並聯等效電阻",
+      "kind": "formula",
+      "summary": "並聯電阻的等效電阻倒數是各個電阻倒數的總和。",
+      "latex": "\\frac{1}{R_{eq}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3} + ...",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "resistors-in-parallel-properties",
+      "label": "並聯電阻特性",
+      "kind": "concept",
+      "summary": "並聯電阻電壓相同，總電流為各電流和，等效電阻倒數為各電阻倒數和。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "symmetry-circuit-analysis-method",
+      "label": "電路對稱分析法",
+      "kind": "method",
+      "summary": "利用電路對稱性簡化複雜電路，例如判斷無電流分支。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kirchhoffs-rules-method",
+      "label": "克希荷夫定律",
+      "kind": "method",
+      "summary": "分析複雜電路中電流和電壓的兩條基本定律。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "kirchhoffs-junction-rule-law",
+      "label": "克希荷夫節點定則",
+      "kind": "law",
+      "summary": "進入任何節點的電流總和必須等於離開該節點的電流總和。",
+      "latex": "\\sum I_{in} = \\sum I_{out}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "conservation-of-charge-principle",
+      "label": "電荷守恆原理",
+      "kind": "principle",
+      "summary": "電荷既不能被創造也不能被消滅，是克希荷夫節點定則的基礎。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "kirchhoffs-loop-rule-law",
+      "label": "克希荷夫迴路定則",
+      "kind": "law",
+      "summary": "任何閉合電路迴路中所有元件的電位差總和必須為零。",
+      "latex": "\\sum_{\\text{closed loop}} \\Delta V = 0",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "conservation-of-energy-principle",
+      "label": "能量守恆原理",
+      "kind": "principle",
+      "summary": "能量既不能被創造也不能被消滅，是克希荷夫迴路定則的基礎。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "potential-change-resistor-rule",
+      "label": "電阻電位變化規則",
+      "kind": "principle",
+      "summary": "沿電流方向通過電阻電位下降(-IR)，逆電流方向電位上升(+IR)。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "potential-change-emf-rule",
+      "label": "電動勢電位變化規則",
+      "kind": "principle",
+      "summary": "沿電動勢方向從負極到正極電位上升(+E)，反之下降(-E)。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "potential-change-capacitor-rule",
+      "label": "電容電位變化規則",
+      "kind": "principle",
+      "summary": "從正極板到負極板電位下降(-q/C)，反之上升(+q/C)。",
+      "latex": "",
+      "pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": "kirchhoffs-rules-problem-solving-method",
+      "label": "克希荷夫解題法",
+      "kind": "method",
+      "summary": "應用克希荷夫定律分析電路，包含電流方向假設、節點與迴路方程。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "rc-circuits-concept",
+      "label": "RC電路",
+      "kind": "concept",
+      "summary": "包含電阻器和電容器的電路，其行為隨時間變化。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "charging-capacitor-concept",
+      "label": "電容充電",
+      "kind": "concept",
+      "summary": "電容器在RC電路中連接電源，電荷隨時間累積的過程。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "charging-capacitor-initial-final-conditions",
+      "label": "電容充電初始終態",
+      "kind": "concept",
+      "summary": "描述電容充電開始和結束時的電荷與電流狀態。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "charging-capacitor-charge-formula",
+      "label": "電容充電電荷公式",
+      "kind": "formula",
+      "summary": "描述RC電路中電容器充電時，電荷隨時間變化的公式。",
+      "latex": "q(t) = C\\mathcal{E}(1 - e^{-t/RC})",
+      "pages": [
+        18,
+        20
+      ]
+    },
+    {
+      "id": "charging-capacitor-current-formula",
+      "label": "電容充電電流公式",
+      "kind": "formula",
+      "summary": "描述RC電路中電容器充電時，電流隨時間變化的公式。",
+      "latex": "I(t) = \\frac{\\mathcal{E}}{R} e^{-t/RC}",
+      "pages": [
+        18,
+        20
+      ]
+    },
+    {
+      "id": "time-constant-rc-definition",
+      "label": "RC時間常數",
+      "kind": "definition",
+      "summary": "RC電路中電荷或電流衰減到初始值約36.8%所需的時間。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "time-constant-rc-formula",
+      "label": "RC時間常數公式",
+      "kind": "formula",
+      "summary": "RC電路的時間常數等於電阻值乘以電容值。",
+      "latex": "\\tau = RC",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "energy-battery-charging-rc-formula",
+      "label": "RC充電電池能量",
+      "kind": "formula",
+      "summary": "RC電路充電過程中，電池提供的總能量。",
+      "latex": "W_{\\text{battery}} = C\\mathcal{E}^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "energy-stored-capacitor-formula",
+      "label": "電容儲存能量",
+      "kind": "formula",
+      "summary": "充滿電的電容器所儲存的電能。",
+      "latex": "U_C = \\frac{1}{2}C\\mathcal{E}^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "energy-dissipated-resistor-charging-rc-formula",
+      "label": "RC充電電阻耗能",
+      "kind": "formula",
+      "summary": "RC電路充電過程中，電阻器耗散的總能量。",
+      "latex": "U_R = \\frac{1}{2}C\\mathcal{E}^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "discharging-capacitor-concept",
+      "label": "電容放電",
+      "kind": "concept",
+      "summary": "充滿電的電容器在RC電路中釋放電荷，電荷隨時間減少的過程。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "discharging-capacitor-charge-formula",
+      "label": "電容放電電荷公式",
+      "kind": "formula",
+      "summary": "描述RC電路中電容器放電時，電荷隨時間變化的公式。",
+      "latex": "q = Qe^{-t/RC}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "electrical-meters-concept",
+      "label": "電學測量儀器",
+      "kind": "concept",
+      "summary": "用於測量電路中電流、電壓和電阻的儀器。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "galvanometer-definition",
+      "label": "檢流計",
+      "kind": "definition",
+      "summary": "一種靈敏的儀器，用於檢測和測量小電流。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "ammeter-definition",
+      "label": "安培計",
+      "kind": "definition",
+      "summary": "用於測量電路中電流的儀器。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "ammeter-connection-rule",
+      "label": "安培計連接規則",
+      "kind": "principle",
+      "summary": "安培計必須與被測元件串聯，且理想電阻為零。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "ammeter-from-galvanometer-method",
+      "label": "檢流計改安培計",
+      "kind": "method",
+      "summary": "將分流電阻與檢流計並聯，以擴大電流測量範圍。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "shunt-resistance-definition",
+      "label": "分流電阻",
+      "kind": "definition",
+      "summary": "與檢流計並聯的低電阻，用於分流以測量大電流。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "voltmeter-definition",
+      "label": "伏特計",
+      "kind": "definition",
+      "summary": "用於測量電路中兩點間電位差的儀器。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "voltmeter-connection-rule",
+      "label": "伏特計連接規則",
+      "kind": "principle",
+      "summary": "伏特計必須與被測元件並聯，且理想電阻為無限大。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "voltmeter-from-galvanometer-method",
+      "label": "檢流計改伏特計",
+      "kind": "method",
+      "summary": "將串聯電阻與檢流計串聯，以擴大電壓測量範圍。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "series-resistor-voltmeter-definition",
+      "label": "伏特計串聯電阻",
+      "kind": "definition",
+      "summary": "與檢流計串聯的高電阻，用於限制電流以測量高電壓。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "ohmmeter-definition",
+      "label": "歐姆計",
+      "kind": "definition",
+      "summary": "用於測量電路元件電阻值的儀器。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "potentiometer-definition",
+      "label": "電位計",
+      "kind": "definition",
+      "summary": "一種用於精確測量電動勢或電位差的儀器。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "potentiometer-null-condition-formula",
+      "label": "電位計歸零條件",
+      "kind": "formula",
+      "summary": "當檢流計電流為零時，待測電動勢與電位計分壓的關係。",
+      "latex": "\\mathcal{E}_2 = \\frac{R_2}{R_1 + R_2}\\mathcal{E}_1",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "household-wiring-concept",
+      "label": "家庭電路佈線",
+      "kind": "concept",
+      "summary": "將電力公司提供的電力分配到家庭各處的電路系統。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "live-wire-definition",
+      "label": "火線",
+      "kind": "definition",
+      "summary": "帶有高電位，提供電流的電線。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "neutral-wire-definition",
+      "label": "中性線",
+      "kind": "definition",
+      "summary": "連接到地線，通常保持在零電位，提供電流回流路徑。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "kilowatt-hour-definition",
+      "label": "度 (千瓦時)",
+      "kind": "definition",
+      "summary": "電力公司銷售電能的單位，表示一小時內消耗一千瓦的能量。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "kilowatt-hour-conversion-formula",
+      "label": "千瓦時能量轉換",
+      "kind": "formula",
+      "summary": "將千瓦時轉換為焦耳的能量單位換算公式。",
+      "latex": "1 \\text{ kW} \\cdot \\text{h} = 3.6 \\times 10^6 \\text{ J}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "ground-wire-definition",
+      "label": "接地線",
+      "kind": "definition",
+      "summary": "連接到大地，用於電器安全，在故障時提供電流安全路徑。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "electrical-safety-concept",
+      "label": "用電安全",
+      "kind": "concept",
+      "summary": "避免電擊和電氣火災的預防措施和知識。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "current-shock-effects-concept",
+      "label": "電流電擊效應",
+      "kind": "concept",
+      "summary": "不同大小的電流通過人體時可能造成的生理影響和傷害。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "resistors-in-series-concept",
+      "to": "equivalent-resistance-series-formula",
+      "reason": "理解串聯電阻的概念才能應用其等效電阻公式。"
+    },
+    {
+      "from": "resistors-in-series-concept",
+      "to": "resistors-in-series-properties",
+      "reason": "串聯電阻的特性是基於其連接方式的延伸理解。"
+    },
+    {
+      "from": "resistors-in-parallel-concept",
+      "to": "equivalent-resistance-parallel-formula",
+      "reason": "理解並聯電阻的概念才能應用其等效電阻公式。"
+    },
+    {
+      "from": "resistors-in-parallel-concept",
+      "to": "resistors-in-parallel-properties",
+      "reason": "並聯電阻的特性是基於其連接方式的延伸理解。"
+    },
+    {
+      "from": "resistors-in-series-concept",
+      "to": "symmetry-circuit-analysis-method",
+      "reason": "對稱分析法通常用於簡化串並聯組合電路。"
+    },
+    {
+      "from": "resistors-in-parallel-concept",
+      "to": "symmetry-circuit-analysis-method",
+      "reason": "對稱分析法通常用於簡化串並聯組合電路。"
+    },
+    {
+      "from": "resistors-in-series-concept",
+      "to": "kirchhoffs-rules-method",
+      "reason": "克希荷夫定律是分析無法簡化為簡單串並聯電路的方法。"
+    },
+    {
+      "from": "resistors-in-parallel-concept",
+      "to": "kirchhoffs-rules-method",
+      "reason": "克希荷夫定律是分析無法簡化為簡單串並聯電路的方法。"
+    },
+    {
+      "from": "kirchhoffs-rules-method",
+      "to": "kirchhoffs-junction-rule-law",
+      "reason": "節點定則是克希荷夫定律的其中一條。"
+    },
+    {
+      "from": "kirchhoffs-junction-rule-law",
+      "to": "conservation-of-charge-principle",
+      "reason": "電荷守恆原理是克希荷夫節點定則的物理基礎。"
+    },
+    {
+      "from": "kirchhoffs-rules-method",
+      "to": "kirchhoffs-loop-rule-law",
+      "reason": "迴路定則是克希荷夫定律的其中一條。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "conservation-of-energy-principle",
+      "reason": "能量守恆原理是克希荷夫迴路定則的物理基礎。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "potential-change-resistor-rule",
+      "reason": "迴路定則的應用需要知道如何計算電阻上的電位變化。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "potential-change-emf-rule",
+      "reason": "迴路定則的應用需要知道如何計算電動勢上的電位變化。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "potential-change-capacitor-rule",
+      "reason": "迴路定則的應用需要知道如何計算電容器上的電位變化。"
+    },
+    {
+      "from": "kirchhoffs-junction-rule-law",
+      "to": "kirchhoffs-rules-problem-solving-method",
+      "reason": "解決克希荷夫定律問題需要理解其兩條定律及各元件的電位變化規則。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "kirchhoffs-rules-problem-solving-method",
+      "reason": "解決克希荷夫定律問題需要理解其兩條定律及各元件的電位變化規則。"
+    },
+    {
+      "from": "potential-change-resistor-rule",
+      "to": "kirchhoffs-rules-problem-solving-method",
+      "reason": "解決克希荷夫定律問題需要理解其兩條定律及各元件的電位變化規則。"
+    },
+    {
+      "from": "potential-change-emf-rule",
+      "to": "kirchhoffs-rules-problem-solving-method",
+      "reason": "解決克希荷夫定律問題需要理解其兩條定律及各元件的電位變化規則。"
+    },
+    {
+      "from": "potential-change-capacitor-rule",
+      "to": "kirchhoffs-rules-problem-solving-method",
+      "reason": "解決克希荷夫定律問題需要理解其兩條定律及各元件的電位變化規則。"
+    },
+    {
+      "from": "resistors-in-series-concept",
+      "to": "rc-circuits-concept",
+      "reason": "RC電路結合了電阻和電容，並涉及電容的電位變化。"
+    },
+    {
+      "from": "potential-change-capacitor-rule",
+      "to": "rc-circuits-concept",
+      "reason": "RC電路結合了電阻和電容，並涉及電容的電位變化。"
+    },
+    {
+      "from": "rc-circuits-concept",
+      "to": "charging-capacitor-concept",
+      "reason": "電容充電是RC電路的一種特定行為。"
+    },
+    {
+      "from": "charging-capacitor-concept",
+      "to": "charging-capacitor-initial-final-conditions",
+      "reason": "初始終態是理解電容充電過程的關鍵。"
+    },
+    {
+      "from": "charging-capacitor-concept",
+      "to": "charging-capacitor-charge-formula",
+      "reason": "電容充電電荷公式描述了充電過程的定量關係，需要理解其概念及邊界條件。"
+    },
+    {
+      "from": "charging-capacitor-initial-final-conditions",
+      "to": "charging-capacitor-charge-formula",
+      "reason": "電容充電電荷公式描述了充電過程的定量關係，需要理解其概念及邊界條件。"
+    },
+    {
+      "from": "charging-capacitor-charge-formula",
+      "to": "charging-capacitor-current-formula",
+      "reason": "電容充電電流公式是電荷公式對時間的微分。"
+    },
+    {
+      "from": "rc-circuits-concept",
+      "to": "time-constant-rc-definition",
+      "reason": "時間常數是RC電路特有的參數。"
+    },
+    {
+      "from": "time-constant-rc-definition",
+      "to": "time-constant-rc-formula",
+      "reason": "時間常數公式定義了其計算方式。"
+    },
+    {
+      "from": "charging-capacitor-concept",
+      "to": "energy-battery-charging-rc-formula",
+      "reason": "電池提供的能量與電容充電過程相關。"
+    },
+    {
+      "from": "charging-capacitor-concept",
+      "to": "energy-stored-capacitor-formula",
+      "reason": "電容儲存的能量是充電的結果。"
+    },
+    {
+      "from": "charging-capacitor-concept",
+      "to": "energy-dissipated-resistor-charging-rc-formula",
+      "reason": "電阻耗散的能量是充電過程中的能量轉換。"
+    },
+    {
+      "from": "rc-circuits-concept",
+      "to": "discharging-capacitor-concept",
+      "reason": "電容放電是RC電路的另一種特定行為。"
+    },
+    {
+      "from": "discharging-capacitor-concept",
+      "to": "discharging-capacitor-charge-formula",
+      "reason": "電容放電電荷公式描述了放電過程的定量關係，並用到時間常數。"
+    },
+    {
+      "from": "time-constant-rc-formula",
+      "to": "discharging-capacitor-charge-formula",
+      "reason": "電容放電電荷公式描述了放電過程的定量關係，並用到時間常數。"
+    },
+    {
+      "from": "electrical-meters-concept",
+      "to": "ammeter-definition",
+      "reason": "安培計是一種電學測量儀器。"
+    },
+    {
+      "from": "ammeter-definition",
+      "to": "ammeter-connection-rule",
+      "reason": "安培計連接規則是使用安培計的基礎。"
+    },
+    {
+      "from": "galvanometer-definition",
+      "to": "ammeter-from-galvanometer-method",
+      "reason": "檢流計改安培計是將檢流計應用於測量電流的方法。"
+    },
+    {
+      "from": "ammeter-definition",
+      "to": "ammeter-from-galvanometer-method",
+      "reason": "檢流計改安培計是將檢流計應用於測量電流的方法。"
+    },
+    {
+      "from": "ammeter-from-galvanometer-method",
+      "to": "shunt-resistance-definition",
+      "reason": "分流電阻是檢流計改安培計的關鍵元件。"
+    },
+    {
+      "from": "electrical-meters-concept",
+      "to": "voltmeter-definition",
+      "reason": "伏特計是一種電學測量儀器。"
+    },
+    {
+      "from": "voltmeter-definition",
+      "to": "voltmeter-connection-rule",
+      "reason": "伏特計連接規則是使用伏特計的基礎。"
+    },
+    {
+      "from": "galvanometer-definition",
+      "to": "voltmeter-from-galvanometer-method",
+      "reason": "檢流計改伏特計是將檢流計應用於測量電壓的方法。"
+    },
+    {
+      "from": "voltmeter-definition",
+      "to": "voltmeter-from-galvanometer-method",
+      "reason": "檢流計改伏特計是將檢流計應用於測量電壓的方法。"
+    },
+    {
+      "from": "voltmeter-from-galvanometer-method",
+      "to": "series-resistor-voltmeter-definition",
+      "reason": "伏特計串聯電阻是檢流計改伏特計的關鍵元件。"
+    },
+    {
+      "from": "electrical-meters-concept",
+      "to": "ohmmeter-definition",
+      "reason": "歐姆計是一種電學測量儀器。"
+    },
+    {
+      "from": "electrical-meters-concept",
+      "to": "potentiometer-definition",
+      "reason": "電位計是一種電學測量儀器。"
+    },
+    {
+      "from": "potentiometer-definition",
+      "to": "potentiometer-null-condition-formula",
+      "reason": "電位計歸零條件是電位計工作原理的定量表達，需要應用迴路定則。"
+    },
+    {
+      "from": "kirchhoffs-loop-rule-law",
+      "to": "potentiometer-null-condition-formula",
+      "reason": "電位計歸零條件是電位計工作原理的定量表達，需要應用迴路定則。"
+    },
+    {
+      "from": "household-wiring-concept",
+      "to": "live-wire-definition",
+      "reason": "火線是家庭電路佈線中的一個重要組成部分。"
+    },
+    {
+      "from": "household-wiring-concept",
+      "to": "neutral-wire-definition",
+      "reason": "中性線是家庭電路佈線中的一個重要組成部分。"
+    },
+    {
+      "from": "household-wiring-concept",
+      "to": "kilowatt-hour-definition",
+      "reason": "千瓦時是家庭用電計費的單位。"
+    },
+    {
+      "from": "kilowatt-hour-definition",
+      "to": "kilowatt-hour-conversion-formula",
+      "reason": "千瓦時能量轉換公式用於將其換算為標準能量單位。"
+    },
+    {
+      "from": "household-wiring-concept",
+      "to": "ground-wire-definition",
+      "reason": "接地線是家庭電路佈線中的一個重要安全組成部分。"
+    },
+    {
+      "from": "household-wiring-concept",
+      "to": "electrical-safety-concept",
+      "reason": "用電安全是家庭電路佈線的重要考量。"
+    },
+    {
+      "from": "electrical-safety-concept",
+      "to": "current-shock-effects-concept",
+      "reason": "電流電擊效應是理解用電安全風險的基礎。"
+    }
+  ],
+  "chapter_number": 26,
+  "usage": {
+    "input_tokens": 16108,
+    "output_tokens": 7486
+  }
+}

@@ -1,0 +1,491 @@
+{
+  "nodes": [
+    {
+      "id": "diffraction",
+      "label": "繞射",
+      "kind": "concept",
+      "summary": "光線通過狹縫、孔徑或銳利邊緣時會散開的現象。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "fresnel-number",
+      "label": "菲涅耳數",
+      "kind": "definition",
+      "summary": "區分菲涅耳繞射和夫朗和斐繞射的無因次參數。",
+      "latex": "$F = \\frac{a^2}{L\\lambda}$",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "fraunhofer-diffraction",
+      "label": "夫朗和斐繞射",
+      "kind": "concept",
+      "summary": "遠場繞射，光線近似平行波干涉。",
+      "latex": "",
+      "pages": [
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": "fresnel-diffraction",
+      "label": "菲涅耳繞射",
+      "kind": "concept",
+      "summary": "近場繞射，光線近似球面波干涉。",
+      "latex": "",
+      "pages": [
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": "huygens-principle-wavelets",
+      "label": "惠更斯原理（狹縫）",
+      "kind": "principle",
+      "summary": "狹縫的每個點都可視為次波源，發出次波。",
+      "latex": "",
+      "pages": [
+        5,
+        7
+      ]
+    },
+    {
+      "id": "imaging-fraunhofer-diffraction",
+      "label": "夫朗和斐繞射成像",
+      "kind": "method",
+      "summary": "使用會聚透鏡在近距離螢幕上成像遠場繞射圖案。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "single-slit-destructive-interference-condition",
+      "label": "單狹縫暗紋條件",
+      "kind": "formula",
+      "summary": "單狹縫繞射中，形成暗紋的角度條件。",
+      "latex": "$\\sin \\theta_{\\text{dark}} = m\\lambda/a$",
+      "pages": [
+        7,
+        9,
+        11
+      ]
+    },
+    {
+      "id": "phasor-analysis-diffraction",
+      "label": "繞射相量分析",
+      "kind": "method",
+      "summary": "使用相量圖法分析繞射圖案的強度分佈。",
+      "latex": "",
+      "pages": [
+        7,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "single-slit-intensity-formula",
+      "label": "單狹縫強度公式",
+      "kind": "formula",
+      "summary": "描述單狹縫繞射圖案中光強度隨角度變化的公式。",
+      "latex": "$I = I_0 \\left[ \\frac{\\sin(\\beta/2)}{\\beta/2} \\right]^2$",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "two-slit-diffraction-interference-combined-intensity",
+      "label": "雙狹縫繞射干涉強度",
+      "kind": "formula",
+      "summary": "結合單狹縫繞射和雙狹縫干涉效應的總強度公式。",
+      "latex": "$I = I_{\\max} \\cos^2 \\left( \\frac{\\pi d \\sin \\theta}{\\lambda} \\right) \\left[ \\frac{\\sin(\\pi a \\sin \\theta / \\lambda)}{\\pi a \\sin \\theta / \\lambda} \\right]^2$",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "multiple-slit-primary-maxima-intensity",
+      "label": "多狹縫主極大強度",
+      "kind": "concept",
+      "summary": "多狹縫干涉中，主極大強度是單狹縫的 $N^2$ 倍，且條紋變窄。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "multiple-slit-secondary-maxima-number",
+      "label": "多狹縫次極大數量",
+      "kind": "concept",
+      "summary": "多狹縫干涉中，主極大之間次極大的數量為 $N-2$。",
+      "latex": "",
+      "pages": [
+        15,
+        17
+      ]
+    },
+    {
+      "id": "multiple-slit-primary-maxima-condition",
+      "label": "多狹縫主極大條件",
+      "kind": "formula",
+      "summary": "多狹縫干涉中，形成主極大的角度條件。",
+      "latex": "$\\sin \\theta_{Bright} = m \\frac{\\lambda}{d}$",
+      "pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "id": "multiple-slit-minima-condition",
+      "label": "多狹縫暗紋條件",
+      "kind": "formula",
+      "summary": "多狹縫干涉中，形成暗紋的角度條件。",
+      "latex": "$\\sin\\theta_{Dark} = \\left(\\frac{n}{N}\\right)\\frac{\\lambda}{d}$",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "diffraction-grating",
+      "label": "繞射光柵",
+      "kind": "concept",
+      "summary": "由大量等間距平行狹縫組成的光學元件。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "transmission-grating",
+      "label": "透射光柵",
+      "kind": "concept",
+      "summary": "通過在玻璃板上刻劃平行凹槽製成的繞射光柵。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "reflection-grating",
+      "label": "反射光柵",
+      "kind": "concept",
+      "summary": "通過在反射材料表面刻劃平行凹槽製成的繞射光柵。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "diffraction-grating-maxima-condition",
+      "label": "繞射光柵極大條件",
+      "kind": "formula",
+      "summary": "繞射光柵產生亮紋（極大）的角度條件。",
+      "latex": "$d \\sin \\theta_{\\text{bright}} = m\\lambda$",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "diffraction-grating-spectrometer",
+      "label": "繞射光柵光譜儀",
+      "kind": "method",
+      "summary": "利用繞射光柵將光分解成波長，用於光譜分析的儀器。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "chromatic-resolving-power",
+      "label": "色分辨能力",
+      "kind": "definition",
+      "summary": "繞射光柵光譜儀區分不同波長的能力。",
+      "latex": "$R \\equiv \\lambda / \\Delta \\lambda = Nm$",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "grating-light-valve",
+      "label": "光柵光閥",
+      "kind": "concept",
+      "summary": "利用可動微型鋁帶陣列作為繞射光柵來調控光線的MEMS元件。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "x-ray-diffraction",
+      "label": "X射線繞射",
+      "kind": "concept",
+      "summary": "利用X射線在晶體中繞射的現象，研究晶體結構的方法。",
+      "latex": "",
+      "pages": [
+        25,
+        26
+      ]
+    },
+    {
+      "id": "x-rays",
+      "label": "X射線",
+      "kind": "concept",
+      "summary": "波長約 0.1 nm 的電磁波，可用於晶體繞射。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "laue-pattern",
+      "label": "勞厄圖案",
+      "kind": "concept",
+      "summary": "X射線通過晶體後，在底片上形成的對稱繞射斑點陣列。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "bragg-s-law",
+      "label": "布拉格定律",
+      "kind": "law",
+      "summary": "描述X射線在晶體中發生建設性干涉的條件。",
+      "latex": "$2d \\sin \\theta = m\\lambda$",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "airy-disk",
+      "label": "艾里斑",
+      "kind": "concept",
+      "summary": "光線通過圓形孔徑繞射後，在螢幕上形成的中央亮斑和同心環狀圖案。",
+      "latex": "",
+      "pages": [
+        29,
+        31
+      ]
+    },
+    {
+      "id": "airy-disk-first-dark-ring-angle",
+      "label": "艾里斑第一暗環角",
+      "kind": "formula",
+      "summary": "圓形孔徑繞射圖案中，第一暗環相對於中心的最大角度。",
+      "latex": "$\\sin \\theta_1 = 1.22 \\frac{\\lambda}{D}$",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "rayleigh-s-criterion",
+      "label": "瑞利判據",
+      "kind": "principle",
+      "summary": "當一個影像的中央極大落在另一個影像的第一個極小上時，兩影像剛好可分辨。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "single-slit-resolution-limit",
+      "label": "單狹縫解析極限",
+      "kind": "formula",
+      "summary": "根據瑞利判據，單狹縫剛好可分辨兩個點光源的最小角度。",
+      "latex": "$\\theta_{min} \\approx \\frac{\\lambda}{a}$",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "circular-aperture-resolution-limit",
+      "label": "圓孔徑解析極限",
+      "kind": "formula",
+      "summary": "根據瑞利判據，圓形孔徑剛好可分辨兩個點光源的最小角度。",
+      "latex": "$\\theta_{min} = 1.22 \\frac{\\lambda}{D}$",
+      "pages": [
+        31,
+        33
+      ]
+    },
+    {
+      "id": "holography",
+      "label": "全像術",
+      "kind": "concept",
+      "summary": "一種記錄物體三維影像到二維底片上的技術。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "hologram-recording",
+      "label": "全像圖記錄",
+      "kind": "method",
+      "summary": "利用物體光束和參考光束的干涉，將物體的強度和相位資訊記錄在底片上。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "hologram-viewing",
+      "label": "全像圖觀看",
+      "kind": "method",
+      "summary": "使用重建光束照射全像圖，以重建物體的實像和虛像。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "diffraction",
+      "to": "fraunhofer-diffraction",
+      "reason": "夫朗和斐繞射是繞射現象在遠場條件下的特例。"
+    },
+    {
+      "from": "diffraction",
+      "to": "fresnel-diffraction",
+      "reason": "菲涅耳繞射是繞射現象在近場條件下的特例。"
+    },
+    {
+      "from": "fresnel-number",
+      "to": "fraunhofer-diffraction",
+      "reason": "菲涅耳數用於判斷繞射屬於夫朗和斐繞射的條件。"
+    },
+    {
+      "from": "fresnel-number",
+      "to": "fresnel-diffraction",
+      "reason": "菲涅耳數用於判斷繞射屬於菲涅耳繞射的條件。"
+    },
+    {
+      "from": "huygens-principle-wavelets",
+      "to": "single-slit-destructive-interference-condition",
+      "reason": "單狹縫繞射的暗紋條件是基於惠更斯原理推導的。"
+    },
+    {
+      "from": "huygens-principle-wavelets",
+      "to": "phasor-analysis-diffraction",
+      "reason": "相量分析法將狹縫視為惠更斯次波源來進行分析。"
+    },
+    {
+      "from": "phasor-analysis-diffraction",
+      "to": "single-slit-intensity-formula",
+      "reason": "單狹縫繞射的強度公式是透過相量分析推導出來的。"
+    },
+    {
+      "from": "single-slit-intensity-formula",
+      "to": "two-slit-diffraction-interference-combined-intensity",
+      "reason": "雙狹縫繞射干涉強度公式以單狹縫繞射強度作為包絡線。"
+    },
+    {
+      "from": "multiple-slit-primary-maxima-condition",
+      "to": "multiple-slit-primary-maxima-intensity",
+      "reason": "主極大條件決定了主極大的位置，進而影響其強度特性。"
+    },
+    {
+      "from": "multiple-slit-primary-maxima-condition",
+      "to": "multiple-slit-minima-condition",
+      "reason": "多狹縫的暗紋條件與亮紋條件共同描述其干涉圖案。"
+    },
+    {
+      "from": "diffraction-grating",
+      "to": "transmission-grating",
+      "reason": "透射光柵是繞射光柵的一種具體實現形式。"
+    },
+    {
+      "from": "diffraction-grating",
+      "to": "reflection-grating",
+      "reason": "反射光柵是繞射光柵的一種具體實現形式。"
+    },
+    {
+      "from": "diffraction-grating",
+      "to": "diffraction-grating-maxima-condition",
+      "reason": "繞射光柵極大條件是描述繞射光柵工作原理的核心公式。"
+    },
+    {
+      "from": "diffraction-grating",
+      "to": "diffraction-grating-spectrometer",
+      "reason": "繞射光柵是繞射光柵光譜儀的核心光學元件。"
+    },
+    {
+      "from": "diffraction-grating-maxima-condition",
+      "to": "diffraction-grating-spectrometer",
+      "reason": "光譜儀利用繞射光柵的極大條件來精確分離不同波長的光。"
+    },
+    {
+      "from": "diffraction-grating-spectrometer",
+      "to": "chromatic-resolving-power",
+      "reason": "色分辨能力是衡量繞射光柵光譜儀性能的重要指標。"
+    },
+    {
+      "from": "x-rays",
+      "to": "x-ray-diffraction",
+      "reason": "X射線繞射是利用X射線作為光源進行的。"
+    },
+    {
+      "from": "x-ray-diffraction",
+      "to": "laue-pattern",
+      "reason": "勞厄圖案是X射線繞射在晶體中產生的典型結果。"
+    },
+    {
+      "from": "x-ray-diffraction",
+      "to": "bragg-s-law",
+      "reason": "布拉格定律是解釋X射線在晶體中發生繞射現象的基礎。"
+    },
+    {
+      "from": "bragg-s-law",
+      "to": "laue-pattern",
+      "reason": "勞厄圖案的形成符合布拉格定律所描述的建設性干涉條件。"
+    },
+    {
+      "from": "diffraction",
+      "to": "airy-disk",
+      "reason": "艾里斑是光線通過圓形孔徑繞射後形成的特定圖案。"
+    },
+    {
+      "from": "airy-disk",
+      "to": "airy-disk-first-dark-ring-angle",
+      "reason": "艾里斑的第一暗環角度是其圖案的重要特徵參數。"
+    },
+    {
+      "from": "airy-disk-first-dark-ring-angle",
+      "to": "circular-aperture-resolution-limit",
+      "reason": "圓孔徑解析極限的公式是基於艾里斑的第一暗環角度推導的。"
+    },
+    {
+      "from": "rayleigh-s-criterion",
+      "to": "single-slit-resolution-limit",
+      "reason": "單狹縫解析極限是瑞利判據在單狹縫繞射情境下的應用。"
+    },
+    {
+      "from": "rayleigh-s-criterion",
+      "to": "circular-aperture-resolution-limit",
+      "reason": "圓孔徑解析極限是瑞利判據在圓形孔徑繞射情境下的應用。"
+    },
+    {
+      "from": "holography",
+      "to": "hologram-recording",
+      "reason": "全像圖記錄是實現全像術的第一個關鍵步驟。"
+    },
+    {
+      "from": "hologram-recording",
+      "to": "hologram-viewing",
+      "reason": "必須先完成全像圖記錄才能進行全像圖觀看。"
+    }
+  ],
+  "chapter_number": 36,
+  "usage": {
+    "input_tokens": 15616,
+    "output_tokens": 4497
+  }
+}

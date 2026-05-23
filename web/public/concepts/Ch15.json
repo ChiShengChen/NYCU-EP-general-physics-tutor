@@ -1,0 +1,709 @@
+{
+  "nodes": [
+    {
+      "id": "mechanical-wave-definition",
+      "label": "力學波定義",
+      "kind": "definition",
+      "summary": "力學波是擾動透過物理介質傳播的波。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "transverse-wave-definition",
+      "label": "橫波定義",
+      "kind": "definition",
+      "summary": "橫波是介質質點運動方向垂直於波傳播方向的波。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "longitudinal-wave-definition",
+      "label": "縱波定義",
+      "kind": "definition",
+      "summary": "縱波是介質質點運動方向平行於波傳播方向的波。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "wave-function-traveling-pulse",
+      "label": "行進脈衝波函數",
+      "kind": "formula",
+      "summary": "描述行進脈衝波在位置 x 和時間 t 的位移。",
+      "latex": "y(x, t) = f(x \\mp vt)",
+      "pages": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": "sinusoidal-wave-definition",
+      "label": "弦波定義",
+      "kind": "definition",
+      "summary": "弦波是最簡單的週期性連續波，任何週期波都可由弦波組合而成。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "wave-amplitude",
+      "label": "振幅",
+      "kind": "definition",
+      "summary": "波的最大位移量。",
+      "latex": "",
+      "pages": [
+        10,
+        11
+      ]
+    },
+    {
+      "id": "wavelength-definition",
+      "label": "波長",
+      "kind": "definition",
+      "summary": "波形重複一次的空間距離。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "period-definition",
+      "label": "週期",
+      "kind": "definition",
+      "summary": "波形重複一次所需的時間。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "frequency-definition",
+      "label": "頻率",
+      "kind": "definition",
+      "summary": "單位時間內波形重複的次數，為週期的倒數。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "wave-number-definition",
+      "label": "波數",
+      "kind": "definition",
+      "summary": "與波長相關的量，定義為 $k = 2\\pi/\\lambda$。",
+      "latex": "k = \\frac{2\\pi}{\\lambda}",
+      "pages": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "angular-frequency-definition",
+      "label": "角頻率",
+      "kind": "definition",
+      "summary": "與週期相關的量，定義為 $\\omega = 2\\pi/T$。",
+      "latex": "\\omega = \\frac{2\\pi}{T}",
+      "pages": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "wave-speed-formula-general",
+      "label": "波速公式",
+      "kind": "formula",
+      "summary": "波速等於波長除以週期，或波長乘以頻率。",
+      "latex": "v = \\frac{\\lambda}{T} = \\lambda f",
+      "pages": [
+        11,
+        13
+      ]
+    },
+    {
+      "id": "sinusoidal-wave-function-equation",
+      "label": "弦波函數式",
+      "kind": "formula",
+      "summary": "描述弦波在位置 x 和時間 t 的位移。",
+      "latex": "y(x,t) = A \\cos(kx \\mp \\omega t + \\phi)",
+      "pages": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "transverse-speed-formula",
+      "label": "橫向速度公式",
+      "kind": "formula",
+      "summary": "介質質點在橫波中垂直於傳播方向的瞬時速度。",
+      "latex": "v_y = \\frac{\\partial y}{\\partial t} = \\pm \\omega A \\sin(kx \\mp \\omega t)",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "transverse-acceleration-formula",
+      "label": "橫向加速度公式",
+      "kind": "formula",
+      "summary": "介質質點在橫波中垂直於傳播方向的瞬時加速度。",
+      "latex": "a_y = \\frac{\\partial v_y}{\\partial t} = \\mp \\omega^2 A \\cos(kx \\mp \\omega t)",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "phase-velocity-definition",
+      "label": "相速度",
+      "kind": "definition",
+      "summary": "波形中特定相位點（如波峰）的傳播速度。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "group-velocity-definition",
+      "label": "群速度",
+      "kind": "definition",
+      "summary": "波包或能量傳播的速度，定義為 $v_g = \\partial \\omega / \\partial k$。",
+      "latex": "v = \\frac{\\partial \\omega}{\\partial k}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "wave-speed-on-string-formula",
+      "label": "繩波波速公式",
+      "kind": "formula",
+      "summary": "繩波的傳播速度取決於繩子的張力 F 和線密度 \\mu。",
+      "latex": "v = \\sqrt{\\frac{F}{\\mu}}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "general-mechanical-wave-speed",
+      "label": "力學波速通式",
+      "kind": "formula",
+      "summary": "所有力學波的速度都遵循恢復力與慣性性質比值的平方根形式。",
+      "latex": "v = \\sqrt{\\frac{\\text{Restoring force}}{\\text{Inertial property}}}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "linear-wave-equation",
+      "label": "線性波動方程式",
+      "kind": "formula",
+      "summary": "描述波在介質中傳播的偏微分方程，適用於線性波。",
+      "latex": "\\frac{\\partial^2 y}{\\partial x^2} = \\frac{1}{v^2} \\left(\\frac{\\partial^2 y}{\\partial t^2}\\right)",
+      "pages": [
+        18,
+        19
+      ]
+    },
+    {
+      "id": "superposition-principle",
+      "label": "疊加原理",
+      "kind": "principle",
+      "summary": "當兩個或多個波在介質中傳播時，任一點的合成波函數是各個單獨波函數的代數和。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "linear-wave-property",
+      "label": "線性波性質",
+      "kind": "concept",
+      "summary": "遵守疊加原理的波稱為線性波，通常振幅遠小於波長。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "interference-definition",
+      "label": "干涉定義",
+      "kind": "definition",
+      "summary": "兩個或多個波在同一空間區域組合產生合成波的現象。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "constructive-interference",
+      "label": "建設性干涉",
+      "kind": "concept",
+      "summary": "當兩個波的位移方向相同時，合成波的振幅大於任一單獨波的振幅。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "destructive-interference",
+      "label": "破壞性干涉",
+      "kind": "concept",
+      "summary": "當兩個波的位移方向相反時，合成波的振幅小於任一單獨波的振幅。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "superposition-sinusoidal-waves-formula",
+      "label": "弦波疊加公式",
+      "kind": "formula",
+      "summary": "兩個同頻率、波長、振幅但有相位差的弦波疊加後的合成波函數。",
+      "latex": "y(x, t) = 2A \\cos (\\phi/2) \\sin (kx - \\omega t + \\phi/2)",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "interference-conditions-phase-difference",
+      "label": "干涉條件(相位差)",
+      "kind": "formula",
+      "summary": "根據相位差判斷建設性或破壞性干涉的條件。",
+      "latex": "\\begin{cases} \\Delta\\phi = n(2\\pi) & \\text{建設性} \\\\ \\Delta\\phi = (2n+1)\\pi & \\text{破壞性} \\end{cases}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "interference-conditions-path-difference",
+      "label": "干涉條件(路徑差)",
+      "kind": "formula",
+      "summary": "根據路徑差判斷建設性或破壞性干涉的條件。",
+      "latex": "\\begin{cases} \\Delta r = n\\lambda & \\text{建設性} \\\\ \\Delta r = (n+\\frac{1}{2})\\lambda & \\text{破壞性} \\end{cases}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "reflection-fixed-end",
+      "label": "固定端反射",
+      "kind": "concept",
+      "summary": "波從固定端反射時，會發生 \\pi 的相位變化（波形反轉）。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "reflection-free-end",
+      "label": "自由端反射",
+      "kind": "concept",
+      "summary": "波從自由端反射時，不會發生相位變化（波形不反轉）。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "standing-wave-definition",
+      "label": "駐波定義",
+      "kind": "definition",
+      "summary": "由兩個振幅、頻率、波長相同但方向相反的行進波疊加形成的波，其波形不傳播。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "standing-wave-equation",
+      "label": "駐波方程式",
+      "kind": "formula",
+      "summary": "描述駐波在位置 x 和時間 t 的位移。",
+      "latex": "y(x, t) = [2A \\sin(kx)] \\cos \\omega t",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "node-definition",
+      "label": "節點",
+      "kind": "definition",
+      "summary": "駐波中振幅始終為零的點。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "antinode-definition",
+      "label": "腹點",
+      "kind": "definition",
+      "summary": "駐波中振幅最大的點。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "normal-modes-wavelength-string",
+      "label": "繩波簡正模式波長",
+      "kind": "formula",
+      "summary": "兩端固定繩子上駐波的簡正模式波長，與繩長 L 和模式數 n 相關。",
+      "latex": "\\lambda_n = \\frac{2L}{n}",
+      "pages": [
+        35,
+        37
+      ]
+    },
+    {
+      "id": "normal-modes-frequency-string",
+      "label": "繩波簡正模式頻率",
+      "kind": "formula",
+      "summary": "兩端固定繩子上駐波的簡正模式頻率，與波速 v、繩長 L 和模式數 n 相關。",
+      "latex": "f_n = n \\frac{v}{2L} = \\frac{n}{2L} \\sqrt{\\frac{T}{\\mu}}",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "quantization-waves",
+      "label": "波的量子化",
+      "kind": "concept",
+      "summary": "當波受到邊界條件限制時，只允許某些特定的振盪頻率存在。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "fundamental-frequency",
+      "label": "基頻",
+      "kind": "definition",
+      "summary": "簡正模式中最低的振盪頻率 (n=1)。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "harmonics-overtones",
+      "label": "諧波與泛音",
+      "kind": "definition",
+      "summary": "頻率為基頻整數倍的簡正模式稱為諧波，也稱為泛音。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "fourier-series",
+      "label": "傅立葉級數",
+      "kind": "method",
+      "summary": "將任何週期函數表示為一系列正弦和餘弦項的組合。",
+      "latex": "f(t) = \\frac{1}{2}a_0 + \\sum_{n=1}^{\\infty}[a_n \\cos(n\\omega t) + b_n \\sin(n\\omega t)]",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "fourier-series-coefficients",
+      "label": "傅立葉級數係數",
+      "kind": "formula",
+      "summary": "計算傅立葉級數中 $a_0, a_n, b_n$ 係數的積分公式。",
+      "latex": "a_0 = \\frac{1}{\\pi} \\int_0^T f(t)dt; a_n = \\frac{1}{\\pi} \\int_0^T f(t)\\cos(n\\omega t)dt; b_n = \\frac{1}{\\pi} \\int_0^T f(t)\\sin(n\\omega t)dt",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "energy-transfer-by-waves",
+      "label": "波的能量傳遞",
+      "kind": "concept",
+      "summary": "波在介質中傳播時會傳遞能量，但介質本身不隨波傳遞。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "instantaneous-power-wave",
+      "label": "波的瞬時功率",
+      "kind": "formula",
+      "summary": "波在繩子上傳遞的瞬時功率，等於橫向力與橫向速度的乘積。",
+      "latex": "P(x,t) = \\left(-F \\frac{\\partial y(x,t)}{\\partial x}\\right)\\left(\\frac{\\partial y(x,t)}{\\partial t}\\right)",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "average-power-wave",
+      "label": "波的平均功率",
+      "kind": "formula",
+      "summary": "波在一個週期內傳遞的平均功率，與線密度、角頻率平方、振幅平方和波速成正比。",
+      "latex": "\\langle P(x,t) \\rangle = \\frac{1}{2}(\\mu \\omega^2 A^2)v",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "energy-density-wave",
+      "label": "波的能量密度",
+      "kind": "definition",
+      "summary": "波每單位長度的能量，與線密度、角頻率平方和振幅平方成正比。",
+      "latex": "E_\\ell = \\frac{1}{2} \\mu \\omega^2 A^2",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "wave-intensity-spherical",
+      "label": "球面波強度",
+      "kind": "formula",
+      "summary": "球面波的強度定義為平均功率除以面積，遵循平方反比定律。",
+      "latex": "I = \\frac{(\\text{Power})_{\\text{average}}}{\\text{area}} = \\frac{(\\text{Power})_{\\text{average}}}{4\\pi r^2}",
+      "pages": [
+        22
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "mechanical-wave-definition",
+      "to": "transverse-wave-definition",
+      "reason": "橫波是力學波的一種，理解力學波的定義是理解橫波的基礎。"
+    },
+    {
+      "from": "mechanical-wave-definition",
+      "to": "longitudinal-wave-definition",
+      "reason": "縱波是力學波的一種，理解力學波的定義是理解縱波的基礎。"
+    },
+    {
+      "from": "wave-function-traveling-pulse",
+      "to": "sinusoidal-wave-definition",
+      "reason": "弦波是行進波的一種特殊形式，理解一般行進波函數有助於理解弦波。"
+    },
+    {
+      "from": "sinusoidal-wave-definition",
+      "to": "wave-amplitude",
+      "reason": "振幅是弦波的重要特性之一，理解弦波才能定義其振幅。"
+    },
+    {
+      "from": "sinusoidal-wave-definition",
+      "to": "wavelength-definition",
+      "reason": "波長是弦波的重要特性之一，理解弦波才能定義其波長。"
+    },
+    {
+      "from": "sinusoidal-wave-definition",
+      "to": "period-definition",
+      "reason": "週期是弦波的重要特性之一，理解弦波才能定義其週期。"
+    },
+    {
+      "from": "period-definition",
+      "to": "frequency-definition",
+      "reason": "頻率是週期的倒數，理解週期是理解頻率的基礎。"
+    },
+    {
+      "from": "wavelength-definition",
+      "to": "wave-number-definition",
+      "reason": "波數是波長的衍生概念，理解波長是定義波數的前提。"
+    },
+    {
+      "from": "period-definition",
+      "to": "angular-frequency-definition",
+      "reason": "角頻率是週期的衍生概念，理解週期是定義角頻率的前提。"
+    },
+    {
+      "from": "wavelength-definition",
+      "to": "wave-speed-formula-general",
+      "reason": "波速公式直接使用波長和週期來計算，因此需要先理解這些基本量。"
+    },
+    {
+      "from": "period-definition",
+      "to": "wave-speed-formula-general",
+      "reason": "波速公式直接使用波長和週期來計算，因此需要先理解這些基本量。"
+    },
+    {
+      "from": "wave-amplitude",
+      "to": "sinusoidal-wave-function-equation",
+      "reason": "弦波函數式包含振幅作為其參數之一。"
+    },
+    {
+      "from": "wave-number-definition",
+      "to": "sinusoidal-wave-function-equation",
+      "reason": "弦波函數式包含波數作為其參數之一。"
+    },
+    {
+      "from": "angular-frequency-definition",
+      "to": "sinusoidal-wave-function-equation",
+      "reason": "弦波函數式包含角頻率作為其參數之一。"
+    },
+    {
+      "from": "sinusoidal-wave-function-equation",
+      "to": "transverse-speed-formula",
+      "reason": "橫向速度是弦波函數對時間的偏導數，需要先理解弦波函數。"
+    },
+    {
+      "from": "transverse-speed-formula",
+      "to": "transverse-acceleration-formula",
+      "reason": "橫向加速度是橫向速度對時間的偏導數，需要先理解橫向速度。"
+    },
+    {
+      "from": "wave-speed-formula-general",
+      "to": "phase-velocity-definition",
+      "reason": "相速度是波速的一種，理解一般波速概念有助於理解相速度。"
+    },
+    {
+      "from": "general-mechanical-wave-speed",
+      "to": "wave-speed-on-string-formula",
+      "reason": "繩波波速公式是力學波速通式在繩子介質上的具體應用。"
+    },
+    {
+      "from": "wave-speed-on-string-formula",
+      "to": "linear-wave-equation",
+      "reason": "線性波動方程式的推導中使用了繩波波速的關係。"
+    },
+    {
+      "from": "linear-wave-equation",
+      "to": "linear-wave-property",
+      "reason": "線性波的性質是其遵守線性波動方程式的結果。"
+    },
+    {
+      "from": "linear-wave-property",
+      "to": "superposition-principle",
+      "reason": "線性波的定義是遵守疊加原理的波，因此疊加原理是線性波的基礎。"
+    },
+    {
+      "from": "superposition-principle",
+      "to": "interference-definition",
+      "reason": "干涉是疊加原理的具體表現，理解疊加原理是理解干涉的基礎。"
+    },
+    {
+      "from": "interference-definition",
+      "to": "constructive-interference",
+      "reason": "建設性干涉是干涉的一種形式，需要先理解干涉的總體概念。"
+    },
+    {
+      "from": "interference-definition",
+      "to": "destructive-interference",
+      "reason": "破壞性干涉是干涉的一種形式，需要先理解干涉的總體概念。"
+    },
+    {
+      "from": "sinusoidal-wave-function-equation",
+      "to": "superposition-sinusoidal-waves-formula",
+      "reason": "弦波疊加公式是基於單個弦波函數的組合，需要先理解弦波函數。"
+    },
+    {
+      "from": "superposition-sinusoidal-waves-formula",
+      "to": "interference-conditions-phase-difference",
+      "reason": "相位差干涉條件是從弦波疊加的結果推導而來，用於判斷干涉類型。"
+    },
+    {
+      "from": "interference-conditions-phase-difference",
+      "to": "interference-conditions-path-difference",
+      "reason": "路徑差干涉條件是相位差干涉條件的延伸，將相位差與波長和路徑差聯繫起來。"
+    },
+    {
+      "from": "sinusoidal-wave-function-equation",
+      "to": "reflection-fixed-end",
+      "reason": "波的反射行為是基於其波函數的變化，理解弦波函數有助於理解反射。"
+    },
+    {
+      "from": "sinusoidal-wave-function-equation",
+      "to": "reflection-free-end",
+      "reason": "波的反射行為是基於其波函數的變化，理解弦波函數有助於理解反射。"
+    },
+    {
+      "from": "superposition-principle",
+      "to": "standing-wave-definition",
+      "reason": "駐波是兩個方向相反的行進波疊加的結果，因此需要疊加原理。"
+    },
+    {
+      "from": "sinusoidal-wave-function-equation",
+      "to": "standing-wave-equation",
+      "reason": "駐波方程式是兩個方向相反的弦波函數疊加的結果，需要先理解弦波函數。"
+    },
+    {
+      "from": "standing-wave-equation",
+      "to": "node-definition",
+      "reason": "節點是駐波方程式中位移為零的特殊點，需要先理解駐波方程式。"
+    },
+    {
+      "from": "standing-wave-equation",
+      "to": "antinode-definition",
+      "reason": "腹點是駐波方程式中位移最大的特殊點，需要先理解駐波方程式。"
+    },
+    {
+      "from": "standing-wave-definition",
+      "to": "normal-modes-wavelength-string",
+      "reason": "簡正模式波長是駐波在特定邊界條件下的結果，需要先理解駐波。"
+    },
+    {
+      "from": "normal-modes-wavelength-string",
+      "to": "normal-modes-frequency-string",
+      "reason": "簡正模式頻率是根據簡正模式波長和波速計算而來，需要先理解波長。"
+    },
+    {
+      "from": "wave-speed-on-string-formula",
+      "to": "normal-modes-frequency-string",
+      "reason": "簡正模式頻率的計算需要繩波的波速，因此需要繩波波速公式。"
+    },
+    {
+      "from": "standing-wave-definition",
+      "to": "quantization-waves",
+      "reason": "駐波在邊界條件下只能有特定頻率，這體現了波的量子化概念。"
+    },
+    {
+      "from": "normal-modes-frequency-string",
+      "to": "fundamental-frequency",
+      "reason": "基頻是簡正模式頻率中 n=1 的特例，需要先理解簡正模式頻率。"
+    },
+    {
+      "from": "fundamental-frequency",
+      "to": "harmonics-overtones",
+      "reason": "諧波和泛音是基頻的整數倍，需要先理解基頻。"
+    },
+    {
+      "from": "sinusoidal-wave-definition",
+      "to": "fourier-series",
+      "reason": "傅立葉級數將複雜週期波分解為弦波的組合，需要先理解弦波。"
+    },
+    {
+      "from": "fourier-series",
+      "to": "fourier-series-coefficients",
+      "reason": "傅立葉級數係數是計算傅立葉級數中各項振幅的公式，需要先理解傅立葉級數的整體概念。"
+    },
+    {
+      "from": "mechanical-wave-definition",
+      "to": "energy-transfer-by-waves",
+      "reason": "能量傳遞是力學波的重要特性之一，理解力學波的定義是理解其能量傳遞的基礎。"
+    },
+    {
+      "from": "energy-transfer-by-waves",
+      "to": "instantaneous-power-wave",
+      "reason": "瞬時功率是能量傳遞的量化描述，需要先理解波傳遞能量的概念。"
+    },
+    {
+      "from": "instantaneous-power-wave",
+      "to": "average-power-wave",
+      "reason": "平均功率是瞬時功率在一個週期內的平均值，需要先理解瞬時功率。"
+    },
+    {
+      "from": "average-power-wave",
+      "to": "energy-density-wave",
+      "reason": "能量密度是平均功率的組成部分，理解平均功率有助於理解能量密度。"
+    },
+    {
+      "from": "average-power-wave",
+      "to": "wave-intensity-spherical",
+      "reason": "波強度是平均功率在單位面積上的分佈，需要先理解平均功率。"
+    }
+  ],
+  "chapter_number": 15,
+  "usage": {
+    "input_tokens": 18566,
+    "output_tokens": 6977
+  }
+}

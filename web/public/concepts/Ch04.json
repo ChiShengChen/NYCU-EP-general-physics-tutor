@@ -1,0 +1,455 @@
+{
+  "nodes": [
+    {
+      "id": "net-force-definition",
+      "label": "合力定義",
+      "kind": "definition",
+      "summary": "作用於物體的所有力的向量和，決定物體的加速度。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "equilibrium-definition",
+      "label": "平衡定義",
+      "kind": "definition",
+      "summary": "當物體所受合力為零時，其速度保持不變的狀態。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "force-is-vector",
+      "label": "力是向量",
+      "kind": "concept",
+      "summary": "力具有大小和方向，因此是向量，遵循向量加法法則。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "contact-force",
+      "label": "接觸力",
+      "kind": "concept",
+      "summary": "物體直接接觸時產生的力，如推力、拉力、摩擦力。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "field-force",
+      "label": "場力",
+      "kind": "concept",
+      "summary": "物體不需直接接觸即可作用的力，如重力、電力、磁力。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "normal-force-definition",
+      "label": "法線力定義",
+      "kind": "definition",
+      "summary": "表面對其上物體施加的垂直於表面的推力。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "friction-force-definition",
+      "label": "摩擦力定義",
+      "kind": "definition",
+      "summary": "表面對其上物體施加的平行於表面的阻礙運動的力。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "tension-force-definition",
+      "label": "張力定義",
+      "kind": "definition",
+      "summary": "繩索、繩索等對物體施加的拉力。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "weight-definition",
+      "label": "重量定義",
+      "kind": "definition",
+      "summary": "地球對物體施加的重力，方向指向地心。",
+      "latex": "",
+      "pages": [
+        4,
+        12
+      ]
+    },
+    {
+      "id": "newtons-first-law",
+      "label": "牛頓第一定律",
+      "kind": "law",
+      "summary": "若物體不受外力作用，則靜者恆靜，動者恆作等速直線運動。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "inertial-frame-definition",
+      "label": "慣性參考系",
+      "kind": "definition",
+      "summary": "在此參考系中，不受外力作用的物體具有零加速度，牛頓定律在此成立。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "inertia-concept",
+      "label": "慣性概念",
+      "kind": "concept",
+      "summary": "物體抵抗其運動狀態改變的傾向。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "fictitious-force",
+      "label": "虛擬力",
+      "kind": "concept",
+      "summary": "在非慣性參考系中觀察到的、為解釋運動而引入的假想力。",
+      "latex": "",
+      "pages": [
+        5,
+        6
+      ]
+    },
+    {
+      "id": "machs-principle",
+      "label": "馬赫原理",
+      "kind": "principle",
+      "summary": "任何運動的意義都只相對於其他物體而言，不存在絕對運動。",
+      "latex": "",
+      "pages": [
+        7,
+        9
+      ]
+    },
+    {
+      "id": "mass-definition",
+      "label": "質量定義",
+      "kind": "definition",
+      "summary": "物體抵抗其速度改變的程度，是慣性的量度。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "newtons-second-law",
+      "label": "牛頓第二定律",
+      "kind": "law",
+      "summary": "物體的加速度與所受合力成正比，與其質量成反比。",
+      "latex": "\\Sigma F = ma",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "newton-unit",
+      "label": "牛頓單位",
+      "kind": "definition",
+      "summary": "力的國際單位，定義為使一公斤物體產生一公尺每秒平方加速度所需的力。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "internal-force",
+      "label": "內力",
+      "kind": "concept",
+      "summary": "系統內部各部分之間相互作用的力，不影響系統整體的加速度。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "gravitational-force-concept",
+      "label": "重力概念",
+      "kind": "concept",
+      "summary": "地球對物體施加的吸引力，方向指向地心。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "weight-formula",
+      "label": "重量公式",
+      "kind": "formula",
+      "summary": "物體所受重力的大小，等於其質量乘以重力加速度。",
+      "latex": "W = mg",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "weight-vs-mass",
+      "label": "重量與質量",
+      "kind": "concept",
+      "summary": "質量是物體慣性的量度，而重量是物體所受的重力，兩者概念不同。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "gravitational-mass",
+      "label": "重力質量",
+      "kind": "definition",
+      "summary": "決定物體之間萬有引力大小的質量。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "inertial-mass",
+      "label": "慣性質量",
+      "kind": "definition",
+      "summary": "衡量物體抵抗加速度變化的能力，即慣性的量度。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "equivalence-principle",
+      "label": "等效原理",
+      "kind": "principle",
+      "summary": "慣性質量與重力質量相等，是廣義相對論的基礎。",
+      "latex": "",
+      "pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": "newtons-third-law",
+      "label": "牛頓第三定律",
+      "kind": "law",
+      "summary": "作用力與反作用力大小相等、方向相反，且作用在不同物體上。",
+      "latex": "F_{12} = -F_{21}",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "free-body-diagram-method",
+      "label": "自由體圖法",
+      "kind": "method",
+      "summary": "將物體從其環境中分離出來，並繪製所有作用於該物體上的力的圖示。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "force-is-vector",
+      "to": "net-force-definition",
+      "reason": "理解合力是多個力的向量和，需先理解力是向量。"
+    },
+    {
+      "from": "net-force-definition",
+      "to": "equilibrium-definition",
+      "reason": "平衡狀態的定義是物體所受合力為零。"
+    },
+    {
+      "from": "inertia-concept",
+      "to": "newtons-first-law",
+      "reason": "牛頓第一定律闡述了物體的慣性行為。"
+    },
+    {
+      "from": "newtons-first-law",
+      "to": "inertial-frame-definition",
+      "reason": "慣性參考系是牛頓第一定律成立的參考系。"
+    },
+    {
+      "from": "inertial-frame-definition",
+      "to": "newtons-second-law",
+      "reason": "牛頓第二定律僅在慣性參考系中成立。"
+    },
+    {
+      "from": "inertial-frame-definition",
+      "to": "newtons-third-law",
+      "reason": "牛頓第三定律僅在慣性參考系中成立。"
+    },
+    {
+      "from": "inertial-frame-definition",
+      "to": "fictitious-force",
+      "reason": "虛擬力是在非慣性參考系中為解釋運動而引入的。"
+    },
+    {
+      "from": "mass-definition",
+      "to": "inertia-concept",
+      "reason": "質量是衡量物體慣性大小的物理量。"
+    },
+    {
+      "from": "mass-definition",
+      "to": "newtons-second-law",
+      "reason": "牛頓第二定律將力、質量和加速度聯繫起來。"
+    },
+    {
+      "from": "net-force-definition",
+      "to": "newtons-second-law",
+      "reason": "牛頓第二定律描述了合力與加速度的關係。"
+    },
+    {
+      "from": "newtons-second-law",
+      "to": "newton-unit",
+      "reason": "力的單位牛頓是根據牛頓第二定律定義的。"
+    },
+    {
+      "from": "newtons-second-law",
+      "to": "weight-formula",
+      "reason": "重量公式W=mg是牛頓第二定律在重力作用下的應用。"
+    },
+    {
+      "from": "gravitational-force-concept",
+      "to": "weight-definition",
+      "reason": "重量是物體所受重力的大小。"
+    },
+    {
+      "from": "gravitational-force-concept",
+      "to": "weight-formula",
+      "reason": "重量公式計算的是重力的大小。"
+    },
+    {
+      "from": "weight-definition",
+      "to": "weight-vs-mass",
+      "reason": "區分重量與質量需先理解重量的定義。"
+    },
+    {
+      "from": "mass-definition",
+      "to": "weight-vs-mass",
+      "reason": "區分重量與質量需先理解質量的定義。"
+    },
+    {
+      "from": "newtons-second-law",
+      "to": "inertial-mass",
+      "reason": "慣性質量是根據牛頓第二定律中物體抵抗加速度的能力來定義的。"
+    },
+    {
+      "from": "gravitational-force-concept",
+      "to": "gravitational-mass",
+      "reason": "重力質量是決定物體之間重力大小的屬性。"
+    },
+    {
+      "from": "inertial-mass",
+      "to": "equivalence-principle",
+      "reason": "等效原理闡述了慣性質量與重力質量相等。"
+    },
+    {
+      "from": "gravitational-mass",
+      "to": "equivalence-principle",
+      "reason": "等效原理闡述了慣性質量與重力質量相等。"
+    },
+    {
+      "from": "newtons-third-law",
+      "to": "free-body-diagram-method",
+      "reason": "自由體圖法需要正確識別作用力與反作用力對。"
+    },
+    {
+      "from": "force-is-vector",
+      "to": "normal-force-definition",
+      "reason": "法線力是一種力，需先理解力的向量性質。"
+    },
+    {
+      "from": "force-is-vector",
+      "to": "friction-force-definition",
+      "reason": "摩擦力是一種力，需先理解力的向量性質。"
+    },
+    {
+      "from": "force-is-vector",
+      "to": "tension-force-definition",
+      "reason": "張力是一種力，需先理解力的向量性質。"
+    },
+    {
+      "from": "force-is-vector",
+      "to": "gravitational-force-concept",
+      "reason": "重力是一種力，需先理解力的向量性質。"
+    },
+    {
+      "from": "contact-force",
+      "to": "normal-force-definition",
+      "reason": "法線力是接觸力的一種。"
+    },
+    {
+      "from": "contact-force",
+      "to": "friction-force-definition",
+      "reason": "摩擦力是接觸力的一種。"
+    },
+    {
+      "from": "contact-force",
+      "to": "tension-force-definition",
+      "reason": "張力是接觸力的一種。"
+    },
+    {
+      "from": "field-force",
+      "to": "gravitational-force-concept",
+      "reason": "重力是場力的一種。"
+    },
+    {
+      "from": "normal-force-definition",
+      "to": "free-body-diagram-method",
+      "reason": "繪製自由體圖需要識別並表示法線力。"
+    },
+    {
+      "from": "friction-force-definition",
+      "to": "free-body-diagram-method",
+      "reason": "繪製自由體圖需要識別並表示摩擦力。"
+    },
+    {
+      "from": "tension-force-definition",
+      "to": "free-body-diagram-method",
+      "reason": "繪製自由體圖需要識別並表示張力。"
+    },
+    {
+      "from": "weight-definition",
+      "to": "free-body-diagram-method",
+      "reason": "繪製自由體圖需要識別並表示物體的重量。"
+    },
+    {
+      "from": "gravitational-force-concept",
+      "to": "free-body-diagram-method",
+      "reason": "繪製自由體圖需要識別並表示重力。"
+    },
+    {
+      "from": "newtons-second-law",
+      "to": "free-body-diagram-method",
+      "reason": "自由體圖是應用牛頓第二定律分析物體運動的工具。"
+    },
+    {
+      "from": "internal-force",
+      "to": "newtons-second-law",
+      "reason": "理解內力不影響系統整體加速度有助於正確應用牛頓第二定律。"
+    }
+  ],
+  "chapter_number": 4,
+  "usage": {
+    "input_tokens": 6605,
+    "output_tokens": 3736
+  }
+}

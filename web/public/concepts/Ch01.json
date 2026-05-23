@@ -1,0 +1,857 @@
+{
+  "nodes": [
+    {
+      "id": "physical-quantity",
+      "label": "物理量",
+      "kind": "concept",
+      "summary": "任何可以被測量或計算的物理屬性。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "fundamental-quantity",
+      "label": "基本物理量",
+      "kind": "concept",
+      "summary": "獨立於其他物理量，無法透過其他物理量定義的量，如長度、質量、時間。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "derived-quantity",
+      "label": "導出物理量",
+      "kind": "concept",
+      "summary": "透過基本物理量組合而成的量，如速度（長度/時間）。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "si-system",
+      "label": "國際單位制",
+      "kind": "concept",
+      "summary": "全球通用的測量單位系統，包含七個基本單位。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "si-base-units",
+      "label": "SI基本單位",
+      "kind": "definition",
+      "summary": "國際單位制中七個獨立的基本測量單位，如米、公斤、秒。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "si-derived-units",
+      "label": "SI導出單位",
+      "kind": "concept",
+      "summary": "國際單位制中由基本單位組合而成的單位，如焦耳、牛頓。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "planck-constant",
+      "label": "普朗克常數",
+      "kind": "concept",
+      "summary": "物理學中的基本常數，用於定義新版公斤。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kilogram-new-definition",
+      "label": "新公斤定義",
+      "kind": "definition",
+      "summary": "2018年後，公斤的定義基於普朗克常數。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kilogram-planck-formula",
+      "label": "公斤普朗克公式",
+      "kind": "formula",
+      "summary": "質量 $m$ 與普朗克常數 $h$、光速 $c$ 及銫原子頻率 $\\nu_{Cs}$ 的關係式。",
+      "latex": "m = \\frac{h \\nu_{Cs}}{c^2}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kibble-balance",
+      "label": "瓦特天平",
+      "kind": "method",
+      "summary": "一種高精度測量質量的方法，透過電磁力與重力平衡來定義公斤。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "kibble-balance-weighting-mode",
+      "label": "瓦特天平稱重模式",
+      "kind": "concept",
+      "summary": "瓦特天平透過平衡重力與勞倫茲力來測量質量。",
+      "latex": "w = mg = BLI",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "kibble-balance-moving-mode",
+      "label": "瓦特天平移動模式",
+      "kind": "concept",
+      "summary": "瓦特天平透過線圈在磁場中移動感應電壓來測量 $BLv$。",
+      "latex": "\\Delta V = BLv",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "kibble-balance-combined-formula",
+      "label": "瓦特天平組合公式",
+      "kind": "formula",
+      "summary": "結合稱重與移動模式，推導出質量與電流、電壓、速度的關係。",
+      "latex": "m = \\frac{I\\Delta V}{gv}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "unit-conversion",
+      "label": "單位換算",
+      "kind": "method",
+      "summary": "將物理量從一種單位轉換為另一種單位的方法，將單位視為代數量進行約分。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "dimension",
+      "label": "因次",
+      "kind": "definition",
+      "summary": "物理量的物理本質，如長度[L]、質量[M]、時間[T]。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "dimensional-analysis",
+      "label": "因次分析",
+      "kind": "method",
+      "summary": "檢查方程式正確性或協助推導方程式的方法，確保兩邊因次一致。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "dimensional-homogeneity",
+      "label": "因次齊一性",
+      "kind": "principle",
+      "summary": "任何物理方程式的兩邊必須具有相同的因次。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "number-notation",
+      "label": "數字表示法",
+      "kind": "concept",
+      "summary": "書寫多位數字時，以三位數為一組進行間隔的慣例。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "powers-of-ten-prefixes",
+      "label": "十的冪次字首",
+      "kind": "concept",
+      "summary": "用於表示物理量大小的十的冪次字首，如毫(m)、微(μ)、奈(n)。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "scientific-notation",
+      "label": "科學記號",
+      "kind": "definition",
+      "summary": "將數字表示為 $M \\times 10^n$ 的形式，其中 $1 \\le M < 10$。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "estimates",
+      "label": "估算",
+      "kind": "method",
+      "summary": "基於一系列假設對數值進行近似計算。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "order-of-magnitude",
+      "label": "數量級",
+      "kind": "definition",
+      "summary": "適用於數字的十的冪次，用於快速近似數值大小。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "order-of-magnitude-calculation",
+      "label": "數量級計算",
+      "kind": "method",
+      "summary": "透過將數字近似到最接近的十的冪次來進行快速估算。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "back-of-the-envelope-calculation",
+      "label": "信封背面計算",
+      "kind": "concept",
+      "summary": "指快速、粗略的估算，通常用於檢查結果的合理性。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "measurement-uncertainty",
+      "label": "測量不確定度",
+      "kind": "concept",
+      "summary": "任何測量中都存在的固有不確定性，會影響計算結果。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "absolute-uncertainty",
+      "label": "絕對不確定度",
+      "kind": "definition",
+      "summary": "測量值與其不確定範圍的直接表示，如 $(5.5 \\pm 0.1)\\text{ cm}$。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "percent-uncertainty",
+      "label": "百分比不確定度",
+      "kind": "definition",
+      "summary": "絕對不確定度佔測量值的百分比。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "uncertainty-propagation",
+      "label": "不確定度傳播",
+      "kind": "method",
+      "summary": "處理多個測量值計算時，不確定度如何影響最終結果的方法。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "significant-figures",
+      "label": "有效數字",
+      "kind": "definition",
+      "summary": "測量中可靠已知的所有數字，包括第一個估計數字。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "significant-figures-addition-subtraction",
+      "label": "有效數字加減法規則",
+      "kind": "principle",
+      "summary": "加減運算結果的小數位數應與參與運算項中最小的小數位數相同。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "significant-figures-multiplication-division",
+      "label": "有效數字乘除法規則",
+      "kind": "principle",
+      "summary": "乘除運算結果的有效數字位數應與參與運算項中最小的有效數字位數相同。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "model-building",
+      "label": "模型建構",
+      "kind": "concept",
+      "summary": "物理學家為理解現象而想像物理系統模型，並預測其行為。",
+      "latex": "",
+      "pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "id": "geometric-model",
+      "label": "幾何模型",
+      "kind": "concept",
+      "summary": "透過幾何結構來描述物理系統的模型。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "simplification-model",
+      "label": "簡化模型",
+      "kind": "concept",
+      "summary": "透過假設均勻、對稱、無阻力等簡化條件來描述物理系統的模型。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "analysis-model",
+      "label": "分析模型",
+      "kind": "concept",
+      "summary": "將物理系統視為粒子、系統、剛體或波等進行分析的模型。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "structural-model",
+      "label": "結構模型",
+      "kind": "concept",
+      "summary": "描述物質內部結構的模型，如原子模型、標準模型。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "vector",
+      "label": "向量",
+      "kind": "definition",
+      "summary": "具有大小和方向的物理量。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "coordinate-systems",
+      "label": "座標系統",
+      "kind": "concept",
+      "summary": "用於描述空間中點或向量位置的參考框架。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "cartesian-coordinate-system",
+      "label": "直角座標系",
+      "kind": "definition",
+      "summary": "使用相互垂直的軸 (x, y, z) 來定義點的位置。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "polar-coordinate-system",
+      "label": "極座標系",
+      "kind": "definition",
+      "summary": "使用徑向距離 (r) 和角度 (θ) 來定義二維平面中點的位置。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "cylindrical-coordinate-system",
+      "label": "圓柱座標系",
+      "kind": "definition",
+      "summary": "使用徑向距離 (r)、角度 (θ) 和高度 (z) 來定義三維空間中點的位置。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "spherical-coordinate-system",
+      "label": "球座標系",
+      "kind": "definition",
+      "summary": "使用徑向距離 (r)、極角 (φ) 和方位角 (θ) 來定義三維空間中點的位置。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "coordinate-system-choice-principle",
+      "label": "座標系選擇原則",
+      "kind": "principle",
+      "summary": "適當選擇座標系可以簡化物理問題的計算。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "polar-to-cartesian-transformation",
+      "label": "極座標轉直角座標",
+      "kind": "formula",
+      "summary": "將極座標 $(r, \\theta)$ 轉換為直角座標 $(x, y)$ 的公式。",
+      "latex": "x = r \\cos \\theta \\\\ y = r \\sin \\theta",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "cartesian-to-polar-transformation",
+      "label": "直角座標轉極座標",
+      "kind": "formula",
+      "summary": "將直角座標 $(x, y)$ 轉換為極座標 $(r, \\theta)$ 的公式。",
+      "latex": "r = \\sqrt{x^2 + y^2} \\\\ \\theta = \\tan^{-1} \\frac{y}{x}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "vector-equality",
+      "label": "向量相等",
+      "kind": "definition",
+      "summary": "兩個向量若具有相同的大小和方向，則稱它們相等。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "vector-addition",
+      "label": "向量加法",
+      "kind": "method",
+      "summary": "將兩個或多個向量相加，得到一個合向量的運算。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "vector-subtraction",
+      "label": "向量減法",
+      "kind": "method",
+      "summary": "向量減法可視為加上負向量的運算。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "scalar-product-definition",
+      "label": "向量內積定義",
+      "kind": "formula",
+      "summary": "兩個向量內積的定義，等於兩向量大小與夾角餘弦的乘積。",
+      "latex": "\\vec{A} \\cdot \\vec{B} = AB \\cos \\phi",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "scalar-product-component-form",
+      "label": "向量內積分量式",
+      "kind": "formula",
+      "summary": "兩個向量內積的分量表示法。",
+      "latex": "= A_x B_x + A_y B_y + A_z B_z",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "vector-product-definition",
+      "label": "向量外積定義",
+      "kind": "formula",
+      "summary": "兩個向量外積的大小定義，等於兩向量大小與夾角正弦的乘積。",
+      "latex": "|\\vec{A} \\times \\vec{B}| = AB \\sin \\phi",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "vector-product-component-form",
+      "label": "向量外積分量式",
+      "kind": "formula",
+      "summary": "兩個向量外積的分量表示法，使用行列式計算。",
+      "latex": "\\vec{A} \\times \\vec{B} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ A_x & A_y & A_z \\\\ B_x & B_y & B_z \\end{vmatrix}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "vector-graphical-method",
+      "label": "向量圖解法",
+      "kind": "method",
+      "summary": "透過繪製比例圖來解決向量問題的方法。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "vector-algebraic-method",
+      "label": "向量代數法",
+      "kind": "method",
+      "summary": "透過分量和三角學來解決向量問題的方法。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "resultant-vector-magnitude",
+      "label": "合向量大小",
+      "kind": "formula",
+      "summary": "透過分量計算合向量大小的公式。",
+      "latex": "R = \\sqrt{(A_x + B_x)^2 + (A_y + B_y)^2}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "resultant-vector-angle",
+      "label": "合向量角度",
+      "kind": "formula",
+      "summary": "透過分量計算合向量方向角度的公式。",
+      "latex": "\\tan \\theta = \\frac{A_y + B_y}{A_x + B_x}",
+      "pages": [
+        21
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "physical-quantity",
+      "to": "fundamental-quantity",
+      "reason": "基本物理量是物理量的一種。"
+    },
+    {
+      "from": "physical-quantity",
+      "to": "derived-quantity",
+      "reason": "導出物理量是物理量的一種。"
+    },
+    {
+      "from": "fundamental-quantity",
+      "to": "derived-quantity",
+      "reason": "導出物理量由基本物理量組合而成。"
+    },
+    {
+      "from": "si-system",
+      "to": "si-base-units",
+      "reason": "SI基本單位是國際單位制的核心組成部分。"
+    },
+    {
+      "from": "si-base-units",
+      "to": "si-derived-units",
+      "reason": "SI導出單位由SI基本單位組合而成。"
+    },
+    {
+      "from": "planck-constant",
+      "to": "kilogram-new-definition",
+      "reason": "新公斤定義以普朗克常數為基礎。"
+    },
+    {
+      "from": "kilogram-new-definition",
+      "to": "kilogram-planck-formula",
+      "reason": "公斤普朗克公式具體表達了新公斤定義的數學關係。"
+    },
+    {
+      "from": "kilogram-new-definition",
+      "to": "kibble-balance",
+      "reason": "瓦特天平是實現新公斤定義的關鍵方法之一。"
+    },
+    {
+      "from": "kibble-balance",
+      "to": "kibble-balance-weighting-mode",
+      "reason": "稱重模式是瓦特天平運作的兩種模式之一。"
+    },
+    {
+      "from": "kibble-balance",
+      "to": "kibble-balance-moving-mode",
+      "reason": "移動模式是瓦特天平運作的兩種模式之一。"
+    },
+    {
+      "from": "kibble-balance-weighting-mode",
+      "to": "kibble-balance-combined-formula",
+      "reason": "組合公式需要稱重模式的關係式。"
+    },
+    {
+      "from": "kibble-balance-moving-mode",
+      "to": "kibble-balance-combined-formula",
+      "reason": "組合公式需要移動模式的關係式。"
+    },
+    {
+      "from": "physical-quantity",
+      "to": "dimension",
+      "reason": "因次描述了物理量的物理本質。"
+    },
+    {
+      "from": "dimension",
+      "to": "dimensional-analysis",
+      "reason": "因次分析是基於物理量的因次進行的。"
+    },
+    {
+      "from": "dimensional-analysis",
+      "to": "dimensional-homogeneity",
+      "reason": "因次齊一性是因次分析的核心原則。"
+    },
+    {
+      "from": "number-notation",
+      "to": "scientific-notation",
+      "reason": "科學記號是一種標準的數字表示法，有助於清晰表達數字。"
+    },
+    {
+      "from": "scientific-notation",
+      "to": "order-of-magnitude",
+      "reason": "數量級是科學記號中十的冪次部分。"
+    },
+    {
+      "from": "order-of-magnitude",
+      "to": "order-of-magnitude-calculation",
+      "reason": "數量級計算是基於數量級概念進行的。"
+    },
+    {
+      "from": "estimates",
+      "to": "order-of-magnitude-calculation",
+      "reason": "數量級計算是估算的一種常用方法。"
+    },
+    {
+      "from": "order-of-magnitude-calculation",
+      "to": "back-of-the-envelope-calculation",
+      "reason": "信封背面計算是數量級計算的俗稱。"
+    },
+    {
+      "from": "measurement-uncertainty",
+      "to": "absolute-uncertainty",
+      "reason": "絕對不確定度是測量不確定度的一種表示方式。"
+    },
+    {
+      "from": "measurement-uncertainty",
+      "to": "percent-uncertainty",
+      "reason": "百分比不確定度是測量不確定度的一種表示方式。"
+    },
+    {
+      "from": "absolute-uncertainty",
+      "to": "percent-uncertainty",
+      "reason": "百分比不確定度由絕對不確定度計算而來。"
+    },
+    {
+      "from": "measurement-uncertainty",
+      "to": "uncertainty-propagation",
+      "reason": "不確定度傳播處理測量不確定度在計算中的影響。"
+    },
+    {
+      "from": "significant-figures",
+      "to": "significant-figures-addition-subtraction",
+      "reason": "加減法規則是有有效數字概念的應用。"
+    },
+    {
+      "from": "significant-figures",
+      "to": "significant-figures-multiplication-division",
+      "reason": "乘除法規則是有有效數字概念的應用。"
+    },
+    {
+      "from": "significant-figures-addition-subtraction",
+      "to": "significant-figures-multiplication-division",
+      "reason": "兩者都是有效數字運算規則，通常一起學習。"
+    },
+    {
+      "from": "model-building",
+      "to": "geometric-model",
+      "reason": "幾何模型是模型建構的一種具體類型。"
+    },
+    {
+      "from": "model-building",
+      "to": "simplification-model",
+      "reason": "簡化模型是模型建構的一種具體類型。"
+    },
+    {
+      "from": "model-building",
+      "to": "analysis-model",
+      "reason": "分析模型是模型建構的一種具體類型。"
+    },
+    {
+      "from": "model-building",
+      "to": "structural-model",
+      "reason": "結構模型是模型建構的一種具體類型。"
+    },
+    {
+      "from": "physical-quantity",
+      "to": "vector",
+      "reason": "向量是一種特殊的物理量。"
+    },
+    {
+      "from": "coordinate-systems",
+      "to": "cartesian-coordinate-system",
+      "reason": "直角座標系是座標系統的一種。"
+    },
+    {
+      "from": "coordinate-systems",
+      "to": "polar-coordinate-system",
+      "reason": "極座標系是座標系統的一種。"
+    },
+    {
+      "from": "coordinate-systems",
+      "to": "cylindrical-coordinate-system",
+      "reason": "圓柱座標系是座標系統的一種。"
+    },
+    {
+      "from": "coordinate-systems",
+      "to": "spherical-coordinate-system",
+      "reason": "球座標系是座標系統的一種。"
+    },
+    {
+      "from": "coordinate-systems",
+      "to": "coordinate-system-choice-principle",
+      "reason": "座標系選擇原則指導如何有效利用座標系統。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "polar-to-cartesian-transformation",
+      "reason": "轉換公式涉及直角座標系。"
+    },
+    {
+      "from": "polar-coordinate-system",
+      "to": "polar-to-cartesian-transformation",
+      "reason": "轉換公式涉及極座標系。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "cartesian-to-polar-transformation",
+      "reason": "轉換公式涉及直角座標系。"
+    },
+    {
+      "from": "polar-coordinate-system",
+      "to": "cartesian-to-polar-transformation",
+      "reason": "轉換公式涉及極座標系。"
+    },
+    {
+      "from": "vector",
+      "to": "vector-equality",
+      "reason": "向量相等是向量的基本性質。"
+    },
+    {
+      "from": "vector",
+      "to": "vector-addition",
+      "reason": "向量加法是向量的基本運算。"
+    },
+    {
+      "from": "vector",
+      "to": "vector-subtraction",
+      "reason": "向量減法是向量的基本運算。"
+    },
+    {
+      "from": "vector-addition",
+      "to": "vector-subtraction",
+      "reason": "向量減法可以理解為向量加法的逆運算或特殊形式。"
+    },
+    {
+      "from": "vector",
+      "to": "scalar-product-definition",
+      "reason": "內積是向量間的一種運算。"
+    },
+    {
+      "from": "vector",
+      "to": "vector-product-definition",
+      "reason": "外積是向量間的一種運算。"
+    },
+    {
+      "from": "scalar-product-definition",
+      "to": "scalar-product-component-form",
+      "reason": "分量式是內積定義的另一種表達方式。"
+    },
+    {
+      "from": "vector-product-definition",
+      "to": "vector-product-component-form",
+      "reason": "分量式是外積定義的另一種表達方式。"
+    },
+    {
+      "from": "vector-addition",
+      "to": "vector-algebraic-method",
+      "reason": "向量代數法常用於計算向量加法。"
+    },
+    {
+      "from": "vector-addition",
+      "to": "vector-graphical-method",
+      "reason": "向量圖解法常用於視覺化向量加法。"
+    },
+    {
+      "from": "vector-algebraic-method",
+      "to": "resultant-vector-magnitude",
+      "reason": "合向量大小是代數法計算的結果之一。"
+    },
+    {
+      "from": "vector-algebraic-method",
+      "to": "resultant-vector-angle",
+      "reason": "合向量角度是代數法計算的結果之一。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "scalar-product-component-form",
+      "reason": "內積分量式依賴於直角座標系的分量表示。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "vector-product-component-form",
+      "reason": "外積分量式依賴於直角座標系的分量表示。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "resultant-vector-magnitude",
+      "reason": "合向量大小公式依賴於直角座標系的分量。"
+    },
+    {
+      "from": "cartesian-coordinate-system",
+      "to": "resultant-vector-angle",
+      "reason": "合向量角度公式依賴於直角座標系的分量。"
+    }
+  ],
+  "chapter_number": 1,
+  "usage": {
+    "input_tokens": 8872,
+    "output_tokens": 7208
+  }
+}

@@ -1,0 +1,360 @@
+{
+  "nodes": [
+    {
+      "id": "system-definition",
+      "label": "系統",
+      "kind": "concept",
+      "summary": "宇宙中被選定來研究的一小部分。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "environment-definition",
+      "label": "環境",
+      "kind": "concept",
+      "summary": "宇宙中除了系統以外的部分。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "energy-concept",
+      "label": "能量",
+      "kind": "concept",
+      "summary": "系統的狀態變數，是做功的能力。",
+      "latex": "",
+      "pages": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "kinetic-energy-definition",
+      "label": "動能",
+      "kind": "definition",
+      "summary": "物體因運動而擁有的能量，定義為質量與速率平方乘積的一半。",
+      "latex": "K \\equiv \\frac{1}{2}mv^2",
+      "pages": [
+        4,
+        11
+      ]
+    },
+    {
+      "id": "work-definition",
+      "label": "功",
+      "kind": "definition",
+      "summary": "能量轉移的一種形式，由力對物體造成位移而產生。",
+      "latex": "",
+      "pages": [
+        4,
+        6
+      ]
+    },
+    {
+      "id": "work-constant-force",
+      "label": "定力做功",
+      "kind": "formula",
+      "summary": "定力對物體做功等於力與位移的點積。",
+      "latex": "W \\equiv \\vec{F} \\cdot \\Delta \\vec{r}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "joule-unit",
+      "label": "焦耳",
+      "kind": "concept",
+      "summary": "功和能量的國際單位，1 焦耳等於 1 牛頓米。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "work-varying-force",
+      "label": "變力做功",
+      "kind": "formula",
+      "summary": "變力對物體做功等於力對位移的積分。",
+      "latex": "W = \\int_{\\vec{r}_i}^{\\vec{r}_f} \\vec{F} \\cdot d\\vec{r}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "work-integral-calculation",
+      "label": "功積分計算",
+      "kind": "method",
+      "summary": "將功的積分分解為各分量上的積分來計算。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "gravitational-force-formula",
+      "label": "萬有引力",
+      "kind": "formula",
+      "summary": "描述兩個物體間引力大小的公式。",
+      "latex": "\\vec{F}(r) = -\\frac{c}{r^2}\\hat{r}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "work-gravitational-force",
+      "label": "引力做功",
+      "kind": "formula",
+      "summary": "萬有引力對物體做功的公式。",
+      "latex": "W = \\left(\\frac{1}{b} - \\frac{1}{a}\\right)c",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "hookes-law",
+      "label": "虎克定律",
+      "kind": "law",
+      "summary": "彈簧的恢復力與其形變量成正比且方向相反。",
+      "latex": "\\vec{F}_s = -k\\hat{i}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "work-spring-force",
+      "label": "彈力做功",
+      "kind": "formula",
+      "summary": "彈簧力對物體做功的公式。",
+      "latex": "W_s = \\frac{1}{2}kx_i^2 - \\frac{1}{2}kx_f^2",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "work-kinetic-energy-theorem",
+      "label": "功動能定理",
+      "kind": "law",
+      "summary": "作用於系統的淨功等於系統動能的變化量。",
+      "latex": "W_{\\text{external}} = K_f - K_i = \\Delta K",
+      "pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": "work-constant-gravity",
+      "label": "重力做功",
+      "kind": "formula",
+      "summary": "均勻重力場中，重力對物體做功的公式。",
+      "latex": "W_{\\text{gravity}} = -mgh",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "power-definition",
+      "label": "功率",
+      "kind": "definition",
+      "summary": "做功或能量轉移的時間速率。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "instantaneous-power",
+      "label": "瞬時功率",
+      "kind": "formula",
+      "summary": "功對時間的導數，表示某一時刻的功率。",
+      "latex": "P \\equiv \\frac{dW}{dt}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "average-power",
+      "label": "平均功率",
+      "kind": "formula",
+      "summary": "總功除以做功所需的時間。",
+      "latex": "\\bar{P} \\equiv \\frac{W}{\\Delta t}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "watt-unit",
+      "label": "瓦特",
+      "kind": "concept",
+      "summary": "功率的國際單位，1 瓦特等於 1 焦耳/秒。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "horsepower-unit",
+      "label": "馬力",
+      "kind": "concept",
+      "summary": "功率的英制單位，1 馬力約等於 746 瓦特。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "kilowatt-hour-unit",
+      "label": "千瓦時",
+      "kind": "concept",
+      "summary": "能量的單位，1 千瓦時等於 3.6 兆焦耳。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "power-force-velocity",
+      "label": "功率與力速關係",
+      "kind": "formula",
+      "summary": "瞬時功率等於力與速度的點積。",
+      "latex": "P = \\vec{F} \\cdot \\vec{v}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "air-drag-force",
+      "label": "空氣阻力",
+      "kind": "formula",
+      "summary": "物體在空氣中運動時所受的阻力，與速度平方成正比。",
+      "latex": "f = \\frac{1}{2}\\rho Av^2",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "wind-power",
+      "label": "風力功率",
+      "kind": "formula",
+      "summary": "風能轉換為機械能的功率，與空氣密度、截面積和風速立方成正比。",
+      "latex": "\\bar{P} = \\frac{1}{2}\\rho A v^3",
+      "pages": [
+        21
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "system-definition",
+      "to": "environment-definition",
+      "reason": "理解系統才能定義環境。"
+    },
+    {
+      "from": "system-definition",
+      "to": "energy-concept",
+      "reason": "能量是系統的狀態變數。"
+    },
+    {
+      "from": "work-definition",
+      "to": "work-constant-force",
+      "reason": "定力做功是功的基礎定義。"
+    },
+    {
+      "from": "work-constant-force",
+      "to": "joule-unit",
+      "reason": "焦耳是功的單位，由定力做功的定義引出。"
+    },
+    {
+      "from": "work-constant-force",
+      "to": "work-varying-force",
+      "reason": "變力做功是定力做功的推廣。"
+    },
+    {
+      "from": "work-varying-force",
+      "to": "work-integral-calculation",
+      "reason": "變力做功需要用積分計算。"
+    },
+    {
+      "from": "gravitational-force-formula",
+      "to": "work-gravitational-force",
+      "reason": "計算引力做功需要先知道引力公式。"
+    },
+    {
+      "from": "hookes-law",
+      "to": "work-spring-force",
+      "reason": "計算彈力做功需要先知道虎克定律。"
+    },
+    {
+      "from": "kinetic-energy-definition",
+      "to": "work-kinetic-energy-theorem",
+      "reason": "功動能定理描述了功與動能的關係。"
+    },
+    {
+      "from": "work-definition",
+      "to": "work-kinetic-energy-theorem",
+      "reason": "功動能定理的理解需要先理解功的定義。"
+    },
+    {
+      "from": "work-constant-force",
+      "to": "work-constant-gravity",
+      "reason": "重力做功是定力做功的一個特例。"
+    },
+    {
+      "from": "power-definition",
+      "to": "instantaneous-power",
+      "reason": "瞬時功率是功率的具體形式。"
+    },
+    {
+      "from": "power-definition",
+      "to": "average-power",
+      "reason": "平均功率是功率的具體形式。"
+    },
+    {
+      "from": "power-definition",
+      "to": "watt-unit",
+      "reason": "瓦特是功率的國際單位。"
+    },
+    {
+      "from": "watt-unit",
+      "to": "horsepower-unit",
+      "reason": "馬力是功率的另一種單位，與瓦特相關。"
+    },
+    {
+      "from": "watt-unit",
+      "to": "kilowatt-hour-unit",
+      "reason": "千瓦時是能量單位，由功率單位瓦特推導。"
+    },
+    {
+      "from": "instantaneous-power",
+      "to": "power-force-velocity",
+      "reason": "瞬時功率的另一種表達形式。"
+    },
+    {
+      "from": "work-definition",
+      "to": "power-definition",
+      "reason": "功率是做功的速率。"
+    },
+    {
+      "from": "kinetic-energy-definition",
+      "to": "air-drag-force",
+      "reason": "空氣阻力公式的推導基於動能變化。"
+    },
+    {
+      "from": "kinetic-energy-definition",
+      "to": "wind-power",
+      "reason": "風力功率的推導基於動能變化。"
+    },
+    {
+      "from": "average-power",
+      "to": "wind-power",
+      "reason": "風力功率是平均功率的一個應用。"
+    }
+  ],
+  "chapter_number": 6,
+  "usage": {
+    "input_tokens": 7884,
+    "output_tokens": 2929
+  }
+}

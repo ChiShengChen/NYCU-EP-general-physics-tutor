@@ -1,0 +1,651 @@
+{
+  "nodes": [
+    {
+      "id": "thermal-contact",
+      "label": "熱接觸",
+      "kind": "definition",
+      "summary": "兩個物體之間若能交換能量，則稱它們處於熱接觸。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "thermal-equilibrium",
+      "label": "熱平衡",
+      "kind": "definition",
+      "summary": "兩個物體若處於熱接觸時沒有淨能量交換，則稱它們處於熱平衡。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "zeroth-law-thermodynamics",
+      "label": "熱力學第零定律",
+      "kind": "law",
+      "summary": "若A和B分別與C熱平衡，則A和B彼此熱平衡；兩系統熱平衡若且唯若它們溫度相同。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "temperature",
+      "label": "溫度",
+      "kind": "concept",
+      "summary": "溫度是決定物體是否與其他物體熱平衡的性質。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "thermometer",
+      "label": "溫度計",
+      "kind": "definition",
+      "summary": "溫度計是測量系統溫度的裝置，基於物理性質隨溫度變化而改變的原理。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "celsius-temperature-scale",
+      "label": "攝氏溫標",
+      "kind": "definition",
+      "summary": "以水冰點為0°C、沸點為100°C定義的溫標。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "fahrenheit-temperature-scale",
+      "label": "華氏溫標",
+      "kind": "definition",
+      "summary": "以水冰點為32°F、沸點為212°F定義的溫標。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "fahrenheit-celsius-conversion",
+      "label": "華氏攝氏轉換",
+      "kind": "formula",
+      "summary": "華氏溫度與攝氏溫度的轉換公式。",
+      "latex": "T_F = \\frac{9}{5}T_C + 32^\\circ \\text{F}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "absolute-zero",
+      "label": "絕對零度",
+      "kind": "concept",
+      "summary": "理論上物質所能達到的最低溫度，約為-273.15°C。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kelvin-temperature-scale",
+      "label": "克耳文溫標",
+      "kind": "definition",
+      "summary": "以絕對零度為0 K定義的溫標，單位為克耳文。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "celsius-kelvin-conversion",
+      "label": "攝氏克耳文轉換",
+      "kind": "formula",
+      "summary": "攝氏溫度與克耳文溫度的轉換公式。",
+      "latex": "T_{\\text{Celsius}} = T - 273.15",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "thermal-expansion",
+      "label": "熱膨脹",
+      "kind": "concept",
+      "summary": "物體因溫度升高而尺寸增大的現象，是原子平均間距變化的結果。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "linear-expansion",
+      "label": "線膨脹",
+      "kind": "formula",
+      "summary": "物體長度隨溫度變化而改變的現象，其變化量由線膨脹係數 $\\alpha$ 決定。",
+      "latex": "\\Delta L = \\alpha L_i \\Delta T",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "unusual-water-expansion",
+      "label": "水的異常膨脹",
+      "kind": "concept",
+      "summary": "水在4°C時密度最大，從4°C降至0°C時體積反而膨脹。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "youngs-modulus",
+      "label": "楊氏模數",
+      "kind": "definition",
+      "summary": "材料的應力與應變之比，衡量材料抵抗彈性變形的能力。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "thermal-stress-formula",
+      "label": "熱應力公式",
+      "kind": "formula",
+      "summary": "計算物體因溫度變化且被限制形變時產生的應力。",
+      "latex": "\\frac{F}{A} = -(\\alpha \\Delta T) Y",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "volume-expansion",
+      "label": "體膨脹",
+      "kind": "formula",
+      "summary": "物體體積隨溫度變化而改變的現象，其變化量由體膨脹係數 $\\beta$ 決定。",
+      "latex": "\\Delta V = \\beta V_i \\Delta T",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "relation-between-alpha-and-beta",
+      "label": "線體膨脹係數關係",
+      "kind": "formula",
+      "summary": "對於各向同性固體，體膨脹係數約為線膨脹係數的三倍。",
+      "latex": "\\beta = 3\\alpha",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "heat",
+      "label": "熱",
+      "kind": "definition",
+      "summary": "熱是因系統與環境間的溫差而跨越系統邊界傳遞的能量。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "mechanical-equivalent-heat",
+      "label": "熱功當量",
+      "kind": "concept",
+      "summary": "機械能與內能之間的等效關係，由焦耳實驗確立。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "joule-calorie-conversion",
+      "label": "焦耳卡路里轉換",
+      "kind": "formula",
+      "summary": "焦耳與卡路里之間的轉換關係。",
+      "latex": "1 \\text{ cal} = 4.186 \\text{ J}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "heat-capacity",
+      "label": "熱容量",
+      "kind": "definition",
+      "summary": "使特定樣品溫度升高1°C所需的能量。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "specific-heat",
+      "label": "比熱",
+      "kind": "formula",
+      "summary": "單位質量物質升高單位溫度所需的能量，其計算公式為 $Q = mc\\Delta T$。",
+      "latex": "c \\equiv \\frac{Q}{m\\Delta T}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "calorimetry",
+      "label": "量熱法",
+      "kind": "method",
+      "summary": "利用能量守恆原理，在絕熱系統中分析熱量交換以確定最終溫度或物質性質。",
+      "latex": "m_w c_w (T_f - T_w) = -m_x c_x (T_f - T_x)",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "phase-change",
+      "label": "相變",
+      "kind": "concept",
+      "summary": "物質從一種物理狀態轉變為另一種物理狀態的過程，例如固態變液態。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "latent-heat",
+      "label": "潛熱",
+      "kind": "formula",
+      "summary": "物質在相變過程中，溫度不變但吸收或釋放的能量，其計算公式為 $Q = \\pm mL$。",
+      "latex": "Q = \\pm mL",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "internal-energy-thermodynamics",
+      "label": "內能",
+      "kind": "concept",
+      "summary": "系統內部分子動能（熱能）與分子間勢能（鍵能）的總和。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "supercooling",
+      "label": "過冷",
+      "kind": "concept",
+      "summary": "液體溫度降至凝固點以下仍不凝固的現象。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "superheating",
+      "label": "過熱",
+      "kind": "concept",
+      "summary": "液體溫度升至沸點以上仍不沸騰的現象。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "nucleation-site",
+      "label": "成核點",
+      "kind": "concept",
+      "summary": "物質相變（如沸騰或凝固）時，新相開始形成的微小區域或雜質。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "supercritical-fluid",
+      "label": "超臨界流體",
+      "kind": "concept",
+      "summary": "溫度和壓力超過臨界點的物質狀態，兼具氣體和液體的性質。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "mechanisms-heat-transfer",
+      "label": "熱傳機制",
+      "kind": "concept",
+      "summary": "能量因溫差而傳遞的三種主要方式：傳導、對流和輻射。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "conduction",
+      "label": "熱傳導",
+      "kind": "concept",
+      "summary": "能量透過微觀粒子碰撞交換動能而傳遞的熱傳方式。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "fourier-law-conduction",
+      "label": "熱傳導定律",
+      "kind": "law",
+      "summary": "熱量傳遞速率與溫度梯度和接觸面積成正比的定律，引入熱導率。",
+      "latex": "P = kA \\left| \\frac{dT}{dx} \\right|",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "convection",
+      "label": "熱對流",
+      "kind": "concept",
+      "summary": "能量透過流體物質的宏觀運動而傳遞的熱傳方式，可分為自然對流和強制對流。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "radiation",
+      "label": "熱輻射",
+      "kind": "concept",
+      "summary": "物體以電磁波形式連續輻射能量的熱傳方式。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "stefan-boltzmann-law",
+      "label": "史蒂芬-波茲曼定律",
+      "kind": "law",
+      "summary": "描述物體輻射能量速率與其絕對溫度四次方成正比的定律，引入輻射率。",
+      "latex": "P = \\sigma A e T^4",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "net-radiation-power-formula",
+      "label": "淨輻射功率公式",
+      "kind": "formula",
+      "summary": "計算物體與環境之間淨輻射能量傳遞速率的公式。",
+      "latex": "P_{\\text{net}} = \\sigma Ae(T_1^4 - T_0^4)",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "kirchhoffs-law-radiation",
+      "label": "克希荷夫輻射定律",
+      "kind": "law",
+      "summary": "在熱平衡狀態下，物體的吸收率等於其輻射率。",
+      "latex": "a = e",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "dewar-flask",
+      "label": "杜瓦瓶",
+      "kind": "concept",
+      "summary": "一種設計用於最小化傳導、對流和輻射熱量損失的容器。",
+      "latex": "",
+      "pages": [
+        39
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "thermal-contact",
+      "to": "thermal-equilibrium",
+      "reason": "熱平衡的定義需要先理解熱接觸。"
+    },
+    {
+      "from": "thermal-equilibrium",
+      "to": "zeroth-law-thermodynamics",
+      "reason": "熱力學第零定律建立在熱平衡的基礎上。"
+    },
+    {
+      "from": "thermal-equilibrium",
+      "to": "temperature",
+      "reason": "溫度是判斷物體是否熱平衡的性質。"
+    },
+    {
+      "from": "temperature",
+      "to": "thermometer",
+      "reason": "溫度計是用來測量溫度的裝置。"
+    },
+    {
+      "from": "thermometer",
+      "to": "celsius-temperature-scale",
+      "reason": "攝氏溫標是溫度計的一種具體應用。"
+    },
+    {
+      "from": "thermometer",
+      "to": "fahrenheit-temperature-scale",
+      "reason": "華氏溫標是溫度計的一種具體應用。"
+    },
+    {
+      "from": "celsius-temperature-scale",
+      "to": "fahrenheit-celsius-conversion",
+      "reason": "華氏攝氏轉換公式需要理解兩種溫標。"
+    },
+    {
+      "from": "fahrenheit-temperature-scale",
+      "to": "fahrenheit-celsius-conversion",
+      "reason": "華氏攝氏轉換公式需要理解兩種溫標。"
+    },
+    {
+      "from": "temperature",
+      "to": "absolute-zero",
+      "reason": "絕對零度是溫度的最低極限概念。"
+    },
+    {
+      "from": "absolute-zero",
+      "to": "kelvin-temperature-scale",
+      "reason": "克耳文溫標以絕對零度為基礎。"
+    },
+    {
+      "from": "celsius-temperature-scale",
+      "to": "celsius-kelvin-conversion",
+      "reason": "攝氏克耳文轉換公式需要理解兩種溫標。"
+    },
+    {
+      "from": "kelvin-temperature-scale",
+      "to": "celsius-kelvin-conversion",
+      "reason": "攝氏克耳文轉換公式需要理解兩種溫標。"
+    },
+    {
+      "from": "temperature",
+      "to": "thermal-expansion",
+      "reason": "熱膨脹是物體因溫度變化而尺寸改變的現象。"
+    },
+    {
+      "from": "thermal-expansion",
+      "to": "linear-expansion",
+      "reason": "線膨脹是熱膨脹的一種具體形式。"
+    },
+    {
+      "from": "linear-expansion",
+      "to": "thermal-stress-formula",
+      "reason": "熱應力公式計算因線膨脹受限而產生的應力。"
+    },
+    {
+      "from": "thermal-expansion",
+      "to": "volume-expansion",
+      "reason": "體膨脹是熱膨脹的一種具體形式。"
+    },
+    {
+      "from": "linear-expansion",
+      "to": "relation-between-alpha-and-beta",
+      "reason": "線膨脹係數是體膨脹係數的基礎。"
+    },
+    {
+      "from": "volume-expansion",
+      "to": "relation-between-alpha-and-beta",
+      "reason": "體膨脹係數與線膨脹係數相關。"
+    },
+    {
+      "from": "thermal-expansion",
+      "to": "unusual-water-expansion",
+      "reason": "水的異常膨脹是熱膨脹的一個特殊案例。"
+    },
+    {
+      "from": "youngs-modulus",
+      "to": "thermal-stress-formula",
+      "reason": "熱應力公式中使用了楊氏模數。"
+    },
+    {
+      "from": "temperature",
+      "to": "heat",
+      "reason": "熱是因溫差而傳遞的能量。"
+    },
+    {
+      "from": "heat",
+      "to": "mechanical-equivalent-heat",
+      "reason": "熱功當量建立了熱與機械能的關係。"
+    },
+    {
+      "from": "heat",
+      "to": "joule-calorie-conversion",
+      "reason": "焦耳卡路里轉換是熱量單位間的換算。"
+    },
+    {
+      "from": "heat",
+      "to": "heat-capacity",
+      "reason": "熱容量是衡量物體吸收熱量能力的物理量。"
+    },
+    {
+      "from": "heat-capacity",
+      "to": "specific-heat",
+      "reason": "比熱是單位質量的熱容量。"
+    },
+    {
+      "from": "specific-heat",
+      "to": "calorimetry",
+      "reason": "量熱法利用比熱來計算熱量交換。"
+    },
+    {
+      "from": "heat",
+      "to": "calorimetry",
+      "reason": "量熱法是測量熱量交換的方法。"
+    },
+    {
+      "from": "specific-heat",
+      "to": "phase-change",
+      "reason": "相變過程中，物質的溫度不變，但需要考慮比熱來計算升溫階段的熱量。"
+    },
+    {
+      "from": "heat",
+      "to": "phase-change",
+      "reason": "相變涉及熱量的吸收或釋放。"
+    },
+    {
+      "from": "phase-change",
+      "to": "latent-heat",
+      "reason": "潛熱是相變過程中吸收或釋放的熱量。"
+    },
+    {
+      "from": "latent-heat",
+      "to": "internal-energy-thermodynamics",
+      "reason": "潛熱的吸收或釋放會改變物質的內能。"
+    },
+    {
+      "from": "specific-heat",
+      "to": "internal-energy-thermodynamics",
+      "reason": "溫度變化引起的熱量會改變物質的內能。"
+    },
+    {
+      "from": "phase-change",
+      "to": "supercooling",
+      "reason": "過冷是相變的一種特殊現象。"
+    },
+    {
+      "from": "phase-change",
+      "to": "superheating",
+      "reason": "過熱是相變的一種特殊現象。"
+    },
+    {
+      "from": "supercooling",
+      "to": "nucleation-site",
+      "reason": "成核點的存在或缺乏影響過冷現象。"
+    },
+    {
+      "from": "superheating",
+      "to": "nucleation-site",
+      "reason": "成核點的存在或缺乏影響過熱現象。"
+    },
+    {
+      "from": "phase-change",
+      "to": "supercritical-fluid",
+      "reason": "超臨界流體是相變概念的延伸。"
+    },
+    {
+      "from": "heat",
+      "to": "mechanisms-heat-transfer",
+      "reason": "熱傳機制是熱量傳遞的不同方式。"
+    },
+    {
+      "from": "mechanisms-heat-transfer",
+      "to": "conduction",
+      "reason": "傳導是熱傳機制之一。"
+    },
+    {
+      "from": "conduction",
+      "to": "fourier-law-conduction",
+      "reason": "熱傳導定律描述了傳導的定量關係。"
+    },
+    {
+      "from": "mechanisms-heat-transfer",
+      "to": "convection",
+      "reason": "對流是熱傳機制之一。"
+    },
+    {
+      "from": "mechanisms-heat-transfer",
+      "to": "radiation",
+      "reason": "輻射是熱傳機制之一。"
+    },
+    {
+      "from": "radiation",
+      "to": "stefan-boltzmann-law",
+      "reason": "史蒂芬-波茲曼定律描述了輻射的定量關係。"
+    },
+    {
+      "from": "stefan-boltzmann-law",
+      "to": "net-radiation-power-formula",
+      "reason": "淨輻射功率公式應用史蒂芬-波茲曼定律計算物體與環境間的熱交換。"
+    },
+    {
+      "from": "stefan-boltzmann-law",
+      "to": "kirchhoffs-law-radiation",
+      "reason": "克希荷夫輻射定律與輻射率和吸收率相關。"
+    },
+    {
+      "from": "conduction",
+      "to": "dewar-flask",
+      "reason": "杜瓦瓶的設計考慮了最小化傳導。"
+    },
+    {
+      "from": "convection",
+      "to": "dewar-flask",
+      "reason": "杜瓦瓶的設計考慮了最小化對流。"
+    },
+    {
+      "from": "radiation",
+      "to": "dewar-flask",
+      "reason": "杜瓦瓶的設計考慮了最小化輻射。"
+    }
+  ],
+  "chapter_number": 17,
+  "usage": {
+    "input_tokens": 14167,
+    "output_tokens": 5527
+  }
+}

@@ -1,0 +1,727 @@
+{
+  "nodes": [
+    {
+      "id": "position-vector",
+      "label": "位置向量",
+      "kind": "concept",
+      "summary": "描述物體在空間中相對於原點的位置。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "displacement-vector",
+      "label": "位移向量",
+      "kind": "definition",
+      "summary": "物體從初始位置到最終位置的直線向量改變量。",
+      "latex": "\\Delta \\vec{r} = \\vec{r}_f - \\vec{r}_i",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "average-velocity",
+      "label": "平均速度",
+      "kind": "definition",
+      "summary": "單位時間內的總位移，與路徑無關。",
+      "latex": "\\bar{\\vec{v}} \\equiv \\frac{\\Delta \\vec{r}}{\\Delta t}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "instantaneous-velocity",
+      "label": "瞬時速度",
+      "kind": "definition",
+      "summary": "時間趨近於零時的平均速度極限，表示物體在某瞬時的速度。",
+      "latex": "\\vec{v} \\equiv \\lim_{\\Delta t \\to 0} \\frac{\\Delta \\vec{r}}{\\Delta t} = \\frac{d\\vec{r}}{dt}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "instantaneous-speed",
+      "label": "瞬時速率",
+      "kind": "definition",
+      "summary": "瞬時速度向量的量值，表示物體運動的快慢。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "average-acceleration",
+      "label": "平均加速度",
+      "kind": "definition",
+      "summary": "單位時間內的速度向量變化量。",
+      "latex": "\\bar{\\vec{a}} \\equiv \\frac{\\vec{v}_f - \\vec{v}_i}{t_f - t_i} = \\frac{\\Delta \\vec{v}}{\\Delta t}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "instantaneous-acceleration",
+      "label": "瞬時加速度",
+      "kind": "definition",
+      "summary": "時間趨近於零時的平均加速度極限，表示物體在某瞬時的加速度。",
+      "latex": "\\vec{a} \\equiv \\lim_{\\Delta t \\to 0} \\frac{\\Delta \\vec{v}}{\\Delta t} = \\frac{d\\vec{v}}{dt}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "constant-acceleration-2d-motion",
+      "label": "二維等加速運動",
+      "kind": "concept",
+      "summary": "物體在二維空間中以恆定加速度進行的運動。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "kinematic-eq-velocity-time-vector",
+      "label": "速度時間關係式",
+      "kind": "formula",
+      "summary": "描述等加速運動中，末速度與初速度、加速度和時間的關係。",
+      "latex": "\\vec{v}_f = \\vec{v}_i + \\vec{a}t",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "kinematic-eq-position-time-vector",
+      "label": "位置時間關係式",
+      "kind": "formula",
+      "summary": "描述等加速運動中，末位置與初位置、初速度、加速度和時間的關係。",
+      "latex": "\\vec{r}_f = \\vec{r}_i + \\vec{v}_i t + \\frac{1}{2}\\vec{a}t^2",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "kinematic-eq-velocity-squared-vector",
+      "label": "速度位移關係式",
+      "kind": "formula",
+      "summary": "描述等加速運動中，末速度平方與初速度平方、加速度和位移的關係。",
+      "latex": "v_f^2 = v_i^2 + 2\\vec{a} \\cdot (\\vec{r}_f - \\vec{r}_i)",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "projectile-motion",
+      "label": "拋體運動",
+      "kind": "concept",
+      "summary": "物體在重力作用下，沿拋物線路徑進行的二維運動。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "projectile-motion-acceleration-components",
+      "label": "拋體加速度分量",
+      "kind": "formula",
+      "summary": "拋體運動中，水平加速度為零，垂直加速度為重力加速度。",
+      "latex": "a_x = 0, a_y = -g",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "projectile-motion-initial-velocity-components",
+      "label": "拋體初速度分量",
+      "kind": "formula",
+      "summary": "拋體運動中，初始速度可分解為水平和垂直分量。",
+      "latex": "v_{xi} = v_i \\cos \\theta, v_{yi} = v_i \\sin \\theta",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "projectile-motion-trajectory-equation",
+      "label": "拋體軌跡方程式",
+      "kind": "formula",
+      "summary": "描述拋體運動路徑的數學方程式，為一拋物線。",
+      "latex": "y = \\tan \\theta_i x - \\left(\\frac{g}{2v_i^2 \\cos^2 \\theta_i}\\right) x^2",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "projectile-motion-range",
+      "label": "拋體射程",
+      "kind": "formula",
+      "summary": "拋體運動的水平飛行距離。",
+      "latex": "R = \\frac{v_i^2 \\sin 2\\theta_i}{g}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "projectile-motion-max-height",
+      "label": "拋體最大高度",
+      "kind": "formula",
+      "summary": "拋體運動所能達到的最高垂直距離。",
+      "latex": "h = \\frac{v_i^2 \\sin^2 \\theta_i}{2g}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "max-range-angle",
+      "label": "最大射程角度",
+      "kind": "principle",
+      "summary": "在無空氣阻力下，拋體運動的最大射程發生在45度發射角。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "complementary-angles-range",
+      "label": "互補角射程",
+      "kind": "principle",
+      "summary": "在無空氣阻力下，互補的發射角度會產生相同的水平射程。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "monkey-hunter-principle",
+      "label": "猴子與獵人原理",
+      "kind": "principle",
+      "summary": "若瞄準下落目標的初始位置發射，則無論初速度大小，只要目標同時下落，拋體必能擊中目標。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "projectile-motion-problem-solving-hints",
+      "label": "拋體解題技巧",
+      "kind": "method",
+      "summary": "解決拋體運動問題的系統化步驟，包括座標選擇、速度分解等。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "uniform-circular-motion",
+      "label": "等速率圓周運動",
+      "kind": "definition",
+      "summary": "物體以恆定速率沿圓形路徑運動。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "velocity-tangent-circular-motion",
+      "label": "圓周速度切線",
+      "kind": "principle",
+      "summary": "圓周運動中，速度向量的方向恆切於圓周路徑。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "centripetal-acceleration-definition",
+      "label": "向心加速度定義",
+      "kind": "definition",
+      "summary": "圓周運動中，指向圓心且垂直於速度方向的加速度。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "centripetal-acceleration-magnitude",
+      "label": "向心加速度量值",
+      "kind": "formula",
+      "summary": "向心加速度的量值與速率平方成正比，與半徑成反比。",
+      "latex": "a_C = \\frac{v^2}{r}",
+      "pages": [
+        19,
+        21
+      ]
+    },
+    {
+      "id": "angular-speed",
+      "label": "角速率",
+      "kind": "definition",
+      "summary": "物體在單位時間內轉過的角度量值。",
+      "latex": "\\omega \\equiv \\frac{d\\theta}{dt}",
+      "pages": [
+        19,
+        22
+      ]
+    },
+    {
+      "id": "linear-angular-velocity-relation",
+      "label": "線角速度關係",
+      "kind": "formula",
+      "summary": "線速度的量值等於半徑乘以角速率。",
+      "latex": "v = r\\omega",
+      "pages": [
+        19,
+        22
+      ]
+    },
+    {
+      "id": "radius-of-curvature",
+      "label": "曲率半徑",
+      "kind": "concept",
+      "summary": "描述曲線在某一點彎曲程度的半徑，適用於任何彎曲路徑。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "period-circular-motion",
+      "label": "圓周運動週期",
+      "kind": "definition",
+      "summary": "物體完成一次完整圓周運動所需的時間。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "period-formula",
+      "label": "週期公式",
+      "kind": "formula",
+      "summary": "圓周運動的週期等於圓周長除以速率。",
+      "latex": "T = \\frac{2 \\pi r}{v}",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "centripetal-acceleration-angular-speed",
+      "label": "向心加角速率",
+      "kind": "formula",
+      "summary": "向心加速度的量值與半徑和角速率平方的乘積。",
+      "latex": "a_c = r\\omega^2",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "tangential-acceleration",
+      "label": "切向加速度",
+      "kind": "concept",
+      "summary": "加速度中改變物體速率的分量，方向沿運動路徑的切線。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "radial-acceleration",
+      "label": "徑向加速度",
+      "kind": "concept",
+      "summary": "加速度中改變物體速度方向的分量，方向垂直於運動路徑。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "total-acceleration-decomposition",
+      "label": "總加速度分解",
+      "kind": "formula",
+      "summary": "任何曲線運動的總加速度可分解為切向和徑向分量。",
+      "latex": "\\mathbf{a} = \\mathbf{a}_r + \\mathbf{a}_t",
+      "pages": [
+        23,
+        24
+      ]
+    },
+    {
+      "id": "acceleration-curved-path-principle",
+      "label": "曲線路徑必加速",
+      "kind": "principle",
+      "summary": "任何沿曲線路徑運動的物體，其速度方向不斷改變，因此必然存在加速度。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "tangential-acceleration-magnitude-formula",
+      "label": "切向加速度量值",
+      "kind": "formula",
+      "summary": "切向加速度的量值等於速率對時間的變化率。",
+      "latex": "a_t = \\frac{d|\\vec{v}|}{dt}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "total-acceleration-magnitude-formula",
+      "label": "總加速度量值",
+      "kind": "formula",
+      "summary": "總加速度的量值是徑向和切向加速度量值的平方和的平方根。",
+      "latex": "|\\vec{a}| = \\sqrt{a_c^2 + a_t^2}",
+      "pages": [
+        24,
+        26
+      ]
+    },
+    {
+      "id": "relative-motion",
+      "label": "相對運動",
+      "kind": "concept",
+      "summary": "描述不同參考系中物體運動的關係。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "observers-disagree-on-path",
+      "label": "觀察者路徑分歧",
+      "kind": "principle",
+      "summary": "不同參考系的觀察者對同一物體的運動路徑可能會有不同的描述。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "relative-position-vector",
+      "label": "相對位置向量",
+      "kind": "formula",
+      "summary": "粒子相對於一個觀察者的位置，等於粒子相對於另一個觀察者的位置加上該觀察者相對於第一個觀察者的位置。",
+      "latex": "\\vec{r}_{PA} = \\vec{r}_{PB} + \\vec{r}_{BA}",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "relative-velocity-galilean",
+      "label": "伽利略相對速度",
+      "kind": "formula",
+      "summary": "粒子相對於一個觀察者的速度，等於粒子相對於另一個觀察者的速度加上該觀察者相對於第一個觀察者的速度。",
+      "latex": "\\vec{v}_{PA} = \\vec{v}_{PB} + \\vec{v}_{BA}",
+      "pages": [
+        28,
+        29
+      ]
+    },
+    {
+      "id": "galilean-transformation",
+      "label": "伽利略轉換",
+      "kind": "definition",
+      "summary": "描述在低速情況下，不同慣性參考系之間位置和速度的轉換關係。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "relative-acceleration-galilean",
+      "label": "伽利略相對加速度",
+      "kind": "formula",
+      "summary": "在相對速度恆定的慣性參考系中，物體的加速度是相同的。",
+      "latex": "\\vec{a}' = \\vec{a}",
+      "pages": [
+        29
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "position-vector",
+      "to": "displacement-vector",
+      "reason": "位移向量定義為兩個位置向量的差值。"
+    },
+    {
+      "from": "displacement-vector",
+      "to": "average-velocity",
+      "reason": "平均速度定義為位移向量除以時間間隔。"
+    },
+    {
+      "from": "average-velocity",
+      "to": "instantaneous-velocity",
+      "reason": "瞬時速度是平均速度在時間間隔趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-velocity",
+      "to": "instantaneous-speed",
+      "reason": "瞬時速率是瞬時速度向量的量值。"
+    },
+    {
+      "from": "instantaneous-velocity",
+      "to": "average-acceleration",
+      "reason": "平均加速度定義為速度向量的變化量除以時間間隔。"
+    },
+    {
+      "from": "average-acceleration",
+      "to": "instantaneous-acceleration",
+      "reason": "瞬時加速度是平均加速度在時間間隔趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-acceleration",
+      "to": "kinematic-eq-velocity-time-vector",
+      "reason": "速度時間關係式是從加速度的定義積分而來。"
+    },
+    {
+      "from": "instantaneous-velocity",
+      "to": "kinematic-eq-position-time-vector",
+      "reason": "位置時間關係式是從速度的定義積分而來。"
+    },
+    {
+      "from": "kinematic-eq-velocity-time-vector",
+      "to": "kinematic-eq-position-time-vector",
+      "reason": "位置時間關係式在推導中使用了速度時間關係式。"
+    },
+    {
+      "from": "kinematic-eq-velocity-time-vector",
+      "to": "kinematic-eq-velocity-squared-vector",
+      "reason": "速度位移關係式可由速度時間關係式和位置時間關係式推導而來。"
+    },
+    {
+      "from": "kinematic-eq-position-time-vector",
+      "to": "kinematic-eq-velocity-squared-vector",
+      "reason": "速度位移關係式可由速度時間關係式和位置時間關係式推導而來。"
+    },
+    {
+      "from": "constant-acceleration-2d-motion",
+      "to": "projectile-motion",
+      "reason": "拋體運動是二維等加速運動的一個特例，其加速度恆為重力加速度。"
+    },
+    {
+      "from": "projectile-motion",
+      "to": "projectile-motion-acceleration-components",
+      "reason": "理解拋體運動需要知道其加速度在各方向的分量。"
+    },
+    {
+      "from": "projectile-motion",
+      "to": "projectile-motion-initial-velocity-components",
+      "reason": "分析拋體運動需要將初始速度分解為水平和垂直分量。"
+    },
+    {
+      "from": "kinematic-eq-position-time-vector",
+      "to": "projectile-motion-trajectory-equation",
+      "reason": "拋體軌跡方程式是將二維運動學方程式應用於拋體運動的結果。"
+    },
+    {
+      "from": "projectile-motion-acceleration-components",
+      "to": "projectile-motion-trajectory-equation",
+      "reason": "拋體軌跡方程式的推導依賴於拋體運動的加速度分量。"
+    },
+    {
+      "from": "projectile-motion-initial-velocity-components",
+      "to": "projectile-motion-trajectory-equation",
+      "reason": "拋體軌跡方程式的推導依賴於拋體運動的初始速度分量。"
+    },
+    {
+      "from": "projectile-motion-trajectory-equation",
+      "to": "projectile-motion-range",
+      "reason": "拋體射程是從拋體軌跡方程式中推導出的特定結果。"
+    },
+    {
+      "from": "projectile-motion-trajectory-equation",
+      "to": "projectile-motion-max-height",
+      "reason": "拋體最大高度是從拋體軌跡方程式中推導出的特定結果。"
+    },
+    {
+      "from": "projectile-motion-range",
+      "to": "max-range-angle",
+      "reason": "最大射程角度是基於拋體射程公式的分析結果。"
+    },
+    {
+      "from": "projectile-motion-range",
+      "to": "complementary-angles-range",
+      "reason": "互補角射程的原理是基於拋體射程公式的特性。"
+    },
+    {
+      "from": "projectile-motion",
+      "to": "monkey-hunter-principle",
+      "reason": "猴子與獵人原理是拋體運動在特定情境下的應用與推論。"
+    },
+    {
+      "from": "kinematic-eq-position-time-vector",
+      "to": "monkey-hunter-principle",
+      "reason": "猴子與獵人原理的證明依賴於等加速運動的位置時間關係式。"
+    },
+    {
+      "from": "projectile-motion",
+      "to": "projectile-motion-problem-solving-hints",
+      "reason": "拋體運動解題技巧是針對拋體運動的特性所歸納出的方法。"
+    },
+    {
+      "from": "instantaneous-velocity",
+      "to": "uniform-circular-motion",
+      "reason": "等速率圓周運動的定義包含恆定速率，即瞬時速度的量值不變。"
+    },
+    {
+      "from": "position-vector",
+      "to": "uniform-circular-motion",
+      "reason": "等速率圓周運動的定義包含沿圓形路徑運動，這需要位置向量來描述。"
+    },
+    {
+      "from": "uniform-circular-motion",
+      "to": "velocity-tangent-circular-motion",
+      "reason": "圓周運動中速度向量恆切於路徑是等速率圓周運動的一個基本特性。"
+    },
+    {
+      "from": "uniform-circular-motion",
+      "to": "centripetal-acceleration-definition",
+      "reason": "向心加速度是等速率圓周運動中速度方向改變所產生的加速度。"
+    },
+    {
+      "from": "instantaneous-acceleration",
+      "to": "centripetal-acceleration-definition",
+      "reason": "向心加速度是瞬時加速度的一個特例，描述速度方向的變化。"
+    },
+    {
+      "from": "centripetal-acceleration-definition",
+      "to": "centripetal-acceleration-magnitude",
+      "reason": "向心加速度的量值公式是對其定義的量化表達。"
+    },
+    {
+      "from": "instantaneous-speed",
+      "to": "centripetal-acceleration-magnitude",
+      "reason": "向心加速度的量值公式中包含速率v。"
+    },
+    {
+      "from": "position-vector",
+      "to": "angular-speed",
+      "reason": "角速率描述的是位置向量角度隨時間的變化。"
+    },
+    {
+      "from": "angular-speed",
+      "to": "linear-angular-velocity-relation",
+      "reason": "線速度與角速度的關係式定義了兩者之間的轉換。"
+    },
+    {
+      "from": "instantaneous-speed",
+      "to": "linear-angular-velocity-relation",
+      "reason": "線速度與角速度的關係式中包含線速度的量值。"
+    },
+    {
+      "from": "centripetal-acceleration-definition",
+      "to": "radius-of-curvature",
+      "reason": "曲率半徑是向心加速度概念的推廣，適用於任何曲線運動。"
+    },
+    {
+      "from": "uniform-circular-motion",
+      "to": "period-circular-motion",
+      "reason": "週期是描述等速率圓周運動時間特性的重要概念。"
+    },
+    {
+      "from": "period-circular-motion",
+      "to": "period-formula",
+      "reason": "週期公式是對圓周運動週期概念的量化表達。"
+    },
+    {
+      "from": "instantaneous-speed",
+      "to": "period-formula",
+      "reason": "週期公式中包含速率v。"
+    },
+    {
+      "from": "centripetal-acceleration-magnitude",
+      "to": "centripetal-acceleration-angular-speed",
+      "reason": "向心加速度與角速率的關係式是將速率替換為角速率的結果。"
+    },
+    {
+      "from": "linear-angular-velocity-relation",
+      "to": "centripetal-acceleration-angular-speed",
+      "reason": "向心加速度與角速率的關係式是透過線角速度關係推導而來。"
+    },
+    {
+      "from": "instantaneous-acceleration",
+      "to": "tangential-acceleration",
+      "reason": "切向加速度是瞬時加速度的一個分量。"
+    },
+    {
+      "from": "instantaneous-acceleration",
+      "to": "radial-acceleration",
+      "reason": "徑向加速度是瞬時加速度的一個分量。"
+    },
+    {
+      "from": "tangential-acceleration",
+      "to": "total-acceleration-decomposition",
+      "reason": "總加速度分解將加速度分為切向和徑向分量。"
+    },
+    {
+      "from": "radial-acceleration",
+      "to": "total-acceleration-decomposition",
+      "reason": "總加速度分解將加速度分為切向和徑向分量。"
+    },
+    {
+      "from": "instantaneous-acceleration",
+      "to": "acceleration-curved-path-principle",
+      "reason": "曲線路徑必然加速的原理是基於速度方向變化導致加速度的觀念。"
+    },
+    {
+      "from": "tangential-acceleration",
+      "to": "tangential-acceleration-magnitude-formula",
+      "reason": "切向加速度量值公式是對切向加速度概念的量化表達。"
+    },
+    {
+      "from": "instantaneous-speed",
+      "to": "tangential-acceleration-magnitude-formula",
+      "reason": "切向加速度量值公式中包含速率對時間的變化率。"
+    },
+    {
+      "from": "total-acceleration-decomposition",
+      "to": "total-acceleration-magnitude-formula",
+      "reason": "總加速度量值公式是根據總加速度的分解來計算其大小。"
+    },
+    {
+      "from": "centripetal-acceleration-magnitude",
+      "to": "total-acceleration-magnitude-formula",
+      "reason": "總加速度量值公式中包含向心加速度的量值作為徑向分量。"
+    },
+    {
+      "from": "tangential-acceleration-magnitude-formula",
+      "to": "total-acceleration-magnitude-formula",
+      "reason": "總加速度量值公式中包含切向加速度的量值。"
+    },
+    {
+      "from": "relative-motion",
+      "to": "observers-disagree-on-path",
+      "reason": "觀察者路徑分歧是相對運動概念的一個重要體現。"
+    },
+    {
+      "from": "position-vector",
+      "to": "relative-position-vector",
+      "reason": "相對位置向量是基於位置向量概念來描述不同參考系間的關係。"
+    },
+    {
+      "from": "relative-motion",
+      "to": "relative-position-vector",
+      "reason": "相對位置向量是相對運動的基礎數學描述。"
+    },
+    {
+      "from": "relative-position-vector",
+      "to": "relative-velocity-galilean",
+      "reason": "伽利略相對速度轉換是將相對位置向量對時間微分而得。"
+    },
+    {
+      "from": "relative-velocity-galilean",
+      "to": "galilean-transformation",
+      "reason": "伽利略轉換是對相對速度轉換關係的總稱。"
+    },
+    {
+      "from": "relative-velocity-galilean",
+      "to": "relative-acceleration-galilean",
+      "reason": "伽利略相對加速度轉換是將相對速度轉換對時間微分而得。"
+    }
+  ],
+  "chapter_number": 3,
+  "usage": {
+    "input_tokens": 15683,
+    "output_tokens": 6874
+  }
+}

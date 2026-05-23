@@ -1,0 +1,593 @@
+{
+  "nodes": [
+    {
+      "id": "wave-optics",
+      "label": "波動光學",
+      "kind": "concept",
+      "summary": "研究幾何光學無法解釋的現象，如干涉、繞射、偏振。",
+      "latex": "",
+      "pages": [
+        1
+      ]
+    },
+    {
+      "id": "geometric-optics",
+      "label": "幾何光學",
+      "kind": "concept",
+      "summary": "用光線模型解釋光傳播的學科，不考慮波動性。",
+      "latex": "",
+      "pages": [
+        1
+      ]
+    },
+    {
+      "id": "interference-general",
+      "label": "干涉",
+      "kind": "concept",
+      "summary": "兩束或多束波疊加，形成振幅增強或減弱的現象。",
+      "latex": "",
+      "pages": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "diffraction",
+      "label": "繞射",
+      "kind": "concept",
+      "summary": "波遇到障礙物或孔隙時，偏離直線傳播方向並散開的現象。",
+      "latex": "",
+      "pages": [
+        1
+      ]
+    },
+    {
+      "id": "polarization",
+      "label": "偏振",
+      "kind": "concept",
+      "summary": "電磁波電場振動方向的特定取向。",
+      "latex": "",
+      "pages": [
+        1
+      ]
+    },
+    {
+      "id": "constructive-interference",
+      "label": "建設性干涉",
+      "kind": "definition",
+      "summary": "兩波疊加後，合成波振幅大於任一單獨波的現象。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "destructive-interference",
+      "label": "破壞性干涉",
+      "kind": "definition",
+      "summary": "兩波疊加後，合成波振幅小於任一單獨波的現象。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "coherent-light-sources",
+      "label": "同調光源",
+      "kind": "concept",
+      "summary": "能維持恆定相位差的光源。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "constant-phase-difference",
+      "label": "恆定相位差",
+      "kind": "concept",
+      "summary": "兩波之間相位差保持不變的條件，是同調的必要條件。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "monochromatic-light",
+      "label": "單色光",
+      "kind": "concept",
+      "summary": "單一頻率或波長的光，是同調的必要條件。",
+      "latex": "",
+      "pages": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "same-polarization",
+      "label": "相同偏振",
+      "kind": "concept",
+      "summary": "電磁波產生穩定干涉所需的相同偏振方向。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "young-double-slit-experiment",
+      "label": "楊氏雙狹縫實驗",
+      "kind": "method",
+      "summary": "利用雙狹縫產生兩束同調光，觀察干涉條紋的經典實驗。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "constructive-interference-phase-condition",
+      "label": "建設性干涉相位條件",
+      "kind": "formula",
+      "summary": "兩波相位差為 $m(2\\pi)$ 時發生建設性干涉。",
+      "latex": "$\\Delta\\Phi = m(2\\pi)$",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "destructive-interference-phase-condition",
+      "label": "破壞性干涉相位條件",
+      "kind": "formula",
+      "summary": "兩波相位差為 $(2m+1)\\pi$ 時發生破壞性干涉。",
+      "latex": "$\\Delta\\Phi = (2m+1)\\pi$",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "path-difference",
+      "label": "光程差",
+      "kind": "concept",
+      "summary": "兩束光從光源到觀察點所行經路徑長度的差異。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "constructive-interference-path-condition",
+      "label": "建設性干涉光程條件",
+      "kind": "formula",
+      "summary": "光程差為 $m\\lambda$ 時發生建設性干涉。",
+      "latex": "$\\delta = d \\sin \\theta = m\\lambda$",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "destructive-interference-path-condition",
+      "label": "破壞性干涉光程條件",
+      "kind": "formula",
+      "summary": "光程差為 $(m+1/2)\\lambda$ 時發生破壞性干涉。",
+      "latex": "$\\delta = d \\sin \\theta = (m+1/2)\\lambda$",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "small-angle-approximation",
+      "label": "小角度近似",
+      "kind": "principle",
+      "summary": "當角度很小時，$\\sin\\theta \\approx \\tan\\theta \\approx \\theta$ 的近似方法。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "bright-fringe-position",
+      "label": "亮紋位置公式",
+      "kind": "formula",
+      "summary": "楊氏雙狹縫實驗中，亮紋在螢幕上的位置。",
+      "latex": "$y_{\\text{bright}} = \\frac{\\lambda L}{d} m$",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "dark-fringe-position",
+      "label": "暗紋位置公式",
+      "kind": "formula",
+      "summary": "楊氏雙狹縫實驗中，暗紋在螢幕上的位置。",
+      "latex": "$y_{\\text{dark}} = \\frac{\\lambda L}{d} (m + \\frac{1}{2})$",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "superposition-principle",
+      "label": "疊加原理",
+      "kind": "principle",
+      "summary": "多個波在同一介質中傳播時，合成波的位移是各個單獨波位移的向量和。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "intensity-distribution-formula",
+      "label": "雙狹縫干涉強度分佈",
+      "kind": "formula",
+      "summary": "描述雙狹縫干涉圖案中光強度隨位置變化的公式。",
+      "latex": "$I = I_{\\max} \\cos^2 \\left(\\frac{\\pi d \\sin \\theta}{\\lambda}\\right)$",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "phasor-addition-of-waves",
+      "label": "波的相量加法",
+      "kind": "method",
+      "summary": "用旋轉向量（相量）來表示和疊加簡諧波的方法。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "phase-change-reflection-higher-n",
+      "label": "反射相位變化 (高折射率)",
+      "kind": "principle",
+      "summary": "光從低折射率介質射向高折射率介質反射時，會產生 $180^\\circ$ 相位變化。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "no-phase-change-reflection-lower-n",
+      "label": "反射無相位變化 (低折射率)",
+      "kind": "principle",
+      "summary": "光從高折射率介質射向低折射率介質反射時，不會產生相位變化。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "reflection-coefficient-electric-field",
+      "label": "電場反射係數",
+      "kind": "formula",
+      "summary": "描述電磁波在介質界面反射時電場振幅變化的係數。",
+      "latex": "$E_{\\text{reflection}} = \\left(\\frac{n_a - n_b}{n_a + n_b}\\right) E_{\\text{incidence}}$",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "lloyds-mirror",
+      "label": "勞埃鏡",
+      "kind": "method",
+      "summary": "利用直接光和經鏡面反射光產生干涉條紋的實驗裝置。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "phase-difference-lloyds-mirror",
+      "label": "勞埃鏡相位差",
+      "kind": "formula",
+      "summary": "勞埃鏡實驗中，兩束光在螢幕上的總相位差。",
+      "latex": "$\\Delta \\phi = k \\Delta r + \\phi_0$",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "interference-thin-films",
+      "label": "薄膜干涉",
+      "kind": "concept",
+      "summary": "光在薄膜上下表面反射後疊加產生的干涉現象。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "wavelength-in-film",
+      "label": "薄膜中波長",
+      "kind": "formula",
+      "summary": "光在折射率為 $n$ 的薄膜中的波長。",
+      "latex": "$\\lambda_n = \\frac{\\lambda}{n}$",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "constructive-interference-thin-films",
+      "label": "薄膜建設性干涉",
+      "kind": "formula",
+      "summary": "薄膜干涉中，建設性干涉的條件。",
+      "latex": "$2nt = (m + 1/2)\\lambda$",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "destructive-interference-thin-films",
+      "label": "薄膜破壞性干涉",
+      "kind": "formula",
+      "summary": "薄膜干涉中，破壞性干涉的條件。",
+      "latex": "$2nt = m\\lambda$",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "coherence-thin-vs-thick-films",
+      "label": "薄膜厚度與同調性",
+      "kind": "principle",
+      "summary": "薄膜干涉的可觀察性受限於薄膜厚度與同調性。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "nonreflective-coating",
+      "label": "增透膜",
+      "kind": "method",
+      "summary": "利用薄膜干涉原理減少光學表面反射的技術。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "newtons-rings",
+      "label": "牛頓環",
+      "kind": "law",
+      "summary": "透鏡與平面玻璃接觸形成的空氣薄膜產生的同心圓干涉條紋。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "lens-quality-check",
+      "label": "透鏡品質檢測",
+      "kind": "method",
+      "summary": "利用牛頓環圖案檢查透鏡表面平整度或曲率的方法。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "michelson-interferometer",
+      "label": "邁克生干涉儀",
+      "kind": "method",
+      "summary": "利用分光鏡將光束分成兩路，再重新疊加產生干涉圖案的精密測量儀器。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "geometric-optics",
+      "to": "wave-optics",
+      "reason": "波動光學是為了彌補幾何光學無法解釋的現象。"
+    },
+    {
+      "from": "interference-general",
+      "to": "wave-optics",
+      "reason": "干涉是波動光學研究的主要現象之一。"
+    },
+    {
+      "from": "diffraction",
+      "to": "wave-optics",
+      "reason": "繞射是波動光學研究的主要現象之一。"
+    },
+    {
+      "from": "polarization",
+      "to": "wave-optics",
+      "reason": "偏振是波動光學研究的主要現象之一。"
+    },
+    {
+      "from": "interference-general",
+      "to": "constructive-interference",
+      "reason": "建設性干涉是干涉現象的一種具體表現。"
+    },
+    {
+      "from": "interference-general",
+      "to": "destructive-interference",
+      "reason": "破壞性干涉是干涉現象的一種具體表現。"
+    },
+    {
+      "from": "constant-phase-difference",
+      "to": "coherent-light-sources",
+      "reason": "恆定相位差是同調光源的定義條件。"
+    },
+    {
+      "from": "monochromatic-light",
+      "to": "coherent-light-sources",
+      "reason": "單色光是實現同調光源的重要條件。"
+    },
+    {
+      "from": "same-polarization",
+      "to": "coherent-light-sources",
+      "reason": "相同的偏振方向是電磁波產生穩定干涉的條件。"
+    },
+    {
+      "from": "coherent-light-sources",
+      "to": "young-double-slit-experiment",
+      "reason": "楊氏雙狹縫實驗需要同調光源才能產生穩定的干涉圖案。"
+    },
+    {
+      "from": "interference-general",
+      "to": "young-double-slit-experiment",
+      "reason": "楊氏雙狹縫實驗是展示光干涉現象的經典實驗。"
+    },
+    {
+      "from": "constructive-interference",
+      "to": "constructive-interference-phase-condition",
+      "reason": "建設性干涉相位條件是建設性干涉發生的數學描述。"
+    },
+    {
+      "from": "destructive-interference",
+      "to": "destructive-interference-phase-condition",
+      "reason": "破壞性干涉相位條件是破壞性干涉發生的數學描述。"
+    },
+    {
+      "from": "constructive-interference-phase-condition",
+      "to": "constructive-interference-path-condition",
+      "reason": "光程差條件是從相位差條件推導而來。"
+    },
+    {
+      "from": "destructive-interference-phase-condition",
+      "to": "destructive-interference-path-condition",
+      "reason": "光程差條件是從相位差條件推導而來。"
+    },
+    {
+      "from": "path-difference",
+      "to": "constructive-interference-path-condition",
+      "reason": "建設性干涉的光程條件定義了光程差與波長的關係。"
+    },
+    {
+      "from": "path-difference",
+      "to": "destructive-interference-path-condition",
+      "reason": "破壞性干涉的光程條件定義了光程差與波長的關係。"
+    },
+    {
+      "from": "constructive-interference-path-condition",
+      "to": "bright-fringe-position",
+      "reason": "亮紋位置公式是基於建設性干涉的光程條件。"
+    },
+    {
+      "from": "destructive-interference-path-condition",
+      "to": "dark-fringe-position",
+      "reason": "暗紋位置公式是基於破壞性干涉的光程條件。"
+    },
+    {
+      "from": "small-angle-approximation",
+      "to": "bright-fringe-position",
+      "reason": "亮紋位置公式的推導使用了小角度近似。"
+    },
+    {
+      "from": "small-angle-approximation",
+      "to": "dark-fringe-position",
+      "reason": "暗紋位置公式的推導使用了小角度近似。"
+    },
+    {
+      "from": "superposition-principle",
+      "to": "intensity-distribution-formula",
+      "reason": "干涉強度分佈是基於波的疊加原理。"
+    },
+    {
+      "from": "path-difference",
+      "to": "intensity-distribution-formula",
+      "reason": "強度分佈公式中包含光程差項。"
+    },
+    {
+      "from": "superposition-principle",
+      "to": "phasor-addition-of-waves",
+      "reason": "相量加法是分析波疊加的一種方法。"
+    },
+    {
+      "from": "phase-change-reflection-higher-n",
+      "to": "lloyds-mirror",
+      "reason": "勞埃鏡實驗中，反射光會因相位變化而影響干涉圖案。"
+    },
+    {
+      "from": "phase-change-reflection-higher-n",
+      "to": "interference-thin-films",
+      "reason": "薄膜干涉中，反射光的相位變化是決定干涉條件的關鍵因素。"
+    },
+    {
+      "from": "no-phase-change-reflection-lower-n",
+      "to": "interference-thin-films",
+      "reason": "薄膜干涉中，反射光的相位變化是決定干涉條件的關鍵因素。"
+    },
+    {
+      "from": "reflection-coefficient-electric-field",
+      "to": "phase-change-reflection-higher-n",
+      "reason": "反射係數公式解釋了相位變化的物理原因。"
+    },
+    {
+      "from": "reflection-coefficient-electric-field",
+      "to": "no-phase-change-reflection-lower-n",
+      "reason": "反射係數公式解釋了相位變化的物理原因。"
+    },
+    {
+      "from": "lloyds-mirror",
+      "to": "phase-difference-lloyds-mirror",
+      "reason": "勞埃鏡的相位差公式描述了其干涉條件。"
+    },
+    {
+      "from": "interference-thin-films",
+      "to": "wavelength-in-film",
+      "reason": "薄膜干涉的條件需要考慮光在薄膜中的波長。"
+    },
+    {
+      "from": "interference-thin-films",
+      "to": "constructive-interference-thin-films",
+      "reason": "薄膜建設性干涉是薄膜干涉現象的具體條件。"
+    },
+    {
+      "from": "interference-thin-films",
+      "to": "destructive-interference-thin-films",
+      "reason": "薄膜破壞性干涉是薄膜干涉現象的具體條件。"
+    },
+    {
+      "from": "phase-change-reflection-higher-n",
+      "to": "constructive-interference-thin-films",
+      "reason": "薄膜建設性干涉條件的推導考慮了反射相位變化。"
+    },
+    {
+      "from": "phase-change-reflection-higher-n",
+      "to": "destructive-interference-thin-films",
+      "reason": "薄膜破壞性干涉條件的推導考慮了反射相位變化。"
+    },
+    {
+      "from": "wavelength-in-film",
+      "to": "constructive-interference-thin-films",
+      "reason": "薄膜建設性干涉條件中使用了薄膜中的波長。"
+    },
+    {
+      "from": "wavelength-in-film",
+      "to": "destructive-interference-thin-films",
+      "reason": "薄膜破壞性干涉條件中使用了薄膜中的波長。"
+    },
+    {
+      "from": "coherence-thin-vs-thick-films",
+      "to": "interference-thin-films",
+      "reason": "薄膜干涉的可觀察性受限於薄膜厚度與同調性。"
+    },
+    {
+      "from": "interference-thin-films",
+      "to": "nonreflective-coating",
+      "reason": "增透膜是薄膜干涉原理的應用。"
+    },
+    {
+      "from": "interference-thin-films",
+      "to": "newtons-rings",
+      "reason": "牛頓環是薄膜干涉的一種特殊形式。"
+    },
+    {
+      "from": "newtons-rings",
+      "to": "lens-quality-check",
+      "reason": "透鏡品質檢測是牛頓環的實際應用。"
+    },
+    {
+      "from": "interference-general",
+      "to": "michelson-interferometer",
+      "reason": "邁克生干涉儀是利用光干涉原理進行精密測量的儀器。"
+    }
+  ],
+  "chapter_number": 35,
+  "usage": {
+    "input_tokens": 8761,
+    "output_tokens": 5320
+  }
+}

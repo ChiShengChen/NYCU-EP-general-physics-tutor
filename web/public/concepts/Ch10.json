@@ -1,0 +1,819 @@
+{
+  "nodes": [
+    {
+      "id": "torque-definition",
+      "label": "力矩定義",
+      "kind": "definition",
+      "summary": "力矩是使物體繞某軸轉動的趨勢，定義為位置向量與力的外積。",
+      "latex": "\\vec{\\tau} = \\vec{r} \\times \\vec{F}",
+      "pages": [
+        2,
+        3,
+        14
+      ]
+    },
+    {
+      "id": "torque-magnitude",
+      "label": "力矩大小",
+      "kind": "formula",
+      "summary": "力矩的大小等於力臂與力的乘積，或力、位置向量與兩者夾角正弦值的乘積。",
+      "latex": "\\tau = r (F \\sin \\phi) = F d",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "moment-arm",
+      "label": "力臂",
+      "kind": "concept",
+      "summary": "力臂是從支點到力作用線的垂直距離。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "net-torque",
+      "label": "淨力矩",
+      "kind": "concept",
+      "summary": "作用在物體上的所有力矩的向量和。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "internal-torques-cancel",
+      "label": "內力矩抵消原理",
+      "kind": "principle",
+      "summary": "系統內部的力矩總和為零，不影響系統的總角動量。",
+      "latex": "\\sum_i \\vec{\\tau}_{i, \\text{int}} = 0",
+      "pages": [
+        4,
+        65
+      ]
+    },
+    {
+      "id": "moment-of-inertia-definition",
+      "label": "轉動慣量定義",
+      "kind": "definition",
+      "summary": "轉動慣量是物體抵抗角加速度的量度，對於點質量為mr²，對於連續物體為∫r²dm。",
+      "latex": "I = \\sum_i m_i r_i^2 \\quad \\text{or} \\quad I = \\int r^2 dm",
+      "pages": [
+        4,
+        5,
+        64
+      ]
+    },
+    {
+      "id": "torque-angular-acceleration-relation",
+      "label": "力矩與角加速度關係",
+      "kind": "formula",
+      "summary": "淨力矩等於轉動慣量與角加速度的乘積，是轉動的牛頓第二定律。",
+      "latex": "\\vec{\\tau} = I\\vec{\\alpha}",
+      "pages": [
+        4,
+        5,
+        40,
+        42,
+        62
+      ]
+    },
+    {
+      "id": "total-torque-vs-cm-torque",
+      "label": "總力矩與質心力矩",
+      "kind": "concept",
+      "summary": "一般而言，作用在系統上的總力矩不等於作用在質心上的力矩。",
+      "latex": "",
+      "pages": [
+        8,
+        9,
+        14,
+        65
+      ]
+    },
+    {
+      "id": "torque-due-to-gravity",
+      "label": "重力力矩",
+      "kind": "formula",
+      "summary": "在均勻重力場中，重力對物體產生的總力矩等同於總重力作用在質心上所產生的力矩。",
+      "latex": "\\vec{\\tau}_{total,g} = \\vec{r}_{CM} \\times M\\vec{g}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "torque-arbitrary-pivot-vs-cm",
+      "label": "任意支點與質心力矩關係",
+      "kind": "formula",
+      "summary": "關於任意支點O的總力矩等於關於質心的力矩加上質心位置向量與總外力的外積。",
+      "latex": "\\vec{\\tau}_o = \\vec{\\tau}_{o \\text{ at CM}} + \\vec{r}_{CM} \\times \\vec{F}_{CM}",
+      "pages": [
+        13,
+        14,
+        49,
+        65
+      ]
+    },
+    {
+      "id": "torque-angular-acceleration-validity",
+      "label": "力矩角加速度關係適用性",
+      "kind": "principle",
+      "summary": "公式τ=Iα僅在力垂直於轉軸或物體繞對稱軸轉動時有效。",
+      "latex": "",
+      "pages": [
+        14,
+        41,
+        65
+      ]
+    },
+    {
+      "id": "work-rotational",
+      "label": "轉動功",
+      "kind": "formula",
+      "summary": "力矩在角位移上所做的功，等於力矩對角位移的積分。",
+      "latex": "W = \\int \\tau d\\theta",
+      "pages": [
+        15,
+        42,
+        62,
+        65
+      ]
+    },
+    {
+      "id": "power-rotational",
+      "label": "轉動功率",
+      "kind": "formula",
+      "summary": "轉動功率是力矩與角速度的乘積。",
+      "latex": "P = \\tau\\omega",
+      "pages": [
+        15,
+        42,
+        65
+      ]
+    },
+    {
+      "id": "rotational-kinetic-energy",
+      "label": "轉動動能",
+      "kind": "formula",
+      "summary": "物體因轉動而擁有的動能，等於二分之一轉動慣量與角速度平方的乘積。",
+      "latex": "K_R = \\frac{1}{2}I\\omega^2",
+      "pages": [
+        16,
+        42,
+        61,
+        66
+      ]
+    },
+    {
+      "id": "work-kinetic-energy-theorem-rotational",
+      "label": "轉動功動能定理",
+      "kind": "law",
+      "summary": "作用在物體上的淨轉動功等於其轉動動能的變化量。",
+      "latex": "W_R = \\Delta K_R",
+      "pages": [
+        16,
+        18,
+        66
+      ]
+    },
+    {
+      "id": "rolling-motion-definition",
+      "label": "滾動運動定義",
+      "kind": "definition",
+      "summary": "滾動運動是物體同時進行平移和轉動的複合運動。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "no-slipping-condition",
+      "label": "無滑動條件",
+      "kind": "definition",
+      "summary": "物體滾動時，接觸點與地面之間沒有相對滑動，質心速度等於半徑乘以角速度，質心加速度等於半徑乘以角加速度。",
+      "latex": "v_{CM} = R\\omega, \\quad a_{CM} = R\\alpha",
+      "pages": [
+        23,
+        25,
+        31
+      ]
+    },
+    {
+      "id": "rolling-motion-decomposition",
+      "label": "滾動運動分解",
+      "kind": "concept",
+      "summary": "滾動運動可分解為質心的純平移運動和繞質心的純轉動運動。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "total-kinetic-energy-rolling",
+      "label": "滾動總動能",
+      "kind": "formula",
+      "summary": "滾動物體的總動能是質心平移動能與繞質心轉動動能的總和。",
+      "latex": "K_{\\text{total}} = \\frac{1}{2}Mv_{\\text{CM}}^2 + \\frac{1}{2}I_{\\text{CM}}\\omega^2",
+      "pages": [
+        25,
+        28
+      ]
+    },
+    {
+      "id": "rolling-motion-pure-rotation-pivot-contact",
+      "label": "接觸點純轉動觀點",
+      "kind": "concept",
+      "summary": "滾動運動可視為物體繞其與地面接觸點的瞬時軸進行純轉動。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "parallel-axis-theorem",
+      "label": "平行軸定理",
+      "kind": "law",
+      "summary": "物體繞任意軸的轉動慣量等於繞平行於該軸並通過質心的軸的轉動慣量加上物體質量與兩軸間距離平方的乘積。",
+      "latex": "I_P = I_{CM} + MD^2",
+      "pages": [
+        28,
+        35,
+        64
+      ]
+    },
+    {
+      "id": "static-friction-work-in-rolling",
+      "label": "滾動中靜摩擦力做功",
+      "kind": "concept",
+      "summary": "在無滑動滾動中，靜摩擦力在接觸點不做功，但可透過力矩對系統做功，將能量轉化為轉動動能。",
+      "latex": "",
+      "pages": [
+        28,
+        29,
+        32
+      ]
+    },
+    {
+      "id": "angular-momentum-point-particle-definition",
+      "label": "點粒子角動量定義",
+      "kind": "definition",
+      "summary": "點粒子的角動量定義為其位置向量與線性動量的外積。",
+      "latex": "\\vec{L} = \\vec{r} \\times \\vec{p}",
+      "pages": [
+        37,
+        38,
+        42,
+        62,
+        64
+      ]
+    },
+    {
+      "id": "newtons-second-law-rotational",
+      "label": "牛頓第二定律轉動形式",
+      "kind": "law",
+      "summary": "作用在物體上的淨力矩等於其角動量對時間的變化率。",
+      "latex": "\\vec{\\tau} = \\frac{d\\vec{L}}{dt}",
+      "pages": [
+        37,
+        38,
+        42,
+        54,
+        58,
+        65
+      ]
+    },
+    {
+      "id": "total-angular-momentum-rate-of-change",
+      "label": "總角動量變化率",
+      "kind": "law",
+      "summary": "系統的總角動量對時間的變化率等於作用在系統上的總外力矩。",
+      "latex": "\\frac{d\\vec{L}_{\\text{tot}}}{dt} = \\sum_i \\vec{\\tau}_{i,\\text{ext}}",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "angular-momentum-2d-rotation",
+      "label": "二維轉動角動量",
+      "kind": "formula",
+      "summary": "對於繞固定軸轉動的物體，其沿轉軸方向的角動量等於轉動慣量與角速度的乘積。",
+      "latex": "L_z = I\\omega",
+      "pages": [
+        40,
+        42,
+        61,
+        62,
+        64
+      ]
+    },
+    {
+      "id": "angular-momentum-3d-rotation-validity",
+      "label": "三維轉動角動量適用性",
+      "kind": "principle",
+      "summary": "在三維轉動中，角動量向量L不一定與角速度向量ω平行，除非轉軸是對稱軸且通過質心。",
+      "latex": "",
+      "pages": [
+        41,
+        42,
+        64
+      ]
+    },
+    {
+      "id": "rotational-kinematic-equations-constant-alpha",
+      "label": "等角加速度運動學方程式",
+      "kind": "formula",
+      "summary": "描述等角加速度轉動的角速度、角位移和時間關係的方程式。",
+      "latex": "\\omega_f = \\omega_i + \\alpha t \\\\ \\theta_f = \\theta_i + \\omega_i t + \\frac{1}{2} \\alpha t^2 \\\\ \\omega_f^2 = \\omega_i^2 + 2\\alpha (\\theta_f - \\theta_i)",
+      "pages": [
+        16,
+        42
+      ]
+    },
+    {
+      "id": "conservation-of-angular-momentum",
+      "label": "角動量守恆定律",
+      "kind": "law",
+      "summary": "如果作用在系統上的總外力矩為零，則系統的總角動量保持不變。",
+      "latex": "\\sum \\vec{\\tau}_{\\text{ext}} = 0 \\implies \\vec{L}_{\\text{total}} = \\text{const.}",
+      "pages": [
+        43,
+        46,
+        47,
+        67
+      ]
+    },
+    {
+      "id": "conservation-of-angular-momentum-fixed-axis",
+      "label": "固定軸角動量守恆",
+      "kind": "formula",
+      "summary": "對於繞固定對稱軸轉動的系統，如果外力矩為零，則初始轉動慣量與角速度的乘積等於最終轉動慣量與角速度的乘積。",
+      "latex": "I_i \\omega_i = I_f \\omega_f",
+      "pages": [
+        43,
+        46
+      ]
+    },
+    {
+      "id": "conservation-of-linear-momentum",
+      "label": "線性動量守恆定律",
+      "kind": "law",
+      "summary": "如果作用在系統上的總外力為零，則系統的總線性動量保持不變。",
+      "latex": "\\vec{p}_i = \\vec{p}_f",
+      "pages": [
+        46,
+        50,
+        51,
+        67
+      ]
+    },
+    {
+      "id": "angular-momentum-conservation-rotational-collision",
+      "label": "轉動碰撞角動量守恆",
+      "kind": "formula",
+      "summary": "在轉動碰撞中，如果沒有外部力矩，系統的總角動量在碰撞前後保持守恆。",
+      "latex": "I_A \\omega_A + I_B \\omega_B = (I_A + I_B) \\omega",
+      "pages": [
+        45
+      ]
+    },
+    {
+      "id": "angular-momentum-arbitrary-pivot-vs-cm",
+      "label": "任意支點與質心角動量關係",
+      "kind": "formula",
+      "summary": "關於任意支點O的總角動量等於關於質心的角動量加上質心位置向量與系統總線性動量的外積。",
+      "latex": "\\vec{L}_o = \\vec{L}_{o \\text{ at CM}} + \\vec{r}_{CM} \\times \\vec{P}_{CM}",
+      "pages": [
+        48,
+        49,
+        64
+      ]
+    },
+    {
+      "id": "gyroscope-and-top-motion",
+      "label": "陀螺儀與陀螺運動",
+      "kind": "concept",
+      "summary": "陀螺儀和陀螺是利用高速旋轉來維持穩定性並展現進動現象的裝置。",
+      "latex": "",
+      "pages": [
+        52
+      ]
+    },
+    {
+      "id": "gyroscope-precession",
+      "label": "陀螺儀進動",
+      "kind": "concept",
+      "summary": "陀螺儀的轉軸在重力力矩作用下，會繞著垂直軸緩慢旋轉的現象。",
+      "latex": "",
+      "pages": [
+        53,
+        54,
+        55
+      ]
+    },
+    {
+      "id": "precession-angular-speed",
+      "label": "進動角速度",
+      "kind": "formula",
+      "summary": "陀螺儀進動的角速度，與重力力矩成正比，與自旋角動量成反比。",
+      "latex": "\\Omega_P = \\frac{MgR}{I\\omega}",
+      "pages": [
+        55
+      ]
+    },
+    {
+      "id": "plancks-constant",
+      "label": "普朗克常數",
+      "kind": "concept",
+      "summary": "量子力學中的基本常數，是角動量量子化的基本單位。",
+      "latex": "\\hbar = \\frac{h}{2\\pi} = 1.054 \\times 10^{-34} \\frac{\\text{kg} \\cdot \\text{m}^2}{\\text{s}}",
+      "pages": [
+        60
+      ]
+    },
+    {
+      "id": "quantization-of-angular-momentum",
+      "label": "角動量量子化",
+      "kind": "concept",
+      "summary": "在量子力學中，角動量只能取離散值，是普朗克常數的整數倍。",
+      "latex": "",
+      "pages": [
+        60
+      ]
+    },
+    {
+      "id": "quantized-angular-momentum-formula",
+      "label": "量子化角動量公式",
+      "kind": "formula",
+      "summary": "量子化角動量等於轉動慣量與角速度的乘積，也等於普朗克常數的整數倍。",
+      "latex": "L = I\\omega = n\\hbar, \\quad n = 1,2,3,...",
+      "pages": [
+        61
+      ]
+    },
+    {
+      "id": "rotational-axis-pivot-specification",
+      "label": "轉軸與支點指定",
+      "kind": "concept",
+      "summary": "在分析轉動運動時，即使轉軸或支點不實際存在，也必須明確指定。",
+      "latex": "",
+      "pages": [
+        61
+      ]
+    },
+    {
+      "id": "linear-angular-kinematic-relations",
+      "label": "線角運動學關係",
+      "kind": "formula",
+      "summary": "描述線位移、線速度、線加速度與角位移、角速度、角加速度之間關係的方程式。",
+      "latex": "s = r\\theta \\\\ v_t = r\\omega \\\\ a_t = r\\alpha",
+      "pages": [
+        2,
+        4,
+        6,
+        7,
+        34,
+        63
+      ]
+    },
+    {
+      "id": "tangential-radial-acceleration-vector",
+      "label": "切向與徑向加速度向量",
+      "kind": "formula",
+      "summary": "物體運動的總加速度可分解為切向加速度（改變速度大小）和徑向加速度（改變速度方向）。",
+      "latex": "\\vec{a}_t = \\vec{\\alpha} \\times \\vec{r} \\\\ \\vec{a}_r = \\vec{\\omega} \\times \\vec{v}",
+      "pages": [
+        2,
+        63
+      ]
+    },
+    {
+      "id": "translational-kinetic-energy",
+      "label": "平移動能",
+      "kind": "formula",
+      "summary": "物體因平移運動而擁有的動能，等於二分之一質量與速度平方的乘積。",
+      "latex": "K_T = \\frac{1}{2}mv^2",
+      "pages": [
+        66
+      ]
+    },
+    {
+      "id": "total-kinetic-energy-decomposition",
+      "label": "總動能分解",
+      "kind": "formula",
+      "summary": "系統的總動能可分解為質心的平移動能與相對於質心的轉動動能。",
+      "latex": "K_{\\text{total}} = K_{CM} + K_{\\text{relative to CM}}",
+      "pages": [
+        25,
+        66
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-system",
+      "label": "系統重力位能",
+      "kind": "formula",
+      "summary": "在均勻重力場中，系統的重力位能等同於所有質量集中在質心處的重力位能。",
+      "latex": "U_g = g M y_{CM}",
+      "pages": [
+        17,
+        66
+      ]
+    },
+    {
+      "id": "general-conservation-of-energy",
+      "label": "廣義能量守恆定律",
+      "kind": "law",
+      "summary": "系統的動能、位能和內能的變化總和，等於外部做功、熱傳遞和其他能量轉移的總和。",
+      "latex": "\\Delta K + \\Delta U + \\Delta E_{int} = W_{ext} + Q + T_{others}",
+      "pages": [
+        17,
+        20,
+        26,
+        30,
+        67
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "torque-definition",
+      "to": "torque-magnitude",
+      "reason": "了解力矩的定義才能理解其大小的計算方式。"
+    },
+    {
+      "from": "torque-definition",
+      "to": "net-torque",
+      "reason": "淨力矩是多個力矩的向量和，其概念建立在單一力矩的定義之上。"
+    },
+    {
+      "from": "torque-definition",
+      "to": "internal-torques-cancel",
+      "reason": "內部力矩的抵消原理是基於力矩的定義及其向量性質。"
+    },
+    {
+      "from": "torque-definition",
+      "to": "torque-angular-acceleration-relation",
+      "reason": "力矩是產生角加速度的原因，兩者之間存在直接的因果關係。"
+    },
+    {
+      "from": "moment-arm",
+      "to": "torque-magnitude",
+      "reason": "力矩的大小計算需要力臂的概念，力臂是力矩定義中的關鍵幾何量。"
+    },
+    {
+      "from": "moment-of-inertia-definition",
+      "to": "torque-angular-acceleration-relation",
+      "reason": "力矩與角加速度的關係式中包含轉動慣量，轉動慣量是物體轉動慣性的量度。"
+    },
+    {
+      "from": "moment-of-inertia-definition",
+      "to": "rotational-kinetic-energy",
+      "reason": "轉動動能的計算需要轉動慣量，轉動慣量是轉動動能公式中的關鍵參數。"
+    },
+    {
+      "from": "moment-of-inertia-definition",
+      "to": "parallel-axis-theorem",
+      "reason": "平行軸定理用於計算不同軸的轉動慣量，其基礎是轉動慣量的基本定義。"
+    },
+    {
+      "from": "moment-of-inertia-definition",
+      "to": "angular-momentum-2d-rotation",
+      "reason": "二維轉動的角動量計算需要轉動慣量，轉動慣量是角動量公式中的關鍵參數。"
+    },
+    {
+      "from": "torque-angular-acceleration-relation",
+      "to": "torque-angular-acceleration-validity",
+      "reason": "了解力矩與角加速度的關係後，需進一步理解其適用條件，以避免誤用。"
+    },
+    {
+      "from": "torque-angular-acceleration-relation",
+      "to": "rotational-kinematic-equations-constant-alpha",
+      "reason": "角加速度是角運動學方程式的關鍵變量，力矩是產生角加速度的原因。"
+    },
+    {
+      "from": "torque-angular-acceleration-relation",
+      "to": "work-kinetic-energy-theorem-rotational",
+      "reason": "轉動功動能定理的推導涉及力矩與角加速度的關係，因為力矩做功導致動能變化。"
+    },
+    {
+      "from": "torque-angular-acceleration-relation",
+      "to": "precession-angular-speed",
+      "reason": "陀螺儀進動角速度的推導涉及力矩與角加速度的關係，力矩導致角動量變化進而產生進動。"
+    },
+    {
+      "from": "torque-arbitrary-pivot-vs-cm",
+      "to": "total-torque-vs-cm-torque",
+      "reason": "了解不同支點的力矩關係有助於理解總力矩與質心力矩的區別，因為它們之間存在明確的數學轉換關係。"
+    },
+    {
+      "from": "work-rotational",
+      "to": "power-rotational",
+      "reason": "轉動功率是轉動功對時間的變化率，因此需要先理解轉動功。"
+    },
+    {
+      "from": "work-rotational",
+      "to": "work-kinetic-energy-theorem-rotational",
+      "reason": "轉動功動能定理定義了轉動功與動能的關係，是轉動功概念的直接應用。"
+    },
+    {
+      "from": "rotational-kinetic-energy",
+      "to": "total-kinetic-energy-rolling",
+      "reason": "滾動的總動能包含轉動動能，因此需要先理解轉動動能的計算方式。"
+    },
+    {
+      "from": "rotational-kinetic-energy",
+      "to": "total-kinetic-energy-decomposition",
+      "reason": "總動能分解包含轉動動能，轉動動能是系統總動能的一個組成部分。"
+    },
+    {
+      "from": "rolling-motion-definition",
+      "to": "no-slipping-condition",
+      "reason": "無滑動條件是滾動運動的特例，需要先理解滾動運動的普遍定義。"
+    },
+    {
+      "from": "rolling-motion-definition",
+      "to": "rolling-motion-decomposition",
+      "reason": "滾動運動可以分解為平移和轉動，這是理解其複雜性的基礎。"
+    },
+    {
+      "from": "rolling-motion-definition",
+      "to": "total-kinetic-energy-rolling",
+      "reason": "滾動運動的總動能計算需要先理解滾動運動的本質。"
+    },
+    {
+      "from": "no-slipping-condition",
+      "to": "rolling-motion-decomposition",
+      "reason": "無滑動條件是滾動運動分解的基礎，它建立了平移和轉動之間的特定關係。"
+    },
+    {
+      "from": "no-slipping-condition",
+      "to": "static-friction-work-in-rolling",
+      "reason": "無滑動條件下靜摩擦力做功的討論，需要先理解無滑動的定義。"
+    },
+    {
+      "from": "rolling-motion-decomposition",
+      "to": "linear-angular-kinematic-relations",
+      "reason": "滾動運動的分解有助於理解線性和角運動學的關係，因為它將複合運動拆解為基本分量。"
+    },
+    {
+      "from": "rolling-motion-pure-rotation-pivot-contact",
+      "to": "parallel-axis-theorem",
+      "reason": "以接觸點為支點的純轉動觀點需要平行軸定理來計算轉動慣量，因為接觸點通常不通過質心。"
+    },
+    {
+      "from": "rolling-motion-pure-rotation-pivot-contact",
+      "to": "total-kinetic-energy-rolling",
+      "reason": "滾動總動能也可以用接觸點為支點的轉動動能來表示，這提供了另一種計算方法。"
+    },
+    {
+      "from": "parallel-axis-theorem",
+      "to": "total-kinetic-energy-rolling",
+      "reason": "平行軸定理可用於計算滾動物體的總動能，特別是當轉軸不通過質心時。"
+    },
+    {
+      "from": "angular-momentum-point-particle-definition",
+      "to": "newtons-second-law-rotational",
+      "reason": "角動量的定義是牛頓第二定律轉動形式的基礎，因為力矩被定義為角動量的時間變化率。"
+    },
+    {
+      "from": "angular-momentum-point-particle-definition",
+      "to": "total-angular-momentum-rate-of-change",
+      "reason": "系統總角動量的變化率是各粒子角動量變化率的總和，其基礎是單個粒子的角動量定義。"
+    },
+    {
+      "from": "angular-momentum-point-particle-definition",
+      "to": "angular-momentum-2d-rotation",
+      "reason": "二維轉動的角動量是點粒子角動量的總和，是從微觀到宏觀的推廣。"
+    },
+    {
+      "from": "angular-momentum-point-particle-definition",
+      "to": "angular-momentum-arbitrary-pivot-vs-cm",
+      "reason": "任意支點的角動量與質心角動量關係的推導基於點粒子角動量，並考慮了質心的運動。"
+    },
+    {
+      "from": "newtons-second-law-rotational",
+      "to": "conservation-of-angular-momentum",
+      "reason": "轉動的牛頓第二定律是角動量守恆的基礎，因為當淨力矩為零時，角動量不變。"
+    },
+    {
+      "from": "total-angular-momentum-rate-of-change",
+      "to": "conservation-of-angular-momentum",
+      "reason": "系統總角動量變化率為零時，角動量守恆，這是角動量守恆定律的直接推論。"
+    },
+    {
+      "from": "angular-momentum-2d-rotation",
+      "to": "angular-momentum-3d-rotation-validity",
+      "reason": "了解二維轉動的角動量後，需進一步理解三維情況的適用條件，因為三維情況更複雜。"
+    },
+    {
+      "from": "angular-momentum-2d-rotation",
+      "to": "conservation-of-angular-momentum-fixed-axis",
+      "reason": "固定軸轉動的角動量守恆公式使用L=Iω，這是二維轉動角動量公式的直接應用。"
+    },
+    {
+      "from": "rotational-kinematic-equations-constant-alpha",
+      "to": "linear-angular-kinematic-relations",
+      "reason": "角運動學方程式與線角運動學關係緊密相關，因為它們描述了不同坐標系下的運動。"
+    },
+    {
+      "from": "conservation-of-angular-momentum",
+      "to": "conservation-of-angular-momentum-fixed-axis",
+      "reason": "固定軸轉動的角動量守恆是角動量守恆定律的特例，適用於特定幾何條件。"
+    },
+    {
+      "from": "conservation-of-angular-momentum",
+      "to": "angular-momentum-conservation-rotational-collision",
+      "reason": "轉動碰撞中角動量守恆，是角動量守恆定律在碰撞問題中的應用。"
+    },
+    {
+      "from": "conservation-of-angular-momentum",
+      "to": "gyroscope-precession",
+      "reason": "陀螺儀進動是角動量守恆的應用，力矩導致角動量方向變化而非大小變化。"
+    },
+    {
+      "from": "conservation-of-angular-momentum",
+      "to": "quantization-of-angular-momentum",
+      "reason": "角動量守恆是量子化角動量的基礎，在量子層面角動量也必須守恆。"
+    },
+    {
+      "from": "angular-momentum-arbitrary-pivot-vs-cm",
+      "to": "gyroscope-precession",
+      "reason": "陀螺儀進動的分析需要考慮不同支點的角動量關係，以正確理解其運動。"
+    },
+    {
+      "from": "gyroscope-and-top-motion",
+      "to": "gyroscope-precession",
+      "reason": "陀螺儀和陀螺的運動現象包含進動，進動是其最顯著的特徵之一。"
+    },
+    {
+      "from": "gyroscope-precession",
+      "to": "precession-angular-speed",
+      "reason": "進動角速度是描述陀螺儀進動的量，量化了進動的快慢。"
+    },
+    {
+      "from": "plancks-constant",
+      "to": "quantization-of-angular-momentum",
+      "reason": "普朗克常數是角動量量子化的基本單位，定義了角動量的最小增量。"
+    },
+    {
+      "from": "quantization-of-angular-momentum",
+      "to": "quantized-angular-momentum-formula",
+      "reason": "量子化角動量的公式表達，將量子化概念具體化為數學形式。"
+    },
+    {
+      "from": "linear-angular-kinematic-relations",
+      "to": "tangential-radial-acceleration-vector",
+      "reason": "線角運動學關係是切向和徑向加速度向量的基礎，因為它們都描述了圓周運動的運動學。"
+    },
+    {
+      "from": "translational-kinetic-energy",
+      "to": "total-kinetic-energy-decomposition",
+      "reason": "總動能分解包含平移動能，平移動能是系統總動能的一個組成部分。"
+    },
+    {
+      "from": "rotational-kinetic-energy",
+      "to": "total-kinetic-energy-decomposition",
+      "reason": "總動能分解包含轉動動能，轉動動能是系統總動能的一個組成部分。"
+    },
+    {
+      "from": "gravitational-potential-energy-system",
+      "to": "general-conservation-of-energy",
+      "reason": "系統的重力位能是能量守恆的一部分，是能量守恆定律中的一個重要項。"
+    },
+    {
+      "from": "translational-kinetic-energy",
+      "to": "general-conservation-of-energy",
+      "reason": "平移動能是能量守恆的一部分，是能量守恆定律中的一個重要項。"
+    },
+    {
+      "from": "rotational-kinetic-energy",
+      "to": "general-conservation-of-energy",
+      "reason": "轉動動能是能量守恆的一部分，是能量守恆定律中的一個重要項。"
+    },
+    {
+      "from": "work-rotational",
+      "to": "general-conservation-of-energy",
+      "reason": "轉動功是能量守恆的一部分，是能量守恆定律中的一個重要項。"
+    },
+    {
+      "from": "work-kinetic-energy-theorem-rotational",
+      "to": "general-conservation-of-energy",
+      "reason": "轉動功動能定理是能量守恆的特例，它描述了轉動功如何轉化為動能。"
+    },
+    {
+      "from": "conservation-of-linear-momentum",
+      "to": "general-conservation-of-energy",
+      "reason": "線性動量守恆是能量守恆的基礎，兩者在許多物理過程中共同作用。"
+    },
+    {
+      "from": "conservation-of-angular-momentum",
+      "to": "general-conservation-of-energy",
+      "reason": "角動量守恆是能量守恆的基礎，兩者在許多物理過程中共同作用。"
+    }
+  ],
+  "chapter_number": 10,
+  "usage": {
+    "input_tokens": 32800,
+    "output_tokens": 8616
+  }
+}

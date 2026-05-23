@@ -1,0 +1,697 @@
+{
+  "nodes": [
+    {
+      "id": "self-induction",
+      "label": "自感現象",
+      "kind": "concept",
+      "summary": "當電路中的電流變化時，自身產生的磁通量變化會在其自身電路中感應出電動勢的現象。",
+      "latex": "",
+      "pages": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "self-induced-emf-formula",
+      "label": "自感電動勢公式",
+      "kind": "formula",
+      "summary": "自感電動勢與磁通量隨時間的變化率成正比，或與電流隨時間的變化率成正比。",
+      "latex": "\\mathcal{E}_L = -\\frac{d\\Phi_B}{dt} = -L\\frac{dI}{dt}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "inductance-definition",
+      "label": "電感定義",
+      "kind": "definition",
+      "summary": "電感是衡量線圈產生自感電動勢能力的物理量，定義為磁通量與電流的比值。",
+      "latex": "\\Phi_B = LI",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "henry-unit",
+      "label": "亨利單位",
+      "kind": "definition",
+      "summary": "電感的國際單位，1 亨利等於 1 韋伯/安培。",
+      "latex": "1 \\text{ H} = 1 \\text{ Wb/A}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "inductance-general-formula",
+      "label": "電感通用公式",
+      "kind": "formula",
+      "summary": "電感可由磁場積分與電流積分的比值，乘以磁導率常數來表示。",
+      "latex": "L = \\frac{\\mu_0 \\left| \\int \\vec{B} \\cdot d\\vec{A} \\right|}{\\left| \\oint \\vec{B} \\cdot d\\vec{l} \\right|}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "inductor-definition",
+      "label": "電感器定義",
+      "kind": "definition",
+      "summary": "具有較大自感值的電路元件，通常由線圈構成，用於儲存磁場能量。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "inductance-toroidal-coil",
+      "label": "環形線圈電感",
+      "kind": "formula",
+      "summary": "環形線圈的電感取決於其匝數、平均半徑和截面積。",
+      "latex": "L = \\frac{\\mu_0 N^2}{2\\pi r} A",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "inductance-solenoid",
+      "label": "螺線管電感",
+      "kind": "formula",
+      "summary": "螺線管的電感取決於其匝數、長度、截面積和單位長度匝數。",
+      "latex": "L = \\frac{\\mu_0 N^2 A}{\\ell}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "inductance-coaxial-cable",
+      "label": "同軸電纜自感",
+      "kind": "concept",
+      "summary": "計算同軸電纜中電流產生的磁通量，進而推導其自感值。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "mutual-inductance-definition",
+      "label": "互感定義",
+      "kind": "definition",
+      "summary": "當一個線圈的電流變化時，在另一個相鄰線圈中感應出電動勢的現象。",
+      "latex": "\\Phi_{2,N_2} = N_2\\Phi_2 = M_{12}I_1",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "mutual-inductance-emf-formula",
+      "label": "互感電動勢公式",
+      "kind": "formula",
+      "summary": "互感電動勢與另一個線圈中電流隨時間的變化率成正比。",
+      "latex": "\\mathcal{E}_2 = -M_{12}\\frac{dI_1}{dt}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "mutual-inductance-reciprocity",
+      "label": "互感對稱性",
+      "kind": "principle",
+      "summary": "兩個線圈之間的互感值是相同的，即 $M_{12} = M_{21} = M$。",
+      "latex": "M_{12} = M_{21} = M",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "mutual-inductance-coaxial-solenoids",
+      "label": "同軸螺線管互感",
+      "kind": "formula",
+      "summary": "兩個同軸螺線管的互感取決於它們的匝數、截面積和共同長度。",
+      "latex": "M = \\mu_0 \\frac{N_H N_B A}{\\ell}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "inductors-series-aiding",
+      "label": "電感串聯（同向）",
+      "kind": "concept",
+      "summary": "當兩個電感串聯且磁場同向時，總電感會增加。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "inductors-series-opposing",
+      "label": "電感串聯（反向）",
+      "kind": "concept",
+      "summary": "當兩個電感串聯且磁場反向時，總電感會減少。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "energy-stored-inductor-derivation",
+      "label": "電感儲能推導",
+      "kind": "method",
+      "summary": "利用基爾霍夫電壓定律和能量守恆，推導電感中儲存的磁場能量。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "energy-stored-inductor-formula",
+      "label": "電感儲能公式",
+      "kind": "formula",
+      "summary": "電感中儲存的磁場能量與電感值和電流平方成正比。",
+      "latex": "U_B = \\frac{1}{2}LI^2",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "magnetic-energy-density-definition",
+      "label": "磁場能量密度定義",
+      "kind": "definition",
+      "summary": "單位體積內儲存的磁場能量。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "magnetic-energy-density-formula",
+      "label": "磁場能量密度公式",
+      "kind": "formula",
+      "summary": "磁場能量密度與磁場強度平方成正比，與真空磁導率成反比。",
+      "latex": "u_B = \\frac{B^2}{2\\mu_0}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "rl-circuit-definition",
+      "label": "RL電路定義",
+      "kind": "definition",
+      "summary": "由電阻和電感組成的電路。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "rl-circuit-current-build-up",
+      "label": "RL電路電流建立公式",
+      "kind": "formula",
+      "summary": "RL電路中電流隨時間指數上升，趨近於穩態值。",
+      "latex": "I(t) = \\frac{\\mathcal{E}}{R} (1 - e^{-Rt/L})",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "inductive-time-constant",
+      "label": "電感時間常數",
+      "kind": "definition",
+      "summary": "RL電路中電流達到穩態值約 63.2% 所需的時間，等於電感與電阻的比值。",
+      "latex": "\\tau_L = L/R",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "rl-circuit-diff-eq-build-up",
+      "label": "RL電路電流建立微分方程",
+      "kind": "formula",
+      "summary": "描述RL電路中電流隨時間變化的微分方程，基於基爾霍夫電壓定律。",
+      "latex": "\\mathcal{E} - IR - L \\frac{dI}{dt} = 0",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "rl-circuit-current-discharge",
+      "label": "RL電路電流衰減公式",
+      "kind": "formula",
+      "summary": "RL電路中電流隨時間指數衰減。",
+      "latex": "I(t) = \\frac{\\mathcal{E}}{R} e^{-t/\\tau}",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "rl-circuit-diff-eq-discharge",
+      "label": "RL電路電流衰減微分方程",
+      "kind": "formula",
+      "summary": "描述RL電路中電流衰減的微分方程，基於基爾霍夫電壓定律。",
+      "latex": "-IR - L \\frac{dI}{dt} = 0",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "rl-circuit-time-constant-analysis",
+      "label": "RL電路時間常數分析法",
+      "kind": "method",
+      "summary": "透過比較RL電路電流建立與衰減的速度，判斷電感時間常數的大小。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "rl-circuit-initial-steady-state-analysis",
+      "label": "RL電路瞬時與穩態分析",
+      "kind": "method",
+      "summary": "分析RL電路在開關閉合瞬間和長時間後的電壓與電流分佈。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "inductance-iron-core-effect",
+      "label": "鐵芯對電感的影響",
+      "kind": "concept",
+      "summary": "插入鐵芯會增加螺線管內部的磁場強度，進而提高其電感值。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "inductors-series-formula",
+      "label": "電感串聯公式",
+      "kind": "formula",
+      "summary": "串聯電路的總電感等於各個電感值的和。",
+      "latex": "L_{eq} = L_1 + L_2",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "inductors-parallel-formula",
+      "label": "電感並聯公式",
+      "kind": "formula",
+      "summary": "並聯電路的總電感的倒數等於各個電感倒數的和。",
+      "latex": "\\frac{1}{L_{eq}} = \\frac{1}{L_1} + \\frac{1}{L_2}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "lc-circuit-definition",
+      "label": "LC電路定義",
+      "kind": "definition",
+      "summary": "由電感和電容組成的電路，其中能量在兩者之間來回振盪。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "lc-circuit-total-energy",
+      "label": "LC電路總能量",
+      "kind": "formula",
+      "summary": "LC電路中的總能量是電容儲存的電能與電感儲存的磁能之和。",
+      "latex": "U = \\frac{Q^2}{2C} + \\frac{1}{2}LI^2",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "lc-mass-spring-analogy",
+      "label": "LC電路與質彈簧類比",
+      "kind": "principle",
+      "summary": "LC電路中的電能與磁能振盪，與質彈簧系統中的彈性勢能與動能振盪具有數學上的類比關係。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "lc-circuit-diff-eq-energy",
+      "label": "LC電路微分方程（能量守恆）",
+      "kind": "formula",
+      "summary": "從能量守恆推導出的LC電路中電荷Q的二階微分方程。",
+      "latex": "L \\frac{d^2Q}{dt^2} + \\frac{Q}{C} = 0",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "lc-circuit-angular-frequency",
+      "label": "LC電路角頻率",
+      "kind": "formula",
+      "summary": "LC電路中電荷和電流振盪的自然角頻率。",
+      "latex": "\\omega = \\frac{1}{\\sqrt{LC}}",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "lc-circuit-diff-eq-kirchhoff",
+      "label": "LC電路微分方程（基爾霍夫）",
+      "kind": "formula",
+      "summary": "從基爾霍夫電壓定律推導出的LC電路中電荷Q的二階微分方程。",
+      "latex": "L \\frac{d^2Q}{dt^2} + \\frac{Q}{C} = 0",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "lc-circuit-charge-oscillation",
+      "label": "LC電路電荷振盪公式",
+      "kind": "formula",
+      "summary": "LC電路中電容上電荷隨時間變化的餘弦振盪公式。",
+      "latex": "Q(t) = Q_{\\text{max}} \\cos(\\omega t + \\phi)",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "lc-circuit-energy-oscillation",
+      "label": "LC電路能量振盪公式",
+      "kind": "formula",
+      "summary": "LC電路中電容電能和電感磁能隨時間變化的振盪公式。",
+      "latex": "U_C(t) = \\frac{Q_{\\text{max}}^2}{2C} \\cos^2 \\omega t",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "rlc-circuit-definition",
+      "label": "RLC電路定義",
+      "kind": "definition",
+      "summary": "由電阻、電感和電容組成的電路。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "rlc-circuit-diff-eq",
+      "label": "RLC電路微分方程",
+      "kind": "formula",
+      "summary": "描述RLC電路中電荷Q隨時間變化的二階微分方程，考慮了電阻的能量耗散。",
+      "latex": "L\\frac{d^2Q}{dt^2} + R\\frac{dQ}{dt} + \\frac{Q}{C} = 0",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "underdamped-rlc-charge-oscillation",
+      "label": "欠阻尼RLC電荷振盪",
+      "kind": "formula",
+      "summary": "欠阻尼RLC電路中電荷隨時間呈指數衰減的振盪形式。",
+      "latex": "Q(t) = Q_{\\text{max}} e^{-Rt/2L} \\cos \\omega_d t",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "damped-angular-frequency",
+      "label": "阻尼角頻率",
+      "kind": "formula",
+      "summary": "欠阻尼RLC電路中電荷振盪的角頻率，受電阻影響而小於自然頻率。",
+      "latex": "\\omega_d = \\left[\\frac{1}{LC} - \\left(\\frac{R}{2L}\\right)^2\\right]^{1/2}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "rlc-damping-types",
+      "label": "RLC電路阻尼類型",
+      "kind": "concept",
+      "summary": "RLC電路根據電阻大小可分為欠阻尼、臨界阻尼和過阻尼三種類型。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "critically-damped-rlc",
+      "label": "臨界阻尼RLC電路",
+      "kind": "concept",
+      "summary": "RLC電路中電阻值恰好使電荷最快衰減至零而不發生振盪的狀態。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "overdamped-rlc",
+      "label": "過阻尼RLC電路",
+      "kind": "concept",
+      "summary": "RLC電路中電阻值過大，電荷緩慢衰減至零而不發生振盪的狀態。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "electrical-mechanical-analogies",
+      "label": "電學與力學系統類比",
+      "kind": "principle",
+      "summary": "電路中的電荷、電流、電感等物理量與力學系統中的位置、速度、質量等物理量存在數學上的對應關係。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "self-induction",
+      "to": "self-induced-emf-formula",
+      "reason": "理解自感現象是推導和應用自感電動勢公式的基礎。"
+    },
+    {
+      "from": "inductance-definition",
+      "to": "self-induced-emf-formula",
+      "reason": "自感電動勢公式中包含電感L，需先理解電感的定義。"
+    },
+    {
+      "from": "inductance-definition",
+      "to": "henry-unit",
+      "reason": "亨利是電感的國際單位，需先理解電感的定義。"
+    },
+    {
+      "from": "inductance-definition",
+      "to": "inductor-definition",
+      "reason": "電感器是具有電感特性的元件，需先理解電感的定義。"
+    },
+    {
+      "from": "inductance-definition",
+      "to": "inductance-general-formula",
+      "reason": "電感通用公式是計算電感的一種方法，基於電感的定義。"
+    },
+    {
+      "from": "inductance-general-formula",
+      "to": "inductance-toroidal-coil",
+      "reason": "環形線圈電感是電感通用公式在特定幾何形狀下的應用。"
+    },
+    {
+      "from": "inductance-general-formula",
+      "to": "inductance-solenoid",
+      "reason": "螺線管電感是電感通用公式在特定幾何形狀下的應用。"
+    },
+    {
+      "from": "inductance-general-formula",
+      "to": "inductance-coaxial-cable",
+      "reason": "同軸電纜自感是電感通用公式在特定幾何形狀下的應用。"
+    },
+    {
+      "from": "mutual-inductance-definition",
+      "to": "mutual-inductance-emf-formula",
+      "reason": "互感電動勢公式中包含互感M，需先理解互感的定義。"
+    },
+    {
+      "from": "mutual-inductance-definition",
+      "to": "mutual-inductance-reciprocity",
+      "reason": "互感對稱性是互感的一個重要性質，需先理解互感的定義。"
+    },
+    {
+      "from": "mutual-inductance-definition",
+      "to": "mutual-inductance-coaxial-solenoids",
+      "reason": "同軸螺線管互感是互感定義在特定幾何形狀下的應用。"
+    },
+    {
+      "from": "mutual-inductance-definition",
+      "to": "inductors-series-aiding",
+      "reason": "電感串聯（同向）的概念涉及互感對總電感的影響。"
+    },
+    {
+      "from": "mutual-inductance-definition",
+      "to": "inductors-series-opposing",
+      "reason": "電感串聯（反向）的概念涉及互感對總電感的影響。"
+    },
+    {
+      "from": "inductor-definition",
+      "to": "inductors-series-formula",
+      "reason": "理解電感器是組合電感器的基礎。"
+    },
+    {
+      "from": "inductor-definition",
+      "to": "inductors-parallel-formula",
+      "reason": "理解電感器是組合電感器的基礎。"
+    },
+    {
+      "from": "energy-stored-inductor-derivation",
+      "to": "energy-stored-inductor-formula",
+      "reason": "電感儲能公式是透過能量守恆推導而來。"
+    },
+    {
+      "from": "energy-stored-inductor-formula",
+      "to": "magnetic-energy-density-definition",
+      "reason": "磁場能量密度是基於電感中儲存的總能量來定義的。"
+    },
+    {
+      "from": "magnetic-energy-density-definition",
+      "to": "magnetic-energy-density-formula",
+      "reason": "磁場能量密度公式是磁場能量密度的具體數學表達。"
+    },
+    {
+      "from": "rl-circuit-definition",
+      "to": "rl-circuit-diff-eq-build-up",
+      "reason": "RL電路的定義是建立其電流建立微分方程的基礎。"
+    },
+    {
+      "from": "rl-circuit-diff-eq-build-up",
+      "to": "rl-circuit-current-build-up",
+      "reason": "RL電路電流建立公式是電流建立微分方程的解。"
+    },
+    {
+      "from": "rl-circuit-current-build-up",
+      "to": "inductive-time-constant",
+      "reason": "電感時間常數是從RL電路電流建立公式中定義的關鍵參數。"
+    },
+    {
+      "from": "rl-circuit-definition",
+      "to": "rl-circuit-diff-eq-discharge",
+      "reason": "RL電路的定義是建立其電流衰減微分方程的基礎。"
+    },
+    {
+      "from": "rl-circuit-diff-eq-discharge",
+      "to": "rl-circuit-current-discharge",
+      "reason": "RL電路電流衰減公式是電流衰減微分方程的解。"
+    },
+    {
+      "from": "inductive-time-constant",
+      "to": "rl-circuit-time-constant-analysis",
+      "reason": "電感時間常數是分析RL電路行為的關鍵指標。"
+    },
+    {
+      "from": "rl-circuit-current-build-up",
+      "to": "rl-circuit-time-constant-analysis",
+      "reason": "理解電流建立行為有助於時間常數的分析。"
+    },
+    {
+      "from": "rl-circuit-current-discharge",
+      "to": "rl-circuit-time-constant-analysis",
+      "reason": "理解電流衰減行為有助於時間常數的分析。"
+    },
+    {
+      "from": "rl-circuit-current-build-up",
+      "to": "rl-circuit-initial-steady-state-analysis",
+      "reason": "RL電路電流建立公式描述了電路在瞬時和穩態的行為。"
+    },
+    {
+      "from": "rl-circuit-current-discharge",
+      "to": "rl-circuit-initial-steady-state-analysis",
+      "reason": "RL電路電流衰減公式描述了電路在瞬時和穩態的行為。"
+    },
+    {
+      "from": "inductance-definition",
+      "to": "inductance-iron-core-effect",
+      "reason": "鐵芯對電感的影響是基於電感本身的定義和性質。"
+    },
+    {
+      "from": "lc-circuit-definition",
+      "to": "lc-circuit-total-energy",
+      "reason": "LC電路的定義是討論其總能量的基礎。"
+    },
+    {
+      "from": "lc-circuit-total-energy",
+      "to": "lc-circuit-diff-eq-energy",
+      "reason": "LC電路微分方程可以從能量守恆定律推導而來。"
+    },
+    {
+      "from": "lc-circuit-diff-eq-energy",
+      "to": "lc-circuit-angular-frequency",
+      "reason": "LC電路角頻率是從其微分方程的解中導出的。"
+    },
+    {
+      "from": "lc-circuit-diff-eq-energy",
+      "to": "lc-circuit-charge-oscillation",
+      "reason": "LC電路電荷振盪公式是其微分方程的解。"
+    },
+    {
+      "from": "lc-circuit-diff-eq-kirchhoff",
+      "to": "lc-circuit-angular-frequency",
+      "reason": "LC電路角頻率是從其微分方程的解中導出的。"
+    },
+    {
+      "from": "lc-circuit-diff-eq-kirchhoff",
+      "to": "lc-circuit-charge-oscillation",
+      "reason": "LC電路電荷振盪公式是其微分方程的解。"
+    },
+    {
+      "from": "lc-circuit-charge-oscillation",
+      "to": "lc-circuit-energy-oscillation",
+      "reason": "LC電路能量振盪公式是基於電荷振盪公式推導的。"
+    },
+    {
+      "from": "lc-circuit-definition",
+      "to": "lc-mass-spring-analogy",
+      "reason": "LC電路與質彈簧系統的類比是基於兩者相似的物理行為和數學模型。"
+    },
+    {
+      "from": "lc-circuit-diff-eq-energy",
+      "to": "lc-mass-spring-analogy",
+      "reason": "LC電路的微分方程與質彈簧系統的運動方程具有數學上的類比性。"
+    },
+    {
+      "from": "rlc-circuit-definition",
+      "to": "rlc-circuit-diff-eq",
+      "reason": "RLC電路的定義是建立其微分方程的基礎。"
+    },
+    {
+      "from": "rlc-circuit-diff-eq",
+      "to": "underdamped-rlc-charge-oscillation",
+      "reason": "欠阻尼RLC電荷振盪公式是RLC電路微分方程在特定條件下的解。"
+    },
+    {
+      "from": "rlc-circuit-diff-eq",
+      "to": "damped-angular-frequency",
+      "reason": "阻尼角頻率是從RLC電路微分方程的解中導出的。"
+    },
+    {
+      "from": "rlc-circuit-diff-eq",
+      "to": "rlc-damping-types",
+      "reason": "RLC電路阻尼類型是根據其微分方程的參數特性來區分的。"
+    },
+    {
+      "from": "rlc-damping-types",
+      "to": "critically-damped-rlc",
+      "reason": "臨界阻尼RLC電路是RLC電路阻尼類型中的一種特定情況。"
+    },
+    {
+      "from": "rlc-damping-types",
+      "to": "overdamped-rlc",
+      "reason": "過阻尼RLC電路是RLC電路阻尼類型中的一種特定情況。"
+    },
+    {
+      "from": "rlc-circuit-diff-eq",
+      "to": "electrical-mechanical-analogies",
+      "reason": "RLC電路的微分方程與阻尼質彈簧系統的運動方程具有直接的數學類比關係。"
+    }
+  ],
+  "chapter_number": 30,
+  "usage": {
+    "input_tokens": 13748,
+    "output_tokens": 7094
+  }
+}

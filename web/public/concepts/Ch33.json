@@ -1,0 +1,1031 @@
+{
+  "nodes": [
+    {
+      "id": "dual-nature-of-light",
+      "label": "光的二元性",
+      "kind": "concept",
+      "summary": "光同時具有粒子和波動的特性。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "photon-energy",
+      "label": "光子能量",
+      "kind": "formula",
+      "summary": "光子的能量E等於普朗克常數h乘以頻率f。",
+      "latex": "E = hf",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "light-as-em-wave",
+      "label": "光是電磁波",
+      "kind": "concept",
+      "summary": "馬克士威證明光是一種高頻電磁波。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "ray-optics",
+      "label": "幾何光學",
+      "kind": "concept",
+      "summary": "光在均勻介質中沿直線傳播，在不同介質表面改變方向。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "wave-optics",
+      "label": "波動光學",
+      "kind": "concept",
+      "summary": "處理光的干涉、繞射、偏振等現象。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "wave-front",
+      "label": "波前",
+      "kind": "definition",
+      "summary": "波前是波上所有點具有相同相位的地方。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "ray",
+      "label": "光線",
+      "kind": "definition",
+      "summary": "光線是垂直於波前並指示波傳播方向的直線。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "ray-approximation",
+      "label": "光線近似",
+      "kind": "principle",
+      "summary": "當光的波長遠小於障礙物尺寸時，光可視為沿直線傳播。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "roemer-method",
+      "label": "羅默測光速法",
+      "kind": "method",
+      "summary": "透過觀察木星衛星木衛一的蝕變週期變化，首次估計光速。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "fizeau-method",
+      "label": "菲索測光速法",
+      "kind": "method",
+      "summary": "透過測量光在齒輪和鏡子間往返時間，精確測量光速。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "fizeau-speed-of-light-formula",
+      "label": "菲索光速公式",
+      "kind": "formula",
+      "summary": "菲索實驗中，光速c與齒輪轉速、距離和齒輪幾何相關。",
+      "latex": "c = \\frac{2Dr\\omega}{\\ell}",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "specular-reflection",
+      "label": "鏡面反射",
+      "kind": "definition",
+      "summary": "光從光滑表面反射，反射光線彼此平行。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "diffuse-reflection",
+      "label": "漫反射",
+      "kind": "definition",
+      "summary": "光從粗糙表面反射，反射光線向各方向散射。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "white-color-production",
+      "label": "白光產生",
+      "kind": "concept",
+      "summary": "白光是可見光漫反射的結果，與鏡面反射不同。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "normal-optics",
+      "label": "法線",
+      "kind": "definition",
+      "summary": "垂直於表面的直線。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "law-of-reflection",
+      "label": "反射定律",
+      "kind": "law",
+      "summary": "入射角等於反射角，且入射光線、反射光線和法線在同一平面上。",
+      "latex": "\\theta_1' = \\theta_1",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "retroreflection",
+      "label": "逆反射",
+      "kind": "concept",
+      "summary": "光線經反射後沿原路徑平行返回光源的現象。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "light-in-medium",
+      "label": "介質中的光",
+      "kind": "concept",
+      "summary": "光在介質中傳播時，電子吸收、震盪並再輻射光，導致平均速度下降。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "refraction",
+      "label": "折射",
+      "kind": "definition",
+      "summary": "光線在兩種介質邊界處彎曲的現象。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "law-of-refraction-initial",
+      "label": "折射定律（初）",
+      "kind": "formula",
+      "summary": "兩介質間的折射定律，角度與光速比值相關。",
+      "latex": "\\frac{\\sin \\theta_2}{\\sin \\theta_1} = \\frac{v_2}{v_1}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "index-of-refraction",
+      "label": "折射率",
+      "kind": "definition",
+      "summary": "介質的折射率定義為光在真空中的速度與在介質中的速度之比。",
+      "latex": "n \\equiv \\frac{c}{v}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "frequency-invariance-refraction",
+      "label": "折射頻率不變",
+      "kind": "principle",
+      "summary": "光從一種介質傳播到另一種介質時，其頻率不變。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "wavelength-change-refraction",
+      "label": "折射波長變化",
+      "kind": "concept",
+      "summary": "光從一種介質傳播到另一種介質時，其波速和波長會改變。",
+      "latex": "\\frac{\\lambda_1}{\\lambda_2} = \\frac{v_1}{v_2} = \\frac{n_2}{n_1}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "snells-law",
+      "label": "斯涅爾定律",
+      "kind": "law",
+      "summary": "描述光線在兩種介質之間折射時，入射角和折射角與介質折射率的關係。",
+      "latex": "n_1 \\sin \\theta_1 = n_2 \\sin \\theta_2",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "apparent-bending-submerged",
+      "label": "水中物體彎曲",
+      "kind": "concept",
+      "summary": "由於光線在水面發生折射，水中物體看起來會彎曲或位移。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "atmospheric-refraction",
+      "label": "大氣折射",
+      "kind": "concept",
+      "summary": "光線穿過地球大氣層時因折射率變化而彎曲的現象。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "parallel-emergent-beam",
+      "label": "平行出射光束",
+      "kind": "principle",
+      "summary": "光束穿過厚平板介質後，出射光束與入射光束平行。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "total-internal-reflection",
+      "label": "全內反射",
+      "kind": "definition",
+      "summary": "當光從折射率較高的介質射向折射率較低的介質時，若入射角大於臨界角，光線將完全反射回原介質。",
+      "latex": "",
+      "pages": [
+        23,
+        24
+      ]
+    },
+    {
+      "id": "critical-angle",
+      "label": "臨界角",
+      "kind": "definition",
+      "summary": "發生全內反射的最小入射角，此時折射角為90度。",
+      "latex": "\\sin \\theta_c = \\frac{n_2}{n_1}",
+      "pages": [
+        24,
+        25
+      ]
+    },
+    {
+      "id": "evanescent-wave",
+      "label": "倏逝波",
+      "kind": "concept",
+      "summary": "在全內反射發生時，電磁場會滲透到折射率較低的介質中，形成衰減的波。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "optical-fiber",
+      "label": "光纖",
+      "kind": "concept",
+      "summary": "利用全內反射原理傳輸光的塑膠或玻璃棒。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "dispersion-optics",
+      "label": "色散",
+      "kind": "definition",
+      "summary": "介質的折射率n隨光波長λ變化的現象。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "refractive-index-wavelength-dependence",
+      "label": "折射率波長依賴性",
+      "kind": "concept",
+      "summary": "介質的折射率通常隨波長增加而減小，導致不同波長的光折射角度不同。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "angle-of-deviation",
+      "label": "偏向角",
+      "kind": "definition",
+      "summary": "光線通過稜鏡後，出射光線與入射光線方向的夾角。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "prism-dispersion",
+      "label": "稜鏡色散",
+      "kind": "concept",
+      "summary": "稜鏡能將白光分散成光譜，因為不同顏色的光有不同的偏向角。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "minimum-deviation-angle-prism",
+      "label": "最小偏向角",
+      "kind": "concept",
+      "summary": "光線通過稜鏡時，偏向角達到最小值時的條件。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "refractive-index-min-deviation",
+      "label": "最小偏向角折射率",
+      "kind": "formula",
+      "summary": "透過稜鏡的頂角Φ和最小偏向角δmin計算介質折射率n。",
+      "latex": "n = \\frac{\\sin\\left(\\frac{\\Phi + \\delta_{min}}{2}\\right)}{\\sin(\\Phi / 2)}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "primary-rainbow-formation",
+      "label": "虹（主）形成",
+      "kind": "concept",
+      "summary": "陽光經雨滴一次內反射和兩次折射形成，紅光在外，紫光在內。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "secondary-rainbow-formation",
+      "label": "霓（副）形成",
+      "kind": "concept",
+      "summary": "陽光經雨滴兩次內反射和兩次折射形成，顏色順序與主虹相反。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "polarization-of-light",
+      "label": "光的偏振",
+      "kind": "definition",
+      "summary": "光波電場振動方向的特性。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "direction-of-polarization",
+      "label": "偏振方向",
+      "kind": "definition",
+      "summary": "電磁波中電場振動的方向。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "linearly-polarized-light",
+      "label": "線偏振光",
+      "kind": "definition",
+      "summary": "電場向量始終在同一方向振動的光。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "plane-of-polarization",
+      "label": "偏振面",
+      "kind": "definition",
+      "summary": "由電場向量和傳播方向所形成的平面。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "malus-law",
+      "label": "馬呂斯定律",
+      "kind": "law",
+      "summary": "偏振光通過檢偏器後，其強度與偏振方向和檢偏器軸夾角的餘弦平方成正比。",
+      "latex": "I = I_0 \\cos^2 \\theta",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "polarization-selective-absorption",
+      "label": "選擇性吸收偏振",
+      "kind": "method",
+      "summary": "某些材料（如偏振片）選擇性吸收特定方向電場振動的光，產生偏振光。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "polaroid",
+      "label": "偏振片",
+      "kind": "concept",
+      "summary": "一種透過選擇性吸收產生偏振光的材料。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "polarization-by-reflection",
+      "label": "反射偏振",
+      "kind": "method",
+      "summary": "當非偏振光從表面反射時，反射光可能部分或完全偏振，取決於入射角。",
+      "latex": "",
+      "pages": [
+        35,
+        36
+      ]
+    },
+    {
+      "id": "brewsters-angle",
+      "label": "布魯斯特角",
+      "kind": "definition",
+      "summary": "當入射角為布魯斯特角時，反射光完全偏振，且反射光與折射光垂直。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "brewsters-law",
+      "label": "布魯斯特定律",
+      "kind": "law",
+      "summary": "介質的相對折射率等於布魯斯特角的正切值。",
+      "latex": "n = \\tan \\theta_p",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "polarization-double-refraction",
+      "label": "雙折射偏振",
+      "kind": "method",
+      "summary": "在某些晶體中，光速在不同方向不同，導致非偏振光分裂成兩束平面偏振光。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "birefringent-material",
+      "label": "雙折射材料",
+      "kind": "concept",
+      "summary": "具有兩個折射率的材料，光速在不同方向不同。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "ordinary-ray",
+      "label": "尋常光",
+      "kind": "definition",
+      "summary": "在雙折射材料中，折射率nO在所有方向都相同的光線。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "extraordinary-ray",
+      "label": "非尋常光",
+      "kind": "definition",
+      "summary": "在雙折射材料中，折射率nE隨傳播方向變化的光線。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "optic-axis",
+      "label": "光軸",
+      "kind": "definition",
+      "summary": "雙折射晶體中，尋常光和非尋常光速度相同的方向。",
+      "latex": "",
+      "pages": [
+        39
+      ]
+    },
+    {
+      "id": "optical-stress-analysis",
+      "label": "光學應力分析",
+      "kind": "method",
+      "summary": "利用材料在受應力時產生雙折射的特性，分析應力分佈。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "photoelasticity",
+      "label": "光彈性",
+      "kind": "concept",
+      "summary": "某些材料在受應力時會變成雙折射的現象。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "polarization-by-scattering",
+      "label": "散射偏振",
+      "kind": "method",
+      "summary": "光線被材料中的電子吸收並再輻射時，散射光可能被偏振。",
+      "latex": "",
+      "pages": [
+        41,
+        42
+      ]
+    },
+    {
+      "id": "rayleigh-scattering-sky-color",
+      "label": "瑞利散射（天空色）",
+      "kind": "concept",
+      "summary": "短波長光（藍光）比長波長光（紅光）更容易被空氣分子散射，導致天空呈藍色。",
+      "latex": "",
+      "pages": [
+        43
+      ]
+    },
+    {
+      "id": "red-sky-sunrise-sunset",
+      "label": "日出日落紅霞",
+      "kind": "concept",
+      "summary": "日出日落時，陽光穿過更厚的大氣層，藍光被散射殆盡，剩下紅光直射。",
+      "latex": "",
+      "pages": [
+        43
+      ]
+    },
+    {
+      "id": "tyndall-effect",
+      "label": "廷得耳效應",
+      "kind": "concept",
+      "summary": "光束通過膠體或懸浮液時，因散射而可見其路徑的現象。",
+      "latex": "",
+      "pages": [
+        43,
+        44
+      ]
+    },
+    {
+      "id": "fermats-principle",
+      "label": "費馬原理",
+      "kind": "principle",
+      "summary": "光線在兩點之間傳播時，其路徑是所需時間最短的路徑。",
+      "latex": "",
+      "pages": [
+        45
+      ]
+    },
+    {
+      "id": "snells-law-from-fermats-principle",
+      "label": "費馬原理推導斯涅爾定律",
+      "kind": "method",
+      "summary": "透過最小時間原理，可以推導出斯涅爾定律。",
+      "latex": "",
+      "pages": [
+        46
+      ]
+    },
+    {
+      "id": "huygens-principle",
+      "label": "惠更斯原理",
+      "kind": "principle",
+      "summary": "波前上的所有點都是產生球面次級波（子波）的點源，新波前是這些子波的切線表面。",
+      "latex": "",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "wavelet",
+      "label": "子波",
+      "kind": "definition",
+      "summary": "惠更斯原理中，波前上每個點作為點源產生的球面次級波。",
+      "latex": "",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "law-of-reflection-from-huygens-principle",
+      "label": "惠更斯原理推導反射定律",
+      "kind": "method",
+      "summary": "透過惠更斯原理的幾何構造，可以推導出光的反射定律。",
+      "latex": "",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "law-of-refraction-from-huygens-principle",
+      "label": "惠更斯原理推導折射定律",
+      "kind": "method",
+      "summary": "透過惠更斯原理的幾何構造，可以推導出光的折射定律（斯涅爾定律）。",
+      "latex": "",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "mirage-formation",
+      "label": "海市蜃樓形成",
+      "kind": "concept",
+      "summary": "光線在不同溫度空氣層中折射，導致遠處物體出現倒影或虛像。",
+      "latex": "",
+      "pages": [
+        50
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "dual-nature-of-light",
+      "to": "photon-energy",
+      "reason": "光子能量公式是光的粒子性表現。"
+    },
+    {
+      "from": "ray",
+      "to": "ray-optics",
+      "reason": "幾何光學基於光線的概念。"
+    },
+    {
+      "from": "wave-front",
+      "to": "ray-optics",
+      "reason": "幾何光學基於波前的概念。"
+    },
+    {
+      "from": "ray",
+      "to": "ray-approximation",
+      "reason": "光線近似是基於光線的行為。"
+    },
+    {
+      "from": "wave-front",
+      "to": "ray-approximation",
+      "reason": "光線近似是基於波前的行為。"
+    },
+    {
+      "from": "fizeau-method",
+      "to": "fizeau-speed-of-light-formula",
+      "reason": "菲索光速公式是菲索測光速法的數學表達。"
+    },
+    {
+      "from": "law-of-reflection",
+      "to": "specular-reflection",
+      "reason": "鏡面反射是反射定律的理想情況。"
+    },
+    {
+      "from": "law-of-reflection",
+      "to": "diffuse-reflection",
+      "reason": "漫反射是反射定律在粗糙表面的應用。"
+    },
+    {
+      "from": "normal-optics",
+      "to": "law-of-reflection",
+      "reason": "反射定律的定義需要法線概念。"
+    },
+    {
+      "from": "law-of-reflection",
+      "to": "retroreflection",
+      "reason": "逆反射是反射定律的特殊應用。"
+    },
+    {
+      "from": "light-in-medium",
+      "to": "refraction",
+      "reason": "折射現象發生在光從一種介質進入另一種介質時。"
+    },
+    {
+      "from": "refraction",
+      "to": "law-of-refraction-initial",
+      "reason": "初步的折射定律描述了折射現象的定量關係。"
+    },
+    {
+      "from": "light-in-medium",
+      "to": "index-of-refraction",
+      "reason": "折射率是描述光在介質中速度變化的物理量。"
+    },
+    {
+      "from": "frequency-invariance-refraction",
+      "to": "wavelength-change-refraction",
+      "reason": "波長變化是頻率不變的結果。"
+    },
+    {
+      "from": "index-of-refraction",
+      "to": "wavelength-change-refraction",
+      "reason": "波長變化是折射率變化的結果。"
+    },
+    {
+      "from": "law-of-refraction-initial",
+      "to": "snells-law",
+      "reason": "斯涅爾定律是折射定律的標準形式，引入了折射率。"
+    },
+    {
+      "from": "index-of-refraction",
+      "to": "snells-law",
+      "reason": "斯涅爾定律是折射定律的標準形式，引入了折射率。"
+    },
+    {
+      "from": "snells-law",
+      "to": "apparent-bending-submerged",
+      "reason": "水中物體彎曲是斯涅爾定律導致的折射現象。"
+    },
+    {
+      "from": "snells-law",
+      "to": "atmospheric-refraction",
+      "reason": "大氣折射是斯涅爾定律在地球大氣層中的應用。"
+    },
+    {
+      "from": "snells-law",
+      "to": "parallel-emergent-beam",
+      "reason": "平行出射光束的證明依賴於斯涅爾定律。"
+    },
+    {
+      "from": "snells-law",
+      "to": "total-internal-reflection",
+      "reason": "全內反射的條件由斯涅爾定律決定。"
+    },
+    {
+      "from": "index-of-refraction",
+      "to": "total-internal-reflection",
+      "reason": "全內反射的條件由折射率決定。"
+    },
+    {
+      "from": "total-internal-reflection",
+      "to": "critical-angle",
+      "reason": "臨界角是全內反射發生的特定入射角。"
+    },
+    {
+      "from": "total-internal-reflection",
+      "to": "evanescent-wave",
+      "reason": "倏逝波是全內反射時在低折射率介質中存在的電磁場。"
+    },
+    {
+      "from": "total-internal-reflection",
+      "to": "optical-fiber",
+      "reason": "光纖利用全內反射原理傳輸光。"
+    },
+    {
+      "from": "index-of-refraction",
+      "to": "dispersion-optics",
+      "reason": "色散是折射率隨波長變化的現象。"
+    },
+    {
+      "from": "dispersion-optics",
+      "to": "refractive-index-wavelength-dependence",
+      "reason": "折射率波長依賴性是色散的具體表現。"
+    },
+    {
+      "from": "refraction",
+      "to": "angle-of-deviation",
+      "reason": "偏向角是折射現象中光線方向的改變。"
+    },
+    {
+      "from": "dispersion-optics",
+      "to": "prism-dispersion",
+      "reason": "稜鏡色散是色散的綜合現象。"
+    },
+    {
+      "from": "refraction",
+      "to": "prism-dispersion",
+      "reason": "稜鏡色散是折射的綜合現象。"
+    },
+    {
+      "from": "prism-dispersion",
+      "to": "minimum-deviation-angle-prism",
+      "reason": "最小偏向角是稜鏡色散的一個特定條件。"
+    },
+    {
+      "from": "minimum-deviation-angle-prism",
+      "to": "refractive-index-min-deviation",
+      "reason": "最小偏向角折射率公式是基於最小偏向角條件推導的。"
+    },
+    {
+      "from": "snells-law",
+      "to": "refractive-index-min-deviation",
+      "reason": "最小偏向角折射率公式是基於斯涅爾定律推導的。"
+    },
+    {
+      "from": "refraction",
+      "to": "primary-rainbow-formation",
+      "reason": "主虹的形成是光線在雨滴中經過折射的綜合結果。"
+    },
+    {
+      "from": "dispersion-optics",
+      "to": "primary-rainbow-formation",
+      "reason": "主虹的形成是光線在雨滴中經過色散的綜合結果。"
+    },
+    {
+      "from": "total-internal-reflection",
+      "to": "primary-rainbow-formation",
+      "reason": "主虹的形成是光線在雨滴中經過一次全內反射的綜合結果。"
+    },
+    {
+      "from": "primary-rainbow-formation",
+      "to": "secondary-rainbow-formation",
+      "reason": "副虹的形成原理與主虹相似，但涉及更多次反射。"
+    },
+    {
+      "from": "light-as-em-wave",
+      "to": "polarization-of-light",
+      "reason": "光的偏振是電磁波的特性。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "direction-of-polarization",
+      "reason": "偏振方向是描述光偏振狀態的具體屬性。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "linearly-polarized-light",
+      "reason": "線偏振光是一種特定的偏振狀態。"
+    },
+    {
+      "from": "linearly-polarized-light",
+      "to": "plane-of-polarization",
+      "reason": "偏振面是線偏振光的幾何描述。"
+    },
+    {
+      "from": "linearly-polarized-light",
+      "to": "malus-law",
+      "reason": "馬呂斯定律描述了線偏振光通過檢偏器後的強度變化。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "polarization-selective-absorption",
+      "reason": "選擇性吸收是產生偏振光的一種方法。"
+    },
+    {
+      "from": "polarization-selective-absorption",
+      "to": "polaroid",
+      "reason": "偏振片是利用選擇性吸收原理的材料。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "polarization-by-reflection",
+      "reason": "反射偏振是光反射時產生偏振的現象。"
+    },
+    {
+      "from": "law-of-reflection",
+      "to": "polarization-by-reflection",
+      "reason": "反射偏振是光反射時產生偏振的現象，遵循反射定律。"
+    },
+    {
+      "from": "polarization-by-reflection",
+      "to": "brewsters-angle",
+      "reason": "布魯斯特角是反射偏振的一個特殊角度。"
+    },
+    {
+      "from": "brewsters-angle",
+      "to": "brewsters-law",
+      "reason": "布魯斯特定律是布魯斯特角與折射率的定量關係。"
+    },
+    {
+      "from": "snells-law",
+      "to": "brewsters-law",
+      "reason": "布魯斯特定律結合了斯涅爾定律來描述布魯斯特角與折射率的關係。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "polarization-double-refraction",
+      "reason": "雙折射偏振是利用雙折射材料產生偏振光的方法。"
+    },
+    {
+      "from": "light-in-medium",
+      "to": "birefringent-material",
+      "reason": "雙折射材料是光在其中傳播時表現出特殊性質的介質。"
+    },
+    {
+      "from": "birefringent-material",
+      "to": "ordinary-ray",
+      "reason": "尋常光是雙折射材料中的一種光線。"
+    },
+    {
+      "from": "birefringent-material",
+      "to": "extraordinary-ray",
+      "reason": "非尋常光是雙折射材料中的另一種光線。"
+    },
+    {
+      "from": "birefringent-material",
+      "to": "optic-axis",
+      "reason": "光軸是雙折射材料的特性。"
+    },
+    {
+      "from": "photoelasticity",
+      "to": "optical-stress-analysis",
+      "reason": "光學應力分析利用光彈性效應來檢測應力。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "optical-stress-analysis",
+      "reason": "光學應力分析利用偏振光來檢測應力。"
+    },
+    {
+      "from": "birefringent-material",
+      "to": "photoelasticity",
+      "reason": "光彈性是材料在應力下產生雙折射的現象。"
+    },
+    {
+      "from": "polarization-of-light",
+      "to": "polarization-by-scattering",
+      "reason": "散射偏振是光散射時產生偏振的現象。"
+    },
+    {
+      "from": "polarization-by-scattering",
+      "to": "rayleigh-scattering-sky-color",
+      "reason": "瑞利散射解釋了天空顏色的原因，是散射偏振的一種應用。"
+    },
+    {
+      "from": "rayleigh-scattering-sky-color",
+      "to": "red-sky-sunrise-sunset",
+      "reason": "日出日落紅霞是瑞利散射的結果。"
+    },
+    {
+      "from": "polarization-by-scattering",
+      "to": "tyndall-effect",
+      "reason": "廷得耳效應是光線在介質中散射的視覺表現，與散射偏振原理相關。"
+    },
+    {
+      "from": "fermats-principle",
+      "to": "snells-law-from-fermats-principle",
+      "reason": "費馬原理推導斯涅爾定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "snells-law",
+      "to": "snells-law-from-fermats-principle",
+      "reason": "費馬原理推導斯涅爾定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "huygens-principle",
+      "to": "law-of-reflection-from-huygens-principle",
+      "reason": "惠更斯原理推導反射定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "law-of-reflection",
+      "to": "law-of-reflection-from-huygens-principle",
+      "reason": "惠更斯原理推導反射定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "huygens-principle",
+      "to": "law-of-refraction-from-huygens-principle",
+      "reason": "惠更斯原理推導折射定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "snells-law",
+      "to": "law-of-refraction-from-huygens-principle",
+      "reason": "惠更斯原理推導折射定律展示了兩者之間的關係。"
+    },
+    {
+      "from": "refraction",
+      "to": "mirage-formation",
+      "reason": "海市蜃樓是光線在不同折射率空氣層中折射的結果。"
+    },
+    {
+      "from": "index-of-refraction",
+      "to": "mirage-formation",
+      "reason": "海市蜃樓是光線在不同折射率空氣層中折射的結果。"
+    }
+  ],
+  "chapter_number": 33,
+  "usage": {
+    "input_tokens": 20353,
+    "output_tokens": 8989
+  }
+}

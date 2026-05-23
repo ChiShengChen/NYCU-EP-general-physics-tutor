@@ -1,0 +1,1242 @@
+{
+  "nodes": [
+    {
+      "id": "state-variables",
+      "label": "狀態變數",
+      "kind": "concept",
+      "summary": "描述物質宏觀狀態的物理量，如壓力、體積、莫耳數、溫度和內能。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "equation-of-state-concept",
+      "label": "狀態方程式",
+      "kind": "concept",
+      "summary": "描述物質狀態變數之間關係的數學方程式。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "thermal-expansion-formula",
+      "label": "熱膨脹公式",
+      "kind": "formula",
+      "summary": "描述固體體積隨溫度變化的關係。",
+      "latex": "\\Delta V_1 = \\beta V_0 \\Delta T",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "bulk-modulus-definition",
+      "label": "體積彈性模數",
+      "kind": "definition",
+      "summary": "衡量物質抵抗體積變形能力的物理量。",
+      "latex": "B = -\\frac{\\Delta P}{\\Delta V_2 / V_0}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "compressibility-definition",
+      "label": "壓縮率",
+      "kind": "definition",
+      "summary": "物質體積隨壓力變化的難易程度，為體積彈性模數的倒數。",
+      "latex": "k = \\frac{1}{B}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "equation-of-state-solids",
+      "label": "固體狀態方程式",
+      "kind": "formula",
+      "summary": "描述固體體積如何隨溫度和壓力變化的方程式。",
+      "latex": "V = V_0 [1 + \\beta (T - T_0) - k (P - P_0)]",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "ideal-gas-characteristics",
+      "label": "理想氣體特性",
+      "kind": "concept",
+      "summary": "氣體分子間作用力極弱，分子體積相對於容器可忽略。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "charles-gay-lussac-law",
+      "label": "查理-給呂薩克定律",
+      "kind": "law",
+      "summary": "在定壓下，理想氣體的體積與絕對溫度成正比。",
+      "latex": "V \\propto T",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "boyles-law",
+      "label": "波以耳定律",
+      "kind": "law",
+      "summary": "在定溫下，理想氣體的壓力與體積成反比。",
+      "latex": "P \\propto \\frac{1}{V}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "ideal-gas-law",
+      "label": "理想氣體定律",
+      "kind": "law",
+      "summary": "描述理想氣體壓力、體積、莫耳數和溫度之間關係的基本方程式。",
+      "latex": "PV = nRT = Nk_B T",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "avogadros-number",
+      "label": "亞佛加厥常數",
+      "kind": "definition",
+      "summary": "一莫耳物質所含的分子數量。",
+      "latex": "N_A = 6.02 \\times 10^{23} \\text{ molecules/mol}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "gas-constant",
+      "label": "氣體常數",
+      "kind": "definition",
+      "summary": "理想氣體定律中的比例常數。",
+      "latex": "R = 8.314 \\text{ J/mol\\cdot K}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "boltzmann-constant",
+      "label": "波茲曼常數",
+      "kind": "definition",
+      "summary": "連結微觀粒子動能與宏觀溫度的物理常數。",
+      "latex": "k_B = \\frac{R}{N_A} = 1.38 \\times 10^{-23} \\text{ J/molecule\\cdot K}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "ideal-gas-mass-density",
+      "label": "理想氣體質量密度",
+      "kind": "formula",
+      "summary": "理想氣體的質量密度與壓力、莫耳質量和溫度之間的關係。",
+      "latex": "\\rho = \\frac{PM}{RT}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "pressure-height-formula",
+      "label": "氣壓高度公式",
+      "kind": "formula",
+      "summary": "描述理想氣體在重力場中壓力隨高度呈指數衰減的關係。",
+      "latex": "P = P_0 e^{-\\frac{Mg}{RT}y}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "van-der-waals-equation",
+      "label": "凡得瓦方程式",
+      "kind": "formula",
+      "summary": "修正理想氣體定律以考慮真實氣體分子體積和分子間作用力。",
+      "latex": "\\left[ P + a \\left( \\frac{n}{V} \\right)^2 \\right] (V - nb) = nRT",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "van-der-waals-effective-pressure",
+      "label": "凡得瓦有效壓力",
+      "kind": "concept",
+      "summary": "凡得瓦方程式中考慮分子間吸引力修正後的壓力項。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "van-der-waals-effective-volume",
+      "label": "凡得瓦有效體積",
+      "kind": "concept",
+      "summary": "凡得瓦方程式中考慮分子自身體積修正後的體積項。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "ideal-gas-isotherms",
+      "label": "理想氣體等溫線",
+      "kind": "concept",
+      "summary": "在P-V圖上，理想氣體在定溫下的壓力與體積關係曲線。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "liquid-vapor-phase-transition",
+      "label": "液氣相變",
+      "kind": "concept",
+      "summary": "物質從液態轉變為氣態或反之的過程。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "critical-temperature",
+      "label": "臨界溫度",
+      "kind": "definition",
+      "summary": "物質能以液態存在的最高溫度，超過此溫度無法液化。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "liquid-vapor-equilibrium-region",
+      "label": "液氣平衡區",
+      "kind": "concept",
+      "summary": "在P-V圖上，液態和氣態物質共存的區域。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "phase-diagram-2d",
+      "label": "二維相圖",
+      "kind": "concept",
+      "summary": "顯示物質在不同壓力與溫度下所處相態的圖。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "triple-point",
+      "label": "三相點",
+      "kind": "definition",
+      "summary": "物質固態、液態和氣態三相共存的唯一壓力與溫度點。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "critical-point-pt-diagram",
+      "label": "臨界點 (P-T圖)",
+      "kind": "definition",
+      "summary": "在P-T相圖上，液氣分界線的終點，液態和氣態變得無法區分。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "ideal-gas-phase-diagram-3d",
+      "label": "理想氣體三維相圖",
+      "kind": "concept",
+      "summary": "理想氣體在P-V-T空間中的狀態表面圖。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "general-phase-diagram-3d",
+      "label": "一般物質三維相圖",
+      "kind": "concept",
+      "summary": "顯示一般物質在P-V-T空間中固、液、氣相及共存區的圖。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "triple-line",
+      "label": "三相線",
+      "kind": "definition",
+      "summary": "在三維相圖中，固、液、氣三相共存的線。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "kinetic-theory",
+      "label": "動力學理論",
+      "kind": "concept",
+      "summary": "運用牛頓運動定律描述氣體分子行為以解釋熱力學過程。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "molecular-model-ideal-gas",
+      "label": "理想氣體分子模型",
+      "kind": "concept",
+      "summary": "描述理想氣體分子特性的假設集合，如分子體積可忽略、彈性碰撞。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "perfectly-elastic-collision-molecular",
+      "label": "分子完全彈性碰撞",
+      "kind": "concept",
+      "summary": "氣體分子與容器壁或彼此間的碰撞，動能和動量守恆。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "pressure-kinetic-theory",
+      "label": "動力學理論壓力公式",
+      "kind": "formula",
+      "summary": "從氣體分子碰撞導出的壓力與分子平均平方速率的關係。",
+      "latex": "P = \\frac{1}{3} \\left( \\frac{N}{V} \\right) m \\bar{v^2}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "pressure-average-kinetic-energy",
+      "label": "壓力與平均動能",
+      "kind": "formula",
+      "summary": "壓力與氣體分子平均平移動能之間的關係。",
+      "latex": "P = \\frac{2}{3} \\frac{N}{V} \\bar{E_k}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "molecular-interpretation-temperature",
+      "label": "溫度分子解釋",
+      "kind": "formula",
+      "summary": "連結溫度與氣體分子平均平移動能的公式。",
+      "latex": "T = \\frac{2}{3k_B} \\left( \\frac{1}{2} \\overline{mv^2} \\right)",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "temperature-average-kinetic-energy",
+      "label": "溫度與平均動能",
+      "kind": "principle",
+      "summary": "溫度是氣體分子平均平移動能的直接量度。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "degree-of-freedom",
+      "label": "自由度",
+      "kind": "definition",
+      "summary": "分子儲存能量的獨立方式，包括平移、轉動和振動。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "equipartition-theorem",
+      "label": "能量均分定理",
+      "kind": "law",
+      "summary": "每個自由度對系統能量貢獻 $1/2 k_B T$。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "total-translational-kinetic-energy",
+      "label": "總平移動能",
+      "kind": "formula",
+      "summary": "理想氣體所有分子的總平移動能。",
+      "latex": "K_{\\text{translation}} = \\frac{3}{2}nRT",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "internal-energy-monatomic-gas",
+      "label": "單原子氣體內能",
+      "kind": "formula",
+      "summary": "單原子理想氣體的內能，僅由平移動能組成。",
+      "latex": "E_{\\text{int}} = \\frac{3}{2}nRT",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "internal-energy-temperature-dependence",
+      "label": "內能溫度依賴性",
+      "kind": "principle",
+      "summary": "理想氣體的內能僅取決於溫度。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "rms-speed",
+      "label": "方均根速率",
+      "kind": "formula",
+      "summary": "氣體分子速率平方的平均值的平方根。",
+      "latex": "v_{\\text{rms}} = \\sqrt{\\overline{v^2}} = \\sqrt{\\frac{3k_B T}{m}} = \\sqrt{\\frac{3RT}{M}}",
+      "pages": [
+        17,
+        26
+      ]
+    },
+    {
+      "id": "diatomic-degrees-of-freedom",
+      "label": "雙原子氣體自由度",
+      "kind": "concept",
+      "summary": "雙原子分子除了平移外，還具有轉動和振動自由度。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "internal-energy-diatomic-gas",
+      "label": "雙原子氣體內能",
+      "kind": "formula",
+      "summary": "雙原子理想氣體的內能，考慮平移、轉動和振動自由度。",
+      "latex": "E_{int} = \\left(\\frac{7}{2}k_BT\\right)N",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "complex-molecules-degrees-of-freedom",
+      "label": "複雜分子自由度",
+      "kind": "concept",
+      "summary": "多原子分子具有更多複雜的振動模式，導致更多自由度。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "molar-specific-heat-ideal-gas-concept",
+      "label": "理想氣體莫耳比熱",
+      "kind": "concept",
+      "summary": "升高一莫耳理想氣體單位溫度所需的熱量。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "molar-specific-heat-constant-volume-definition",
+      "label": "定容莫耳比熱",
+      "kind": "definition",
+      "summary": "在體積不變下，升高一莫耳氣體單位溫度所需的熱量。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "internal-energy-from-cv",
+      "label": "內能與定容比熱",
+      "kind": "formula",
+      "summary": "理想氣體內能與定容莫耳比熱和溫度的關係。",
+      "latex": "E_{int} = nc_v T",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "monatomic-gas-cv",
+      "label": "單原子氣體定容比熱",
+      "kind": "formula",
+      "summary": "單原子理想氣體的定容莫耳比熱。",
+      "latex": "c_v = \\frac{3}{2}R",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "diatomic-gas-cv",
+      "label": "雙原子氣體定容比熱",
+      "kind": "formula",
+      "summary": "雙原子理想氣體的定容莫耳比熱。",
+      "latex": "c_v = \\frac{7}{2}R",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "molar-specific-heat-constant-pressure-definition",
+      "label": "定壓莫耳比熱",
+      "kind": "definition",
+      "summary": "在壓力不變下，升高一莫耳氣體單位溫度所需的熱量。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "cp-cv-relation",
+      "label": "定壓定容比熱關係",
+      "kind": "formula",
+      "summary": "理想氣體的定壓莫耳比熱與定容莫耳比熱之間的關係。",
+      "latex": "c_p - c_v = R",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "gamma-definition",
+      "label": "比熱比",
+      "kind": "definition",
+      "summary": "定壓莫耳比熱與定容莫耳比熱之比值。",
+      "latex": "\\gamma \\equiv c_p / c_v",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "hydrogen-molar-specific-heat-temp-dependence",
+      "label": "氫氣比熱溫度依賴",
+      "kind": "concept",
+      "summary": "氫氣的莫耳比熱隨溫度升高，因自由度逐漸被激發而增加。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "energy-quantization",
+      "label": "能量量子化",
+      "kind": "concept",
+      "summary": "分子的能量只能取離散值，而非連續值。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "ground-state",
+      "label": "基態",
+      "kind": "definition",
+      "summary": "分子所能擁有的最低能量狀態。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "dulong-petit-law",
+      "label": "杜隆-珀蒂定律",
+      "kind": "law",
+      "summary": "高溫下固體的莫耳比熱約為 $3R$。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "molar-specific-heat-solids-high-t",
+      "label": "固體高溫莫耳比熱",
+      "kind": "formula",
+      "summary": "根據能量均分定理，高溫下固體的定容莫耳比熱。",
+      "latex": "c_v = 3R",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "solid-degrees-of-freedom",
+      "label": "固體自由度",
+      "kind": "concept",
+      "summary": "固體中每個原子在三個維度上都有動能和勢能自由度。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "solid-molar-specific-heat-temp-dependence",
+      "label": "固體比熱溫度依賴",
+      "kind": "concept",
+      "summary": "固體莫耳比熱在低溫趨近於零，高溫趨近 $3R$。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "boltzmann-distribution-law",
+      "label": "波茲曼分佈定律",
+      "kind": "law",
+      "summary": "描述經典粒子在不同能量狀態下分佈機率的定律。",
+      "latex": "n(E) \\propto e^{-\\frac{E}{k_B T}}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "boltzmann-probability-ratio",
+      "label": "波茲曼機率比",
+      "kind": "formula",
+      "summary": "兩個能量狀態之間粒子數量的比值。",
+      "latex": "\\frac{n(E_2)}{n(E_1)} = e^{-\\frac{E_2 - E_1}{k_B T}}",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "maxwell-boltzmann-speed-distribution",
+      "label": "馬克士威-波茲曼速率分佈",
+      "kind": "formula",
+      "summary": "描述理想氣體分子速率分佈的函數。",
+      "latex": "N(v) = 4\\pi N \\left(\\frac{m}{2\\pi k_B T}\\right)^{3/2} v^2 e^{-mv^2/2k_B T}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "maxwell-boltzmann-energy-distribution",
+      "label": "馬克士威-波茲曼能量分佈",
+      "kind": "formula",
+      "summary": "描述理想氣體分子能量分佈的函數。",
+      "latex": "N(E) = \\frac{8\\pi}{m} \\left(\\frac{m}{2\\pi k_B T}\\right)^{3/2} E e^{-E/k_B T}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "molecular-speed-measurement-method",
+      "label": "分子速率測量法",
+      "kind": "method",
+      "summary": "利用旋轉圓盤裝置測量氣體分子速率分佈的實驗方法。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "most-probable-speed",
+      "label": "最可幾速率",
+      "kind": "formula",
+      "summary": "馬克士威-波茲曼速率分佈函數峰值所對應的速率。",
+      "latex": "v_{mp} = \\sqrt{\\frac{2k_B T}{m}}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "average-speed",
+      "label": "平均速率",
+      "kind": "formula",
+      "summary": "氣體分子速率的平均值。",
+      "latex": "\\overline{v} = \\sqrt{\\frac{8k_B T}{\\pi m}}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "speed-relationship",
+      "label": "分子速率關係",
+      "kind": "concept",
+      "summary": "氣體分子的方均根速率、平均速率和最可幾速率之間的關係。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "sound-speed-formula",
+      "label": "聲速公式",
+      "kind": "formula",
+      "summary": "氣體中聲速與溫度、比熱比和分子質量的關係。",
+      "latex": "v = \\sqrt{\\frac{\\gamma k_B T}{m_0}}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "speed-distribution-temperature-dependence",
+      "label": "速率分佈溫度依賴",
+      "kind": "concept",
+      "summary": "氣體分子速率分佈曲線隨溫度升高向高速區移動且變寬。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "evaporation",
+      "label": "蒸發",
+      "kind": "concept",
+      "summary": "液體表面高能量分子脫離液相進入氣相的過程。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "mean-free-path-concept",
+      "label": "平均自由徑",
+      "kind": "concept",
+      "summary": "氣體分子在兩次連續碰撞之間平均移動的距離。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "random-walk-process",
+      "label": "隨機漫步過程",
+      "kind": "concept",
+      "summary": "氣體分子因不斷碰撞而隨機改變運動方向的過程。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "number-of-collisions-formula",
+      "label": "碰撞次數公式",
+      "kind": "formula",
+      "summary": "單位時間內氣體分子碰撞次數的簡化估計公式。",
+      "latex": "\\# = (\\pi d^2 \\bar{v} \\Delta t) \\times n",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "collision-frequency-formula",
+      "label": "碰撞頻率公式",
+      "kind": "formula",
+      "summary": "氣體分子單位時間內的碰撞次數的簡化公式。",
+      "latex": "f = \\pi d^2 \\bar{v} n",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "mean-free-time",
+      "label": "平均自由時間",
+      "kind": "definition",
+      "summary": "氣體分子兩次連續碰撞之間平均經過的時間。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "mean-free-path-simplified-formula",
+      "label": "平均自由徑簡化公式",
+      "kind": "formula",
+      "summary": "氣體分子平均自由徑的簡化估計公式。",
+      "latex": "\\ell = \\frac{1}{\\pi d^2 n}",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "collision-frequency-corrected-formula",
+      "label": "碰撞頻率修正公式",
+      "kind": "formula",
+      "summary": "考慮分子相對運動後修正的氣體分子碰撞頻率公式。",
+      "latex": "f = \\sqrt{2}\\pi d^2 \\bar{v} n",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "mean-free-path-corrected-formula",
+      "label": "平均自由徑修正公式",
+      "kind": "formula",
+      "summary": "考慮分子相對運動後修正的氣體分子平均自由徑公式。",
+      "latex": "\\ell = \\frac{1}{\\sqrt{2}\\pi d^2 n} = \\frac{k_B T}{\\sqrt{2}\\pi d^2 P}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "mean-free-path-frequency-speed-relation",
+      "label": "自由徑頻率速率關係",
+      "kind": "formula",
+      "summary": "平均自由徑、碰撞頻率和平均速率之間的關係。",
+      "latex": "\\bar{v} = f \\ell",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "number-density-formula",
+      "label": "數密度公式",
+      "kind": "formula",
+      "summary": "單位體積內氣體分子數量的公式。",
+      "latex": "n = \\frac{P}{k_B T}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "average-separation-formula",
+      "label": "平均分子間距公式",
+      "kind": "formula",
+      "summary": "氣體分子平均間隔距離的公式。",
+      "latex": "D = \\frac{1}{n^{1/3}}",
+      "pages": [
+        31
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "state-variables",
+      "to": "equation-of-state-concept",
+      "reason": "狀態方程式描述狀態變數間的關係。"
+    },
+    {
+      "from": "thermal-expansion-formula",
+      "to": "equation-of-state-solids",
+      "reason": "固體狀態方程式包含熱膨脹效應。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "equation-of-state-solids",
+      "reason": "固體狀態方程式包含體積彈性模數。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "compressibility-definition",
+      "reason": "壓縮率是體積彈性模數的倒數。"
+    },
+    {
+      "from": "ideal-gas-characteristics",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律基於理想氣體特性。"
+    },
+    {
+      "from": "charles-gay-lussac-law",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律是查理-給呂薩克定律的推廣。"
+    },
+    {
+      "from": "boyles-law",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律是波以耳定律的推廣。"
+    },
+    {
+      "from": "avogadros-number",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律中的莫耳數與亞佛加厥常數相關。"
+    },
+    {
+      "from": "gas-constant",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律使用氣體常數。"
+    },
+    {
+      "from": "boltzmann-constant",
+      "to": "ideal-gas-law",
+      "reason": "理想氣體定律可使用波茲曼常數表示。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "ideal-gas-mass-density",
+      "reason": "理想氣體質量密度公式從理想氣體定律推導。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "pressure-height-formula",
+      "reason": "氣壓高度公式的推導基於理想氣體定律。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "van-der-waals-equation",
+      "reason": "凡得瓦方程式是對理想氣體定律的修正。"
+    },
+    {
+      "from": "van-der-waals-equation",
+      "to": "van-der-waals-effective-pressure",
+      "reason": "有效壓力是凡得瓦方程式的一部分。"
+    },
+    {
+      "from": "van-der-waals-equation",
+      "to": "van-der-waals-effective-volume",
+      "reason": "有效體積是凡得瓦方程式的一部分。"
+    },
+    {
+      "from": "boyles-law",
+      "to": "ideal-gas-isotherms",
+      "reason": "理想氣體等溫線圖示波以耳定律。"
+    },
+    {
+      "from": "critical-temperature",
+      "to": "liquid-vapor-phase-transition",
+      "reason": "臨界溫度定義了液氣相變的上限。"
+    },
+    {
+      "from": "liquid-vapor-phase-transition",
+      "to": "liquid-vapor-equilibrium-region",
+      "reason": "液氣平衡區是液氣相變的一部分。"
+    },
+    {
+      "from": "liquid-vapor-phase-transition",
+      "to": "phase-diagram-2d",
+      "reason": "二維相圖顯示液氣相變。"
+    },
+    {
+      "from": "triple-point",
+      "to": "phase-diagram-2d",
+      "reason": "三相點是二維相圖上的重要特徵。"
+    },
+    {
+      "from": "critical-point-pt-diagram",
+      "to": "phase-diagram-2d",
+      "reason": "臨界點是二維相圖上的重要特徵。"
+    },
+    {
+      "from": "phase-diagram-2d",
+      "to": "general-phase-diagram-3d",
+      "reason": "三維相圖是二維相圖的更完整表示。"
+    },
+    {
+      "from": "general-phase-diagram-3d",
+      "to": "triple-line",
+      "reason": "三相線是三維相圖上的重要特徵。"
+    },
+    {
+      "from": "molecular-model-ideal-gas",
+      "to": "kinetic-theory",
+      "reason": "動力學理論基於理想氣體分子模型。"
+    },
+    {
+      "from": "kinetic-theory",
+      "to": "pressure-kinetic-theory",
+      "reason": "壓力動力學理論是動力學理論的核心成果。"
+    },
+    {
+      "from": "perfectly-elastic-collision-molecular",
+      "to": "pressure-kinetic-theory",
+      "reason": "壓力動力學理論的推導基於彈性碰撞。"
+    },
+    {
+      "from": "pressure-kinetic-theory",
+      "to": "pressure-average-kinetic-energy",
+      "reason": "壓力與平均動能公式是壓力動力學理論的另一種表達。"
+    },
+    {
+      "from": "pressure-average-kinetic-energy",
+      "to": "molecular-interpretation-temperature",
+      "reason": "溫度分子解釋公式從壓力與平均動能公式推導。"
+    },
+    {
+      "from": "molecular-interpretation-temperature",
+      "to": "temperature-average-kinetic-energy",
+      "reason": "溫度與平均動能的關係是溫度分子解釋的核心。"
+    },
+    {
+      "from": "degree-of-freedom",
+      "to": "equipartition-theorem",
+      "reason": "能量均分定理定義了每個自由度對能量的貢獻。"
+    },
+    {
+      "from": "equipartition-theorem",
+      "to": "total-translational-kinetic-energy",
+      "reason": "總平移動能的計算應用能量均分定理。"
+    },
+    {
+      "from": "total-translational-kinetic-energy",
+      "to": "internal-energy-monatomic-gas",
+      "reason": "單原子氣體內能即為總平移動能。"
+    },
+    {
+      "from": "internal-energy-monatomic-gas",
+      "to": "internal-energy-temperature-dependence",
+      "reason": "單原子氣體內能公式顯示內能僅依賴溫度。"
+    },
+    {
+      "from": "molecular-interpretation-temperature",
+      "to": "rms-speed",
+      "reason": "方均根速率公式從溫度分子解釋推導。"
+    },
+    {
+      "from": "degree-of-freedom",
+      "to": "diatomic-degrees-of-freedom",
+      "reason": "雙原子氣體自由度是自由度的具體應用。"
+    },
+    {
+      "from": "diatomic-degrees-of-freedom",
+      "to": "internal-energy-diatomic-gas",
+      "reason": "雙原子氣體內能考慮其所有自由度。"
+    },
+    {
+      "from": "equipartition-theorem",
+      "to": "internal-energy-diatomic-gas",
+      "reason": "雙原子氣體內能的計算應用能量均分定理。"
+    },
+    {
+      "from": "degree-of-freedom",
+      "to": "complex-molecules-degrees-of-freedom",
+      "reason": "複雜分子自由度是自由度的延伸概念。"
+    },
+    {
+      "from": "internal-energy-temperature-dependence",
+      "to": "molar-specific-heat-ideal-gas-concept",
+      "reason": "理想氣體莫耳比熱與內能的溫度依賴性相關。"
+    },
+    {
+      "from": "molar-specific-heat-ideal-gas-concept",
+      "to": "molar-specific-heat-constant-volume-definition",
+      "reason": "定容莫耳比熱是莫耳比熱的一種。"
+    },
+    {
+      "from": "molar-specific-heat-constant-volume-definition",
+      "to": "internal-energy-from-cv",
+      "reason": "內能與定容比熱公式定義了兩者關係。"
+    },
+    {
+      "from": "internal-energy-monatomic-gas",
+      "to": "monatomic-gas-cv",
+      "reason": "單原子氣體定容比熱從其內能公式推導。"
+    },
+    {
+      "from": "internal-energy-diatomic-gas",
+      "to": "diatomic-gas-cv",
+      "reason": "雙原子氣體定容比熱從其內能公式推導。"
+    },
+    {
+      "from": "molar-specific-heat-ideal-gas-concept",
+      "to": "molar-specific-heat-constant-pressure-definition",
+      "reason": "定壓莫耳比熱是莫耳比熱的一種。"
+    },
+    {
+      "from": "molar-specific-heat-constant-volume-definition",
+      "to": "cp-cv-relation",
+      "reason": "定壓定容比熱關係連結了兩種比熱。"
+    },
+    {
+      "from": "molar-specific-heat-constant-pressure-definition",
+      "to": "cp-cv-relation",
+      "reason": "定壓定容比熱關係連結了兩種比熱。"
+    },
+    {
+      "from": "cp-cv-relation",
+      "to": "gamma-definition",
+      "reason": "比熱比定義基於定壓定容比熱關係。"
+    },
+    {
+      "from": "energy-quantization",
+      "to": "hydrogen-molar-specific-heat-temp-dependence",
+      "reason": "氫氣比熱的溫度依賴性需要能量量子化解釋。"
+    },
+    {
+      "from": "diatomic-degrees-of-freedom",
+      "to": "hydrogen-molar-specific-heat-temp-dependence",
+      "reason": "氫氣比熱的溫度依賴性與雙原子自由度有關。"
+    },
+    {
+      "from": "energy-quantization",
+      "to": "ground-state",
+      "reason": "基態是能量量子化概念的一部分。"
+    },
+    {
+      "from": "equipartition-theorem",
+      "to": "dulong-petit-law",
+      "reason": "杜隆-珀蒂定律可由能量均分定理解釋。"
+    },
+    {
+      "from": "dulong-petit-law",
+      "to": "molar-specific-heat-solids-high-t",
+      "reason": "固體高溫莫耳比熱是杜隆-珀蒂定律的具體數值。"
+    },
+    {
+      "from": "solid-degrees-of-freedom",
+      "to": "molar-specific-heat-solids-high-t",
+      "reason": "固體高溫莫耳比熱的推導基於固體自由度。"
+    },
+    {
+      "from": "dulong-petit-law",
+      "to": "solid-molar-specific-heat-temp-dependence",
+      "reason": "固體比熱溫度依賴性在高溫區符合杜隆-珀蒂定律。"
+    },
+    {
+      "from": "boltzmann-constant",
+      "to": "boltzmann-distribution-law",
+      "reason": "波茲曼分佈定律使用波茲曼常數。"
+    },
+    {
+      "from": "boltzmann-distribution-law",
+      "to": "boltzmann-probability-ratio",
+      "reason": "波茲曼機率比是波茲曼分佈定律的應用。"
+    },
+    {
+      "from": "boltzmann-distribution-law",
+      "to": "maxwell-boltzmann-speed-distribution",
+      "reason": "馬克士威-波茲曼速率分佈是波茲曼分佈定律的特例。"
+    },
+    {
+      "from": "boltzmann-distribution-law",
+      "to": "maxwell-boltzmann-energy-distribution",
+      "reason": "馬克士威-波茲曼能量分佈是波茲曼分佈定律的特例。"
+    },
+    {
+      "from": "maxwell-boltzmann-speed-distribution",
+      "to": "maxwell-boltzmann-energy-distribution",
+      "reason": "能量分佈可從速率分佈轉換。"
+    },
+    {
+      "from": "maxwell-boltzmann-speed-distribution",
+      "to": "most-probable-speed",
+      "reason": "最可幾速率從速率分佈函數求得。"
+    },
+    {
+      "from": "maxwell-boltzmann-speed-distribution",
+      "to": "average-speed",
+      "reason": "平均速率從速率分佈函數求得。"
+    },
+    {
+      "from": "most-probable-speed",
+      "to": "speed-relationship",
+      "reason": "分子速率關係比較了不同速率。"
+    },
+    {
+      "from": "average-speed",
+      "to": "speed-relationship",
+      "reason": "分子速率關係比較了不同速率。"
+    },
+    {
+      "from": "rms-speed",
+      "to": "speed-relationship",
+      "reason": "分子速率關係比較了不同速率。"
+    },
+    {
+      "from": "gamma-definition",
+      "to": "sound-speed-formula",
+      "reason": "聲速公式使用比熱比。"
+    },
+    {
+      "from": "boltzmann-constant",
+      "to": "sound-speed-formula",
+      "reason": "聲速公式使用波茲曼常數。"
+    },
+    {
+      "from": "maxwell-boltzmann-speed-distribution",
+      "to": "speed-distribution-temperature-dependence",
+      "reason": "速率分佈溫度依賴性由馬克士威-波茲曼分佈描述。"
+    },
+    {
+      "from": "speed-distribution-temperature-dependence",
+      "to": "evaporation",
+      "reason": "蒸發現象與分子速率分佈有關。"
+    },
+    {
+      "from": "random-walk-process",
+      "to": "mean-free-path-concept",
+      "reason": "平均自由徑是隨機漫步過程的量化描述。"
+    },
+    {
+      "from": "mean-free-path-concept",
+      "to": "number-of-collisions-formula",
+      "reason": "碰撞次數公式用於推導平均自由徑。"
+    },
+    {
+      "from": "number-of-collisions-formula",
+      "to": "collision-frequency-formula",
+      "reason": "碰撞頻率公式從碰撞次數推導。"
+    },
+    {
+      "from": "collision-frequency-formula",
+      "to": "mean-free-time",
+      "reason": "平均自由時間是碰撞頻率的倒數。"
+    },
+    {
+      "from": "collision-frequency-formula",
+      "to": "mean-free-path-simplified-formula",
+      "reason": "平均自由徑簡化公式從碰撞頻率推導。"
+    },
+    {
+      "from": "mean-free-path-concept",
+      "to": "mean-free-path-simplified-formula",
+      "reason": "平均自由徑簡化公式定義了平均自由徑。"
+    },
+    {
+      "from": "collision-frequency-formula",
+      "to": "collision-frequency-corrected-formula",
+      "reason": "修正後的碰撞頻率公式是更精確的版本。"
+    },
+    {
+      "from": "mean-free-path-simplified-formula",
+      "to": "mean-free-path-corrected-formula",
+      "reason": "修正後的平均自由徑公式是更精確的版本。"
+    },
+    {
+      "from": "collision-frequency-corrected-formula",
+      "to": "mean-free-path-corrected-formula",
+      "reason": "修正後的平均自由徑公式與修正後的碰撞頻率公式相關。"
+    },
+    {
+      "from": "mean-free-path-concept",
+      "to": "mean-free-path-frequency-speed-relation",
+      "reason": "自由徑頻率速率關係連結了這些概念。"
+    },
+    {
+      "from": "collision-frequency-corrected-formula",
+      "to": "mean-free-path-frequency-speed-relation",
+      "reason": "自由徑頻率速率關係使用碰撞頻率。"
+    },
+    {
+      "from": "average-speed",
+      "to": "mean-free-path-frequency-speed-relation",
+      "reason": "自由徑頻率速率關係使用平均速率。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "number-density-formula",
+      "reason": "數密度公式從理想氣體定律推導。"
+    },
+    {
+      "from": "boltzmann-constant",
+      "to": "number-density-formula",
+      "reason": "數密度公式使用波茲曼常數。"
+    },
+    {
+      "from": "number-density-formula",
+      "to": "average-separation-formula",
+      "reason": "平均分子間距公式從數密度推導。"
+    },
+    {
+      "from": "number-density-formula",
+      "to": "mean-free-path-corrected-formula",
+      "reason": "平均自由徑修正公式可表示為數密度的函數。"
+    }
+  ],
+  "chapter_number": 18,
+  "usage": {
+    "input_tokens": 12467,
+    "output_tokens": 11370
+  }
+}

@@ -1,0 +1,531 @@
+{
+  "nodes": [
+    {
+      "id": "potential-energy-definition",
+      "label": "潛能",
+      "kind": "definition",
+      "summary": "系統中物體間相互作用的內力所儲存的能量。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-definition",
+      "label": "重力位能",
+      "kind": "definition",
+      "summary": "與物體在重力場中位置相關的能量。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-formula",
+      "label": "重力位能公式",
+      "kind": "formula",
+      "summary": "假設重力加速度為常數時，物體在高度 $y$ 處的重力位能。",
+      "latex": "U_g = mgy",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "elastic-potential-energy-definition",
+      "label": "彈力位能",
+      "kind": "definition",
+      "summary": "彈性物體（如彈簧）因形變而儲存的能量。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "elastic-potential-energy-formula",
+      "label": "彈力位能公式",
+      "kind": "formula",
+      "summary": "彈簧形變量為 $x$ 時所儲存的彈力位能。",
+      "latex": "U_s = \\frac{1}{2}kx^2",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "mechanical-energy-definition",
+      "label": "力學能",
+      "kind": "definition",
+      "summary": "系統的動能與位能之和。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "mechanical-energy-formula",
+      "label": "力學能公式",
+      "kind": "formula",
+      "summary": "系統的總力學能等於動能與位能的總和。",
+      "latex": "E_{\\text{mech}} = K + U",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "internal-energy-definition",
+      "label": "內能",
+      "kind": "definition",
+      "summary": "系統內微觀粒子相對於質心的動能與位能總和，與溫度相關。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "kinetic-energy-concept",
+      "label": "動能",
+      "kind": "concept",
+      "summary": "物體因運動而擁有的能量。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "work-energy-transfer",
+      "label": "功（能量轉移）",
+      "kind": "concept",
+      "summary": "透過施力並造成施力點位移來轉移能量的方式。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "heat-energy-transfer",
+      "label": "熱（能量轉移）",
+      "kind": "concept",
+      "summary": "由於空間中兩區域的溫差所驅動的能量轉移。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "isolated-system-definition",
+      "label": "孤立系統",
+      "kind": "definition",
+      "summary": "不與外界環境交換能量或物質的系統。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "non-isolated-system-definition",
+      "label": "非孤立系統",
+      "kind": "definition",
+      "summary": "與外界環境交換能量或物質的系統。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "conservation-of-energy-principle",
+      "label": "能量守恆定律",
+      "kind": "law",
+      "summary": "能量既不能被創造也不能被消滅，只能從一種形式轉換為另一種形式。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "energy-conservation-isolated-system-formula",
+      "label": "孤立系統能量守恆",
+      "kind": "formula",
+      "summary": "孤立系統的總能量變化為零。",
+      "latex": "\\Delta E_{\\text{system}} = 0",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "energy-conservation-non-isolated-system-formula",
+      "label": "非孤立系統能量守恆",
+      "kind": "formula",
+      "summary": "非孤立系統的總能量變化等於跨越系統邊界的能量轉移總和。",
+      "latex": "\\Delta K + \\Delta U + \\Delta E_{\\text{int}} = W_{\\text{ext}} + Q + T_{\\text{others}}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "work-kinetic-energy-theorem",
+      "label": "功動能定理",
+      "kind": "law",
+      "summary": "作用在系統上的淨功等於系統動能的變化量。",
+      "latex": "W_{\\text{ext}} = K_f - K_i = \\Delta K",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "conservation-of-mechanical-energy-principle",
+      "label": "力學能守恆原理",
+      "kind": "principle",
+      "summary": "在沒有非保守力作用的孤立系統中，力學能守恆。",
+      "latex": "\\Delta E_{mech} = 0",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "general-work-energy-theorem",
+      "label": "廣義功能量定理",
+      "kind": "formula",
+      "summary": "外部功等於動能、位能和內能的總變化量，適用於包含保守力與非保守力的系統。",
+      "latex": "W_{ext} = \\Delta K + \\Delta U_g + \\Delta E_{int}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "conservative-force-properties",
+      "label": "守恆力特性",
+      "kind": "definition",
+      "summary": "功與路徑無關、封閉路徑功為零、可逆、可表示為位能差的力。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "work-gravitational-force-formula",
+      "label": "重力做功公式",
+      "kind": "formula",
+      "summary": "重力所做的功等於重力位能的負變化量。",
+      "latex": "W_g = -\\Delta U_g",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "work-spring-force-formula",
+      "label": "彈力做功公式",
+      "kind": "formula",
+      "summary": "彈力所做的功等於彈力位能的負變化量。",
+      "latex": "W_s = -\\Delta U_s",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "conservative-force-from-potential-1d",
+      "label": "守恆力與位能關係 (1D)",
+      "kind": "formula",
+      "summary": "一維守恆力是位能函數對位置的負導數。",
+      "latex": "F_c = -\\frac{dU(x)}{dx}",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "conservative-force-from-potential-3d",
+      "label": "守恆力與位能關係 (3D)",
+      "kind": "formula",
+      "summary": "三維守恆力是位能函數的負梯度。",
+      "latex": "\\vec{F}_c = -\\nabla U(x,y,z)",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "gradient-operator-definition",
+      "label": "梯度算子",
+      "kind": "definition",
+      "summary": "描述多變數函數變化率方向和大小的向量微分算子。",
+      "latex": "\\nabla \\equiv \\frac{\\partial}{\\partial x} \\hat{i} + \\frac{\\partial}{\\partial y} \\hat{j} + \\frac{\\partial}{\\partial z} \\hat{k}",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "central-force-concept",
+      "label": "中心力",
+      "kind": "concept",
+      "summary": "作用力方向沿著兩物體連線，大小只與距離有關的力。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "nonconservative-force-definition",
+      "label": "非守恆力",
+      "kind": "definition",
+      "summary": "不滿足守恆力條件的力，會改變系統的力學能。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "binding-energy-definition",
+      "label": "束縛能",
+      "kind": "definition",
+      "summary": "將系統分離所需的能量，其值為正。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "energy-diagram-concept",
+      "label": "能量圖",
+      "kind": "concept",
+      "summary": "顯示系統位能與位置關係的圖，可用於分析運動和平衡。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "equilibrium-concept",
+      "label": "平衡",
+      "kind": "concept",
+      "summary": "系統所受合力為零的狀態。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "stable-equilibrium-definition",
+      "label": "穩定平衡",
+      "kind": "definition",
+      "summary": "位能函數有最小值時的平衡狀態，受擾動後會回到平衡點。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "unstable-equilibrium-definition",
+      "label": "不穩定平衡",
+      "kind": "definition",
+      "summary": "位能函數有最大值時的平衡狀態，受擾動後會遠離平衡點。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "neutral-equilibrium-definition",
+      "label": "隨遇平衡",
+      "kind": "definition",
+      "summary": "位能函數在小範圍內為常數時的平衡狀態，受擾動後在新的位置仍保持平衡。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "lennard-jones-potential-formula",
+      "label": "蘭納-瓊斯位能",
+      "kind": "formula",
+      "summary": "描述兩個中性原子間相互作用的位能函數。",
+      "latex": "U(x) = 4\\varepsilon \\left[ \\left(\\frac{\\sigma}{x}\\right)^{12} - \\left(\\frac{\\sigma}{x}\\right)^{6} \\right]",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "lennard-jones-equilibrium-position",
+      "label": "蘭納-瓊斯平衡位置",
+      "kind": "formula",
+      "summary": "蘭納-瓊斯位能函數的平衡位置，即位能最小值處。",
+      "latex": "x_{eq} = 2^{1/6}\\sigma",
+      "pages": [
+        36
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "potential-energy-definition",
+      "to": "gravitational-potential-energy-definition",
+      "reason": "重力位能是位能的一種具體形式。"
+    },
+    {
+      "from": "potential-energy-definition",
+      "to": "elastic-potential-energy-definition",
+      "reason": "彈力位能是位能的一種具體形式。"
+    },
+    {
+      "from": "gravitational-potential-energy-definition",
+      "to": "gravitational-potential-energy-formula",
+      "reason": "重力位能公式是重力位能的數學表達。"
+    },
+    {
+      "from": "elastic-potential-energy-definition",
+      "to": "elastic-potential-energy-formula",
+      "reason": "彈力位能公式是彈力位能的數學表達。"
+    },
+    {
+      "from": "kinetic-energy-concept",
+      "to": "mechanical-energy-definition",
+      "reason": "力學能的定義包含動能。"
+    },
+    {
+      "from": "potential-energy-definition",
+      "to": "mechanical-energy-definition",
+      "reason": "力學能的定義包含位能。"
+    },
+    {
+      "from": "mechanical-energy-definition",
+      "to": "mechanical-energy-formula",
+      "reason": "力學能公式是力學能定義的數學表達。"
+    },
+    {
+      "from": "isolated-system-definition",
+      "to": "energy-conservation-isolated-system-formula",
+      "reason": "孤立系統能量守恆公式適用於孤立系統。"
+    },
+    {
+      "from": "non-isolated-system-definition",
+      "to": "energy-conservation-non-isolated-system-formula",
+      "reason": "非孤立系統能量守恆公式適用於非孤立系統。"
+    },
+    {
+      "from": "conservation-of-energy-principle",
+      "to": "energy-conservation-isolated-system-formula",
+      "reason": "孤立系統能量守恆是能量守恆原理的特例。"
+    },
+    {
+      "from": "conservation-of-energy-principle",
+      "to": "energy-conservation-non-isolated-system-formula",
+      "reason": "非孤立系統能量守恆是能量守恆原理的應用。"
+    },
+    {
+      "from": "work-energy-transfer",
+      "to": "work-kinetic-energy-theorem",
+      "reason": "功動能定理描述了功如何作為能量轉移改變動能。"
+    },
+    {
+      "from": "mechanical-energy-definition",
+      "to": "conservation-of-mechanical-energy-principle",
+      "reason": "力學能守恆原理是關於力學能的特定守恆情況。"
+    },
+    {
+      "from": "conservation-of-energy-principle",
+      "to": "conservation-of-mechanical-energy-principle",
+      "reason": "力學能守恆是能量守恆原理在特定條件下的應用。"
+    },
+    {
+      "from": "work-kinetic-energy-theorem",
+      "to": "general-work-energy-theorem",
+      "reason": "廣義功能量定理是功動能定理的擴展，包含了位能和內能的變化。"
+    },
+    {
+      "from": "gravitational-potential-energy-formula",
+      "to": "general-work-energy-theorem",
+      "reason": "廣義功能量定理中包含重力位能的變化項。"
+    },
+    {
+      "from": "elastic-potential-energy-formula",
+      "to": "general-work-energy-theorem",
+      "reason": "廣義功能量定理中包含彈力位能的變化項。"
+    },
+    {
+      "from": "internal-energy-definition",
+      "to": "general-work-energy-theorem",
+      "reason": "廣義功能量定理中包含內能的變化項。"
+    },
+    {
+      "from": "conservative-force-properties",
+      "to": "work-gravitational-force-formula",
+      "reason": "重力做功公式是守恆力做功的具體例子，體現了守恆力與位能的關係。"
+    },
+    {
+      "from": "conservative-force-properties",
+      "to": "work-spring-force-formula",
+      "reason": "彈力做功公式是守恆力做功的具體例子，體現了守恆力與位能的關係。"
+    },
+    {
+      "from": "gravitational-potential-energy-formula",
+      "to": "work-gravitational-force-formula",
+      "reason": "重力做功與重力位能的變化直接相關。"
+    },
+    {
+      "from": "elastic-potential-energy-formula",
+      "to": "work-spring-force-formula",
+      "reason": "彈力做功與彈力位能的變化直接相關。"
+    },
+    {
+      "from": "conservative-force-properties",
+      "to": "conservative-force-from-potential-1d",
+      "reason": "守恆力的一個重要特性是可由位能函數的負導數導出。"
+    },
+    {
+      "from": "conservative-force-from-potential-1d",
+      "to": "conservative-force-from-potential-3d",
+      "reason": "三維守恆力與位能的關係是一維關係的推廣。"
+    },
+    {
+      "from": "gradient-operator-definition",
+      "to": "conservative-force-from-potential-3d",
+      "reason": "三維守恆力與位能的關係使用梯度算子來表達。"
+    },
+    {
+      "from": "conservative-force-properties",
+      "to": "nonconservative-force-definition",
+      "reason": "非守恆力是與守恆力相對的概念，理解守恆力有助於理解非守恆力。"
+    },
+    {
+      "from": "energy-diagram-concept",
+      "to": "stable-equilibrium-definition",
+      "reason": "穩定平衡是能量圖上的一種平衡類型，透過位能曲線的最小值來判斷。"
+    },
+    {
+      "from": "energy-diagram-concept",
+      "to": "unstable-equilibrium-definition",
+      "reason": "不穩定平衡是能量圖上的一種平衡類型，透過位能曲線的最大值來判斷。"
+    },
+    {
+      "from": "energy-diagram-concept",
+      "to": "neutral-equilibrium-definition",
+      "reason": "隨遇平衡是能量圖上的一種平衡類型，透過位能曲線的平坦區域來判斷。"
+    },
+    {
+      "from": "equilibrium-concept",
+      "to": "stable-equilibrium-definition",
+      "reason": "穩定平衡是平衡的一種具體類型。"
+    },
+    {
+      "from": "equilibrium-concept",
+      "to": "unstable-equilibrium-definition",
+      "reason": "不穩定平衡是平衡的一種具體類型。"
+    },
+    {
+      "from": "equilibrium-concept",
+      "to": "neutral-equilibrium-definition",
+      "reason": "隨遇平衡是平衡的一種具體類型。"
+    },
+    {
+      "from": "lennard-jones-potential-formula",
+      "to": "lennard-jones-equilibrium-position",
+      "reason": "蘭納-瓊斯平衡位置是從蘭納-瓊斯位能公式導出的。"
+    },
+    {
+      "from": "conservative-force-from-potential-1d",
+      "to": "lennard-jones-equilibrium-position",
+      "reason": "蘭納-瓊斯平衡位置的推導需要應用力與位能的關係（力為位能的負導數）。"
+    }
+  ],
+  "chapter_number": 7,
+  "usage": {
+    "input_tokens": 16178,
+    "output_tokens": 4899
+  }
+}

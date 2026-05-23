@@ -1,0 +1,644 @@
+{
+  "nodes": [
+    {
+      "id": "electric-charge",
+      "label": "電荷",
+      "kind": "concept",
+      "summary": "粒子的一種基本性質，有正負兩種，同性相斥異性相吸。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "quantization-of-charge",
+      "label": "電荷量子化",
+      "kind": "principle",
+      "summary": "電荷以基本電荷e的整數倍存在，除了夸克。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "conservation-of-charge",
+      "label": "電荷守恆",
+      "kind": "law",
+      "summary": "孤立系統中的總電荷量保持不變。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "conductor",
+      "label": "導體",
+      "kind": "concept",
+      "summary": "允許電荷自由移動的材料。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "insulator",
+      "label": "絕緣體",
+      "kind": "concept",
+      "summary": "不允許電荷自由移動的材料。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "charge-transfer",
+      "label": "電荷轉移",
+      "kind": "method",
+      "summary": "透過接觸或摩擦將電荷從一個物體轉移到另一個物體。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "triboelectric-effect",
+      "label": "摩擦起電",
+      "kind": "method",
+      "summary": "兩種不同材料摩擦時，電子從一種材料轉移到另一種，使其帶電。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "charge-induction-conductor",
+      "label": "導體感應起電",
+      "kind": "method",
+      "summary": "不接觸帶電體，透過電荷重新分佈使導體帶電。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "polarization-insulator",
+      "label": "絕緣體極化",
+      "kind": "concept",
+      "summary": "絕緣體內部的電荷中心在外部電場作用下分離，形成感應偶極。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "coulombs-law",
+      "label": "庫侖定律",
+      "kind": "law",
+      "summary": "描述兩個點電荷之間靜電力大小與方向的定律。",
+      "latex": "\\vec{F} = k_e \\frac{qQ}{r^2} \\hat{r}",
+      "pages": [
+        14,
+        15
+      ]
+    },
+    {
+      "id": "coulomb-constant",
+      "label": "庫侖常數",
+      "kind": "definition",
+      "summary": "庫侖定律中的比例常數 $k_e$。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "permittivity-of-free-space",
+      "label": "真空介電常數",
+      "kind": "definition",
+      "summary": "描述真空對電場響應的物理常數 $\\varepsilon_0$。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "coulomb-unit",
+      "label": "庫侖",
+      "kind": "definition",
+      "summary": "電荷的SI單位，符號為 C。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "elementary-charge",
+      "label": "基本電荷",
+      "kind": "definition",
+      "summary": "最小的獨立電荷單位，電子或質子的電荷量 $e$。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "electric-field-definition",
+      "label": "電場定義",
+      "kind": "definition",
+      "summary": "單位測試電荷所受的電場力，描述電荷周圍空間的性質。",
+      "latex": "\\vec{E} \\equiv \\lim_{q \\to 0} \\frac{\\vec{F}_q}{q}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "electric-force-in-field",
+      "label": "電場力",
+      "kind": "formula",
+      "summary": "帶電粒子在電場中受到的力 $\\vec{F}_q = q\\vec{E}$。",
+      "latex": "\\vec{F}_q = q\\vec{E}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "superposition-principle-electric-field",
+      "label": "電場疊加原理",
+      "kind": "principle",
+      "summary": "總電場是各個點電荷產生電場的向量和。",
+      "latex": "\\vec{E} = k_e \\sum_i \\frac{Q_i}{r_i^2} \\hat{r}_i",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "electric-field-continuous-charge",
+      "label": "連續電荷電場",
+      "kind": "formula",
+      "summary": "透過積分計算連續電荷分佈產生的電場。",
+      "latex": "\\vec{E} = k_e \\int \\frac{dq}{r^2} \\hat{r}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "linear-charge-density",
+      "label": "線電荷密度",
+      "kind": "definition",
+      "summary": "單位長度上的電荷量 $\\lambda = Q/L$。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "surface-charge-density",
+      "label": "面電荷密度",
+      "kind": "definition",
+      "summary": "單位面積上的電荷量 $\\sigma = Q/A$。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "volume-charge-density",
+      "label": "體電荷密度",
+      "kind": "definition",
+      "summary": "單位體積上的電荷量 $\\rho = Q/V$。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "electric-field-finite-line-charge",
+      "label": "有限線電荷電場",
+      "kind": "formula",
+      "summary": "沿軸線的有限長度均勻帶電直線產生的電場。",
+      "latex": "\\vec{E} = -\\frac{k_e Q}{a(\\ell+a)} \\hat{x}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "electric-field-infinite-line-charge",
+      "label": "無限線電荷電場",
+      "kind": "formula",
+      "summary": "無限長均勻帶電直線在垂直距離 $x$ 處產生的電場。",
+      "latex": "\\vec{E} = \\frac{1}{2\\pi\\epsilon_0} \\frac{\\lambda}{x} \\hat{x}",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "electric-field-charged-ring",
+      "label": "帶電環電場",
+      "kind": "formula",
+      "summary": "均勻帶電圓環在其中心軸線上產生的電場。",
+      "latex": "E_x = \\frac{k_e x}{(x^2 + a^2)^{3/2}} Q",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "electric-field-charged-disk",
+      "label": "帶電圓盤電場",
+      "kind": "formula",
+      "summary": "均勻帶電圓盤在其中心軸線上產生的電場。",
+      "latex": "E = 2\\pi k_e \\sigma \\left[ 1 - \\frac{x}{(x^2 + R^2)^{1/2}} \\right]",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "electric-field-infinite-sheet",
+      "label": "無限面電荷電場",
+      "kind": "formula",
+      "summary": "無限大均勻帶電平面產生的電場。",
+      "latex": "E = \\frac{\\sigma}{2\\varepsilon_0}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "electric-field-parallel-sheets",
+      "label": "平行面電荷電場",
+      "kind": "formula",
+      "summary": "兩個無限大、等量異號均勻帶電平行平面間的電場。",
+      "latex": "\\vec{E} = \\frac{\\sigma}{\\varepsilon_0} \\hat{j}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "motion-charged-particle-uniform-e",
+      "label": "均勻電場中粒子運動",
+      "kind": "principle",
+      "summary": "帶電粒子在均勻電場中受恆力作用，產生恆定加速度。",
+      "latex": "\\vec{a} = \\frac{q\\vec{E}}{m}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "electric-dipole",
+      "label": "電偶極",
+      "kind": "concept",
+      "summary": "由兩個大小相等、符號相反的電荷組成，相隔一小段距離。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "electric-dipole-moment",
+      "label": "電偶極矩",
+      "kind": "definition",
+      "summary": "描述電偶極強度和方向的向量 $\\vec{p} = q\\vec{d}$。",
+      "latex": "\\vec{p} = q\\vec{d}",
+      "pages": [
+        25,
+        26
+      ]
+    },
+    {
+      "id": "electric-field-on-dipole-axis",
+      "label": "電偶極軸上電場",
+      "kind": "formula",
+      "summary": "電偶極在其軸線或垂直平分線上遠處產生的電場。",
+      "latex": "E(y \\gg a) = k_e \\frac{2qa}{y^3}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "torque-on-electric-dipole",
+      "label": "電偶極扭矩",
+      "kind": "formula",
+      "summary": "均勻電場中電偶極所受的扭矩。",
+      "latex": "\\vec{\\tau}_E = \\vec{p} \\times \\vec{E}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "potential-energy-electric-dipole",
+      "label": "電偶極位能",
+      "kind": "formula",
+      "summary": "均勻電場中電偶極的電位能。",
+      "latex": "U = -\\vec{P} \\cdot \\vec{E}",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "polar-molecules",
+      "label": "極性分子",
+      "kind": "concept",
+      "summary": "具有永久電偶極矩的分子。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "nonpolar-molecules",
+      "label": "非極性分子",
+      "kind": "concept",
+      "summary": "沒有永久電偶極矩的分子。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "polarization-molecules",
+      "label": "分子極化",
+      "kind": "concept",
+      "summary": "分子在電場作用下產生感應電偶極矩。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "electric-field-lines",
+      "label": "電場線",
+      "kind": "concept",
+      "summary": "用於視覺化電場方向和強度的假想線。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "electric-field-lines-properties",
+      "label": "電場線性質",
+      "kind": "principle",
+      "summary": "電場線的繪製規則，如切線方向、密度、起終點、不相交。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "field-line-density-magnitude",
+      "label": "電場線密度與強度",
+      "kind": "principle",
+      "summary": "電場線的密度與電場強度成正比。",
+      "latex": "",
+      "pages": [
+        30,
+        35
+      ]
+    },
+    {
+      "id": "electric-field-lines-point-charge",
+      "label": "點電荷電場線",
+      "kind": "concept",
+      "summary": "點電荷周圍輻射狀的電場線。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "electric-field-lines-dipole",
+      "label": "電偶極電場線",
+      "kind": "concept",
+      "summary": "電偶極周圍從正電荷發出到負電荷終止的電場線。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "electric-field-lines-like-charges",
+      "label": "同性電荷電場線",
+      "kind": "concept",
+      "summary": "兩個同性電荷之間相互排斥的電場線模式。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "electric-charge",
+      "to": "quantization-of-charge",
+      "reason": "理解電荷是什麼才能理解其量子化特性。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "conservation-of-charge",
+      "reason": "理解電荷是什麼才能理解其守恆特性。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "conductor",
+      "reason": "導體是電荷移動的介質，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "insulator",
+      "reason": "絕緣體是電荷不移動的介質，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "charge-transfer",
+      "reason": "電荷轉移是關於電荷的移動，需先理解電荷。"
+    },
+    {
+      "from": "charge-transfer",
+      "to": "triboelectric-effect",
+      "reason": "摩擦起電是電荷轉移的一種具體方式。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "charge-induction-conductor",
+      "reason": "感應起電是電荷重新分佈的現象，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "polarization-insulator",
+      "reason": "絕緣體極化是電荷在絕緣體內部的重新分佈，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "coulombs-law",
+      "reason": "庫侖定律描述電荷間的作用力，需先理解電荷。"
+    },
+    {
+      "from": "coulombs-law",
+      "to": "coulomb-constant",
+      "reason": "庫侖常數是庫侖定律中的一個參數。"
+    },
+    {
+      "from": "coulombs-law",
+      "to": "permittivity-of-free-space",
+      "reason": "真空介電常數是庫侖常數的組成部分。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "coulomb-unit",
+      "reason": "庫侖是電荷的單位，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "elementary-charge",
+      "reason": "基本電荷是電荷的最小單位，需先理解電荷。"
+    },
+    {
+      "from": "coulombs-law",
+      "to": "electric-field-definition",
+      "reason": "電場是基於庫侖力定義的。"
+    },
+    {
+      "from": "electric-field-definition",
+      "to": "electric-force-in-field",
+      "reason": "電場力公式是電場定義的直接應用。"
+    },
+    {
+      "from": "electric-field-definition",
+      "to": "superposition-principle-electric-field",
+      "reason": "疊加原理用於計算多個電荷產生的總電場。"
+    },
+    {
+      "from": "superposition-principle-electric-field",
+      "to": "electric-field-continuous-charge",
+      "reason": "連續電荷電場是疊加原理的積分形式。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "linear-charge-density",
+      "reason": "線電荷密度是描述電荷分佈的方式，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "surface-charge-density",
+      "reason": "面電荷密度是描述電荷分佈的方式，需先理解電荷。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "volume-charge-density",
+      "reason": "體電荷密度是描述電荷分佈的方式，需先理解電荷。"
+    },
+    {
+      "from": "electric-field-continuous-charge",
+      "to": "electric-field-finite-line-charge",
+      "reason": "有限線電荷電場是連續電荷電場的應用。"
+    },
+    {
+      "from": "electric-field-continuous-charge",
+      "to": "electric-field-infinite-line-charge",
+      "reason": "無限線電荷電場是連續電荷電場的應用。"
+    },
+    {
+      "from": "electric-field-continuous-charge",
+      "to": "electric-field-charged-ring",
+      "reason": "帶電環電場是連續電荷電場的應用。"
+    },
+    {
+      "from": "electric-field-continuous-charge",
+      "to": "electric-field-charged-disk",
+      "reason": "帶電圓盤電場是連續電荷電場的應用。"
+    },
+    {
+      "from": "electric-field-continuous-charge",
+      "to": "electric-field-infinite-sheet",
+      "reason": "無限面電荷電場是連續電荷電場的應用。"
+    },
+    {
+      "from": "electric-field-infinite-sheet",
+      "to": "electric-field-parallel-sheets",
+      "reason": "平行面電荷電場是無限面電荷電場的疊加應用。"
+    },
+    {
+      "from": "electric-field-definition",
+      "to": "motion-charged-particle-uniform-e",
+      "reason": "粒子在電場中的運動需要電場的概念。"
+    },
+    {
+      "from": "electric-charge",
+      "to": "electric-dipole",
+      "reason": "電偶極由兩個電荷組成，需先理解電荷。"
+    },
+    {
+      "from": "electric-dipole",
+      "to": "electric-dipole-moment",
+      "reason": "電偶極矩是電偶極的特性。"
+    },
+    {
+      "from": "electric-dipole-moment",
+      "to": "electric-field-on-dipole-axis",
+      "reason": "計算電偶極電場需要電偶極矩。"
+    },
+    {
+      "from": "electric-dipole-moment",
+      "to": "torque-on-electric-dipole",
+      "reason": "計算電偶極扭矩需要電偶極矩。"
+    },
+    {
+      "from": "electric-field-definition",
+      "to": "torque-on-electric-dipole",
+      "reason": "計算電偶極扭矩需要電場。"
+    },
+    {
+      "from": "torque-on-electric-dipole",
+      "to": "potential-energy-electric-dipole",
+      "reason": "電偶極位能與扭矩相關。"
+    },
+    {
+      "from": "electric-dipole",
+      "to": "polar-molecules",
+      "reason": "極性分子是電偶極的例子。"
+    },
+    {
+      "from": "electric-dipole",
+      "to": "nonpolar-molecules",
+      "reason": "非極性分子是沒有永久電偶極的分子。"
+    },
+    {
+      "from": "polarization-insulator",
+      "to": "polarization-molecules",
+      "reason": "分子極化是絕緣體極化的微觀解釋。"
+    },
+    {
+      "from": "electric-field-definition",
+      "to": "electric-field-lines",
+      "reason": "電場線是電場的視覺化表示，需先理解電場。"
+    },
+    {
+      "from": "electric-field-lines",
+      "to": "electric-field-lines-properties",
+      "reason": "電場線性質是理解電場線的基礎。"
+    },
+    {
+      "from": "electric-field-lines",
+      "to": "field-line-density-magnitude",
+      "reason": "電場線密度與強度是電場線的重要性質。"
+    },
+    {
+      "from": "electric-field-lines",
+      "to": "electric-field-lines-point-charge",
+      "reason": "點電荷電場線是電場線的基本應用。"
+    },
+    {
+      "from": "electric-field-lines",
+      "to": "electric-field-lines-dipole",
+      "reason": "電偶極電場線是電場線的應用。"
+    },
+    {
+      "from": "electric-field-lines",
+      "to": "electric-field-lines-like-charges",
+      "reason": "同性電荷電場線是電場線的應用。"
+    }
+  ],
+  "chapter_number": 21,
+  "usage": {
+    "input_tokens": 15794,
+    "output_tokens": 5625
+  }
+}

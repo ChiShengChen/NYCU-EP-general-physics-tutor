@@ -1,0 +1,715 @@
+{
+  "nodes": [
+    {
+      "id": "second-law-thermodynamics",
+      "label": "熱力學第二定律",
+      "kind": "law",
+      "summary": "決定自發過程方向，從非平衡態趨向平衡態的定律。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "irreversible-process",
+      "label": "不可逆過程",
+      "kind": "definition",
+      "summary": "系統無法沿相同路徑返回初始狀態，且總熵增加的過程。",
+      "latex": "",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "reversible-process",
+      "label": "可逆過程",
+      "kind": "definition",
+      "summary": "系統能沿相同路徑返回初始狀態，且總熵不增加的過程。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "quasi-reversible-process",
+      "label": "準可逆過程",
+      "kind": "definition",
+      "summary": "緩慢進行且系統始終接近平衡態，可近似為可逆的真實過程。",
+      "latex": "",
+      "pages": [
+        4,
+        6
+      ]
+    },
+    {
+      "id": "adiabatic-free-expansion",
+      "label": "絕熱自由膨脹",
+      "kind": "concept",
+      "summary": "氣體向真空快速膨脹，無熱交換無做功，是典型的不可逆過程。",
+      "latex": "",
+      "pages": [
+        4,
+        5,
+        51,
+        61
+      ]
+    },
+    {
+      "id": "cyclic-process",
+      "label": "循環過程",
+      "kind": "concept",
+      "summary": "系統經過一系列狀態變化後，最終回到初始狀態的過程。",
+      "latex": "",
+      "pages": [
+        11,
+        14
+      ]
+    },
+    {
+      "id": "isothermal-process",
+      "label": "等溫過程",
+      "kind": "concept",
+      "summary": "系統溫度保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        6,
+        24
+      ]
+    },
+    {
+      "id": "adiabatic-process",
+      "label": "絕熱過程",
+      "kind": "concept",
+      "summary": "系統與外界無熱量交換的熱力學過程。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "isochoric-process",
+      "label": "等容過程",
+      "kind": "concept",
+      "summary": "系統體積保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "isobaric-process",
+      "label": "等壓過程",
+      "kind": "concept",
+      "summary": "系統壓力保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "heat-engine",
+      "label": "熱機",
+      "kind": "concept",
+      "summary": "循環運作，從高溫熱源吸熱並對外做功的裝置。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "stirling-cycle",
+      "label": "史特林循環",
+      "kind": "concept",
+      "summary": "由兩個等溫過程和兩個等容過程組成的熱力學循環。",
+      "latex": "",
+      "pages": [
+        11,
+        33,
+        34
+      ]
+    },
+    {
+      "id": "thermal-efficiency",
+      "label": "熱效率",
+      "kind": "definition",
+      "summary": "熱機做功與從高溫熱源吸收熱量之比值。",
+      "latex": "e = \\frac{W_{eng}}{|Q_h|} = 1 - \\frac{|Q_c|}{|Q_h|}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "kelvin-planck-statement",
+      "label": "克耳文-普朗克定律",
+      "kind": "law",
+      "summary": "不可能建造一個循環運作，只從單一熱源吸熱並完全轉化為功的熱機。",
+      "latex": "",
+      "pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "heat-pump",
+      "label": "熱泵",
+      "kind": "concept",
+      "summary": "逆向運作的熱機，將熱量從低溫處傳遞到高溫處。",
+      "latex": "",
+      "pages": [
+        14,
+        19
+      ]
+    },
+    {
+      "id": "refrigerator",
+      "label": "冰箱",
+      "kind": "concept",
+      "summary": "一種熱泵，將熱量從內部低溫空間傳遞到外部高溫環境。",
+      "latex": "",
+      "pages": [
+        14,
+        18,
+        19
+      ]
+    },
+    {
+      "id": "coefficient-of-performance",
+      "label": "性能係數",
+      "kind": "definition",
+      "summary": "熱泵或冰箱傳遞熱量與輸入功之比值。",
+      "latex": "\\text{COP (heating)} = \\frac{|Q_h|}{W}, \\text{COP(cooling)} = \\frac{|Q_c|}{W}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "clausius-statement",
+      "label": "克勞修斯定律",
+      "kind": "law",
+      "summary": "熱量不可能自發地從低溫物體傳遞到高溫物體，而不產生其他影響。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "equivalence-kelvin-planck-clausius",
+      "label": "克勞修斯與克耳文-普朗克等效性",
+      "kind": "principle",
+      "summary": "熱力學第二定律的克勞修斯表述與克耳文-普朗克表述是等價的。",
+      "latex": "",
+      "pages": [
+        21,
+        22
+      ]
+    },
+    {
+      "id": "carnot-engine",
+      "label": "卡諾熱機",
+      "kind": "concept",
+      "summary": "薩迪·卡諾提出的理論理想熱機，以可逆卡諾循環運作。",
+      "latex": "",
+      "pages": [
+        16,
+        23,
+        25
+      ]
+    },
+    {
+      "id": "carnot-cycle",
+      "label": "卡諾循環",
+      "kind": "concept",
+      "summary": "由兩個等溫可逆過程和兩個絕熱可逆過程組成的理想熱力學循環。",
+      "latex": "",
+      "pages": [
+        23,
+        29
+      ]
+    },
+    {
+      "id": "carnot-theorem",
+      "label": "卡諾定理",
+      "kind": "law",
+      "summary": "所有可逆熱機在相同兩熱源間效率相同，且無熱機效率能超越可逆熱機。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "carnot-engine-efficiency",
+      "label": "卡諾熱機效率",
+      "kind": "formula",
+      "summary": "卡諾熱機的熱效率，僅取決於高低溫熱源的絕對溫度。",
+      "latex": "e_C = 1 - \\frac{T_c}{T_h}",
+      "pages": [
+        29,
+        30
+      ]
+    },
+    {
+      "id": "carnot-cop-heating",
+      "label": "卡諾熱泵性能係數 (加熱)",
+      "kind": "formula",
+      "summary": "理想卡諾熱泵在加熱模式下的性能係數。",
+      "latex": "\\text{COP}_C = \\frac{T_h}{T_h - T_c}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "carnot-cop-cooling",
+      "label": "卡諾冰箱性能係數 (製冷)",
+      "kind": "formula",
+      "summary": "理想卡諾冰箱在製冷模式下的性能係數。",
+      "latex": "\\text{COP}_C = \\frac{T_c}{T_h - T_c}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "internal-combustion-engine",
+      "label": "內燃機",
+      "kind": "concept",
+      "summary": "燃料在引擎內部燃燒產生動力，如汽油引擎和柴油引擎。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "otto-cycle",
+      "label": "奧圖循環",
+      "kind": "concept",
+      "summary": "描述汽油引擎運作的理想熱力學循環，由兩個絕熱和兩個等容過程組成。",
+      "latex": "",
+      "pages": [
+        33,
+        36
+      ]
+    },
+    {
+      "id": "otto-cycle-efficiency",
+      "label": "奧圖循環效率",
+      "kind": "formula",
+      "summary": "奧圖循環的熱效率，取決於壓縮比和比熱比。",
+      "latex": "e=1-\\frac{1}{(V_1/V_2)^{\\gamma-1}}",
+      "pages": [
+        37,
+        38
+      ]
+    },
+    {
+      "id": "diesel-cycle",
+      "label": "狄塞爾循環",
+      "kind": "concept",
+      "summary": "描述柴油引擎運作的理想熱力學循環，包含等壓加熱過程。",
+      "latex": "",
+      "pages": [
+        33,
+        39
+      ]
+    },
+    {
+      "id": "macroscopic-entropy",
+      "label": "巨觀熵",
+      "kind": "definition",
+      "summary": "描述系統巨觀狀態的熱力學量，定義為可逆熱量變化除以絕對溫度。",
+      "latex": "dS = \\frac{dQ_r}{T}",
+      "pages": [
+        41,
+        42
+      ]
+    },
+    {
+      "id": "entropy-state-variable",
+      "label": "熵為狀態函數",
+      "kind": "principle",
+      "summary": "熵的變化僅取決於系統的始末狀態，與路徑無關。",
+      "latex": "",
+      "pages": [
+        42,
+        44,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "entropy-change-reversible-process",
+      "label": "可逆過程熵變",
+      "kind": "formula",
+      "summary": "系統在可逆過程中，熵變定義為可逆熱量變化除以絕對溫度。",
+      "latex": "\\Delta S = \\int \\frac{dQ_r}{T}",
+      "pages": [
+        42,
+        45
+      ]
+    },
+    {
+      "id": "entropy-change-irreversible-process",
+      "label": "不可逆過程熵變",
+      "kind": "formula",
+      "summary": "不可逆過程的熵變，需透過連接相同始末態的可逆路徑計算。",
+      "latex": "\\Delta S = \\int_i^f \\frac{dQ_r}{T}",
+      "pages": [
+        48,
+        49
+      ]
+    },
+    {
+      "id": "law-of-increase-of-entropy",
+      "label": "熵增定律",
+      "kind": "law",
+      "summary": "孤立系統的熵在所有不可逆過程中總是增加，在可逆過程中保持不變。",
+      "latex": "",
+      "pages": [
+        53,
+        54,
+        57
+      ]
+    },
+    {
+      "id": "microscopic-entropy",
+      "label": "微觀熵",
+      "kind": "definition",
+      "summary": "系統巨觀態對應的微觀態數量W的自然對數乘以波茲曼常數。",
+      "latex": "S \\equiv k_B \\ln W",
+      "pages": [
+        57
+      ]
+    },
+    {
+      "id": "boltzmann-entropy-formula",
+      "label": "波茲曼熵公式",
+      "kind": "formula",
+      "summary": "熵與系統微觀態數量之間關係的公式。",
+      "latex": "S \\equiv k_B \\ln W",
+      "pages": [
+        57
+      ]
+    },
+    {
+      "id": "microstate-macrostate",
+      "label": "微觀態與巨觀態",
+      "kind": "concept",
+      "summary": "微觀態是系統組成的具體配置，巨觀態是宏觀變量描述的狀態。",
+      "latex": "",
+      "pages": [
+        58
+      ]
+    },
+    {
+      "id": "heat-death-of-universe",
+      "label": "宇宙熱寂",
+      "kind": "concept",
+      "summary": "宇宙最終達到最大熵的平衡狀態，所有物理過程停止。",
+      "latex": "",
+      "pages": [
+        64
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "irreversible-process",
+      "to": "second-law-thermodynamics",
+      "reason": "不可逆過程是熱力學第二定律的核心概念，第二定律解釋了為何這些過程是不可逆的。"
+    },
+    {
+      "from": "reversible-process",
+      "to": "irreversible-process",
+      "reason": "可逆過程是不可逆過程的對比，有助於理解不可逆過程的特性。"
+    },
+    {
+      "from": "reversible-process",
+      "to": "quasi-reversible-process",
+      "reason": "準可逆過程是可逆過程在現實中的良好近似，理解可逆過程是理解準可逆過程的基礎。"
+    },
+    {
+      "from": "irreversible-process",
+      "to": "adiabatic-free-expansion",
+      "reason": "絕熱自由膨脹是典型的不可逆過程，理解不可逆過程有助於理解此範例。"
+    },
+    {
+      "from": "cyclic-process",
+      "to": "heat-engine",
+      "reason": "熱機必須在循環過程中運作，才能持續對外做功。"
+    },
+    {
+      "from": "isothermal-process",
+      "to": "stirling-cycle",
+      "reason": "史特林循環由等溫過程組成，理解等溫過程是理解史特林循環的基礎。"
+    },
+    {
+      "from": "isochoric-process",
+      "to": "stirling-cycle",
+      "reason": "史特林循環由等容過程組成，理解等容過程是理解史特林循環的基礎。"
+    },
+    {
+      "from": "heat-engine",
+      "to": "stirling-cycle",
+      "reason": "史特林循環是史特林熱機的理論基礎，而史特林熱機是一種熱機。"
+    },
+    {
+      "from": "heat-engine",
+      "to": "thermal-efficiency",
+      "reason": "熱效率是衡量熱機性能的關鍵指標。"
+    },
+    {
+      "from": "second-law-thermodynamics",
+      "to": "kelvin-planck-statement",
+      "reason": "克耳文-普朗克定律是熱力學第二定律的一種重要表述。"
+    },
+    {
+      "from": "thermal-efficiency",
+      "to": "kelvin-planck-statement",
+      "reason": "克耳文-普朗克定律限制了熱機的熱效率上限。"
+    },
+    {
+      "from": "heat-engine",
+      "to": "heat-pump",
+      "reason": "熱泵是熱機的逆向運作模式，理解熱機是理解熱泵的基礎。"
+    },
+    {
+      "from": "heat-pump",
+      "to": "refrigerator",
+      "reason": "冰箱是熱泵的一種特定應用，用於製冷。"
+    },
+    {
+      "from": "heat-pump",
+      "to": "coefficient-of-performance",
+      "reason": "性能係數是衡量熱泵和冰箱性能的指標。"
+    },
+    {
+      "from": "refrigerator",
+      "to": "coefficient-of-performance",
+      "reason": "性能係數是衡量熱泵和冰箱性能的指標。"
+    },
+    {
+      "from": "second-law-thermodynamics",
+      "to": "clausius-statement",
+      "reason": "克勞修斯定律是熱力學第二定律的另一種重要表述。"
+    },
+    {
+      "from": "heat-pump",
+      "to": "clausius-statement",
+      "reason": "克勞修斯定律限制了熱泵的運作方式，特別是關於熱量自發流動的方向。"
+    },
+    {
+      "from": "kelvin-planck-statement",
+      "to": "equivalence-kelvin-planck-clausius",
+      "reason": "理解克耳文-普朗克定律是理解其與克勞修斯定律等效性的前提。"
+    },
+    {
+      "from": "clausius-statement",
+      "to": "equivalence-kelvin-planck-clausius",
+      "reason": "理解克勞修斯定律是理解其與克耳文-普朗克定律等效性的前提。"
+    },
+    {
+      "from": "heat-engine",
+      "to": "carnot-engine",
+      "reason": "卡諾熱機是理想熱機模型，理解熱機是理解卡諾熱機的基礎。"
+    },
+    {
+      "from": "reversible-process",
+      "to": "carnot-engine",
+      "reason": "卡諾熱機是理想的可逆熱機，其運作基於可逆過程。"
+    },
+    {
+      "from": "carnot-engine",
+      "to": "carnot-cycle",
+      "reason": "卡諾循環是卡諾熱機的理論基礎和運作方式。"
+    },
+    {
+      "from": "isothermal-process",
+      "to": "carnot-cycle",
+      "reason": "卡諾循環由等溫過程組成，理解等溫過程是理解卡諾循環的基礎。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "carnot-cycle",
+      "reason": "卡諾循環由絕熱過程組成，理解絕熱過程是理解卡諾循環的基礎。"
+    },
+    {
+      "from": "carnot-engine",
+      "to": "carnot-theorem",
+      "reason": "卡諾定理描述了卡諾熱機的效率特性，是其重要理論結果。"
+    },
+    {
+      "from": "thermal-efficiency",
+      "to": "carnot-theorem",
+      "reason": "卡諾定理確立了熱機效率的上限，並與熱效率概念緊密相關。"
+    },
+    {
+      "from": "carnot-engine",
+      "to": "carnot-engine-efficiency",
+      "reason": "卡諾熱機效率是卡諾熱機的量化性能指標。"
+    },
+    {
+      "from": "carnot-cycle",
+      "to": "carnot-engine-efficiency",
+      "reason": "卡諾熱機效率是根據卡諾循環的特性推導而來。"
+    },
+    {
+      "from": "thermal-efficiency",
+      "to": "carnot-engine-efficiency",
+      "reason": "卡諾熱機效率是熱效率的理想上限，是熱效率概念的延伸。"
+    },
+    {
+      "from": "carnot-engine",
+      "to": "carnot-cop-heating",
+      "reason": "卡諾熱泵性能係數是卡諾熱機作為熱泵運作時的性能指標。"
+    },
+    {
+      "from": "heat-pump",
+      "to": "carnot-cop-heating",
+      "reason": "卡諾熱泵性能係數是理想熱泵的性能上限，是熱泵性能係數的延伸。"
+    },
+    {
+      "from": "coefficient-of-performance",
+      "to": "carnot-cop-heating",
+      "reason": "卡諾熱泵性能係數是理想熱泵的性能上限，是性能係數概念的延伸。"
+    },
+    {
+      "from": "carnot-engine",
+      "to": "carnot-cop-cooling",
+      "reason": "卡諾冰箱性能係數是卡諾熱機作為冰箱運作時的性能指標。"
+    },
+    {
+      "from": "refrigerator",
+      "to": "carnot-cop-cooling",
+      "reason": "卡諾冰箱性能係數是理想冰箱的性能上限，是冰箱性能係數的延伸。"
+    },
+    {
+      "from": "coefficient-of-performance",
+      "to": "carnot-cop-cooling",
+      "reason": "卡諾冰箱性能係數是理想冰箱的性能上限，是性能係數概念的延伸。"
+    },
+    {
+      "from": "heat-engine",
+      "to": "internal-combustion-engine",
+      "reason": "內燃機是熱機的一種主要類型，理解熱機是理解內燃機的基礎。"
+    },
+    {
+      "from": "internal-combustion-engine",
+      "to": "otto-cycle",
+      "reason": "奧圖循環是描述汽油引擎（一種內燃機）運作的理想模型。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "otto-cycle",
+      "reason": "奧圖循環由絕熱過程組成，理解絕熱過程是理解奧圖循環的基礎。"
+    },
+    {
+      "from": "isochoric-process",
+      "to": "otto-cycle",
+      "reason": "奧圖循環由等容過程組成，理解等容過程是理解奧圖循環的基礎。"
+    },
+    {
+      "from": "otto-cycle",
+      "to": "otto-cycle-efficiency",
+      "reason": "奧圖循環效率是奧圖循環的量化性能指標。"
+    },
+    {
+      "from": "thermal-efficiency",
+      "to": "otto-cycle-efficiency",
+      "reason": "奧圖循環效率是熱效率的一種具體計算，是熱效率概念的延伸。"
+    },
+    {
+      "from": "internal-combustion-engine",
+      "to": "diesel-cycle",
+      "reason": "狄塞爾循環是描述柴油引擎（一種內燃機）運作的理想模型。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "diesel-cycle",
+      "reason": "狄塞爾循環由絕熱過程組成，理解絕熱過程是理解狄塞爾循環的基礎。"
+    },
+    {
+      "from": "isochoric-process",
+      "to": "diesel-cycle",
+      "reason": "狄塞爾循環由等容過程組成，理解等容過程是理解狄塞爾循環的基礎。"
+    },
+    {
+      "from": "isobaric-process",
+      "to": "diesel-cycle",
+      "reason": "狄塞爾循環由等壓過程組成，理解等壓過程是理解狄塞爾循環的基礎。"
+    },
+    {
+      "from": "second-law-thermodynamics",
+      "to": "macroscopic-entropy",
+      "reason": "巨觀熵是熱力學第二定律的量化描述，理解第二定律有助於理解熵的引入。"
+    },
+    {
+      "from": "macroscopic-entropy",
+      "to": "entropy-state-variable",
+      "reason": "熵作為狀態函數是巨觀熵的一個基本特性。"
+    },
+    {
+      "from": "macroscopic-entropy",
+      "to": "entropy-change-reversible-process",
+      "reason": "可逆過程熵變是巨觀熵的定義和計算方式之一。"
+    },
+    {
+      "from": "reversible-process",
+      "to": "entropy-change-reversible-process",
+      "reason": "可逆過程熵變是針對可逆過程定義的，理解可逆過程是前提。"
+    },
+    {
+      "from": "macroscopic-entropy",
+      "to": "entropy-change-irreversible-process",
+      "reason": "不可逆過程熵變是巨觀熵在不可逆過程中的計算方法。"
+    },
+    {
+      "from": "irreversible-process",
+      "to": "entropy-change-irreversible-process",
+      "reason": "不可逆過程熵變是針對不可逆過程計算的，理解不可逆過程是前提。"
+    },
+    {
+      "from": "entropy-state-variable",
+      "to": "entropy-change-irreversible-process",
+      "reason": "熵的狀態函數特性允許我們透過可逆路徑計算不可逆過程的熵變。"
+    },
+    {
+      "from": "second-law-thermodynamics",
+      "to": "law-of-increase-of-entropy",
+      "reason": "熵增定律是熱力學第二定律的統計力學表述，解釋了宇宙的演化方向。"
+    },
+    {
+      "from": "irreversible-process",
+      "to": "law-of-increase-of-entropy",
+      "reason": "熵增定律指出孤立系統的熵在不可逆過程中總是增加。"
+    },
+    {
+      "from": "macroscopic-entropy",
+      "to": "law-of-increase-of-entropy",
+      "reason": "熵增定律是巨觀熵在孤立系統中的行為準則。"
+    },
+    {
+      "from": "macroscopic-entropy",
+      "to": "microscopic-entropy",
+      "reason": "微觀熵提供了巨觀熵的統計力學基礎，解釋了其本質。"
+    },
+    {
+      "from": "microscopic-entropy",
+      "to": "boltzmann-entropy-formula",
+      "reason": "波茲曼熵公式是微觀熵的定義公式。"
+    },
+    {
+      "from": "microscopic-entropy",
+      "to": "microstate-macrostate",
+      "reason": "理解微觀態與巨觀態是理解微觀熵定義的基礎。"
+    },
+    {
+      "from": "law-of-increase-of-entropy",
+      "to": "heat-death-of-universe",
+      "reason": "宇宙熱寂是熵增定律在宇宙尺度上的最終推論。"
+    }
+  ],
+  "chapter_number": 20,
+  "usage": {
+    "input_tokens": 27524,
+    "output_tokens": 6505
+  }
+}

@@ -1,0 +1,732 @@
+{
+  "nodes": [
+    {
+      "id": "maxwells-equations",
+      "label": "馬克士威方程式",
+      "kind": "law",
+      "summary": "描述電場與磁場如何產生、變化，並預測電磁波存在的四個基本方程式。",
+      "latex": "\\oint \\vec{E} \\cdot d\\vec{a} = \\frac{q}{\\varepsilon_0} \\\\ \\oint \\vec{B} \\cdot d\\vec{a} = 0 \\\\ \\oint \\vec{E} \\cdot d\\vec{\\ell} = -\\frac{d\\Phi_B}{dt} \\\\ \\oint \\vec{B} \\cdot d\\vec{\\ell} = \\mu_0 I + \\mu_0 \\varepsilon_0 \\frac{d\\Phi_E}{dt}",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "lorentz-force",
+      "label": "勞侖茲力",
+      "kind": "formula",
+      "summary": "描述帶電粒子在電磁場中所受的力。",
+      "latex": "\\vec{F} = q(\\vec{E} + \\vec{v} \\times \\vec{B})",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "em-wave-equation-vacuum",
+      "label": "真空電磁波方程式",
+      "kind": "formula",
+      "summary": "從馬克士威方程式推導出的電場和磁場在真空中傳播的波動方程式。",
+      "latex": "\\frac{\\partial^2 E}{\\partial x^2} = \\mu_o \\varepsilon_o \\frac{\\partial^2 E}{\\partial t^2} \\\\ \\frac{\\partial^2 B}{\\partial x^2} = \\mu_o \\varepsilon_o \\frac{\\partial^2 B}{\\partial t^2}",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "speed-of-light-em-constants",
+      "label": "光速（電磁常數）",
+      "kind": "formula",
+      "summary": "電磁波在真空中傳播的速度，由真空介電常數和真空磁導率決定。",
+      "latex": "c = \\frac{1}{\\sqrt{\\mu_o \\varepsilon_o}}",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "light-as-em-wave",
+      "label": "光即電磁波",
+      "kind": "concept",
+      "summary": "馬克士威預測光波本質上是電磁波。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "radiation-accelerated-charges",
+      "label": "加速電荷輻射",
+      "kind": "principle",
+      "summary": "任何加速中的電荷都會輻射電磁波。",
+      "latex": "",
+      "pages": [
+        3,
+        26
+      ]
+    },
+    {
+      "id": "hertzs-experiment",
+      "label": "赫茲實驗",
+      "kind": "method",
+      "summary": "赫茲透過實驗證明電磁波的存在及其性質，驗證馬克士威的預測。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "lc-oscillator",
+      "label": "LC 振盪器",
+      "kind": "concept",
+      "summary": "由電感和電容組成的電路，能產生電磁振盪。",
+      "latex": "",
+      "pages": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "mechanical-waves",
+      "label": "機械波",
+      "kind": "concept",
+      "summary": "需要介質才能傳播的波，如繩波、聲波、水波。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "em-waves-definition",
+      "label": "電磁波定義",
+      "kind": "definition",
+      "summary": "不需介質即可傳播，由空間中電場和磁場的振盪組成。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "general-wave-equation",
+      "label": "一般波動方程式",
+      "kind": "formula",
+      "summary": "描述波在介質中傳播的數學形式。",
+      "latex": "\\frac{\\partial^2 y}{\\partial x^2} = \\frac{1}{v^2} \\frac{\\partial^2 y}{\\partial t^2}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "sinusoidal-wave-function",
+      "label": "正弦波函數",
+      "kind": "formula",
+      "summary": "描述正弦波隨位置和時間變化的數學函數。",
+      "latex": "y(x,t) = A \\cos(kx - \\omega t + \\phi)",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "sinusoidal-em-wave-solution",
+      "label": "正弦電磁波解",
+      "kind": "formula",
+      "summary": "電磁波方程式的最簡單解，描述電場和磁場的正弦振盪。",
+      "latex": "\\vec{E}(x,t) = \\vec{E}_0 \\cos(kx - \\omega t + \\phi_E) \\\\ \\vec{B}(x,t) = \\vec{B}_0 \\cos(kx - \\omega t + \\phi_B)",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "angular-wave-number",
+      "label": "角波數",
+      "kind": "definition",
+      "summary": "描述波空間週期性的物理量，與波長相關。",
+      "latex": "k = 2\\pi/\\lambda",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "angular-frequency",
+      "label": "角頻率",
+      "kind": "definition",
+      "summary": "描述波時間週期性的物理量，與頻率相關。",
+      "latex": "\\omega = 2\\pi f",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "speed-em-wave-lambda-f",
+      "label": "電磁波速（波長頻率）",
+      "kind": "formula",
+      "summary": "電磁波速度等於波長乘以頻率。",
+      "latex": "c = \\lambda f",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "properties-em-waves",
+      "label": "電磁波性質",
+      "kind": "concept",
+      "summary": "電場與磁場互相垂直、與傳播方向垂直、振幅比為光速、同相位。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "e-b-field-ratio",
+      "label": "電磁場比值",
+      "kind": "formula",
+      "summary": "電磁波中電場最大值與磁場最大值之比等於光速。",
+      "latex": "\\frac{E_{max}}{B_{max}} = c",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "transverse-wave",
+      "label": "橫波",
+      "kind": "concept",
+      "summary": "波的振動方向與傳播方向垂直的波。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "superposition-principle-em",
+      "label": "電磁波疊加原理",
+      "kind": "principle",
+      "summary": "多個電磁波在同一點相遇時，其總電場和總磁場是各個波的向量和。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "monochromatic-plane-wave",
+      "label": "單色平面波",
+      "kind": "concept",
+      "summary": "具有單一頻率且波前為平面的理想電磁波。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "spherical-wave",
+      "label": "球面波",
+      "kind": "concept",
+      "summary": "從點源向外均勻傳播，波前為球面的電磁波。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "optical-vortex",
+      "label": "光學渦旋",
+      "kind": "concept",
+      "summary": "光波波前像螺旋般扭曲，中心光強度為零的特殊光束。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "polarization-em",
+      "label": "電磁波偏振",
+      "kind": "definition",
+      "summary": "電磁波電場向量的振動方向特性。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "linear-polarization",
+      "label": "線偏振",
+      "kind": "concept",
+      "summary": "電場向量在單一平面內振動的偏振狀態。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "circular-polarization",
+      "label": "圓偏振",
+      "kind": "concept",
+      "summary": "電場向量末端軌跡為圓形的偏振狀態。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "elliptical-polarization",
+      "label": "橢圓偏振",
+      "kind": "concept",
+      "summary": "電場向量末端軌跡為橢圓形的偏振狀態。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "em-wave-in-matter-e-b-ratio",
+      "label": "介質中電磁場比",
+      "kind": "formula",
+      "summary": "電磁波在介質中電場強度與磁場強度之比等於其在介質中的速度。",
+      "latex": "\\frac{E}{B} = v",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "speed-em-wave-in-matter",
+      "label": "介質中電磁波速",
+      "kind": "formula",
+      "summary": "電磁波在介質中傳播的速度，由介質的介電常數和磁導率決定。",
+      "latex": "v = \\frac{1}{\\sqrt{\\varepsilon\\mu}}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "refractive-index",
+      "label": "折射率",
+      "kind": "definition",
+      "summary": "介質中光速與真空中光速之比，描述光在介質中傳播速度的減慢程度。",
+      "latex": "n = \\frac{c}{v} = \\sqrt{KK_m}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "energy-density-electric",
+      "label": "電場能量密度",
+      "kind": "formula",
+      "summary": "單位體積內儲存的電場能量。",
+      "latex": "u_E = \\frac{1}{2} \\epsilon_o E^2",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "energy-density-magnetic",
+      "label": "磁場能量密度",
+      "kind": "formula",
+      "summary": "單位體積內儲存的磁場能量。",
+      "latex": "u_B = \\frac{B^2}{2\\mu_o}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "poynting-vector",
+      "label": "坡印亭向量",
+      "kind": "formula",
+      "summary": "描述電磁波能量流動方向和大小的向量，其大小等於單位時間通過單位面積的能量。",
+      "latex": "S = \\frac{1}{\\mu_0} |\\vec{E} \\times \\vec{B}|",
+      "pages": [
+        13,
+        16
+      ]
+    },
+    {
+      "id": "intensity-em-wave",
+      "label": "電磁波強度",
+      "kind": "definition",
+      "summary": "電磁波傳播方向上單位面積在單位時間內傳輸的平均能量。",
+      "latex": "I = \\frac{E_{\\text{max}}^2}{2\\mu_o c}",
+      "pages": [
+        13,
+        14
+      ]
+    },
+    {
+      "id": "intensity-spherical-wave",
+      "label": "球面波強度",
+      "kind": "formula",
+      "summary": "球面波的強度隨距離平方反比衰減。",
+      "latex": "I = \\frac{P_s}{4\\pi r^2}",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "momentum-em-wave",
+      "label": "電磁波動量",
+      "kind": "concept",
+      "summary": "電磁波不僅攜帶能量，也攜帶動量。",
+      "latex": "P_{\\text{momentum}} = \\frac{U_{EB}}{c}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "radiation-pressure-absorption",
+      "label": "輻射壓（完全吸收）",
+      "kind": "formula",
+      "summary": "電磁波被表面完全吸收時所施加的壓力。",
+      "latex": "\\mathbb{P}_a = S/c",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "radiation-pressure-reflection",
+      "label": "輻射壓（完全反射）",
+      "kind": "formula",
+      "summary": "電磁波被表面完全反射時所施加的壓力。",
+      "latex": "\\mathbb{P}_r = 2S/c",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "radiation-pressure-partial-reflection",
+      "label": "輻射壓（部分反射）",
+      "kind": "formula",
+      "summary": "電磁波被表面部分反射時所施加的壓力。",
+      "latex": "\\mathbb{P} = (1+f)S/c",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "laser-cooling-trapping",
+      "label": "雷射冷卻與囚禁",
+      "kind": "method",
+      "summary": "利用雷射光的輻射壓力來減緩並限制原子的運動。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "optical-tweezers",
+      "label": "光學鑷子",
+      "kind": "method",
+      "summary": "利用高度聚焦的雷射光束產生微小的力來捕捉和移動微觀物體。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "standing-em-waves",
+      "label": "駐波電磁波",
+      "kind": "concept",
+      "summary": "由兩個方向相反的行進電磁波疊加形成，能量不傳播。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "standing-em-wave-fields",
+      "label": "駐波電磁場",
+      "kind": "formula",
+      "summary": "描述駐波電磁波中電場和磁場隨位置和時間變化的數學表達式。",
+      "latex": "E_y(x,t) = -2E_{\\text{max}} \\sin(kx) \\sin(\\omega t) \\\\ B_z(x,t) = -2B_{\\text{max}} \\cos(kx) \\cos(\\omega t)",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "poynting-vector-standing-waves",
+      "label": "駐波坡印亭向量",
+      "kind": "formula",
+      "summary": "駐波電磁波的坡印亭向量，其時間平均值為零，表示沒有淨能量傳輸。",
+      "latex": "\\langle \\vec{S}(t) \\rangle = 0",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "producing-em-waves-mechanism",
+      "label": "電磁波產生機制",
+      "kind": "principle",
+      "summary": "電磁波的產生根本上是由加速中的帶電粒子引起。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "synchrotron-radiation",
+      "label": "同步輻射",
+      "kind": "concept",
+      "summary": "帶電粒子在磁場中加速時發出的電磁輻射。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "half-wave-antenna",
+      "label": "半波天線",
+      "kind": "method",
+      "summary": "一種常見的偶極天線，其總長度約為發射電磁波波長的一半。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "dipole-radiation-pattern",
+      "label": "偶極輻射圖",
+      "kind": "concept",
+      "summary": "描述偶極天線發射電磁波強度在空間中分佈的圖案。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "electromagnetic-spectrum",
+      "label": "電磁波譜",
+      "kind": "concept",
+      "summary": "依波長或頻率順序排列的所有電磁波的範圍。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "maxwells-equations",
+      "to": "em-wave-equation-vacuum",
+      "reason": "真空電磁波方程式是從馬克士威方程式推導而來。"
+    },
+    {
+      "from": "em-wave-equation-vacuum",
+      "to": "speed-of-light-em-constants",
+      "reason": "光速的公式是從電磁波方程式的形式中推導出來的。"
+    },
+    {
+      "from": "speed-of-light-em-constants",
+      "to": "light-as-em-wave",
+      "reason": "計算出的電磁波速度與光速相符，使馬克士威預測光是電磁波。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "radiation-accelerated-charges",
+      "reason": "加速電荷輻射電磁波是馬克士威方程式的一個重要結果。"
+    },
+    {
+      "from": "radiation-accelerated-charges",
+      "to": "hertzs-experiment",
+      "reason": "赫茲實驗是為了驗證加速電荷輻射電磁波的預測。"
+    },
+    {
+      "from": "lc-oscillator",
+      "to": "hertzs-experiment",
+      "reason": "LC振盪器是赫茲實驗中產生電磁波的關鍵組件。"
+    },
+    {
+      "from": "general-wave-equation",
+      "to": "em-wave-equation-vacuum",
+      "reason": "真空電磁波方程式是廣義波動方程式的一個特定形式。"
+    },
+    {
+      "from": "sinusoidal-wave-function",
+      "to": "sinusoidal-em-wave-solution",
+      "reason": "正弦電磁波解是正弦波函數在電磁波領域的具體應用。"
+    },
+    {
+      "from": "angular-wave-number",
+      "to": "sinusoidal-em-wave-solution",
+      "reason": "角波數是描述正弦電磁波空間特性的重要參數。"
+    },
+    {
+      "from": "angular-frequency",
+      "to": "sinusoidal-em-wave-solution",
+      "reason": "角頻率是描述正弦電磁波時間特性的重要參數。"
+    },
+    {
+      "from": "angular-wave-number",
+      "to": "speed-em-wave-lambda-f",
+      "reason": "電磁波速度的公式涉及角波數和角頻率的關係。"
+    },
+    {
+      "from": "angular-frequency",
+      "to": "speed-em-wave-lambda-f",
+      "reason": "電磁波速度的公式涉及角頻率和角波數的關係。"
+    },
+    {
+      "from": "speed-em-wave-lambda-f",
+      "to": "properties-em-waves",
+      "reason": "電磁波的速度是其基本性質之一。"
+    },
+    {
+      "from": "e-b-field-ratio",
+      "to": "properties-em-waves",
+      "reason": "電場與磁場的比值是電磁波的重要性質之一。"
+    },
+    {
+      "from": "transverse-wave",
+      "to": "properties-em-waves",
+      "reason": "電磁波是橫波是其基本性質之一。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "properties-em-waves",
+      "reason": "理解電磁波的定義是理解其性質的基礎。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "monochromatic-plane-wave",
+      "reason": "單色平面波是一種特定類型的電磁波。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "spherical-wave",
+      "reason": "球面波是一種特定類型的電磁波。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "polarization-em",
+      "reason": "偏振是電磁波的一個重要特性。"
+    },
+    {
+      "from": "polarization-em",
+      "to": "linear-polarization",
+      "reason": "線偏振是電磁波偏振的一種形式。"
+    },
+    {
+      "from": "polarization-em",
+      "to": "circular-polarization",
+      "reason": "圓偏振是電磁波偏振的一種形式。"
+    },
+    {
+      "from": "polarization-em",
+      "to": "elliptical-polarization",
+      "reason": "橢圓偏振是電磁波偏振的一種形式。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "em-wave-in-matter-e-b-ratio",
+      "reason": "理解電磁波在介質中的行為需要先理解電磁波本身。"
+    },
+    {
+      "from": "em-wave-in-matter-e-b-ratio",
+      "to": "speed-em-wave-in-matter",
+      "reason": "介質中電場與磁場的比值等於電磁波在介質中的速度。"
+    },
+    {
+      "from": "speed-em-wave-in-matter",
+      "to": "refractive-index",
+      "reason": "折射率是根據電磁波在介質中的速度來定義的。"
+    },
+    {
+      "from": "energy-density-electric",
+      "to": "poynting-vector",
+      "reason": "坡印亭向量描述電磁波的能量流動，與電場能量密度相關。"
+    },
+    {
+      "from": "energy-density-magnetic",
+      "to": "poynting-vector",
+      "reason": "坡印亭向量描述電磁波的能量流動，與磁場能量密度相關。"
+    },
+    {
+      "from": "poynting-vector",
+      "to": "intensity-em-wave",
+      "reason": "電磁波強度是坡印亭向量的時間平均值。"
+    },
+    {
+      "from": "intensity-em-wave",
+      "to": "intensity-spherical-wave",
+      "reason": "球面波強度是電磁波強度在球面波情況下的具體應用。"
+    },
+    {
+      "from": "intensity-em-wave",
+      "to": "radiation-pressure-absorption",
+      "reason": "輻射壓力的計算需要用到電磁波強度。"
+    },
+    {
+      "from": "intensity-em-wave",
+      "to": "radiation-pressure-reflection",
+      "reason": "輻射壓力的計算需要用到電磁波強度。"
+    },
+    {
+      "from": "intensity-em-wave",
+      "to": "radiation-pressure-partial-reflection",
+      "reason": "輻射壓力的計算需要用到電磁波強度。"
+    },
+    {
+      "from": "momentum-em-wave",
+      "to": "radiation-pressure-absorption",
+      "reason": "輻射壓力是電磁波動量傳遞的結果。"
+    },
+    {
+      "from": "momentum-em-wave",
+      "to": "radiation-pressure-reflection",
+      "reason": "輻射壓力是電磁波動量傳遞的結果。"
+    },
+    {
+      "from": "momentum-em-wave",
+      "to": "radiation-pressure-partial-reflection",
+      "reason": "輻射壓力是電磁波動量傳遞的結果。"
+    },
+    {
+      "from": "radiation-pressure-partial-reflection",
+      "to": "laser-cooling-trapping",
+      "reason": "雷射冷卻與囚禁技術是輻射壓力原理的應用。"
+    },
+    {
+      "from": "radiation-pressure-partial-reflection",
+      "to": "optical-tweezers",
+      "reason": "光學鑷子技術是輻射壓力原理的應用。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "standing-em-waves",
+      "reason": "駐波電磁波是電磁波的一種特殊形式。"
+    },
+    {
+      "from": "sinusoidal-em-wave-solution",
+      "to": "standing-em-wave-fields",
+      "reason": "駐波電磁場是由兩個方向相反的正弦電磁波疊加形成的。"
+    },
+    {
+      "from": "standing-em-wave-fields",
+      "to": "poynting-vector-standing-waves",
+      "reason": "駐波坡印亭向量是根據駐波電磁場的電場和磁場計算得出的。"
+    },
+    {
+      "from": "radiation-accelerated-charges",
+      "to": "producing-em-waves-mechanism",
+      "reason": "加速電荷輻射是電磁波產生的根本機制。"
+    },
+    {
+      "from": "producing-em-waves-mechanism",
+      "to": "synchrotron-radiation",
+      "reason": "同步輻射是加速電荷產生電磁波的一個具體例子。"
+    },
+    {
+      "from": "producing-em-waves-mechanism",
+      "to": "half-wave-antenna",
+      "reason": "半波天線是利用加速電荷原理產生電磁波的裝置。"
+    },
+    {
+      "from": "half-wave-antenna",
+      "to": "dipole-radiation-pattern",
+      "reason": "偶極輻射圖描述了半波天線發射電磁波的空間分佈特性。"
+    },
+    {
+      "from": "em-waves-definition",
+      "to": "electromagnetic-spectrum",
+      "reason": "電磁波譜是對所有電磁波進行分類和組織的總覽。"
+    }
+  ],
+  "chapter_number": 32,
+  "usage": {
+    "input_tokens": 11871,
+    "output_tokens": 6868
+  }
+}

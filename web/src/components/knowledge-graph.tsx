@@ -2,21 +2,22 @@
 
 import { useState, useMemo } from "react";
 import { useTheme } from "./theme-provider";
+import { ConceptDetailGraph } from "./concept-detail-graph";
 
 /* ─── Concept Graph Data ─── */
-/* Initial draft auto-generated from Ch01–Ch31 chapter titles.
- * Each node represents one chapter's headline concept. Categories:
+/* Categories:
  *   mechanics      — Ch01–Ch12
  *   waves_fluid    — Ch13–Ch16  (SHM, fluids, mechanical waves, sound)
  *   thermo         — Ch17–Ch20
- *   em             — Ch21–Ch31  (electric + magnetic + AC)
- * Layout positions are tuned for a 1100×720 SVG; adjust freely. */
+ *   em             — Ch21–Ch32  (electric, magnetic, AC, EM waves)
+ *   optics         — Ch33–Ch36  (light propagation, geometric, interference, diffraction)
+ * Layout positions are tuned for a 1100×820 SVG; adjust freely. */
 
 interface ConceptNode {
   id: string;
   label: string;
   chapter: number;
-  category: "mechanics" | "waves_fluid" | "thermo" | "em";
+  category: "mechanics" | "waves_fluid" | "thermo" | "em" | "optics";
   x: number;
   y: number;
 }
@@ -68,6 +69,12 @@ const NODES: ConceptNode[] = [
   { id: "ch30", label: "電感", chapter: 30, category: "em", x: 510, y: 640 },
   { id: "ch31", label: "交流電路", chapter: 31, category: "em", x: 650, y: 640 },
   { id: "ch32", label: "電磁波", chapter: 32, category: "em", x: 790, y: 640 },
+
+  // Optics — row 7 (Ch33–Ch36)
+  { id: "ch33", label: "光的傳播", chapter: 33, category: "optics", x: 90, y: 760 },
+  { id: "ch34", label: "幾何光學", chapter: 34, category: "optics", x: 230, y: 760 },
+  { id: "ch35", label: "干涉", chapter: 35, category: "optics", x: 370, y: 760 },
+  { id: "ch36", label: "繞射", chapter: 36, category: "optics", x: 510, y: 760 },
 ];
 
 const EDGES: ConceptEdge[] = [
@@ -112,6 +119,12 @@ const EDGES: ConceptEdge[] = [
   // EM waves draw on Faraday's law (induction) and AC oscillation
   { from: "ch29", to: "ch32" },
   { from: "ch31", to: "ch32" },
+  // Optics — EM waves form the basis of light; geometric optics → wave optics
+  { from: "ch32", to: "ch33" },
+  { from: "ch33", to: "ch34" },
+  { from: "ch33", to: "ch35" },
+  { from: "ch15", to: "ch35" },
+  { from: "ch35", to: "ch36" },
 ];
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
@@ -119,9 +132,10 @@ const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string
   waves_fluid: { bg: "bg-emerald-50 dark:bg-emerald-950/30", border: "border-emerald-300 dark:border-emerald-700", text: "text-emerald-700 dark:text-emerald-300", label: "振盪、流體與波動", svgFill: "#ecfdf5", svgStroke: "#6ee7b7", svgFillSelected: "#d1fae5", svgStrokeSelected: "#10b981" },
   thermo:      { bg: "bg-amber-50 dark:bg-amber-950/30",   border: "border-amber-300 dark:border-amber-700",   text: "text-amber-700 dark:text-amber-300",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
   em:          { bg: "bg-purple-50 dark:bg-purple-950/30",  border: "border-purple-300 dark:border-purple-700",  text: "text-purple-700 dark:text-purple-300",  label: "電磁學",          svgFill: "#faf5ff", svgStroke: "#d8b4fe", svgFillSelected: "#f3e8ff", svgStrokeSelected: "#a855f7" },
+  optics:      { bg: "bg-rose-50 dark:bg-rose-950/30",      border: "border-rose-300 dark:border-rose-700",      text: "text-rose-700 dark:text-rose-300",      label: "光學",            svgFill: "#fff1f2", svgStroke: "#fda4af", svgFillSelected: "#ffe4e6", svgStrokeSelected: "#f43f5e" },
 };
 
-const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em"];
+const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em", "optics"];
 
 /* ─── Component ─── */
 
@@ -131,6 +145,7 @@ interface KnowledgeGraphProps {
 }
 
 export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const { effective: theme } = useTheme();
@@ -159,7 +174,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
   const selectedNodeData = selectedNode ? nodeMap.get(selectedNode) : null;
 
   const svgWidth = 1100;
-  const svgHeight = 720;
+  const svgHeight = 820;
 
   return (
     <div className="flex flex-col h-screen">
@@ -175,9 +190,38 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
         </button>
         <span className="text-xl">🧠</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">概念知識圖譜</h1>
+
+        <div className="ml-3 flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+          <button
+            onClick={() => setTab("overview")}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              tab === "overview"
+                ? "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+            }`}
+          >
+            章節總覽
+          </button>
+          <button
+            onClick={() => setTab("detail")}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              tab === "detail"
+                ? "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+            }`}
+          >
+            細節圖譜
+          </button>
+        </div>
+
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系 · 普通物理</span>
       </header>
 
+      {tab === "detail" ? (
+        <div className="flex-1 overflow-hidden px-4 py-4 min-h-0">
+          <ConceptDetailGraph onNavigate={onNavigate} />
+        </div>
+      ) : (
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Legend */}
@@ -443,6 +487,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }

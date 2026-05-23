@@ -1,0 +1,560 @@
+{
+  "nodes": [
+    {
+      "id": "linear-momentum-definition",
+      "label": "線動量定義",
+      "kind": "definition",
+      "summary": "線動量定義為物體的質量與速度的乘積。",
+      "latex": "P = mv",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "momentum-conservation",
+      "label": "動量守恆",
+      "kind": "principle",
+      "summary": "孤立系統的總線動量保持不變。",
+      "latex": "",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "newtons-second-law-momentum-form",
+      "label": "牛頓第二定律(動量)",
+      "kind": "law",
+      "summary": "線動量的時間變化率等於作用在物體上的淨力。",
+      "latex": "F = dP/dt",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "impulse-definition",
+      "label": "衝量定義",
+      "kind": "definition",
+      "summary": "作用在粒子上的力在一段時間內的積分，等於粒子動量的變化。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "impulse-momentum-theorem",
+      "label": "衝量動量定理",
+      "kind": "formula",
+      "summary": "作用在物體上的衝量等於物體動量的變化量。",
+      "latex": "I = \\Delta P = \\int_{t_i}^{t_f} F dt",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "collision-concept",
+      "label": "碰撞",
+      "kind": "concept",
+      "summary": "物體間在相對短時間內發生的強烈交互作用。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "elastic-collision-definition",
+      "label": "彈性碰撞",
+      "kind": "definition",
+      "summary": "碰撞前後系統的總動能守恆的碰撞。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "inelastic-collision-definition",
+      "label": "非彈性碰撞",
+      "kind": "definition",
+      "summary": "碰撞前後系統的總動能不守恆的碰撞。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "1d-head-on-elastic-collision-formulas",
+      "label": "一維彈性碰撞公式",
+      "kind": "formula",
+      "summary": "描述一維彈性碰撞中動量與動能守恆的方程式組。",
+      "latex": "m_1 v_{1i} + m_2 v_{2i} = m_1 v_{1f} + m_2 v_{2f} \\\\ \\frac{1}{2} m_1 v_{1i}^2 + \\frac{1}{2} m_2 v_{2i}^2 = \\frac{1}{2} m_1 v_{1f}^2 + \\frac{1}{2} m_2 v_{2f}^2",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "relative-velocity-elastic-collision",
+      "label": "彈性碰撞相對速度",
+      "kind": "formula",
+      "summary": "彈性碰撞中，碰撞前後相對速度大小相等方向相反。",
+      "latex": "v_{1i} - v_{2i} = -(v_{1f} - v_{2f})",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "center-of-mass-velocity",
+      "label": "質心速度",
+      "kind": "formula",
+      "summary": "系統總動量除以總質量，描述質心的運動速度。",
+      "latex": "v_{CM} = \\frac{m_1 v_{1i} + m_2 v_{2i}}{m_1 + m_2}",
+      "pages": [
+        13,
+        36
+      ]
+    },
+    {
+      "id": "identical-particles-elastic-collision",
+      "label": "相同粒子彈性碰撞",
+      "kind": "principle",
+      "summary": "相同質量粒子彈性碰撞後，會交換彼此的速度。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "elastic-collision-stationary-target-formulas",
+      "label": "靜止靶彈性碰撞",
+      "kind": "formula",
+      "summary": "描述物體與靜止靶進行一維彈性碰撞後的速度、動量及動能轉換公式。",
+      "latex": "v_{1f} = \\left(\\frac{m_1 - m_2}{m_1 + m_2}\\right) v_{1i} \\\\ v_{2f} = \\left(\\frac{2m_1}{m_1 + m_2}\\right) v_{1i}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "kinetic-energy-transfer-elastic-collision",
+      "label": "彈性碰撞動能轉換",
+      "kind": "formula",
+      "summary": "描述一維彈性碰撞中，動能如何在碰撞物體間轉移的比例關係。",
+      "latex": "\\frac{K_{1f}}{K_{1i}} = \\left(\\frac{m_1 - m_2}{m_1 + m_2}\\right)^2 \\\\ \\frac{K_{2f}}{K_{1i}} = \\frac{4m_1 m_2}{(m_1 + m_2)^2}",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "perfectly-inelastic-collision-definition",
+      "label": "完全非彈性碰撞",
+      "kind": "definition",
+      "summary": "碰撞後物體黏在一起，以共同速度運動，且動能損失最大的碰撞。",
+      "latex": "",
+      "pages": [
+        18,
+        19
+      ]
+    },
+    {
+      "id": "final-velocity-perfectly-inelastic-collision",
+      "label": "完全非彈性碰撞末速",
+      "kind": "formula",
+      "summary": "碰撞後物體黏在一起，其共同末速度由總動量守恆決定。",
+      "latex": "v_f = \\frac{m_1 v_{1i} + m_2 v_{2i}}{m_1 + m_2}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "coefficient-of-restitution",
+      "label": "恢復係數",
+      "kind": "definition",
+      "summary": "碰撞後相對速度與碰撞前相對速度大小之比值，用於量化碰撞的彈性程度。",
+      "latex": "e = \\frac{|v_{1f} - v_{2f}|}{|v_{1i} - v_{2i}|}",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "ballistic-pendulum-method",
+      "label": "彈道擺法",
+      "kind": "method",
+      "summary": "利用非彈性碰撞和能量守恆原理，測量子彈初速度的方法。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "2d-elastic-glancing-collision",
+      "label": "二維彈性擦撞",
+      "kind": "concept",
+      "summary": "描述物體在二維平面上發生彈性碰撞，且非正向撞擊的情況。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "2d-elastic-glancing-collision-formulas",
+      "label": "二維彈性擦撞公式",
+      "kind": "formula",
+      "summary": "描述二維彈性擦撞中動量與動能守恆的方程式組。",
+      "latex": "m_1 v_{1i} = m_1 v_{1f} \\cos \\theta + m_2 v_{2f} \\cos \\phi \\\\ 0 = m_1 v_{1f} \\sin \\theta - m_2 v_{2f} \\sin \\phi \\\\ \\frac{1}{2} m_1 v_{1i}^2 = \\frac{1}{2} m_1 v_{1f}^2 + \\frac{1}{2} m_2 v_{2f}^2",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "impact-parameter",
+      "label": "撞擊參數",
+      "kind": "concept",
+      "summary": "碰撞前入射物體速度向量與靶心連線的垂直距離。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "scattering-angle-2d-elastic-collision",
+      "label": "二維彈性碰撞散射角",
+      "kind": "principle",
+      "summary": "二維彈性碰撞後兩物體散射角度與其質量比的關係。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "center-of-mass-concept",
+      "label": "質心",
+      "kind": "concept",
+      "summary": "系統質量加權平均位置，系統運動如同所有外力作用於此點。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "cm-discrete-objects-formula",
+      "label": "離散質點質心",
+      "kind": "formula",
+      "summary": "計算由多個離散質點組成的系統的質心位置。",
+      "latex": "\\vec{r}_{CM} = \\frac{\\sum_i m_i \\vec{r}_i}{M}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "cm-continuous-objects-formula",
+      "label": "連續物體質心",
+      "kind": "formula",
+      "summary": "計算連續質量分佈物體的質心位置。",
+      "latex": "\\vec{r}_{CM} = \\frac{\\int \\vec{r} dm}{M}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "center-of-gravity",
+      "label": "重心",
+      "kind": "concept",
+      "summary": "系統所有重力作用的等效點，若重力均勻則與質心重合。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "total-linear-momentum-cm",
+      "label": "總線動量(質心)",
+      "kind": "formula",
+      "summary": "系統的總線動量等於總質量乘以質心速度。",
+      "latex": "P_{total} = M v_{CM}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "net-external-force-cm",
+      "label": "系統淨外力(質心)",
+      "kind": "formula",
+      "summary": "作用在系統上的淨外力等於系統總質量乘以質心加速度。",
+      "latex": "F_{total} = M a_{CM}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "total-kinetic-energy-system",
+      "label": "系統總動能",
+      "kind": "formula",
+      "summary": "系統總動能等於質心動能加上相對於質心的動能。",
+      "latex": "K = \\frac{1}{2} M v_{CM}^2 + \\sum_i \\frac{1}{2} m_i u_i^2",
+      "pages": [
+        39
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-system",
+      "label": "系統重力位能",
+      "kind": "formula",
+      "summary": "若重力均勻，系統重力位能如同所有質量集中於質心。",
+      "latex": "U_g = M g y_{CM}",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "work-kinetic-energy-theorem-cm",
+      "label": "質心功動能定理",
+      "kind": "formula",
+      "summary": "作用在質心上的淨功等於質心動能的變化量。",
+      "latex": "W_{CM} = F_{CM} \\cdot \\Delta r_{CM} = \\Delta K_{CM}",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "work-external-forces-system",
+      "label": "系統外力做功",
+      "kind": "principle",
+      "summary": "作用在系統上的總外力做功不一定等於作用在質心上的功。",
+      "latex": "",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "rocket-propulsion-concept",
+      "label": "火箭推進",
+      "kind": "concept",
+      "summary": "透過向後噴射高速氣體產生推力，使火箭向前加速的原理。",
+      "latex": "",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "rocket-equation-no-gravity",
+      "label": "火箭方程式(無重力)",
+      "kind": "formula",
+      "summary": "描述無重力空間中，火箭質量變化與速度變化的關係。",
+      "latex": "M dv = -v_{ex} dM",
+      "pages": [
+        48
+      ]
+    },
+    {
+      "id": "rocket-equation-with-gravity",
+      "label": "火箭方程式(含重力)",
+      "kind": "formula",
+      "summary": "描述火箭在有外力（如重力）作用下，質量變化與速度變化的關係。",
+      "latex": "F_{ext} + v_{ex} \\dot{M} = M \\dot{v}",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "thrust-force",
+      "label": "推力",
+      "kind": "definition",
+      "summary": "火箭噴射燃料產生，使火箭加速前進的力。",
+      "latex": "",
+      "pages": [
+        49,
+        50
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "linear-momentum-definition",
+      "to": "newtons-second-law-momentum-form",
+      "reason": "牛頓第二定律的動量形式需要先理解線動量的定義。"
+    },
+    {
+      "from": "newtons-second-law-momentum-form",
+      "to": "momentum-conservation",
+      "reason": "動量守恆原理可從牛頓第二定律的動量形式（結合第三定律）推導而來。"
+    },
+    {
+      "from": "newtons-second-law-momentum-form",
+      "to": "impulse-definition",
+      "reason": "衝量的定義是力的時間積分，而力與動量變化率相關。"
+    },
+    {
+      "from": "impulse-definition",
+      "to": "impulse-momentum-theorem",
+      "reason": "衝量動量定理是衝量定義的直接結果，將衝量與動量變化聯繫起來。"
+    },
+    {
+      "from": "collision-concept",
+      "to": "elastic-collision-definition",
+      "reason": "彈性碰撞是非彈性碰撞的一種，需要先理解碰撞的普遍概念。"
+    },
+    {
+      "from": "collision-concept",
+      "to": "inelastic-collision-definition",
+      "reason": "非彈性碰撞是碰撞的一種，需要先理解碰撞的普遍概念。"
+    },
+    {
+      "from": "momentum-conservation",
+      "to": "1d-head-on-elastic-collision-formulas",
+      "reason": "一維彈性碰撞公式的推導基於動量守恆。"
+    },
+    {
+      "from": "elastic-collision-definition",
+      "to": "1d-head-on-elastic-collision-formulas",
+      "reason": "一維彈性碰撞公式的推導基於彈性碰撞的動能守恆特性。"
+    },
+    {
+      "from": "1d-head-on-elastic-collision-formulas",
+      "to": "relative-velocity-elastic-collision",
+      "reason": "彈性碰撞的相對速度關係是從一維彈性碰撞的動量和動能守恆公式推導而來。"
+    },
+    {
+      "from": "1d-head-on-elastic-collision-formulas",
+      "to": "identical-particles-elastic-collision",
+      "reason": "相同粒子彈性碰撞的特性是一維彈性碰撞公式的特例。"
+    },
+    {
+      "from": "1d-head-on-elastic-collision-formulas",
+      "to": "elastic-collision-stationary-target-formulas",
+      "reason": "靜止靶彈性碰撞的公式是一維彈性碰撞公式的特例。"
+    },
+    {
+      "from": "elastic-collision-stationary-target-formulas",
+      "to": "kinetic-energy-transfer-elastic-collision",
+      "reason": "彈性碰撞動能轉換的比例關係是從靜止靶彈性碰撞的末速度公式推導而來。"
+    },
+    {
+      "from": "inelastic-collision-definition",
+      "to": "perfectly-inelastic-collision-definition",
+      "reason": "完全非彈性碰撞是非彈性碰撞的一種特殊情況。"
+    },
+    {
+      "from": "momentum-conservation",
+      "to": "final-velocity-perfectly-inelastic-collision",
+      "reason": "完全非彈性碰撞的共同末速度公式是從動量守恆推導而來。"
+    },
+    {
+      "from": "perfectly-inelastic-collision-definition",
+      "to": "final-velocity-perfectly-inelastic-collision",
+      "reason": "完全非彈性碰撞的定義（物體黏在一起）是推導其共同末速度公式的基礎。"
+    },
+    {
+      "from": "elastic-collision-definition",
+      "to": "coefficient-of-restitution",
+      "reason": "恢復係數用於量化碰撞的彈性程度，彈性碰撞是其一個極端情況。"
+    },
+    {
+      "from": "perfectly-inelastic-collision-definition",
+      "to": "coefficient-of-restitution",
+      "reason": "恢復係數用於量化碰撞的彈性程度，完全非彈性碰撞是其另一個極端情況。"
+    },
+    {
+      "from": "perfectly-inelastic-collision-definition",
+      "to": "ballistic-pendulum-method",
+      "reason": "彈道擺法利用了完全非彈性碰撞的原理來測量速度。"
+    },
+    {
+      "from": "elastic-collision-definition",
+      "to": "2d-elastic-glancing-collision",
+      "reason": "二維彈性擦撞是彈性碰撞在二維空間中的應用。"
+    },
+    {
+      "from": "momentum-conservation",
+      "to": "2d-elastic-glancing-collision-formulas",
+      "reason": "二維彈性擦撞公式的推導基於動量守恆。"
+    },
+    {
+      "from": "elastic-collision-definition",
+      "to": "2d-elastic-glancing-collision-formulas",
+      "reason": "二維彈性擦撞公式的推導基於彈性碰撞的動能守恆特性。"
+    },
+    {
+      "from": "2d-elastic-glancing-collision",
+      "to": "impact-parameter",
+      "reason": "撞擊參數是描述二維彈性擦撞幾何配置的重要概念。"
+    },
+    {
+      "from": "2d-elastic-glancing-collision-formulas",
+      "to": "scattering-angle-2d-elastic-collision",
+      "reason": "二維彈性碰撞散射角與質量比的關係是從二維彈性擦撞的守恆公式推導而來。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "cm-discrete-objects-formula",
+      "reason": "離散質點質心公式是定義質心概念的數學表達。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "cm-continuous-objects-formula",
+      "reason": "連續物體質心公式是定義質心概念的數學表達。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "center-of-gravity",
+      "reason": "重心是與質心密切相關的概念，在均勻重力場下兩者重合。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "center-of-mass-velocity",
+      "reason": "質心速度是描述質心運動的物理量，需要先理解質心概念。"
+    },
+    {
+      "from": "center-of-mass-velocity",
+      "to": "total-linear-momentum-cm",
+      "reason": "系統總線動量與質心速度直接相關，是質心速度的應用。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "net-external-force-cm",
+      "reason": "系統淨外力與質心加速度的關係是牛頓第二定律在質心運動上的應用。"
+    },
+    {
+      "from": "center-of-mass-velocity",
+      "to": "total-kinetic-energy-system",
+      "reason": "系統總動能的分解公式中包含質心動能部分，需要質心速度概念。"
+    },
+    {
+      "from": "center-of-mass-concept",
+      "to": "gravitational-potential-energy-system",
+      "reason": "系統重力位能的計算在均勻重力場下可簡化為質心的位能，需要質心概念。"
+    },
+    {
+      "from": "net-external-force-cm",
+      "to": "work-kinetic-energy-theorem-cm",
+      "reason": "質心功動能定理是從作用在質心上的淨外力推導而來。"
+    },
+    {
+      "from": "work-kinetic-energy-theorem-cm",
+      "to": "work-external-forces-system",
+      "reason": "理解質心功動能定理有助於區分系統總外力做功與質心做功的差異。"
+    },
+    {
+      "from": "momentum-conservation",
+      "to": "rocket-propulsion-concept",
+      "reason": "火箭推進的原理是基於動量守恆。"
+    },
+    {
+      "from": "rocket-propulsion-concept",
+      "to": "rocket-equation-no-gravity",
+      "reason": "無重力火箭方程式是火箭推進概念的數學表達。"
+    },
+    {
+      "from": "rocket-equation-no-gravity",
+      "to": "rocket-equation-with-gravity",
+      "reason": "含重力火箭方程式是無重力方程式的推廣，加入了外力項。"
+    },
+    {
+      "from": "rocket-equation-with-gravity",
+      "to": "thrust-force",
+      "reason": "推力是含重力火箭方程式中的一個關鍵組成部分。"
+    }
+  ],
+  "chapter_number": 8,
+  "usage": {
+    "input_tokens": 26238,
+    "output_tokens": 5743
+  }
+}

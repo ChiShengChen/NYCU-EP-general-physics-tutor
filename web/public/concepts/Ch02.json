@@ -1,0 +1,434 @@
+{
+  "nodes": [
+    {
+      "id": "kinematics",
+      "label": "運動學",
+      "kind": "concept",
+      "summary": "描述物體在空間和時間中的運動，不考慮造成運動的原因。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "position-definition",
+      "label": "位置",
+      "kind": "definition",
+      "summary": "物體相對於參考系的所在位置。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "displacement-definition",
+      "label": "位移",
+      "kind": "definition",
+      "summary": "物體位置的改變量，是末位置減去初位置。",
+      "latex": "\\Delta x = x_f - x_i",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "distance-definition",
+      "label": "路徑長",
+      "kind": "definition",
+      "summary": "物體沿路徑移動的總長度。",
+      "latex": "",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "average-velocity-definition",
+      "label": "平均速度",
+      "kind": "definition",
+      "summary": "位移與時間間隔的比值。",
+      "latex": "\\bar{v}_x = \\frac{\\Delta x}{\\Delta t} = \\frac{x_f - x_i}{t_f - t_i}",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "average-speed-definition",
+      "label": "平均速率",
+      "kind": "definition",
+      "summary": "路徑長與時間間隔的比值。",
+      "latex": "",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "instantaneous-velocity-definition",
+      "label": "瞬時速度",
+      "kind": "definition",
+      "summary": "時間間隔趨近於零時的平均速度，是位置對時間的導數。",
+      "latex": "v_x = \\lim_{\\Delta t \\to 0} \\frac{\\Delta x}{\\Delta t} = \\frac{dx}{dt}",
+      "pages": [
+        3,
+        5,
+        9,
+        16
+      ]
+    },
+    {
+      "id": "instantaneous-speed-definition",
+      "label": "瞬時速率",
+      "kind": "definition",
+      "summary": "瞬時速度的量值。",
+      "latex": "",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "average-acceleration-definition",
+      "label": "平均加速度",
+      "kind": "definition",
+      "summary": "速度變化量與時間間隔的比值。",
+      "latex": "\\bar{a}_x = \\frac{\\Delta v_x}{\\Delta t} = \\frac{v_{xf} - v_{xi}}{t_f - t_i}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "instantaneous-acceleration-definition",
+      "label": "瞬時加速度",
+      "kind": "definition",
+      "summary": "時間間隔趨近於零時的平均加速度，是速度對時間的導數。",
+      "latex": "a_x = \\lim_{\\Delta t \\to 0} \\frac{\\Delta v_x}{\\Delta t} = \\frac{dv_x}{dt} = \\frac{d^2x}{dt^2}",
+      "pages": [
+        3,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "position-time-graph",
+      "label": "位置-時間圖",
+      "kind": "method",
+      "summary": "用圖形表示物體位置隨時間變化的關係。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "kinematic-relationship-x-v-a",
+      "label": "運動量關係",
+      "kind": "principle",
+      "summary": "若已知位置函數 $x(t)$，可透過微分求得速度 $v(t)$ 和加速度 $a(t)$。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "jerk-definition",
+      "label": "衝量率 (加加速度)",
+      "kind": "definition",
+      "summary": "加速度對時間的變化率，是位置對時間的三階導數。",
+      "latex": "j_x = \\frac{da_x}{dt} = \\frac{d^3x}{dt^3}",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "constant-acceleration-motion",
+      "label": "等加速度運動",
+      "kind": "concept",
+      "summary": "物體沿直線運動且加速度保持不變的運動。",
+      "latex": "",
+      "pages": [
+        9,
+        10
+      ]
+    },
+    {
+      "id": "kinematic-eq-v-t",
+      "label": "等加運動公式(v-t)",
+      "kind": "formula",
+      "summary": "描述等加速度運動中，末速度與初速度、加速度及時間的關係。",
+      "latex": "v_x(t) = v_x(t_0) + a_x (t - t_0)",
+      "pages": [
+        10,
+        12,
+        19
+      ]
+    },
+    {
+      "id": "average-velocity-constant-a",
+      "label": "等加平均速度",
+      "kind": "formula",
+      "summary": "等加速度運動中，平均速度為初末速度的算術平均值。",
+      "latex": "\\bar{v}_x = \\frac{v_{xi} + v_{xf}}{2}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "kinematic-eq-x-avgv-t",
+      "label": "等加運動公式(x-avgv-t)",
+      "kind": "formula",
+      "summary": "描述等加速度運動中，位移與平均速度及時間的關係。",
+      "latex": "x(t) = x(t_0) + \\bar{v}_x (t - t_0)",
+      "pages": [
+        10,
+        12
+      ]
+    },
+    {
+      "id": "kinematic-eq-x-t",
+      "label": "等加運動公式(x-t)",
+      "kind": "formula",
+      "summary": "描述等加速度運動中，末位置與初位置、初速度、加速度及時間的關係。",
+      "latex": "x(t) = x(t_0) + v_x(t_0)(t-t_0) + \\frac{1}{2}a_x(t-t_0)^2",
+      "pages": [
+        11,
+        12,
+        19
+      ]
+    },
+    {
+      "id": "kinematic-eq-v-x",
+      "label": "等加運動公式(v-x)",
+      "kind": "formula",
+      "summary": "描述等加速度運動中，末速度與初速度、加速度及位移的關係。",
+      "latex": "v_x^2(t) = v_x^2(t_0) + 2a_x[x(t) - x(t_0)]",
+      "pages": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "freely-falling-objects",
+      "label": "自由落體",
+      "kind": "concept",
+      "summary": "僅受重力影響而自由運動的物體。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "free-fall-acceleration-g",
+      "label": "自由落體加速度",
+      "kind": "definition",
+      "summary": "地表附近因重力引起的加速度，約為 $9.80 \\text{ m/s}^2$。",
+      "latex": "g = 9.80 \\text{ m/s}^2",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "displacement-from-velocity-integral",
+      "label": "位移積分式",
+      "kind": "formula",
+      "summary": "位移可由速度對時間的積分求得。",
+      "latex": "\\Delta x = \\int_{t_i}^{t_f} v_x(t) dt",
+      "pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "id": "integration-method",
+      "label": "積分法",
+      "kind": "method",
+      "summary": "數學上用於求面積、總和或反導數的方法，在物理中常用於從速度求位移。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "non-uniform-acceleration",
+      "label": "非等加速度運動",
+      "kind": "concept",
+      "summary": "加速度隨時間變化的運動，不能直接使用等加速度公式。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "kinematics",
+      "to": "position-definition",
+      "reason": "運動學研究物體運動，位置是其基本描述量。"
+    },
+    {
+      "from": "kinematics",
+      "to": "displacement-definition",
+      "reason": "運動學研究物體運動，位移是其基本描述量。"
+    },
+    {
+      "from": "kinematics",
+      "to": "distance-definition",
+      "reason": "運動學研究物體運動，路徑長是其基本描述量。"
+    },
+    {
+      "from": "kinematics",
+      "to": "average-velocity-definition",
+      "reason": "運動學研究物體運動，平均速度是其基本描述量。"
+    },
+    {
+      "from": "kinematics",
+      "to": "average-speed-definition",
+      "reason": "運動學研究物體運動，平均速率是其基本描述量。"
+    },
+    {
+      "from": "kinematics",
+      "to": "average-acceleration-definition",
+      "reason": "運動學研究物體運動，平均加速度是其基本描述量。"
+    },
+    {
+      "from": "position-definition",
+      "to": "displacement-definition",
+      "reason": "位移定義為位置的變化量。"
+    },
+    {
+      "from": "position-definition",
+      "to": "position-time-graph",
+      "reason": "位置-時間圖是位置隨時間變化的視覺化表示。"
+    },
+    {
+      "from": "displacement-definition",
+      "to": "average-velocity-definition",
+      "reason": "平均速度的定義需要位移概念。"
+    },
+    {
+      "from": "distance-definition",
+      "to": "average-speed-definition",
+      "reason": "平均速率的定義需要路徑長概念。"
+    },
+    {
+      "from": "average-velocity-definition",
+      "to": "instantaneous-velocity-definition",
+      "reason": "瞬時速度是平均速度在時間間隔趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-velocity-definition",
+      "to": "instantaneous-speed-definition",
+      "reason": "瞬時速率定義為瞬時速度的量值。"
+    },
+    {
+      "from": "instantaneous-velocity-definition",
+      "to": "average-acceleration-definition",
+      "reason": "平均加速度的定義需要速度變化量。"
+    },
+    {
+      "from": "instantaneous-velocity-definition",
+      "to": "kinematic-relationship-x-v-a",
+      "reason": "透過微分從位置求速度需要瞬時速度的定義。"
+    },
+    {
+      "from": "instantaneous-velocity-definition",
+      "to": "displacement-from-velocity-integral",
+      "reason": "位移的積分式是瞬時速度對時間的積分。"
+    },
+    {
+      "from": "average-acceleration-definition",
+      "to": "instantaneous-acceleration-definition",
+      "reason": "瞬時加速度是平均加速度在時間間隔趨近於零時的極限。"
+    },
+    {
+      "from": "instantaneous-acceleration-definition",
+      "to": "kinematic-relationship-x-v-a",
+      "reason": "透過微分從速度求加速度需要瞬時加速度的定義。"
+    },
+    {
+      "from": "instantaneous-acceleration-definition",
+      "to": "jerk-definition",
+      "reason": "衝量率定義為加速度對時間的變化率。"
+    },
+    {
+      "from": "instantaneous-acceleration-definition",
+      "to": "constant-acceleration-motion",
+      "reason": "等加速度運動是瞬時加速度保持不變的特殊情況。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "kinematic-eq-v-t",
+      "reason": "此公式僅適用於等加速度運動。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "average-velocity-constant-a",
+      "reason": "此平均速度公式僅適用於等加速度運動。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "kinematic-eq-x-avgv-t",
+      "reason": "此公式僅適用於等加速度運動。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "kinematic-eq-x-t",
+      "reason": "此公式僅適用於等加速度運動。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "kinematic-eq-v-x",
+      "reason": "此公式僅適用於等加速度運動。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "freely-falling-objects",
+      "reason": "自由落體是等加速度運動的一個特例。"
+    },
+    {
+      "from": "constant-acceleration-motion",
+      "to": "non-uniform-acceleration",
+      "reason": "非等加速度運動是與等加速度運動相對的概念。"
+    },
+    {
+      "from": "kinematic-eq-v-t",
+      "to": "kinematic-eq-x-t",
+      "reason": "位置-時間公式的推導需要速度-時間公式。"
+    },
+    {
+      "from": "kinematic-eq-v-t",
+      "to": "kinematic-eq-v-x",
+      "reason": "速度-位置公式的推導需要速度-時間公式。"
+    },
+    {
+      "from": "average-velocity-constant-a",
+      "to": "kinematic-eq-x-avgv-t",
+      "reason": "位移與平均速度的關係式中使用了等加速度下的平均速度。"
+    },
+    {
+      "from": "kinematic-eq-x-avgv-t",
+      "to": "kinematic-eq-x-t",
+      "reason": "位置-時間公式的推導需要位移與平均速度的關係式。"
+    },
+    {
+      "from": "kinematic-eq-x-avgv-t",
+      "to": "kinematic-eq-v-x",
+      "reason": "速度-位置公式的推導需要位移與平均速度的關係式。"
+    },
+    {
+      "from": "freely-falling-objects",
+      "to": "free-fall-acceleration-g",
+      "reason": "自由落體加速度是描述自由落體運動的特定加速度。"
+    },
+    {
+      "from": "integration-method",
+      "to": "displacement-from-velocity-integral",
+      "reason": "位移的積分式是透過積分方法推導而來。"
+    }
+  ],
+  "chapter_number": 2,
+  "usage": {
+    "input_tokens": 9413,
+    "output_tokens": 3918
+  }
+}

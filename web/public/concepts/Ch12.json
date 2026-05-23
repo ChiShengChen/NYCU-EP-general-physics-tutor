@@ -1,0 +1,752 @@
+{
+  "nodes": [
+    {
+      "id": "newtons-law-universal-gravitation",
+      "label": "牛頓萬有引力定律",
+      "kind": "law",
+      "summary": "兩個物體間的引力與其質量乘積成正比，與其距離平方成反比。",
+      "latex": "F_g = G \\frac{m_1 m_2}{r^2}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "gravitational-constant",
+      "label": "萬有引力常數",
+      "kind": "concept",
+      "summary": "萬有引力定律中的比例常數，其值為 $6.673 \\times 10^{-11} \\text{N} \\cdot \\text{m}^2/\\text{kg}^2$。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "inverse-square-law-gravity",
+      "label": "平方反比定律",
+      "kind": "concept",
+      "summary": "萬有引力的大小與物體間距離的平方成反比。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "spherically-symmetric-mass-gravitation",
+      "label": "球對稱質量引力",
+      "kind": "principle",
+      "summary": "球對稱質量分佈對外部粒子的引力，等同於所有質量集中在其中心。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "centripetal-acceleration-formula",
+      "label": "向心加速度公式",
+      "kind": "formula",
+      "summary": "物體作圓周運動時，向心加速度的大小與速度平方成正比，與半徑成反比。",
+      "latex": "a_M = \\frac{v^2}{r_M} = \\frac{(2\\pi r_M / T)^2}{r_M} = \\frac{4\\pi^2 r_M}{T^2}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "newtons-law-experimental-proof",
+      "label": "牛頓定律實驗驗證",
+      "kind": "method",
+      "summary": "透過比較月球繞地球的加速度與地球表面重力加速度，驗證萬有引力定律的平方反比關係。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "cavendish-apparatus",
+      "label": "卡文迪許實驗",
+      "kind": "method",
+      "summary": "用於測量萬有引力常數 G 的實驗裝置。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "free-fall-acceleration-formula",
+      "label": "自由落體加速度",
+      "kind": "formula",
+      "summary": "物體在地球表面或其上方高度 h 處的重力加速度。",
+      "latex": "g = \\frac{GM_E}{(R_E + h)^2}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "gravitational-field-definition",
+      "label": "重力場定義",
+      "kind": "definition",
+      "summary": "單位質量所受的重力，描述空間中重力作用的強度與方向。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "gravitational-field-point-mass",
+      "label": "點質量重力場",
+      "kind": "formula",
+      "summary": "由點質量 M 產生的重力場，方向指向質量 M。",
+      "latex": "\\vec{g} = -\\frac{GM}{r^2}\\hat{r}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "gravitational-field-spherical-shell",
+      "label": "球殼內重力場",
+      "kind": "law",
+      "summary": "均勻球殼對其內部任何一點的重力場為零。",
+      "latex": "\\vec{g} = \\begin{cases} -\\frac{GM}{r^2}\\hat{r}, & r > R \\\\ \\vec{0}, & r < R \\end{cases}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "solid-angle",
+      "label": "立體角",
+      "kind": "concept",
+      "summary": "描述物體在空間中張開的角度大小，單位為球面度。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "gravitational-field-solid-sphere",
+      "label": "實心球內重力場",
+      "kind": "law",
+      "summary": "均勻實心球對其內部一點的重力場與該點到球心的距離成正比。",
+      "latex": "\\vec{g}(r) = - \\frac{GM}{R^3} r \\hat{r}, \\text{ for } r < R.",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "conservative-force",
+      "label": "守恆力",
+      "kind": "concept",
+      "summary": "做功與路徑無關，只取決於始末位置的力。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-definition",
+      "label": "重力位能定義",
+      "kind": "definition",
+      "summary": "兩個質量之間由於重力作用而儲存的能量，通常以無窮遠處為零位面。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-multiple-particles",
+      "label": "多粒子重力位能",
+      "kind": "formula",
+      "summary": "多個粒子系統的總重力位能是每對粒子間位能的總和。",
+      "latex": "U_{total} = -G\\left(\\frac{m_1m_2}{r_{12}} + \\frac{m_1m_3}{r_{13}} + \\frac{m_2m_3}{r_{23}}\\right)",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "gravitational-potential-energy-near-surface",
+      "label": "近地表重力位能",
+      "kind": "formula",
+      "summary": "在地球表面附近，重力位能的變化量近似為 $mg\\Delta y$。",
+      "latex": "\\Delta U = mg\\Delta y",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "total-energy-planetary-motion",
+      "label": "行星運動總能",
+      "kind": "formula",
+      "summary": "行星運動的總能量是動能與重力位能的總和。",
+      "latex": "E = K + U = \\frac{1}{2}mv^2 - \\frac{GM_E m}{r}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "total-energy-circular-orbit",
+      "label": "圓軌道總能",
+      "kind": "formula",
+      "summary": "物體在圓形軌道上的總能量，為負值且與半徑成反比。",
+      "latex": "E = -\\frac{GM_E m}{2r}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "total-energy-elliptical-orbit",
+      "label": "橢圓軌道總能",
+      "kind": "formula",
+      "summary": "物體在橢圓軌道上的總能量，為負值且與半長軸成反比。",
+      "latex": "E = -\\frac{GM_E m}{2a}",
+      "pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": "bound-unbound-orbits",
+      "label": "束縛與非束縛軌道",
+      "kind": "concept",
+      "summary": "總能量 E < 0 為束縛軌道（橢圓或圓），E >= 0 為非束縛軌道（拋物線或雙曲線）。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "escape-speed-definition",
+      "label": "脫離速度",
+      "kind": "definition",
+      "summary": "物體能完全脫離行星引力所需的最小初速度。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "black-hole",
+      "label": "黑洞",
+      "kind": "concept",
+      "summary": "引力極強以至於任何物質（包括光）都無法逃脫的天體。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "schwarzschild-radius",
+      "label": "史瓦西半徑",
+      "kind": "definition",
+      "summary": "黑洞的事件視界半徑，光速也無法逃脫的臨界半徑。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "white-dwarf-star",
+      "label": "白矮星",
+      "kind": "concept",
+      "summary": "恆星演化末期的一種緻密星體，質量小於 1.4 倍太陽質量。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "neutron-star",
+      "label": "中子星",
+      "kind": "concept",
+      "summary": "恆星演化末期的一種極緻密星體，質量介於 1.4 到 3 倍太陽質量之間。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "accretion-disk",
+      "label": "吸積盤",
+      "kind": "concept",
+      "summary": "物質在落入黑洞或其他緻密天體前，因角動量守恆而形成的旋轉盤狀結構。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "tidal-force-black-hole",
+      "label": "潮汐力（黑洞）",
+      "kind": "concept",
+      "summary": "黑洞附近極強的引力梯度導致物體被拉伸的力。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "gravitational-redshift",
+      "label": "重力紅移",
+      "kind": "concept",
+      "summary": "光子從強引力場中逃逸時，其能量損失導致頻率降低（波長變長）的現象。",
+      "latex": "",
+      "pages": [
+        17,
+        21
+      ]
+    },
+    {
+      "id": "gravitational-time-dilation",
+      "label": "重力時間膨脹",
+      "kind": "concept",
+      "summary": "在強引力場中，時間流逝速度比在弱引力場中慢的現象。",
+      "latex": "",
+      "pages": [
+        17,
+        21
+      ]
+    },
+    {
+      "id": "supermassive-black-hole",
+      "label": "超大質量黑洞",
+      "kind": "concept",
+      "summary": "質量達數百萬到數十億倍太陽質量的黑洞，通常位於星系中心。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "dark-matter",
+      "label": "暗物質",
+      "kind": "concept",
+      "summary": "一種不發射、不反射任何電磁輻射的物質，透過其引力效應推斷其存在。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "dark-energy",
+      "label": "暗能量",
+      "kind": "concept",
+      "summary": "一種假想的能量形式，用於解釋宇宙加速膨脹的現象。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "principle-of-equivalence",
+      "label": "等效原理",
+      "kind": "law",
+      "summary": "引力效應與加速運動的效應在局部是無法區分的。",
+      "latex": "",
+      "pages": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": "principle-of-general-covariance",
+      "label": "廣義協變原理",
+      "kind": "law",
+      "summary": "所有自然定律在任何參考系中都具有相同的形式，無論是否加速。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "general-theory-of-relativity",
+      "label": "廣義相對論",
+      "kind": "concept",
+      "summary": "愛因斯坦提出的引力理論，將引力描述為時空彎曲的幾何效應。",
+      "latex": "",
+      "pages": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": "mercury-precession",
+      "label": "水星近日點進動",
+      "kind": "concept",
+      "summary": "廣義相對論預測的水星軌道額外進動，無法用牛頓力學解釋。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "bending-of-light-gravitational-lensing",
+      "label": "光線彎曲（重力透鏡）",
+      "kind": "concept",
+      "summary": "光線經過大質量天體附近時，其路徑會因引力作用而彎曲。",
+      "latex": "",
+      "pages": [
+        21,
+        22
+      ]
+    },
+    {
+      "id": "spacetime-curvature",
+      "label": "時空彎曲",
+      "kind": "concept",
+      "summary": "廣義相對論中，質量和能量導致時空結構彎曲，引力是這種彎曲的表現。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "keplers-1st-law",
+      "label": "克卜勒第一定律",
+      "kind": "law",
+      "summary": "所有行星都以橢圓軌道繞太陽運行，太陽位於其中一個焦點。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "conic-sections-orbits",
+      "label": "圓錐曲線軌道",
+      "kind": "concept",
+      "summary": "根據總能量和離心率，軌道可以是圓形、橢圓形、拋物線或雙曲線。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "semi-major-axis",
+      "label": "半長軸",
+      "kind": "definition",
+      "summary": "橢圓最長直徑的一半，對於軌道而言，它決定了軌道的大小。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "semi-minor-axis",
+      "label": "半短軸",
+      "kind": "definition",
+      "summary": "橢圓最短直徑的一半。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "eccentricity-definition",
+      "label": "離心率",
+      "kind": "definition",
+      "summary": "描述橢圓形狀偏離圓形的程度，決定軌道的類型。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "center-of-mass-orbital-motion",
+      "label": "質心（軌道運動）",
+      "kind": "concept",
+      "summary": "兩個相互繞行的天體，實際上是繞著它們共同的質心運動。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "keplers-2nd-law",
+      "label": "克卜勒第二定律",
+      "kind": "law",
+      "summary": "行星與太陽的連線在相等時間內掃過相等面積。",
+      "latex": "\\frac{dA}{dt} = \\frac{|\\vec{L}|}{2M_p} = const.",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "angular-momentum-conservation-central-force",
+      "label": "角動量守恆（中心力）",
+      "kind": "principle",
+      "summary": "在中心力作用下，物體的角動量守恆。",
+      "latex": "\\vec{L} = \\vec{r} \\times M_p\\vec{v} = const.",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "keplers-3rd-law",
+      "label": "克卜勒第三定律",
+      "kind": "law",
+      "summary": "行星軌道週期的平方與其半長軸的立方成正比。",
+      "latex": "T^2 = \\left(\\frac{4\\pi^2}{GM_S}\\right) a^3",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "geosynchronous-satellite",
+      "label": "地球同步衛星",
+      "kind": "concept",
+      "summary": "軌道週期與地球自轉週期相同的衛星，相對於地面保持在同一經度。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "planetary-transit",
+      "label": "行星凌日",
+      "kind": "concept",
+      "summary": "行星從恆星前方經過，導致恆星亮度暫時下降的現象。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "gravitational-constant",
+      "reason": "理解萬有引力定律需要知道其中的常數 G。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "inverse-square-law-gravity",
+      "reason": "平方反比定律是萬有引力定律的特性。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "spherically-symmetric-mass-gravitation",
+      "reason": "球對稱質量引力是萬有引力定律的應用。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "newtons-law-experimental-proof",
+      "reason": "實驗驗證是為了證明萬有引力定律。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "cavendish-apparatus",
+      "reason": "卡文迪許實驗用於測量萬有引力定律中的常數 G。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "free-fall-acceleration-formula",
+      "reason": "自由落體加速度公式是萬有引力定律在地球表面的應用。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "gravitational-field-definition",
+      "reason": "重力場概念是為了描述萬有引力作用。"
+    },
+    {
+      "from": "gravitational-field-definition",
+      "to": "gravitational-field-point-mass",
+      "reason": "點質量重力場是重力場定義的具體形式。"
+    },
+    {
+      "from": "gravitational-field-point-mass",
+      "to": "gravitational-field-spherical-shell",
+      "reason": "球殼內重力場是點質量重力場概念的推廣應用。"
+    },
+    {
+      "from": "gravitational-field-point-mass",
+      "to": "gravitational-field-solid-sphere",
+      "reason": "實心球內重力場是點質量重力場概念的推廣應用。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "conservative-force",
+      "reason": "萬有引力是一種守恆力。"
+    },
+    {
+      "from": "conservative-force",
+      "to": "gravitational-potential-energy-definition",
+      "reason": "重力位能的定義基於重力是守恆力。"
+    },
+    {
+      "from": "gravitational-potential-energy-definition",
+      "to": "gravitational-potential-energy-multiple-particles",
+      "reason": "多粒子重力位能是重力位能定義的推廣。"
+    },
+    {
+      "from": "gravitational-potential-energy-definition",
+      "to": "gravitational-potential-energy-near-surface",
+      "reason": "近地表重力位能是重力位能定義的近似應用。"
+    },
+    {
+      "from": "gravitational-potential-energy-definition",
+      "to": "total-energy-planetary-motion",
+      "reason": "行星運動總能包含重力位能。"
+    },
+    {
+      "from": "total-energy-planetary-motion",
+      "to": "total-energy-circular-orbit",
+      "reason": "圓軌道總能是行星運動總能的特例。"
+    },
+    {
+      "from": "total-energy-planetary-motion",
+      "to": "total-energy-elliptical-orbit",
+      "reason": "橢圓軌道總能是行星運動總能的特例。"
+    },
+    {
+      "from": "total-energy-planetary-motion",
+      "to": "bound-unbound-orbits",
+      "reason": "束縛與非束縛軌道是根據總能量判斷的。"
+    },
+    {
+      "from": "gravitational-potential-energy-definition",
+      "to": "escape-speed-definition",
+      "reason": "脫離速度的推導需要重力位能的概念。"
+    },
+    {
+      "from": "escape-speed-definition",
+      "to": "black-hole",
+      "reason": "黑洞的概念與脫離速度有關（光速也無法脫離）。"
+    },
+    {
+      "from": "black-hole",
+      "to": "schwarzschild-radius",
+      "reason": "史瓦西半徑是黑洞的關鍵參數。"
+    },
+    {
+      "from": "black-hole",
+      "to": "white-dwarf-star",
+      "reason": "白矮星是恆星演化中與黑洞相關的階段。"
+    },
+    {
+      "from": "black-hole",
+      "to": "neutron-star",
+      "reason": "中子星是恆星演化中與黑洞相關的階段。"
+    },
+    {
+      "from": "black-hole",
+      "to": "accretion-disk",
+      "reason": "吸積盤是黑洞周圍的現象。"
+    },
+    {
+      "from": "black-hole",
+      "to": "tidal-force-black-hole",
+      "reason": "潮汐力是黑洞的特性之一。"
+    },
+    {
+      "from": "black-hole",
+      "to": "gravitational-redshift",
+      "reason": "重力紅移是黑洞附近會發生的現象。"
+    },
+    {
+      "from": "black-hole",
+      "to": "gravitational-time-dilation",
+      "reason": "重力時間膨脹是黑洞附近會發生的現象。"
+    },
+    {
+      "from": "black-hole",
+      "to": "supermassive-black-hole",
+      "reason": "超大質量黑洞是黑洞的一種。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "dark-matter",
+      "reason": "暗物質的提出是為了解釋星系旋轉曲線與牛頓引力定律的差異。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "general-theory-of-relativity",
+      "reason": "廣義相對論是對牛頓萬有引力定律的更普適描述。"
+    },
+    {
+      "from": "general-theory-of-relativity",
+      "to": "principle-of-equivalence",
+      "reason": "等效原理是廣義相對論的基礎。"
+    },
+    {
+      "from": "general-theory-of-relativity",
+      "to": "principle-of-general-covariance",
+      "reason": "廣義協變原理是廣義相對論的另一個基礎。"
+    },
+    {
+      "from": "general-theory-of-relativity",
+      "to": "mercury-precession",
+      "reason": "水星近日點進動是廣義相對論的驗證之一。"
+    },
+    {
+      "from": "general-theory-of-relativity",
+      "to": "bending-of-light-gravitational-lensing",
+      "reason": "光線彎曲是廣義相對論的驗證之一。"
+    },
+    {
+      "from": "general-theory-of-relativity",
+      "to": "spacetime-curvature",
+      "reason": "時空彎曲是廣義相對論的核心概念。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "keplers-1st-law",
+      "reason": "克卜勒第一定律是牛頓萬有引力定律的直接結果。"
+    },
+    {
+      "from": "keplers-1st-law",
+      "to": "conic-sections-orbits",
+      "reason": "圓錐曲線軌道是克卜勒第一定律的具體表現形式。"
+    },
+    {
+      "from": "keplers-1st-law",
+      "to": "semi-major-axis",
+      "reason": "半長軸是橢圓軌道的重要參數，用於描述克卜勒第一定律。"
+    },
+    {
+      "from": "keplers-1st-law",
+      "to": "semi-minor-axis",
+      "reason": "半短軸是橢圓軌道的重要參數，用於描述克卜勒第一定律。"
+    },
+    {
+      "from": "keplers-1st-law",
+      "to": "eccentricity-definition",
+      "reason": "離心率是描述橢圓軌道形狀的參數，與克卜勒第一定律相關。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "center-of-mass-orbital-motion",
+      "reason": "軌道運動的質心概念與萬有引力作用有關。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "keplers-2nd-law",
+      "reason": "克卜勒第二定律是角動量守恆在萬有引力作用下的結果。"
+    },
+    {
+      "from": "keplers-2nd-law",
+      "to": "angular-momentum-conservation-central-force",
+      "reason": "角動量守恆是克卜勒第二定律的物理基礎。"
+    },
+    {
+      "from": "newtons-law-universal-gravitation",
+      "to": "keplers-3rd-law",
+      "reason": "克卜勒第三定律是牛頓萬有引力定律的推論。"
+    },
+    {
+      "from": "keplers-3rd-law",
+      "to": "geosynchronous-satellite",
+      "reason": "地球同步衛星的軌道計算應用了克卜勒第三定律。"
+    },
+    {
+      "from": "keplers-3rd-law",
+      "to": "planetary-transit",
+      "reason": "行星凌日的觀測與行星軌道週期（克卜勒第三定律）相關。"
+    },
+    {
+      "from": "centripetal-acceleration-formula",
+      "to": "total-energy-circular-orbit",
+      "reason": "圓軌道總能的推導使用了向心加速度的概念。"
+    }
+  ],
+  "chapter_number": 12,
+  "usage": {
+    "input_tokens": 14773,
+    "output_tokens": 7033
+  }
+}

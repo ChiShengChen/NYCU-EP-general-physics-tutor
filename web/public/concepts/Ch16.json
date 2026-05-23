@@ -1,0 +1,656 @@
+{
+  "nodes": [
+    {
+      "id": "sound-wave-longitudinal",
+      "label": "聲波縱波性質",
+      "kind": "concept",
+      "summary": "聲波是一種縱波，介質粒子的振動方向與波的傳播方向平行。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "audible-frequency-ranges",
+      "label": "可聽頻率範圍",
+      "kind": "concept",
+      "summary": "人類耳朵可聽見的頻率範圍約為 20 Hz 到 20 kHz，低於此範圍為次聲波，高於此範圍為超聲波。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "sound-wave-displacement-function",
+      "label": "聲波位移函數",
+      "kind": "formula",
+      "summary": "描述聲波中介質粒子位移隨位置和時間變化的函數。",
+      "latex": "s(x,t) = s_{\\text{max}} \\cos(kx - \\omega t)",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "sound-wave-pressure-function",
+      "label": "聲波壓強函數",
+      "kind": "formula",
+      "summary": "描述聲波中壓強變化隨位置和時間變化的函數。",
+      "latex": "\\Delta P(x,t) = \\Delta P_{\\text{max}} \\sin(kx - \\omega t)",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "sound-wave-phase-difference",
+      "label": "聲波相位差",
+      "kind": "concept",
+      "summary": "聲波的位移波和壓強波之間存在 \\(\\frac{\\pi}{2}\\) 的相位差。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "bulk-modulus-definition",
+      "label": "體積彈性模量定義",
+      "kind": "definition",
+      "summary": "體積彈性模量 B 定義為壓強變化與相對體積變化率的負比值，衡量流體對壓縮的抵抗能力。",
+      "latex": "B = -\\frac{\\Delta P}{\\Delta V / V}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "pressure-displacement-relation",
+      "label": "壓強位移關係",
+      "kind": "formula",
+      "summary": "聲波中的壓強變化與介質位移的空間導數成正比。",
+      "latex": "\\Delta P = -B \\frac{ds}{dx}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "max-pressure-amplitude-formula",
+      "label": "最大壓強振幅",
+      "kind": "formula",
+      "summary": "聲波的最大壓強振幅 \\(\\Delta P_{\\text{max}}\\) 與體積彈性模量、波數和最大位移振幅的關係。",
+      "latex": "\\Delta P_{\\text{max}} = B k s_{\\text{max}}",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "sound-speed-fluid-formula",
+      "label": "流體中聲速",
+      "kind": "formula",
+      "summary": "聲波在流體中的傳播速度由流體的體積彈性模量和密度決定。",
+      "latex": "v = \\sqrt{\\frac{B}{\\rho}}",
+      "pages": [
+        9,
+        10
+      ]
+    },
+    {
+      "id": "sound-speed-ideal-gas-formula",
+      "label": "理想氣體中聲速",
+      "kind": "formula",
+      "summary": "聲波在理想氣體中的傳播速度與比熱比、波茲曼常數、溫度和分子質量有關。",
+      "latex": "v = \\sqrt{\\frac{\\gamma k_B T}{m}}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "sound-speed-air-temperature-formula",
+      "label": "空氣中聲速與溫度關係",
+      "kind": "formula",
+      "summary": "空氣中聲速隨攝氏溫度 \\(T_C\\) 變化的經驗公式，其中 331 m/s 是 0°C 時的速度。",
+      "latex": "v = (331 \\text{ m/s})\\sqrt{1+\\frac{T_C}{273^\\circ \\text{ C}}}",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "sound-speed-solid-rod-formula",
+      "label": "固體棒中聲速",
+      "kind": "formula",
+      "summary": "聲波在固體棒中的傳播速度由材料的楊氏模量和密度決定。",
+      "latex": "v = \\sqrt{\\frac{Y}{\\rho}}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "mechanical-wave-speed-general-formula",
+      "label": "機械波通用速度公式",
+      "kind": "formula",
+      "summary": "所有機械波的速度都遵循彈性性質與慣性性質比值的平方根形式。",
+      "latex": "v = \\sqrt{\\frac{\\text{elastic property}}{\\text{inertial property}}}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "sound-intensity-definition",
+      "label": "聲強定義",
+      "kind": "definition",
+      "summary": "聲強定義為聲波傳輸的平均功率除以單位面積。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "sound-intensity-displacement-formula",
+      "label": "聲強位移公式",
+      "kind": "formula",
+      "summary": "聲強與介質密度、最大位移振幅、角頻率和波速的關係。",
+      "latex": "I = \\frac{1}{2} \\rho (s_{\\text{max}} \\omega)^2 v",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "sound-intensity-pressure-formula",
+      "label": "聲強壓強公式",
+      "kind": "formula",
+      "summary": "聲強與最大壓強振幅、體積彈性模量和波速的關係。",
+      "latex": "I = \\frac{P_{\\text{max}}^2}{2B} v",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "decibel-scale-and-thresholds",
+      "label": "分貝標度與聽力閾值",
+      "kind": "concept",
+      "summary": "分貝標度是一種對數標度，用於衡量聲強級，人類聽力有聽覺閾值（最低可聽聲強）和疼痛閾值（最高可忍受聲強）。",
+      "latex": "",
+      "pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "intensity-level-formula",
+      "label": "聲強級公式",
+      "kind": "formula",
+      "summary": "聲強級 \\(\\beta\\) 以分貝 (dB) 表示，是聲強 \\(I\\) 與參考聲強 \\(I_0\\) 比值的對數。",
+      "latex": "\\beta = 10 \\log \\left(\\frac{I}{I_0}\\right)",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "loudness-and-frequency",
+      "label": "響度與頻率",
+      "kind": "concept",
+      "summary": "響度是聲音的感知強度，與聲強和頻率之間存在複雜的關係。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "standing-waves-closed-tube",
+      "label": "閉管駐波性質",
+      "kind": "concept",
+      "summary": "在閉管中，閉端是位移節點，開端是位移波腹，形成駐波。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "standing-waves-closed-tube-frequencies",
+      "label": "閉管駐波頻率",
+      "kind": "formula",
+      "summary": "閉管中駐波的共振頻率為基頻的奇數倍，其中 \\(n = 1, 3, 5, ...\\)。",
+      "latex": "f_n = n f_1 = n (v/4L)",
+      "pages": [
+        19,
+        21
+      ]
+    },
+    {
+      "id": "standing-waves-open-tube",
+      "label": "開管駐波性質",
+      "kind": "concept",
+      "summary": "在開管中，兩端都是位移波腹，形成駐波。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "standing-waves-open-tube-frequencies",
+      "label": "開管駐波頻率",
+      "kind": "formula",
+      "summary": "開管中駐波的共振頻率為基頻的整數倍，其中 \\(n = 1, 2, 3, ...\\)。",
+      "latex": "f_n = n f_1 = n(v/2L)",
+      "pages": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": "temperature-effect-on-instruments",
+      "label": "溫度對樂器音高的影響",
+      "kind": "concept",
+      "summary": "溫度升高會使空氣柱樂器音高變尖（頻率升高），而弦樂器音高變平（頻率降低）。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "standing-waves-rods",
+      "label": "固體棒駐波",
+      "kind": "concept",
+      "summary": "固體棒也能產生駐波，其模式取決於夾持點和自由端，例如中點夾持時兩端為波腹。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "resonance-sound",
+      "label": "聲音共振",
+      "kind": "concept",
+      "summary": "當驅動頻率與物體的固有頻率相符時，聲音的振幅會顯著增加，產生共振。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "tuning-fork-frequency-determination",
+      "label": "音叉頻率測定法",
+      "kind": "method",
+      "summary": "利用共振原理，通過改變空氣柱長度來測定音叉的頻率。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "helmholtz-resonance",
+      "label": "亥姆霍茲共振",
+      "kind": "concept",
+      "summary": "一種空氣在腔體中振動產生的共振現象，常見於吹瓶子發聲。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "doppler-effect-definition",
+      "label": "都卜勒效應定義",
+      "kind": "definition",
+      "summary": "由於波源或觀察者的運動，導致觀察到的波頻率（或波長）發生變化的現象。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "doppler-effect-general-formula",
+      "label": "機械波都卜勒效應通用公式",
+      "kind": "formula",
+      "summary": "描述機械波中，觀察者聽到的頻率 \\(f'\\) 與波速 \\(v\\)、觀察者速度 \\(v_0\\)、波源速度 \\(v_s\\) 和波源頻率 \\(f\\) 之間的關係。",
+      "latex": "f' = \\frac{|\\vec{v} - \\vec{v}_0|}{|\\vec{v} - \\vec{v}_s|} f",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "doppler-effect-reference-frame",
+      "label": "都卜勒效應參考系",
+      "kind": "concept",
+      "summary": "都卜勒效應公式中的速度均相對於傳播波的介質。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "doppler-effect-electromagnetic-waves",
+      "label": "電磁波都卜勒效應",
+      "kind": "concept",
+      "summary": "都卜勒效應也適用於電磁波，但由於電磁波不需要介質，其公式形式與機械波不同。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "doppler-effect-electromagnetic-formula",
+      "label": "電磁波都卜勒效應公式",
+      "kind": "formula",
+      "summary": "描述電磁波中，觀察者聽到的頻率 \\(f'\\) 與光速 \\(c\\)、波源相對於觀察者的速度 \\(v\\) 和波源頻率 \\(f\\) 之間的關係。",
+      "latex": "f' = \\sqrt{\\frac{\\vec{c} + \\vec{v}}{\\vec{c} - \\vec{v}}} f",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "shock-wave-phenomenon",
+      "label": "衝擊波現象",
+      "kind": "concept",
+      "summary": "當波源速度超過波速時，波前會堆積形成一個錐形的衝擊波，產生音爆。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "mach-number-formula",
+      "label": "馬赫數公式",
+      "kind": "formula",
+      "summary": "馬赫數定義為波源速度 \\(v_s\\) 與波速 \\(v\\) 的比值，用於描述超音速運動。",
+      "latex": "\\text{Mach number} = v_s / v",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "mach-angle-formula",
+      "label": "馬赫角公式",
+      "kind": "formula",
+      "summary": "馬赫角 \\(\\theta\\) 是衝擊波錐角的一半，其正弦值等於波速與波源速度的比值。",
+      "latex": "\\sin \\theta = \\frac{v}{v_s}",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "cherenkov-radiation",
+      "label": "切倫科夫輻射",
+      "kind": "concept",
+      "summary": "當帶電粒子在介質中以超過該介質中光速的速度運動時，發出的電磁輻射，類似於衝擊波。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "beating-phenomenon",
+      "label": "拍頻現象",
+      "kind": "concept",
+      "summary": "當兩個頻率略有不同的波疊加時，會產生振幅週期性變化的現象，稱為拍頻或時間干涉。",
+      "latex": "",
+      "pages": [
+        39,
+        40
+      ]
+    },
+    {
+      "id": "beat-resultant-amplitude-formula",
+      "label": "拍頻合成振幅公式",
+      "kind": "formula",
+      "summary": "兩個頻率略有不同、振幅相同的波疊加後，合成波的振幅隨時間變化的公式。",
+      "latex": "A_{\\text{resultant}} = 2A \\cos\\left[2\\pi \\left(\\frac{f_1 - f_2}{2}\\right)t\\right]",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "beat-frequency-formula",
+      "label": "拍頻頻率公式",
+      "kind": "formula",
+      "summary": "拍頻的頻率等於兩個疊加波頻率的絕對差值。",
+      "latex": "f_{\\text{beat}} = |f_1 - f_2|",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "beat-frequency-human-limit",
+      "label": "拍頻人耳感知極限",
+      "kind": "concept",
+      "summary": "人耳通常只能感知每秒約 20 次以下的拍頻。",
+      "latex": "",
+      "pages": [
+        41
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "audible-frequency-ranges",
+      "reason": "理解聲波的縱波性質是理解其頻率範圍的基礎。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "sound-wave-displacement-function",
+      "reason": "聲波的縱波性質是其位移函數描述的基礎。"
+    },
+    {
+      "from": "sound-wave-displacement-function",
+      "to": "sound-wave-pressure-function",
+      "reason": "聲波的壓強函數是從位移函數推導而來。"
+    },
+    {
+      "from": "sound-wave-displacement-function",
+      "to": "sound-wave-phase-difference",
+      "reason": "理解位移函數和壓強函數才能理解它們之間的相位差。"
+    },
+    {
+      "from": "sound-wave-pressure-function",
+      "to": "sound-wave-phase-difference",
+      "reason": "理解位移函數和壓強函數才能理解它們之間的相位差。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "pressure-displacement-relation",
+      "reason": "體積彈性模量是建立壓強與位移關係的關鍵概念。"
+    },
+    {
+      "from": "pressure-displacement-relation",
+      "to": "max-pressure-amplitude-formula",
+      "reason": "最大壓強振幅公式是從壓強與位移關係推導而來。"
+    },
+    {
+      "from": "bulk-modulus-definition",
+      "to": "sound-speed-fluid-formula",
+      "reason": "流體中聲速公式的推導需要體積彈性模量的概念。"
+    },
+    {
+      "from": "sound-speed-fluid-formula",
+      "to": "sound-speed-ideal-gas-formula",
+      "reason": "理想氣體中聲速公式是流體中聲速公式在特定介質下的應用。"
+    },
+    {
+      "from": "sound-speed-fluid-formula",
+      "to": "sound-speed-air-temperature-formula",
+      "reason": "空氣中聲速與溫度關係公式是流體中聲速公式在空氣介質下的應用。"
+    },
+    {
+      "from": "sound-speed-fluid-formula",
+      "to": "sound-speed-solid-rod-formula",
+      "reason": "固體棒中聲速公式與流體中聲速公式在形式上相似，都基於介質的彈性與慣性性質。"
+    },
+    {
+      "from": "mechanical-wave-speed-general-formula",
+      "to": "sound-speed-fluid-formula",
+      "reason": "流體中聲速公式是機械波通用速度公式的一個具體應用。"
+    },
+    {
+      "from": "mechanical-wave-speed-general-formula",
+      "to": "sound-speed-solid-rod-formula",
+      "reason": "固體棒中聲速公式是機械波通用速度公式的一個具體應用。"
+    },
+    {
+      "from": "sound-intensity-definition",
+      "to": "sound-intensity-displacement-formula",
+      "reason": "聲強的具體計算公式是基於聲強的定義推導而來。"
+    },
+    {
+      "from": "sound-intensity-definition",
+      "to": "sound-intensity-pressure-formula",
+      "reason": "聲強的具體計算公式是基於聲強的定義推導而來。"
+    },
+    {
+      "from": "sound-wave-displacement-function",
+      "to": "sound-intensity-displacement-formula",
+      "reason": "聲波位移函數是推導聲強位移公式的基礎。"
+    },
+    {
+      "from": "sound-wave-pressure-function",
+      "to": "sound-intensity-pressure-formula",
+      "reason": "聲波壓強函數是推導聲強壓強公式的基礎。"
+    },
+    {
+      "from": "sound-intensity-definition",
+      "to": "decibel-scale-and-thresholds",
+      "reason": "分貝標度是衡量聲強的常用對數尺度，並涉及聽力閾值。"
+    },
+    {
+      "from": "decibel-scale-and-thresholds",
+      "to": "intensity-level-formula",
+      "reason": "理解分貝標度是應用聲強級公式的前提。"
+    },
+    {
+      "from": "sound-intensity-definition",
+      "to": "loudness-and-frequency",
+      "reason": "響度是基於聲強概念的人耳感知特性。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "standing-waves-closed-tube",
+      "reason": "駐波是聲波在特定邊界條件下的一種表現形式。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "standing-waves-open-tube",
+      "reason": "駐波是聲波在特定邊界條件下的一種表現形式。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "standing-waves-rods",
+      "reason": "駐波是聲波在特定邊界條件下的一種表現形式。"
+    },
+    {
+      "from": "standing-waves-closed-tube",
+      "to": "standing-waves-closed-tube-frequencies",
+      "reason": "理解閉管駐波的邊界條件和模式是推導其共振頻率的基礎。"
+    },
+    {
+      "from": "standing-waves-open-tube",
+      "to": "standing-waves-open-tube-frequencies",
+      "reason": "理解開管駐波的邊界條件和模式是推導其共振頻率的基礎。"
+    },
+    {
+      "from": "standing-waves-closed-tube-frequencies",
+      "to": "temperature-effect-on-instruments",
+      "reason": "空氣柱樂器的頻率受溫度影響，這與閉管和開管駐波的頻率公式有關。"
+    },
+    {
+      "from": "standing-waves-open-tube-frequencies",
+      "to": "temperature-effect-on-instruments",
+      "reason": "空氣柱樂器的頻率受溫度影響，這與閉管和開管駐波的頻率公式有關。"
+    },
+    {
+      "from": "standing-waves-rods",
+      "to": "temperature-effect-on-instruments",
+      "reason": "弦樂器（類似於固體棒）的頻率受溫度影響，這與其駐波性質有關。"
+    },
+    {
+      "from": "standing-waves-closed-tube",
+      "to": "resonance-sound",
+      "reason": "駐波是聲音共振現象的一個重要例子。"
+    },
+    {
+      "from": "standing-waves-open-tube",
+      "to": "resonance-sound",
+      "reason": "駐波是聲音共振現象的一個重要例子。"
+    },
+    {
+      "from": "standing-waves-rods",
+      "to": "resonance-sound",
+      "reason": "駐波是聲音共振現象的一個重要例子。"
+    },
+    {
+      "from": "resonance-sound",
+      "to": "tuning-fork-frequency-determination",
+      "reason": "音叉頻率測定法是利用共振原理來實現的。"
+    },
+    {
+      "from": "resonance-sound",
+      "to": "helmholtz-resonance",
+      "reason": "亥姆霍茲共振是共振現象的一種特殊形式。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "doppler-effect-definition",
+      "reason": "都卜勒效應是聲波傳播中的一個重要現象。"
+    },
+    {
+      "from": "doppler-effect-definition",
+      "to": "doppler-effect-general-formula",
+      "reason": "理解都卜勒效應的定義是應用其通用公式的基礎。"
+    },
+    {
+      "from": "doppler-effect-general-formula",
+      "to": "doppler-effect-reference-frame",
+      "reason": "理解都卜勒效應公式中的速度需要明確其參考系。"
+    },
+    {
+      "from": "doppler-effect-definition",
+      "to": "doppler-effect-electromagnetic-waves",
+      "reason": "都卜勒效應不僅適用於聲波，也適用於電磁波，但其機制有所不同。"
+    },
+    {
+      "from": "doppler-effect-electromagnetic-waves",
+      "to": "doppler-effect-electromagnetic-formula",
+      "reason": "理解電磁波都卜勒效應是應用其專用公式的基礎。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "shock-wave-phenomenon",
+      "reason": "衝擊波是聲波在波源超音速運動時產生的一種特殊現象。"
+    },
+    {
+      "from": "shock-wave-phenomenon",
+      "to": "mach-number-formula",
+      "reason": "馬赫數是描述衝擊波現象的關鍵參數。"
+    },
+    {
+      "from": "shock-wave-phenomenon",
+      "to": "mach-angle-formula",
+      "reason": "馬赫角是衝擊波幾何形狀的描述，與衝擊波現象直接相關。"
+    },
+    {
+      "from": "shock-wave-phenomenon",
+      "to": "cherenkov-radiation",
+      "reason": "切倫科夫輻射是一種與衝擊波現象類似的電磁波現象。"
+    },
+    {
+      "from": "sound-wave-longitudinal",
+      "to": "beating-phenomenon",
+      "reason": "拍頻是聲波干涉的一種表現形式。"
+    },
+    {
+      "from": "beating-phenomenon",
+      "to": "beat-resultant-amplitude-formula",
+      "reason": "理解拍頻現象是推導其合成振幅公式的基礎。"
+    },
+    {
+      "from": "beating-phenomenon",
+      "to": "beat-frequency-formula",
+      "reason": "理解拍頻現象是推導其頻率公式的基礎。"
+    },
+    {
+      "from": "beating-phenomenon",
+      "to": "beat-frequency-human-limit",
+      "reason": "拍頻的人耳感知極限是拍頻現象的一個重要應用和限制。"
+    }
+  ],
+  "chapter_number": 16,
+  "usage": {
+    "input_tokens": 16481,
+    "output_tokens": 6744
+  }
+}

@@ -1,0 +1,966 @@
+{
+  "nodes": [
+    {
+      "id": "newtons-laws-problem-solving-hints",
+      "label": "牛頓定律解題步驟",
+      "kind": "method",
+      "summary": "解決牛頓定律問題的通用步驟，包括識別系統、繪製自由體圖、建立座標系、分類問題並求解。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "free-body-diagram",
+      "label": "自由體圖",
+      "kind": "method",
+      "summary": "一種圖示方法，用於表示作用在物體上的所有外力，以分析其運動狀態。",
+      "latex": "",
+      "pages": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11,
+        13,
+        14,
+        15,
+        21,
+        32,
+        34,
+        35,
+        37,
+        38
+      ]
+    },
+    {
+      "id": "newtons-first-law-equilibrium",
+      "label": "牛頓第一定律（平衡）",
+      "kind": "law",
+      "summary": "當物體處於靜止或等速運動時，其所受合力為零。",
+      "latex": "\\sum \\vec{F} = 0",
+      "pages": [
+        2,
+        3,
+        5,
+        17,
+        33,
+        39,
+        45
+      ]
+    },
+    {
+      "id": "newtons-second-law-dynamics",
+      "label": "牛頓第二定律（動力學）",
+      "kind": "law",
+      "summary": "物體所受合力等於其質量與加速度的乘積，方向與加速度相同。",
+      "latex": "\\sum \\vec{F} = m\\vec{a}",
+      "pages": [
+        2,
+        5,
+        6,
+        10,
+        11,
+        14,
+        15,
+        17,
+        29,
+        32,
+        33,
+        39,
+        45
+      ]
+    },
+    {
+      "id": "massless-rope",
+      "label": "理想輕繩",
+      "kind": "concept",
+      "summary": "一種假設繩索質量可忽略不計的模型，其張力在繩索各處大小相同。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "rope-with-mass",
+      "label": "有質量繩索",
+      "kind": "concept",
+      "summary": "考慮繩索質量時，繩索各處的張力會因其自身重量和運動狀態而不同。",
+      "latex": "",
+      "pages": [
+        4,
+        12
+      ]
+    },
+    {
+      "id": "newtons-third-law-action-reaction",
+      "label": "牛頓第三定律（作用反作用）",
+      "kind": "law",
+      "summary": "任何作用力都伴隨一個大小相等、方向相反的反作用力。",
+      "latex": "",
+      "pages": [
+        4,
+        11,
+        39
+      ]
+    },
+    {
+      "id": "inextensible-rope",
+      "label": "理想不可伸長繩",
+      "kind": "concept",
+      "summary": "一種假設繩索長度不變的模型，連接的物體具有相同的速度和加速度。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "frictionless-pulley",
+      "label": "理想無摩擦滑輪",
+      "kind": "concept",
+      "summary": "一種假設滑輪質量和摩擦力可忽略不計的模型，繩索兩端的張力大小相等。",
+      "latex": "",
+      "pages": [
+        5,
+        14,
+        15
+      ]
+    },
+    {
+      "id": "ma-not-a-force",
+      "label": "ma非力",
+      "kind": "concept",
+      "summary": "在自由體圖中，物體的質量乘以加速度（ma）是合力，而非作用在物體上的單獨力。",
+      "latex": "",
+      "pages": [
+        2,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "apparent-weight-accelerating-elevator",
+      "label": "加速電梯中的視重",
+      "kind": "concept",
+      "summary": "在加速電梯中，物體的視重會因電梯的加速度而改變，可能大於、小於或等於真實重量。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "apparent-weightlessness",
+      "label": "視重為零",
+      "kind": "concept",
+      "summary": "當物體所受的支撐力為零時，會感覺到失重，例如自由落體或軌道中的太空人。",
+      "latex": "",
+      "pages": [
+        10,
+        11
+      ]
+    },
+    {
+      "id": "atwood-machine",
+      "label": "阿特伍德機",
+      "kind": "concept",
+      "summary": "一種由滑輪和兩端懸掛質量組成的裝置，用於演示牛頓運動定律和測量重力加速度。",
+      "latex": "",
+      "pages": [
+        14,
+        15
+      ]
+    },
+    {
+      "id": "friction-force",
+      "label": "摩擦力",
+      "kind": "concept",
+      "summary": "阻礙物體相對運動或相對運動趨勢的力，作用於接觸表面之間。",
+      "latex": "",
+      "pages": [
+        18,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "static-friction",
+      "label": "靜摩擦力",
+      "kind": "concept",
+      "summary": "當物體有相對運動趨勢但尚未運動時，阻礙其運動的摩擦力。",
+      "latex": "",
+      "pages": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "kinetic-friction",
+      "label": "動摩擦力",
+      "kind": "concept",
+      "summary": "當物體在接觸表面上相對運動時，阻礙其運動的摩擦力。",
+      "latex": "",
+      "pages": [
+        21,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "static-friction-formula",
+      "label": "靜摩擦力公式",
+      "kind": "formula",
+      "summary": "靜摩擦力的大小小於或等於靜摩擦係數與正向力的乘積。",
+      "latex": "f_s \\le \\mu_s n",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "kinetic-friction-formula",
+      "label": "動摩擦力公式",
+      "kind": "formula",
+      "summary": "動摩擦力的大小等於動摩擦係數與正向力的乘積。",
+      "latex": "f_k = \\mu_k n",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "normal-force",
+      "label": "正向力",
+      "kind": "concept",
+      "summary": "垂直於接觸表面，由表面施加在物體上的支撐力。",
+      "latex": "",
+      "pages": [
+        3,
+        5,
+        6,
+        8,
+        9,
+        11,
+        13,
+        15,
+        21,
+        24,
+        35,
+        36,
+        38,
+        40
+      ]
+    },
+    {
+      "id": "coefficient-static-friction",
+      "label": "靜摩擦係數",
+      "kind": "concept",
+      "summary": "衡量物體與表面之間最大靜摩擦力與正向力比值的無單位量。",
+      "latex": "",
+      "pages": [
+        21,
+        22,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "coefficient-kinetic-friction",
+      "label": "動摩擦係數",
+      "kind": "concept",
+      "summary": "衡量物體與表面之間動摩擦力與正向力比值的無單位量。",
+      "latex": "",
+      "pages": [
+        21,
+        22,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "direction-friction-force",
+      "label": "摩擦力方向",
+      "kind": "principle",
+      "summary": "摩擦力方向與物體相對接觸表面的運動趨勢或實際運動方向相反。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "braking-distance-formula",
+      "label": "煞車距離公式",
+      "kind": "formula",
+      "summary": "物體從初速度煞停所需的距離，與初速度平方成正比，與摩擦係數成反比。",
+      "latex": "d = -\\frac{v_i^2}{2a}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "critical-angle-sliding",
+      "label": "滑動臨界角",
+      "kind": "formula",
+      "summary": "物體在斜面上剛要開始滑動時的斜面傾角，其正切值等於靜摩擦係數。",
+      "latex": "\\mu_s = \\tan \\theta_c",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "abs-braking-systems",
+      "label": "ABS防鎖死煞車系統",
+      "kind": "concept",
+      "summary": "一種車輛安全系統，透過防止車輪鎖死來維持輪胎與地面間的靜摩擦力，以縮短煞車距離並保持轉向控制。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "fluid-resistance",
+      "label": "流體阻力",
+      "kind": "concept",
+      "summary": "流體對其中運動物體施加的阻力，方向與物體相對流體的運動方向相反。",
+      "latex": "",
+      "pages": [
+        27,
+        29
+      ]
+    },
+    {
+      "id": "fluid-resistance-linear",
+      "label": "線性流體阻力",
+      "kind": "formula",
+      "summary": "當物體慢速或體積小時，流體阻力與速度成正比。",
+      "latex": "\\vec{R} = -b\\vec{v}",
+      "pages": [
+        27,
+        29
+      ]
+    },
+    {
+      "id": "fluid-resistance-quadratic",
+      "label": "平方流體阻力",
+      "kind": "formula",
+      "summary": "當物體高速或體積大時，流體阻力與速度平方成正比。",
+      "latex": "R = \\frac{1}{2} D \\rho A v^2",
+      "pages": [
+        27,
+        32
+      ]
+    },
+    {
+      "id": "air-drag-force",
+      "label": "空氣阻力",
+      "kind": "concept",
+      "summary": "空氣對運動物體施加的阻力，通常與速度平方成正比。",
+      "latex": "",
+      "pages": [
+        28,
+        32
+      ]
+    },
+    {
+      "id": "terminal-speed",
+      "label": "終端速度",
+      "kind": "concept",
+      "summary": "物體在流體中自由落體時，當重力與流體阻力平衡時所達到的恆定速度。",
+      "latex": "",
+      "pages": [
+        27,
+        30,
+        32
+      ]
+    },
+    {
+      "id": "terminal-speed-linear-formula",
+      "label": "終端速度公式（線性阻力）",
+      "kind": "formula",
+      "summary": "當流體阻力與速度成正比時，終端速度等於重力除以阻力係數。",
+      "latex": "v_T = \\frac{mg}{b}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "velocity-linear-fluid-resistance",
+      "label": "線性流阻下速度",
+      "kind": "formula",
+      "summary": "物體在線性流體阻力作用下的速度隨時間的變化關係，呈指數趨近於終端速度。",
+      "latex": "v = v_T(1-e^{-t/\\tau})",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "time-constant-fluid-resistance",
+      "label": "流阻時間常數",
+      "kind": "concept",
+      "summary": "描述物體在流體阻力作用下，速度趨近終端速度快慢的物理量。",
+      "latex": "\\tau = m/b",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "terminal-speed-quadratic-formula",
+      "label": "終端速度公式（平方阻力）",
+      "kind": "formula",
+      "summary": "當流體阻力與速度平方成正比時，終端速度等於重力與阻力係數、密度、截面積的函數。",
+      "latex": "v_T = \\sqrt{\\frac{2mg}{D \\rho A}}",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "uniform-circular-motion",
+      "label": "等速率圓周運動",
+      "kind": "concept",
+      "summary": "物體以恆定速率沿圓周路徑運動，其速度方向不斷改變，存在向心加速度。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "centripetal-acceleration",
+      "label": "向心加速度",
+      "kind": "concept",
+      "summary": "物體在圓周運動中指向圓心的加速度，改變速度方向但不改變速率。",
+      "latex": "",
+      "pages": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        40
+      ]
+    },
+    {
+      "id": "centripetal-force",
+      "label": "向心力",
+      "kind": "concept",
+      "summary": "導致物體進行圓周運動的淨力，方向始終指向圓心。",
+      "latex": "",
+      "pages": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        40
+      ]
+    },
+    {
+      "id": "centripetal-force-formula",
+      "label": "向心力公式",
+      "kind": "formula",
+      "summary": "向心力的大小等於質量乘以速度平方除以半徑。",
+      "latex": "\\sum \\vec{F} = m\\vec{a}_c = (-)m\\frac{v^2}{r}\\hat{r}",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "conical-pendulum",
+      "label": "錐擺",
+      "kind": "concept",
+      "summary": "物體懸掛於繩索末端，在水平面上做圓周運動，繩索與鉛垂線保持固定角度。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "conical-pendulum-speed-formula",
+      "label": "錐擺速度公式",
+      "kind": "formula",
+      "summary": "錐擺運動的速度與繩長、重力加速度和擺角相關。",
+      "latex": "v = \\sqrt{Lg \\sin \\theta \\tan \\theta}",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "max-speed-flat-curve-friction",
+      "label": "平面彎道最大速度（摩擦）",
+      "kind": "formula",
+      "summary": "在有摩擦力的平面彎道上，車輛能安全轉彎的最大速度，由靜摩擦係數、重力加速度和半徑決定。",
+      "latex": "v_{max} = \\sqrt{\\mu_s gr}",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "banked-curve-no-friction",
+      "label": "無摩擦傾斜彎道",
+      "kind": "concept",
+      "summary": "設計成使車輛僅依靠正向力分量提供向心力，無需摩擦力即可安全轉彎的彎道。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "banked-curve-angle-formula",
+      "label": "傾斜彎道角度公式",
+      "kind": "formula",
+      "summary": "無摩擦傾斜彎道設計角度，由車速、重力加速度和彎道半徑決定。",
+      "latex": "\\tan \\theta = \\frac{v^2}{rg}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "nonuniform-circular-motion",
+      "label": "變速率圓周運動",
+      "kind": "concept",
+      "summary": "物體沿圓周路徑運動，其速率和速度方向都可能改變，具有向心和切線加速度。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "tangential-acceleration",
+      "label": "切線加速度",
+      "kind": "concept",
+      "summary": "物體在圓周運動中沿切線方向的加速度分量，改變物體的速率。",
+      "latex": "",
+      "pages": [
+        37,
+        38
+      ]
+    },
+    {
+      "id": "min-speed-vertical-loop",
+      "label": "垂直圓周頂端最小速度",
+      "kind": "formula",
+      "summary": "物體在垂直圓周運動中，能維持圓周路徑而不脫離頂端的最小速度。",
+      "latex": "v_{top} = \\sqrt{gR}",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "weight-equator-poles",
+      "label": "赤道與兩極體重差異",
+      "kind": "concept",
+      "summary": "地球自轉導致赤道處物體因向心加速度而視重略輕於兩極。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "non-inertial-frame",
+      "label": "非慣性參考系",
+      "kind": "concept",
+      "summary": "相對於慣性參考系有加速度的參考系，在其中牛頓定律需要引入假想力才能成立。",
+      "latex": "",
+      "pages": [
+        39,
+        40,
+        41
+      ]
+    },
+    {
+      "id": "fictitious-force",
+      "label": "假想力",
+      "kind": "concept",
+      "summary": "在非慣性參考系中為使牛頓第二定律成立而引入的力，沒有作用物體，不構成作用反作用對。",
+      "latex": "",
+      "pages": [
+        39,
+        40,
+        41
+      ]
+    },
+    {
+      "id": "centrifugal-force",
+      "label": "離心力",
+      "kind": "concept",
+      "summary": "在旋轉非慣性參考系中，物體感受到的指向遠離旋轉中心的假想力。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "coriolis-force",
+      "label": "科里奧利力",
+      "kind": "concept",
+      "summary": "在旋轉參考系中，對運動物體產生垂直於其速度方向的假想力，導致路徑偏轉。",
+      "latex": "",
+      "pages": [
+        41,
+        42,
+        43,
+        44
+      ]
+    },
+    {
+      "id": "fundamental-forces-of-nature",
+      "label": "自然界基本作用力",
+      "kind": "concept",
+      "summary": "構成宇宙中所有已知相互作用的四種基本力：強核力、電磁力、弱核力、重力。",
+      "latex": "",
+      "pages": [
+        45
+      ]
+    },
+    {
+      "id": "strong-force",
+      "label": "強核力",
+      "kind": "concept",
+      "summary": "作用於夸克之間，將質子和中子束縛在原子核內的最強基本力。",
+      "latex": "",
+      "pages": [
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "electromagnetic-force",
+      "label": "電磁力",
+      "kind": "concept",
+      "summary": "作用於帶電粒子之間，負責原子和分子結構以及光學、電學現象。",
+      "latex": "",
+      "pages": [
+        18,
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "weak-force",
+      "label": "弱核力",
+      "kind": "concept",
+      "summary": "負責放射性衰變（如β衰變）和某些核反應的基本力。",
+      "latex": "",
+      "pages": [
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "gravitational-force",
+      "label": "重力",
+      "kind": "concept",
+      "summary": "作用於所有有質量物體之間，是長程吸引力，負責天體運動。",
+      "latex": "",
+      "pages": [
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        15,
+        21,
+        24,
+        32,
+        34,
+        35,
+        36,
+        37,
+        38,
+        40,
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "force-unification-theory",
+      "label": "作用力統一理論",
+      "kind": "concept",
+      "summary": "物理學中旨在將所有基本作用力描述為單一理論框架的嘗試。",
+      "latex": "",
+      "pages": [
+        45,
+        48
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "newtons-laws-problem-solving-hints",
+      "to": "free-body-diagram",
+      "reason": "自由體圖是牛頓定律解題步驟中的關鍵一步。"
+    },
+    {
+      "from": "free-body-diagram",
+      "to": "newtons-first-law-equilibrium",
+      "reason": "繪製自由體圖是應用牛頓第一定律分析物體平衡狀態的基礎。"
+    },
+    {
+      "from": "free-body-diagram",
+      "to": "newtons-second-law-dynamics",
+      "reason": "繪製自由體圖是應用牛頓第二定律分析物體動力學的基礎。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "apparent-weight-accelerating-elevator",
+      "reason": "加速電梯中的視重問題是牛頓第二定律的直接應用。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "apparent-weightlessness",
+      "reason": "視重為零的現象是牛頓第二定律在特定加速情況下的結果。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "atwood-machine",
+      "reason": "阿特伍德機的運動分析是牛頓第二定律的經典應用。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "friction-force",
+      "reason": "摩擦力是牛頓第二定律中常見的一種作用力。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "fluid-resistance",
+      "reason": "流體阻力是牛頓第二定律中常見的一種作用力。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "uniform-circular-motion",
+      "reason": "等速率圓周運動的動力學分析需要應用牛頓第二定律。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "nonuniform-circular-motion",
+      "reason": "變速率圓周運動的動力學分析需要應用牛頓第二定律。"
+    },
+    {
+      "from": "newtons-second-law-dynamics",
+      "to": "non-inertial-frame",
+      "reason": "非慣性參考系中的運動分析是牛頓第二定律的延伸應用，需引入假想力。"
+    },
+    {
+      "from": "newtons-third-law-action-reaction",
+      "to": "friction-force",
+      "reason": "摩擦力是物體間接觸作用力，符合牛頓第三定律的作用反作用對。"
+    },
+    {
+      "from": "ma-not-a-force",
+      "to": "free-body-diagram",
+      "reason": "理解ma不是力是正確繪製自由體圖的關鍵原則。"
+    },
+    {
+      "from": "normal-force",
+      "to": "static-friction",
+      "reason": "靜摩擦力的大小與正向力直接相關。"
+    },
+    {
+      "from": "normal-force",
+      "to": "kinetic-friction",
+      "reason": "動摩擦力的大小與正向力直接相關。"
+    },
+    {
+      "from": "static-friction",
+      "to": "static-friction-formula",
+      "reason": "靜摩擦力公式定義了靜摩擦力的最大值與正向力的關係。"
+    },
+    {
+      "from": "kinetic-friction",
+      "to": "kinetic-friction-formula",
+      "reason": "動摩擦力公式定義了動摩擦力與正向力的關係。"
+    },
+    {
+      "from": "static-friction",
+      "to": "coefficient-static-friction",
+      "reason": "靜摩擦係數是衡量靜摩擦力大小的物理量。"
+    },
+    {
+      "from": "kinetic-friction",
+      "to": "coefficient-kinetic-friction",
+      "reason": "動摩擦係數是衡量動摩擦力大小的物理量。"
+    },
+    {
+      "from": "static-friction-formula",
+      "to": "critical-angle-sliding",
+      "reason": "滑動臨界角是靜摩擦力公式的直接應用，用於判斷物體何時開始滑動。"
+    },
+    {
+      "from": "kinetic-friction-formula",
+      "to": "braking-distance-formula",
+      "reason": "煞車距離公式的推導需要應用動摩擦力公式來計算加速度。"
+    },
+    {
+      "from": "static-friction",
+      "to": "abs-braking-systems",
+      "reason": "ABS系統的目標是維持靜摩擦力以達到最佳煞車效果。"
+    },
+    {
+      "from": "kinetic-friction",
+      "to": "abs-braking-systems",
+      "reason": "ABS系統旨在避免車輪打滑進入動摩擦狀態，因為動摩擦力通常較小。"
+    },
+    {
+      "from": "fluid-resistance",
+      "to": "fluid-resistance-linear",
+      "reason": "線性流體阻力是流體阻力的一種特殊情況。"
+    },
+    {
+      "from": "fluid-resistance",
+      "to": "fluid-resistance-quadratic",
+      "reason": "平方流體阻力是流體阻力的一種特殊情況。"
+    },
+    {
+      "from": "fluid-resistance-quadratic",
+      "to": "air-drag-force",
+      "reason": "空氣阻力是平方流體阻力最常見的例子之一。"
+    },
+    {
+      "from": "fluid-resistance",
+      "to": "terminal-speed",
+      "reason": "終端速度是物體在流體阻力作用下達到力平衡的結果。"
+    },
+    {
+      "from": "terminal-speed",
+      "to": "terminal-speed-linear-formula",
+      "reason": "終端速度公式（線性阻力）是計算線性流體阻力下終端速度的方法。"
+    },
+    {
+      "from": "terminal-speed",
+      "to": "terminal-speed-quadratic-formula",
+      "reason": "終端速度公式（平方阻力）是計算平方流體阻力下終端速度的方法。"
+    },
+    {
+      "from": "fluid-resistance-linear",
+      "to": "velocity-linear-fluid-resistance",
+      "reason": "線性流阻下速度公式描述了物體在線性流體阻力作用下速度隨時間的變化。"
+    },
+    {
+      "from": "velocity-linear-fluid-resistance",
+      "to": "time-constant-fluid-resistance",
+      "reason": "流阻時間常數是線性流阻下速度公式中的一個重要參數，描述速度變化快慢。"
+    },
+    {
+      "from": "uniform-circular-motion",
+      "to": "centripetal-acceleration",
+      "reason": "向心加速度是等速率圓周運動的固有特性。"
+    },
+    {
+      "from": "centripetal-acceleration",
+      "to": "centripetal-force",
+      "reason": "向心力是產生向心加速度的原因，兩者透過牛頓第二定律相關聯。"
+    },
+    {
+      "from": "centripetal-force",
+      "to": "centripetal-force-formula",
+      "reason": "向心力公式定量描述了向心力的大小。"
+    },
+    {
+      "from": "centripetal-force",
+      "to": "conical-pendulum",
+      "reason": "錐擺是向心力概念的經典應用案例。"
+    },
+    {
+      "from": "conical-pendulum",
+      "to": "conical-pendulum-speed-formula",
+      "reason": "錐擺速度公式是分析錐擺運動的關鍵。"
+    },
+    {
+      "from": "centripetal-force",
+      "to": "max-speed-flat-curve-friction",
+      "reason": "平面彎道最大速度的計算需要應用向心力概念，並考慮摩擦力提供向心力。"
+    },
+    {
+      "from": "centripetal-force",
+      "to": "banked-curve-no-friction",
+      "reason": "無摩擦傾斜彎道是向心力概念的應用，其中正向力提供向心力。"
+    },
+    {
+      "from": "banked-curve-no-friction",
+      "to": "banked-curve-angle-formula",
+      "reason": "傾斜彎道角度公式是設計無摩擦傾斜彎道的依據。"
+    },
+    {
+      "from": "nonuniform-circular-motion",
+      "to": "tangential-acceleration",
+      "reason": "切線加速度是變速率圓周運動的特徵之一，負責改變物體速率。"
+    },
+    {
+      "from": "nonuniform-circular-motion",
+      "to": "min-speed-vertical-loop",
+      "reason": "垂直圓周頂端最小速度的推導是變速率圓周運動的應用。"
+    },
+    {
+      "from": "uniform-circular-motion",
+      "to": "weight-equator-poles",
+      "reason": "地球自轉導致的赤道與兩極體重差異是等速率圓周運動的應用。"
+    },
+    {
+      "from": "non-inertial-frame",
+      "to": "fictitious-force",
+      "reason": "假想力是為了解釋非慣性參考系中物體運動而引入的概念。"
+    },
+    {
+      "from": "fictitious-force",
+      "to": "centrifugal-force",
+      "reason": "離心力是一種常見的假想力，出現在旋轉的非慣性參考系中。"
+    },
+    {
+      "from": "fictitious-force",
+      "to": "coriolis-force",
+      "reason": "科里奧利力是一種常見的假想力，出現在旋轉參考系中對運動物體的影響。"
+    },
+    {
+      "from": "fundamental-forces-of-nature",
+      "to": "strong-force",
+      "reason": "強核力是自然界四種基本作用力之一。"
+    },
+    {
+      "from": "fundamental-forces-of-nature",
+      "to": "electromagnetic-force",
+      "reason": "電磁力是自然界四種基本作用力之一。"
+    },
+    {
+      "from": "fundamental-forces-of-nature",
+      "to": "weak-force",
+      "reason": "弱核力是自然界四種基本作用力之一。"
+    },
+    {
+      "from": "fundamental-forces-of-nature",
+      "to": "gravitational-force",
+      "reason": "重力是自然界四種基本作用力之一。"
+    },
+    {
+      "from": "fundamental-forces-of-nature",
+      "to": "force-unification-theory",
+      "reason": "作用力統一理論旨在將所有基本作用力整合到單一框架中。"
+    }
+  ],
+  "chapter_number": 5,
+  "usage": {
+    "input_tokens": 22346,
+    "output_tokens": 8166
+  }
+}

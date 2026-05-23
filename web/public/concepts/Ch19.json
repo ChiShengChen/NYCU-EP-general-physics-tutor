@@ -1,0 +1,613 @@
+{
+  "nodes": [
+    {
+      "id": "internal-energy-definition",
+      "label": "內能定義",
+      "kind": "definition",
+      "summary": "系統微觀組件（原子和分子）相關的所有能量，不含整體動能。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "thermal-energy",
+      "label": "熱能",
+      "kind": "concept",
+      "summary": "與分子隨機運動相關的動能，與溫度有關。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "bond-energy",
+      "label": "鍵能",
+      "kind": "concept",
+      "summary": "分子間位能，與潛熱或相變所需能量相關。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "mayers-relation",
+      "label": "邁耶關係",
+      "kind": "formula",
+      "summary": "定壓比熱與定容比熱之差等於理想氣體常數。",
+      "latex": "c_P - c_V = R",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "internal-energy-ideal-gas",
+      "label": "理想氣體內能",
+      "kind": "concept",
+      "summary": "理想氣體的內能僅為熱能，只取決於溫度。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "internal-energy-ideal-gas-formula",
+      "label": "理想氣體內能公式",
+      "kind": "formula",
+      "summary": "理想氣體的內能公式，取決於莫耳數、溫度和自由度。",
+      "latex": "E_{int} = \\left(\\frac{1}{2} nRT\\right) \\times f",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "change-internal-energy-ideal-gas-formula",
+      "label": "理想氣體內能變化",
+      "kind": "formula",
+      "summary": "理想氣體內能變化的公式，取決於莫耳數、溫度變化和自由度。",
+      "latex": "\\Delta E_{int} = \\left(\\frac{1}{2} nR\\Delta T\\right) \\times f",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "specific-heat-constant-volume",
+      "label": "定容比熱",
+      "kind": "concept",
+      "summary": "在體積不變下，使單位莫耳理想氣體溫度升高一度所需的熱量。",
+      "latex": "",
+      "pages": [
+        4,
+        15
+      ]
+    },
+    {
+      "id": "specific-heat-constant-pressure",
+      "label": "定壓比熱",
+      "kind": "concept",
+      "summary": "在壓力不變下，使單位莫耳理想氣體溫度升高一度所需的熱量。",
+      "latex": "",
+      "pages": [
+        4,
+        14
+      ]
+    },
+    {
+      "id": "state-variables",
+      "label": "狀態變數",
+      "kind": "definition",
+      "summary": "描述系統狀態的變數，如壓力、溫度、體積、內能、粒子數。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "transfer-variables",
+      "label": "傳遞變數",
+      "kind": "definition",
+      "summary": "僅在能量跨系統邊界傳遞時非零的變數，如熱和功。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "heat-transfer",
+      "label": "熱傳遞",
+      "kind": "concept",
+      "summary": "能量以熱的形式跨系統邊界傳遞。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "work-thermodynamics",
+      "label": "熱力學功",
+      "kind": "concept",
+      "summary": "能量以功的形式跨系統邊界傳遞。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "law-conservation-energy",
+      "label": "能量守恆定律",
+      "kind": "law",
+      "summary": "能量不能被創造或毀滅，只能從一種形式轉換為另一種形式。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "first-law-thermodynamics",
+      "label": "熱力學第一定律",
+      "kind": "law",
+      "summary": "能量守恆定律的延伸，系統內能變化等於熱傳遞加功。",
+      "latex": "\\Delta E_{int} = Q + W",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "work-done-thermodynamic-process",
+      "label": "熱力學過程功",
+      "kind": "formula",
+      "summary": "系統在熱力學過程中對外做功的微分形式。",
+      "latex": "dW = -PdV",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "pv-diagrams",
+      "label": "PV 圖",
+      "kind": "concept",
+      "summary": "壓力對體積的圖，用於表示熱力學過程和計算功。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "work-done-pv-diagram-formula",
+      "label": "PV 圖功公式",
+      "kind": "formula",
+      "summary": "在PV圖上，功等於曲線下方的面積的負值。",
+      "latex": "W = - \\int_{V_i}^{V_f} PdV",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "work-path-dependence",
+      "label": "功的路径依賴性",
+      "kind": "concept",
+      "summary": "功不僅取決於初始和最終狀態，還取決於過程路徑。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "isolated-system",
+      "label": "孤立系統",
+      "kind": "definition",
+      "summary": "不與外界交換能量或物質的系統，其內能保持不變。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "cyclic-process",
+      "label": "循環過程",
+      "kind": "definition",
+      "summary": "始於並終於同一狀態的熱力學過程，內能變化為零。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "adiabatic-process",
+      "label": "絕熱過程",
+      "kind": "definition",
+      "summary": "系統與外界沒有熱交換的過程，內能變化等於功。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "adiabatic-free-expansion",
+      "label": "絕熱自由膨脹",
+      "kind": "definition",
+      "summary": "氣體膨脹進入真空，無功無熱交換，內能和溫度不變。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "isobaric-process",
+      "label": "等壓過程",
+      "kind": "definition",
+      "summary": "壓力保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "work-isobaric-process-formula",
+      "label": "等壓功公式",
+      "kind": "formula",
+      "summary": "等壓過程中，功等於負的壓力乘以體積變化。",
+      "latex": "W = -P(V_f - V_i)",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "heat-isobaric-process-formula",
+      "label": "等壓熱公式",
+      "kind": "formula",
+      "summary": "等壓過程中，熱量等於莫耳數乘以定壓比熱乘以溫度變化。",
+      "latex": "Q = nc_p\\Delta T",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "isochoric-process",
+      "label": "等容過程",
+      "kind": "definition",
+      "summary": "體積保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "work-isochoric-process-formula",
+      "label": "等容功公式",
+      "kind": "formula",
+      "summary": "等容過程中，由於體積不變，功為零。",
+      "latex": "W = 0",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "heat-isochoric-process-formula",
+      "label": "等容熱公式",
+      "kind": "formula",
+      "summary": "等容過程中，熱量等於莫耳數乘以定容比熱乘以溫度變化。",
+      "latex": "Q = nc_v \\Delta T",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "isothermal-process",
+      "label": "等溫過程",
+      "kind": "definition",
+      "summary": "溫度保持恆定的熱力學過程。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "work-isothermal-process-formula",
+      "label": "等溫功公式",
+      "kind": "formula",
+      "summary": "等溫過程中，功等於莫耳數乘以理想氣體常數乘以溫度乘以體積比的自然對數。",
+      "latex": "W = nRT \\ln \\left( \\frac{V_i}{V_f} \\right)",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "ideal-gas-law",
+      "label": "理想氣體定律",
+      "kind": "law",
+      "summary": "描述理想氣體壓力、體積、溫度和莫耳數之間關係的定律。",
+      "latex": "PV = nRT",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "adiabatic-process-ideal-gas-formula",
+      "label": "理想氣體絕熱公式",
+      "kind": "formula",
+      "summary": "描述理想氣體在絕熱過程中壓力與體積關係的公式。",
+      "latex": "PV^\\gamma = \\text{constant}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "adiabatic-index",
+      "label": "絕熱指數",
+      "kind": "definition",
+      "summary": "定壓比熱與定容比熱之比，用於描述氣體在絕熱過程中的行為。",
+      "latex": "\\gamma = C_P / C_V",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "derivation-adiabatic-relation",
+      "label": "絕熱關係推導",
+      "kind": "method",
+      "summary": "從熱力學第一定律和理想氣體定律推導出絕熱過程的PV關係式。",
+      "latex": "",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "adiabatic-process-ideal-gas-states",
+      "label": "理想氣體絕熱狀態",
+      "kind": "formula",
+      "summary": "理想氣體在絕熱過程前後狀態壓力與體積的關係。",
+      "latex": "P_i V_i^\\gamma = P_f V_f^\\gamma",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "adiabatic-process-ideal-gas-tv-states",
+      "label": "理想氣體絕熱TV關係",
+      "kind": "formula",
+      "summary": "理想氣體在絕熱過程前後狀態溫度與體積的關係。",
+      "latex": "T_i V_i^{\\gamma-1} = T_f V_f^{\\gamma-1}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "work-adiabatic-process-formula",
+      "label": "絕熱功公式",
+      "kind": "formula",
+      "summary": "絕熱過程中，功等於內能變化，可用溫度或PV乘積表示。",
+      "latex": "W = \\Delta E_{int} = nc_v \\Delta T = \\frac{c_v}{R}(P_f V_f - P_i V_i)",
+      "pages": [
+        23
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "internal-energy-definition",
+      "to": "thermal-energy",
+      "reason": "熱能是內能的組成部分。"
+    },
+    {
+      "from": "internal-energy-definition",
+      "to": "bond-energy",
+      "reason": "鍵能是內能的組成部分。"
+    },
+    {
+      "from": "law-conservation-energy",
+      "to": "first-law-thermodynamics",
+      "reason": "熱力學第一定律是能量守恆定律的延伸。"
+    },
+    {
+      "from": "internal-energy-definition",
+      "to": "first-law-thermodynamics",
+      "reason": "熱力學第一定律描述內能的變化。"
+    },
+    {
+      "from": "heat-transfer",
+      "to": "first-law-thermodynamics",
+      "reason": "熱傳遞是熱力學第一定律中的一個能量傳遞項。"
+    },
+    {
+      "from": "work-thermodynamics",
+      "to": "first-law-thermodynamics",
+      "reason": "熱力學功是熱力學第一定律中的一個能量傳遞項。"
+    },
+    {
+      "from": "state-variables",
+      "to": "first-law-thermodynamics",
+      "reason": "內能是狀態變數，其變化量與路徑無關。"
+    },
+    {
+      "from": "transfer-variables",
+      "to": "first-law-thermodynamics",
+      "reason": "熱和功是傳遞變數，其值與路徑有關。"
+    },
+    {
+      "from": "pv-diagrams",
+      "to": "work-done-pv-diagram-formula",
+      "reason": "PV 圖用於視覺化和計算熱力學過程中的功。"
+    },
+    {
+      "from": "work-done-thermodynamic-process",
+      "to": "work-done-pv-diagram-formula",
+      "reason": "功的積分形式是從微分形式推導而來。"
+    },
+    {
+      "from": "work-done-pv-diagram-formula",
+      "to": "work-path-dependence",
+      "reason": "功的計算方式（PV圖下面積）說明了其路徑依賴性。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "isolated-system",
+      "reason": "孤立系統的定義是熱力學第一定律的特例（Q=W=0）。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "cyclic-process",
+      "reason": "循環過程的內能變化為零是熱力學第一定律的特例。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "adiabatic-process",
+      "reason": "絕熱過程的定義是熱力學第一定律的特例（Q=0）。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "adiabatic-free-expansion",
+      "reason": "絕熱自由膨脹是絕熱過程的一種特殊情況。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "isobaric-process",
+      "reason": "等壓過程是熱力學第一定律的應用之一。"
+    },
+    {
+      "from": "work-done-thermodynamic-process",
+      "to": "work-isobaric-process-formula",
+      "reason": "等壓功公式是熱力學功公式在恆壓下的應用。"
+    },
+    {
+      "from": "specific-heat-constant-pressure",
+      "to": "heat-isobaric-process-formula",
+      "reason": "定壓比熱用於計算等壓過程中的熱量。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "isochoric-process",
+      "reason": "等容過程是熱力學第一定律的應用之一。"
+    },
+    {
+      "from": "work-done-thermodynamic-process",
+      "to": "work-isochoric-process-formula",
+      "reason": "等容功公式是熱力學功公式在恆容下的應用。"
+    },
+    {
+      "from": "specific-heat-constant-volume",
+      "to": "heat-isochoric-process-formula",
+      "reason": "定容比熱用於計算等容過程中的熱量。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "isothermal-process",
+      "reason": "等溫過程是熱力學第一定律的應用之一。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "isothermal-process",
+      "reason": "理想氣體定律用於推導等溫過程中的功。"
+    },
+    {
+      "from": "work-done-thermodynamic-process",
+      "to": "work-isothermal-process-formula",
+      "reason": "等溫功公式是熱力學功公式在恆溫下的應用。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "internal-energy-ideal-gas",
+      "reason": "理想氣體定律是理解理想氣體內能的基礎。"
+    },
+    {
+      "from": "internal-energy-ideal-gas",
+      "to": "internal-energy-ideal-gas-formula",
+      "reason": "理想氣體內能公式具體化了理想氣體內能的概念。"
+    },
+    {
+      "from": "internal-energy-ideal-gas-formula",
+      "to": "change-internal-energy-ideal-gas-formula",
+      "reason": "內能變化是內能公式的直接應用。"
+    },
+    {
+      "from": "specific-heat-constant-volume",
+      "to": "mayers-relation",
+      "reason": "定容比熱是邁耶關係中的一個變數。"
+    },
+    {
+      "from": "specific-heat-constant-pressure",
+      "to": "mayers-relation",
+      "reason": "定壓比熱是邁耶關係中的一個變數。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "mayers-relation",
+      "reason": "邁耶關係是理想氣體比熱的關係。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "adiabatic-process-ideal-gas-formula",
+      "reason": "理想氣體絕熱公式是絕熱過程在理想氣體下的具體表現。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "adiabatic-process-ideal-gas-formula",
+      "reason": "理想氣體定律是推導理想氣體絕熱公式的基礎。"
+    },
+    {
+      "from": "adiabatic-index",
+      "to": "adiabatic-process-ideal-gas-formula",
+      "reason": "絕熱指數是理想氣體絕熱公式中的關鍵參數。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "derivation-adiabatic-relation",
+      "reason": "熱力學第一定律是絕熱關係推導的起點。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "derivation-adiabatic-relation",
+      "reason": "理想氣體定律是絕熱關係推導的關鍵步驟。"
+    },
+    {
+      "from": "specific-heat-constant-volume",
+      "to": "derivation-adiabatic-relation",
+      "reason": "定容比熱用於絕熱關係的推導。"
+    },
+    {
+      "from": "mayers-relation",
+      "to": "derivation-adiabatic-relation",
+      "reason": "邁耶關係用於簡化絕熱關係的推導。"
+    },
+    {
+      "from": "adiabatic-process-ideal-gas-formula",
+      "to": "adiabatic-process-ideal-gas-states",
+      "reason": "理想氣體絕熱狀態公式是理想氣體絕熱公式的應用。"
+    },
+    {
+      "from": "adiabatic-process-ideal-gas-formula",
+      "to": "adiabatic-process-ideal-gas-tv-states",
+      "reason": "理想氣體絕熱TV關係是理想氣體絕熱公式的另一種表達形式。"
+    },
+    {
+      "from": "ideal-gas-law",
+      "to": "adiabatic-process-ideal-gas-tv-states",
+      "reason": "理想氣體定律用於將PV關係轉換為TV關係。"
+    },
+    {
+      "from": "adiabatic-process",
+      "to": "work-adiabatic-process-formula",
+      "reason": "絕熱功公式是絕熱過程的功的計算方法。"
+    },
+    {
+      "from": "first-law-thermodynamics",
+      "to": "work-adiabatic-process-formula",
+      "reason": "絕熱功公式直接來自熱力學第一定律（Q=0）。"
+    },
+    {
+      "from": "change-internal-energy-ideal-gas-formula",
+      "to": "work-adiabatic-process-formula",
+      "reason": "絕熱功等於內能變化，而內能變化有其公式。"
+    },
+    {
+      "from": "specific-heat-constant-volume",
+      "to": "work-adiabatic-process-formula",
+      "reason": "定容比熱用於計算絕熱功。"
+    }
+  ],
+  "chapter_number": 19,
+  "usage": {
+    "input_tokens": 10203,
+    "output_tokens": 5520
+  }
+}

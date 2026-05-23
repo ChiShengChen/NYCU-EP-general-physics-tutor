@@ -1,0 +1,646 @@
+{
+  "nodes": [
+    {
+      "id": "fluid-definition",
+      "label": "流體定義",
+      "kind": "definition",
+      "summary": "流體是由隨機排列的分子組成，由弱內聚力和容器壁力維持，不承受剪切或拉伸應力。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "pressure-definition",
+      "label": "壓力定義",
+      "kind": "definition",
+      "summary": "靜止流體對物體施加的力，總是垂直於物體表面，其大小為力除以垂直面積。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "pressure-formula",
+      "label": "壓力公式",
+      "kind": "formula",
+      "summary": "壓力定義為作用在垂直於表面的力除以該面積。",
+      "latex": "P = \\frac{F}{A_{\\perp}}",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "pressure-variation-depth",
+      "label": "壓力隨深度變化",
+      "kind": "principle",
+      "summary": "靜止流體中，壓力隨深度增加而增加，由液體表面壓力、密度、重力加速度和深度決定。",
+      "latex": "P = P_0 + \\rho gh",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "pascal-law",
+      "label": "帕斯卡定律",
+      "kind": "law",
+      "summary": "密閉流體中，施加於任一點的壓力變化會無損地傳遞到流體中所有點和容器壁。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "barometer",
+      "label": "氣壓計",
+      "kind": "concept",
+      "summary": "測量大氣壓力的裝置，利用液體柱（通常是水銀）的高度來指示壓力。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "manometer",
+      "label": "壓力計",
+      "kind": "concept",
+      "summary": "測量流體壓力的裝置，通常利用U形管中液體高度差來指示壓力。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "absolute-pressure",
+      "label": "絕對壓力",
+      "kind": "definition",
+      "summary": "流體在某一點的總壓力，等於參考壓力（通常是大氣壓力）加上表壓力。",
+      "latex": "P = P_0 + \\rho gh",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "gauge-pressure",
+      "label": "表壓力",
+      "kind": "definition",
+      "summary": "流體壓力與參考壓力（通常是大氣壓力）之間的差值。",
+      "latex": "P - P_0 = \\rho gh",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "hydraulic-press",
+      "label": "液壓機",
+      "kind": "method",
+      "summary": "利用帕斯卡定律，透過小活塞上的力產生大活塞上的大力的裝置。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "buoyant-force-definition",
+      "label": "浮力定義",
+      "kind": "definition",
+      "summary": "流體對浸入其中的物體施加的向上力。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "archimedes-principle",
+      "label": "阿基米德原理",
+      "kind": "law",
+      "summary": "物體在流體中所受的浮力，等於物體所排開流體的重量。",
+      "latex": "B = M_{fluid}g",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "totally-submerged-object",
+      "label": "完全浸沒物體",
+      "kind": "concept",
+      "summary": "物體完全浸沒在流體中時，其運動由物體和流體的密度差決定。",
+      "latex": "F_g - B = (\\rho_{\\text{obj}} - \\rho_{\\text{fluid}})gV_{\\text{obj}}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "floating-object",
+      "label": "漂浮物體",
+      "kind": "concept",
+      "summary": "物體漂浮在流體表面時，其所受浮力與重力平衡，浸沒體積與總體積之比等於密度比。",
+      "latex": "\\frac{\\rho_{\\text{obj}}}{\\rho_{\\text{fluid}}} = \\frac{V_{\\text{fluid}}}{V_{\\text{obj}}}",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "hydrometer",
+      "label": "比重計",
+      "kind": "concept",
+      "summary": "測量液體密度的裝置，利用物體在不同密度液體中漂浮深度不同的原理。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "laminar-flow",
+      "label": "層流",
+      "kind": "definition",
+      "summary": "流體以平滑、穩定的路徑流動，流線不交叉的流動模式。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "turbulent-flow",
+      "label": "紊流",
+      "kind": "definition",
+      "summary": "流體以不規則、混亂的模式流動，特徵是小漩渦狀區域，發生在超過臨界速度時。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "viscosity-definition",
+      "label": "黏度定義",
+      "kind": "definition",
+      "summary": "流體內部摩擦的程度，抵抗相鄰流體層相對運動的阻力。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "superfluid",
+      "label": "超流體",
+      "kind": "concept",
+      "summary": "一種具有零黏度的流體狀態，例如液氦在極低溫下。",
+      "latex": "",
+      "pages": [
+        29,
+        30
+      ]
+    },
+    {
+      "id": "ideal-fluid-flow",
+      "label": "理想流體流動",
+      "kind": "definition",
+      "summary": "假設流體無黏性、穩定、不可壓縮且無旋轉的流動模型。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "equation-of-continuity",
+      "label": "連續性方程式",
+      "kind": "law",
+      "summary": "對於不可壓縮流體，流經管道任一截面的體積流率保持恆定。",
+      "latex": "A_1 v_1 = A_2 v_2 = \\text{const.}",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "bernoulli-equation",
+      "label": "白努利方程式",
+      "kind": "law",
+      "summary": "描述理想流體在流線上的壓力、速度和高度之間關係的能量守恆定律。",
+      "latex": "P + \\frac{1}{2}\\rho v^2 + \\rho gy = \\text{const.}",
+      "pages": [
+        33,
+        34
+      ]
+    },
+    {
+      "id": "venturi-tube",
+      "label": "文丘里管",
+      "kind": "concept",
+      "summary": "一種利用白努利方程式測量流體流速的裝置，透過管道截面積變化產生壓力差。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "torricelli-law",
+      "label": "托里切利定律",
+      "kind": "law",
+      "summary": "從容器小孔流出的液體速度，等於液體從相同高度自由落體的速度。",
+      "latex": "v_1 = \\sqrt{2gh}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "max-range-water-jet",
+      "label": "水射流最大射程",
+      "kind": "method",
+      "summary": "計算從水箱側孔射出的水流能達到最遠水平距離的條件，即孔位於水面高度的一半。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "siphon",
+      "label": "虹吸管",
+      "kind": "concept",
+      "summary": "利用重力和壓力差將液體從高處容器引導至低處容器的裝置。",
+      "latex": "",
+      "pages": [
+        38,
+        39
+      ]
+    },
+    {
+      "id": "pressure-differential-viscous-flow",
+      "label": "黏性流體壓差",
+      "kind": "formula",
+      "summary": "維持黏性流體在水平管道中流動所需的壓差，與體積流率和流體阻力有關。",
+      "latex": "\\Delta P = I_v \\Re",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "velocity-profile-viscous-fluid",
+      "label": "黏性流體速度分佈",
+      "kind": "concept",
+      "summary": "黏性流體在管道中流動時，速度分佈呈拋物線形，中心最快，管壁為零。",
+      "latex": "",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "resistance-viscous-flow",
+      "label": "黏性流體阻力",
+      "kind": "formula",
+      "summary": "描述黏性流體在管道中流動時所受阻力的公式，與黏度、管道長度和半徑有關。",
+      "latex": "\\Re = \\frac{8\\eta L}{\\pi R^4}",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "lift-force",
+      "label": "升力",
+      "kind": "definition",
+      "summary": "流體對移動物體（如機翼）施加的向上力，使其克服重力。",
+      "latex": "",
+      "pages": [
+        42
+      ]
+    },
+    {
+      "id": "drag-force",
+      "label": "阻力",
+      "kind": "definition",
+      "summary": "流體對移動物體施加的與運動方向相反的阻力。",
+      "latex": "",
+      "pages": [
+        42
+      ]
+    },
+    {
+      "id": "bernoulli-effect-lift",
+      "label": "白努利效應（升力）",
+      "kind": "principle",
+      "summary": "機翼上方氣流速度較快，壓力較低，下方氣流速度較慢，壓力較高，產生向上升力。",
+      "latex": "",
+      "pages": [
+        42,
+        43
+      ]
+    },
+    {
+      "id": "collision-effect",
+      "label": "碰撞效應",
+      "kind": "principle",
+      "summary": "流體分子與物體表面碰撞產生動量變化，導致物體受力，是升力和阻力的另一種解釋。",
+      "latex": "",
+      "pages": [
+        43
+      ]
+    },
+    {
+      "id": "atomizer",
+      "label": "噴霧器",
+      "kind": "concept",
+      "summary": "利用白努利效應將液體霧化噴出的裝置，通過高速氣流產生低壓區吸取液體。",
+      "latex": "",
+      "pages": [
+        45
+      ]
+    },
+    {
+      "id": "magnus-effect",
+      "label": "馬格努斯效應",
+      "kind": "principle",
+      "summary": "旋轉物體在流體中運動時，由於流體速度差導致壓力差，產生垂直於運動方向的力。",
+      "latex": "",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "surface-tension-definition",
+      "label": "表面張力定義",
+      "kind": "definition",
+      "summary": "液體表面分子受內部分子吸引，導致表面積趨於最小化的現象。",
+      "latex": "",
+      "pages": [
+        48,
+        49
+      ]
+    },
+    {
+      "id": "capillary-force",
+      "label": "毛細力",
+      "kind": "concept",
+      "summary": "液體在細管中上升或下降的現象，由液體內聚力、附著力及表面張力共同作用產生。",
+      "latex": "",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "marangoni-flow",
+      "label": "馬蘭戈尼流",
+      "kind": "concept",
+      "summary": "由於液體表面張力梯度引起的流動，通常由溫度或化學濃度變化引起。",
+      "latex": "",
+      "pages": [
+        50
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "fluid-definition",
+      "to": "pressure-definition",
+      "reason": "壓力是流體的重要性質。"
+    },
+    {
+      "from": "pressure-definition",
+      "to": "pressure-formula",
+      "reason": "壓力公式是壓力定義的數學表達。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "pressure-variation-depth",
+      "reason": "壓力隨深度變化是流體的性質。"
+    },
+    {
+      "from": "pressure-definition",
+      "to": "pressure-variation-depth",
+      "reason": "理解壓力隨深度變化前需先理解壓力的基本概念。"
+    },
+    {
+      "from": "pressure-definition",
+      "to": "pascal-law",
+      "reason": "帕斯卡定律描述了流體中壓力的傳遞方式。"
+    },
+    {
+      "from": "pressure-variation-depth",
+      "to": "barometer",
+      "reason": "氣壓計的原理基於壓力隨深度變化的關係。"
+    },
+    {
+      "from": "pressure-variation-depth",
+      "to": "manometer",
+      "reason": "壓力計的原理基於壓力隨深度變化的關係。"
+    },
+    {
+      "from": "pressure-variation-depth",
+      "to": "absolute-pressure",
+      "reason": "絕對壓力是壓力隨深度變化公式的直接應用。"
+    },
+    {
+      "from": "absolute-pressure",
+      "to": "gauge-pressure",
+      "reason": "表壓力是絕對壓力減去參考壓力。"
+    },
+    {
+      "from": "pascal-law",
+      "to": "hydraulic-press",
+      "reason": "液壓機的運作原理是帕斯卡定律的直接應用。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "buoyant-force-definition",
+      "reason": "浮力是流體對物體作用的力。"
+    },
+    {
+      "from": "buoyant-force-definition",
+      "to": "archimedes-principle",
+      "reason": "阿基米德原理定量描述了浮力的大小。"
+    },
+    {
+      "from": "buoyant-force-definition",
+      "to": "totally-submerged-object",
+      "reason": "理解完全浸沒物體受力需浮力概念。"
+    },
+    {
+      "from": "archimedes-principle",
+      "to": "totally-submerged-object",
+      "reason": "完全浸沒物體的浮力計算依賴阿基米德原理。"
+    },
+    {
+      "from": "buoyant-force-definition",
+      "to": "floating-object",
+      "reason": "理解漂浮物體受力需浮力概念。"
+    },
+    {
+      "from": "archimedes-principle",
+      "to": "floating-object",
+      "reason": "漂浮物體的平衡條件基於阿基米德原理。"
+    },
+    {
+      "from": "floating-object",
+      "to": "hydrometer",
+      "reason": "比重計的原理是漂浮物體密度比的應用。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "laminar-flow",
+      "reason": "層流是流體的一種流動狀態。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "turbulent-flow",
+      "reason": "紊流是流體的一種流動狀態。"
+    },
+    {
+      "from": "laminar-flow",
+      "to": "turbulent-flow",
+      "reason": "紊流是與層流相對的流動模式，理解兩者有助於區分。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "viscosity-definition",
+      "reason": "黏度是流體的重要性質。"
+    },
+    {
+      "from": "viscosity-definition",
+      "to": "superfluid",
+      "reason": "超流體是黏度為零的特殊流體。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "ideal-fluid-flow",
+      "reason": "理想流體流動是流體流動的簡化模型。"
+    },
+    {
+      "from": "viscosity-definition",
+      "to": "ideal-fluid-flow",
+      "reason": "理想流體流動假設無黏性。"
+    },
+    {
+      "from": "laminar-flow",
+      "to": "ideal-fluid-flow",
+      "reason": "理想流體流動假設是穩定流動。"
+    },
+    {
+      "from": "ideal-fluid-flow",
+      "to": "equation-of-continuity",
+      "reason": "連續性方程式通常應用於理想流體。"
+    },
+    {
+      "from": "ideal-fluid-flow",
+      "to": "bernoulli-equation",
+      "reason": "白努利方程式是理想流體流動的能量守恆定律。"
+    },
+    {
+      "from": "equation-of-continuity",
+      "to": "bernoulli-equation",
+      "reason": "白努利方程式的推導和應用常與連續性方程式結合。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "venturi-tube",
+      "reason": "文丘里管的運作原理是白努利方程式的應用。"
+    },
+    {
+      "from": "equation-of-continuity",
+      "to": "venturi-tube",
+      "reason": "文丘里管的運作原理也涉及連續性方程式。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "torricelli-law",
+      "reason": "托里切利定律是白努利方程式在特定條件下的簡化形式。"
+    },
+    {
+      "from": "torricelli-law",
+      "to": "max-range-water-jet",
+      "reason": "計算水射流射程需要知道出水速度，這由托里切利定律給出。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "siphon",
+      "reason": "虹吸管的運作原理可以用白努利方程式分析。"
+    },
+    {
+      "from": "pressure-variation-depth",
+      "to": "siphon",
+      "reason": "虹吸管的運作也涉及壓力隨深度變化。"
+    },
+    {
+      "from": "viscosity-definition",
+      "to": "pressure-differential-viscous-flow",
+      "reason": "此公式描述黏性流體的壓差。"
+    },
+    {
+      "from": "viscosity-definition",
+      "to": "velocity-profile-viscous-fluid",
+      "reason": "速度分佈是黏性流體的特徵。"
+    },
+    {
+      "from": "viscosity-definition",
+      "to": "resistance-viscous-flow",
+      "reason": "阻力公式中包含黏度。"
+    },
+    {
+      "from": "pressure-differential-viscous-flow",
+      "to": "resistance-viscous-flow",
+      "reason": "阻力是壓差公式的一部分。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "lift-force",
+      "reason": "升力是流體對物體作用的力。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "drag-force",
+      "reason": "阻力是流體對物體作用的力。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "bernoulli-effect-lift",
+      "reason": "這是白努利方程式在升力上的應用。"
+    },
+    {
+      "from": "lift-force",
+      "to": "bernoulli-effect-lift",
+      "reason": "解釋升力的產生機制。"
+    },
+    {
+      "from": "lift-force",
+      "to": "collision-effect",
+      "reason": "碰撞效應是升力產生的一種解釋。"
+    },
+    {
+      "from": "drag-force",
+      "to": "collision-effect",
+      "reason": "碰撞效應是阻力產生的一種解釋。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "atomizer",
+      "reason": "噴霧器的運作原理是白努利方程式的應用。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "magnus-effect",
+      "reason": "馬格努斯效應是流體對旋轉物體作用的現象。"
+    },
+    {
+      "from": "bernoulli-equation",
+      "to": "magnus-effect",
+      "reason": "馬格努斯效應的解釋基於白努利方程式。"
+    },
+    {
+      "from": "fluid-definition",
+      "to": "surface-tension-definition",
+      "reason": "表面張力是液體的特性。"
+    },
+    {
+      "from": "surface-tension-definition",
+      "to": "capillary-force",
+      "reason": "毛細現象是表面張力的重要表現。"
+    },
+    {
+      "from": "surface-tension-definition",
+      "to": "marangoni-flow",
+      "reason": "馬蘭戈尼流是表面張力梯度引起的流動。"
+    }
+  ],
+  "chapter_number": 14,
+  "usage": {
+    "input_tokens": 19512,
+    "output_tokens": 5662
+  }
+}

@@ -1,0 +1,1019 @@
+{
+  "nodes": [
+    {
+      "id": "point-object",
+      "label": "點物體",
+      "kind": "concept",
+      "summary": "光線從單一點向外發散的理想物體。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "extended-object",
+      "label": "延伸物體",
+      "kind": "concept",
+      "summary": "由多個點物體組成的實際物體。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "reflection",
+      "label": "反射",
+      "kind": "concept",
+      "summary": "光線遇到界面後返回原介質的現象。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "refraction",
+      "label": "折射",
+      "kind": "concept",
+      "summary": "光線穿過界面進入不同介質時方向改變的現象。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "flat-mirror",
+      "label": "平面鏡",
+      "kind": "concept",
+      "summary": "表面平坦的鏡子，形成虛像且左右（前後）反轉。",
+      "latex": "",
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "id": "spherical-mirror",
+      "label": "球面鏡",
+      "kind": "concept",
+      "summary": "具有曲率的鏡子，分為凹面鏡和凸面鏡。",
+      "latex": "",
+      "pages": [
+        3,
+        12
+      ]
+    },
+    {
+      "id": "center-of-curvature",
+      "label": "曲率中心",
+      "kind": "definition",
+      "summary": "球面鏡或透鏡的球心。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "radius-of-curvature",
+      "label": "曲率半徑",
+      "kind": "definition",
+      "summary": "曲率中心到鏡面或透鏡表面的距離。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "vertex",
+      "label": "頂點",
+      "kind": "definition",
+      "summary": "鏡面或透鏡表面的中心點。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "principal-axis",
+      "label": "主軸",
+      "kind": "definition",
+      "summary": "通過曲率中心和頂點的直線。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "lens",
+      "label": "透鏡",
+      "kind": "concept",
+      "summary": "利用折射原理形成影像的光學元件。",
+      "latex": "",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "id": "converging-lens",
+      "label": "會聚透鏡",
+      "kind": "concept",
+      "summary": "使平行光線會聚到一點的透鏡。",
+      "latex": "",
+      "pages": [
+        3,
+        24
+      ]
+    },
+    {
+      "id": "diverging-lens",
+      "label": "發散透鏡",
+      "kind": "concept",
+      "summary": "使平行光線發散的透鏡。",
+      "latex": "",
+      "pages": [
+        3,
+        24
+      ]
+    },
+    {
+      "id": "sign-conventions-general",
+      "label": "符號慣例 (通用)",
+      "kind": "principle",
+      "summary": "定義物距、像距和曲率半徑的正負號規則。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "virtual-image",
+      "label": "虛像",
+      "kind": "definition",
+      "summary": "出射光線的反向延長線會聚形成的影像。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "real-image",
+      "label": "實像",
+      "kind": "definition",
+      "summary": "出射光線實際會聚形成的影像。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "lateral-magnification",
+      "label": "橫向放大率",
+      "kind": "definition",
+      "summary": "影像高度與物體高度之比，公式為 $M = h'/h$。",
+      "latex": "M = \\frac{h'}{h}",
+      "pages": [
+        5,
+        8
+      ]
+    },
+    {
+      "id": "image-formation-flat-mirror",
+      "label": "平面鏡成像",
+      "kind": "principle",
+      "summary": "平面鏡形成與物體等距、等大、正立的虛像。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "mirror-reversal",
+      "label": "鏡像反轉",
+      "kind": "concept",
+      "summary": "平面鏡造成影像前後反轉，而非左右反轉。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "focal-point-length-mirror",
+      "label": "鏡面焦點與焦距",
+      "kind": "definition",
+      "summary": "平行於主軸的光線經鏡面反射後會聚或發散的點為焦點，焦距 $f=R/2$。",
+      "latex": "f = R/2",
+      "pages": [
+        14,
+        16,
+        17
+      ]
+    },
+    {
+      "id": "ray-diagram-spherical-mirror",
+      "label": "球面鏡光線追蹤法",
+      "kind": "method",
+      "summary": "用四條主光線確定球面鏡成像位置與性質。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "paraxial-approximation",
+      "label": "近軸近似",
+      "kind": "concept",
+      "summary": "假設光線與主軸夾角很小，簡化光學計算。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "mirror-equation",
+      "label": "鏡面方程式",
+      "kind": "formula",
+      "summary": "描述球面鏡物距、像距和焦距關係的方程式。",
+      "latex": "\\frac{1}{p} + \\frac{1}{q} = \\frac{2}{R} = \\frac{1}{f}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "magnification-spherical-mirror",
+      "label": "球面鏡放大率",
+      "kind": "formula",
+      "summary": "描述球面鏡成像大小的放大率公式。",
+      "latex": "M = -\\frac{q}{p}",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "sign-conventions-mirror",
+      "label": "鏡面符號慣例",
+      "kind": "principle",
+      "summary": "針對鏡面成像的物距、像距、焦距等正負號規則。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "spherical-aberration",
+      "label": "球面像差",
+      "kind": "concept",
+      "summary": "球面鏡或透鏡邊緣光線無法會聚於單一焦點的現象。",
+      "latex": "",
+      "pages": [
+        18,
+        32
+      ]
+    },
+    {
+      "id": "parabolic-mirror",
+      "label": "拋物面鏡",
+      "kind": "concept",
+      "summary": "能將平行光線精確會聚於單一焦點的鏡子，可消除球面像差。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "refraction-formula-spherical-surface",
+      "label": "球面折射面公式",
+      "kind": "formula",
+      "summary": "描述光線在球面介面折射時物距、像距和曲率半徑關係。",
+      "latex": "\\frac{n_1}{p} + \\frac{n_2}{q} = \\frac{n_2 - n_1}{R}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "magnification-spherical-refraction",
+      "label": "球面折射面放大率",
+      "kind": "formula",
+      "summary": "描述光線在球面介面折射時影像大小的放大率公式。",
+      "latex": "M = -\\frac{n_1 q}{n_2 p}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "refraction-formula-flat-surface",
+      "label": "平面折射面公式",
+      "kind": "formula",
+      "summary": "描述光線在平面介面折射時物距、像距和折射率關係。",
+      "latex": "\\frac{n_1}{p} + \\frac{n_2}{q} = 0",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "focal-point-length-lens",
+      "label": "透鏡焦點與焦距",
+      "kind": "definition",
+      "summary": "平行光線經透鏡折射後會聚或發散的點為焦點，透鏡只有一個焦距。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "lens-makers-equation",
+      "label": "透鏡製造者公式",
+      "kind": "formula",
+      "summary": "根據透鏡的折射率和曲率半徑計算焦距的公式。",
+      "latex": "\\frac{1}{p} + \\frac{1}{q} = (n-1)\\left(\\frac{1}{R_1} - \\frac{1}{R_2}\\right) = \\frac{1}{f}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "magnification-thin-lens",
+      "label": "薄透鏡放大率",
+      "kind": "formula",
+      "summary": "描述薄透鏡成像大小的放大率公式。",
+      "latex": "M = -\\frac{q}{p}",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "thin-lens-equation",
+      "label": "薄透鏡方程式",
+      "kind": "formula",
+      "summary": "描述薄透鏡物距、像距和焦距關係的方程式。",
+      "latex": "\\frac{1}{p} + \\frac{1}{q} = \\frac{1}{f}",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "ray-diagram-thin-lens",
+      "label": "薄透鏡光線追蹤法",
+      "kind": "method",
+      "summary": "用三條主光線確定薄透鏡成像位置與性質。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "lens-image-inversion",
+      "label": "透鏡成像倒立",
+      "kind": "concept",
+      "summary": "透鏡形成的實像會倒立，但不會左右反轉。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "chromatic-aberration",
+      "label": "色像差",
+      "kind": "concept",
+      "summary": "不同波長的光經透鏡折射後會聚於不同焦點的現象。",
+      "latex": "",
+      "pages": [
+        33
+      ]
+    },
+    {
+      "id": "camera",
+      "label": "照相機",
+      "kind": "concept",
+      "summary": "利用透鏡成像原理捕捉影像的光學系統。",
+      "latex": "",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "camera-lens-equation",
+      "label": "照相機透鏡方程式",
+      "kind": "formula",
+      "summary": "描述照相機中物距、像距和焦距關係的方程式。",
+      "latex": "\\frac{1}{p} + \\frac{1}{q} = \\frac{1}{f}",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "wide-angle-lens",
+      "label": "廣角鏡頭",
+      "kind": "concept",
+      "summary": "焦距短、視角廣的照相機鏡頭。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "telephoto-lens",
+      "label": "望遠鏡頭",
+      "kind": "concept",
+      "summary": "焦距長、視角窄、放大率高的照相機鏡頭。",
+      "latex": "",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "light-intensity-f-number",
+      "label": "光強度與f值",
+      "kind": "formula",
+      "summary": "光強度與光圈直徑平方成正比，與焦距平方成反比，與f值平方成反比。",
+      "latex": "I \\propto \\frac{D^2}{f^2} \\propto \\frac{1}{(f\\text{-number})^2}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "f-number",
+      "label": "f值",
+      "kind": "definition",
+      "summary": "焦距與光圈直徑之比 ($f/D$)，用於表示鏡頭的相對孔徑。",
+      "latex": "f\\text{-number} \\equiv \\frac{f}{D}",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "exposure-time",
+      "label": "曝光時間",
+      "kind": "concept",
+      "summary": "決定感光元件接收光量長度的時間，與f值相關。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "exposure-triangle",
+      "label": "曝光三角",
+      "kind": "concept",
+      "summary": "攝影中光圈、快門速度和感光度三者關係的示意圖。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "zoom-lens",
+      "label": "變焦鏡頭",
+      "kind": "concept",
+      "summary": "可改變焦距以調整視角和放大率的鏡頭。",
+      "latex": "",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "human-eye",
+      "label": "人眼",
+      "kind": "concept",
+      "summary": "複雜的光學系統，通過晶狀體調節焦距成像於視網膜。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "near-point",
+      "label": "近點",
+      "kind": "definition",
+      "summary": "眼睛能清晰聚焦最近的距離。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "far-point",
+      "label": "遠點",
+      "kind": "definition",
+      "summary": "眼睛能清晰聚焦最遠的距離。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "eye-lens-equation",
+      "label": "人眼透鏡方程式",
+      "kind": "formula",
+      "summary": "描述人眼成像中物距、像距和焦距關係的方程式。",
+      "latex": "\\frac{1}{p} + \\frac{1}{q} = \\frac{1}{f}",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "color-vision-cones",
+      "label": "錐狀細胞色覺",
+      "kind": "concept",
+      "summary": "視網膜中三種錐狀細胞負責感知顏色。",
+      "latex": "",
+      "pages": [
+        40
+      ]
+    },
+    {
+      "id": "farsightedness-hyperopia",
+      "label": "遠視",
+      "kind": "concept",
+      "summary": "影像聚焦於視網膜後方，難以看清近物，需用會聚透鏡矯正。",
+      "latex": "",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "nearsightedness-myopia",
+      "label": "近視",
+      "kind": "concept",
+      "summary": "影像聚焦於視網膜前方，難以看清遠物，需用發散透鏡矯正。",
+      "latex": "",
+      "pages": [
+        41
+      ]
+    },
+    {
+      "id": "diopter",
+      "label": "屈光度",
+      "kind": "definition",
+      "summary": "透鏡焦距倒數的單位（$1/f(\text{m})$），用於視力矯正。",
+      "latex": "",
+      "pages": [
+        42
+      ]
+    },
+    {
+      "id": "presbyopia",
+      "label": "老花眼",
+      "kind": "concept",
+      "summary": "晶狀體老化導致近點後移，難以看清近物。",
+      "latex": "",
+      "pages": [
+        42
+      ]
+    },
+    {
+      "id": "astigmatism",
+      "label": "散光",
+      "kind": "concept",
+      "summary": "角膜或晶狀體表面不規則，導致不同方向光線聚焦不同。",
+      "latex": "",
+      "pages": [
+        43
+      ]
+    },
+    {
+      "id": "cylindrical-lens",
+      "label": "柱面透鏡",
+      "kind": "concept",
+      "summary": "用於矯正散光的光學透鏡，其曲率在不同方向上不同。",
+      "latex": "",
+      "pages": [
+        43
+      ]
+    },
+    {
+      "id": "simple-magnifier",
+      "label": "簡易放大鏡",
+      "kind": "concept",
+      "summary": "利用單一會聚透鏡放大近處物體，形成虛像。",
+      "latex": "",
+      "pages": [
+        44
+      ]
+    },
+    {
+      "id": "angular-magnification",
+      "label": "角放大率",
+      "kind": "definition",
+      "summary": "經光學儀器觀察物體所張角度與肉眼觀察所張角度之比，簡易放大鏡為 $M = 25 \\text{ cm}/f$。",
+      "latex": "M = \\frac{\\theta'}{\\theta} = \\frac{25 \\text{ cm}}{f}",
+      "pages": [
+        44
+      ]
+    },
+    {
+      "id": "compound-microscope",
+      "label": "複式顯微鏡",
+      "kind": "concept",
+      "summary": "由物鏡和目鏡組成，用於高倍率觀察微小物體。",
+      "latex": "",
+      "pages": [
+        46
+      ]
+    },
+    {
+      "id": "total-angular-magnification-microscope",
+      "label": "顯微鏡總角放大率",
+      "kind": "formula",
+      "summary": "複式顯微鏡的總角放大率公式。",
+      "latex": "M = \\frac{(25 \\text{ cm})s_1'}{f_1 f_2}",
+      "pages": [
+        46
+      ]
+    },
+    {
+      "id": "refracting-telescope",
+      "label": "折射望遠鏡",
+      "kind": "concept",
+      "summary": "由物鏡和目鏡組成，利用透鏡折射原理觀察遠處物體。",
+      "latex": "",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "refracting-telescope-length",
+      "label": "折射望遠鏡長度",
+      "kind": "formula",
+      "summary": "折射望遠鏡的長度等於物鏡焦距與目鏡焦距之和。",
+      "latex": "L = f_1 + f_2",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "angular-magnification-refracting-telescope",
+      "label": "折射望遠鏡角放大率",
+      "kind": "formula",
+      "summary": "折射望遠鏡的角放大率公式。",
+      "latex": "M = -\\frac{f_1}{f_2}",
+      "pages": [
+        47
+      ]
+    },
+    {
+      "id": "reflecting-telescope",
+      "label": "反射望遠鏡",
+      "kind": "concept",
+      "summary": "利用凹面鏡作為物鏡觀察遠處物體，可最小化色像差。",
+      "latex": "",
+      "pages": [
+        48
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "point-object",
+      "to": "extended-object",
+      "reason": "延伸物體由多個點物體組成，理解點物體是基礎。"
+    },
+    {
+      "from": "reflection",
+      "to": "flat-mirror",
+      "reason": "平面鏡是反射原理的具體應用。"
+    },
+    {
+      "from": "reflection",
+      "to": "spherical-mirror",
+      "reason": "球面鏡是反射原理的具體應用。"
+    },
+    {
+      "from": "refraction",
+      "to": "lens",
+      "reason": "透鏡是折射原理的具體應用。"
+    },
+    {
+      "from": "center-of-curvature",
+      "to": "spherical-mirror",
+      "reason": "曲率中心是描述球面鏡幾何的重要概念。"
+    },
+    {
+      "from": "radius-of-curvature",
+      "to": "spherical-mirror",
+      "reason": "曲率半徑是描述球面鏡幾何的重要概念。"
+    },
+    {
+      "from": "vertex",
+      "to": "spherical-mirror",
+      "reason": "頂點是描述球面鏡幾何的重要概念。"
+    },
+    {
+      "from": "principal-axis",
+      "to": "spherical-mirror",
+      "reason": "主軸是描述球面鏡幾何的重要概念。"
+    },
+    {
+      "from": "sign-conventions-general",
+      "to": "sign-conventions-mirror",
+      "reason": "鏡面符號慣例是通用符號慣例在鏡面成像中的具體應用。"
+    },
+    {
+      "from": "sign-conventions-general",
+      "to": "refraction-formula-spherical-surface",
+      "reason": "球面折射面公式的應用需要理解通用的符號慣例。"
+    },
+    {
+      "from": "virtual-image",
+      "to": "lateral-magnification",
+      "reason": "橫向放大率描述影像大小，影像可以是虛像或實像。"
+    },
+    {
+      "from": "real-image",
+      "to": "lateral-magnification",
+      "reason": "橫向放大率描述影像大小，影像可以是虛像或實像。"
+    },
+    {
+      "from": "flat-mirror",
+      "to": "image-formation-flat-mirror",
+      "reason": "平面鏡成像描述平面鏡的具體光學行為。"
+    },
+    {
+      "from": "image-formation-flat-mirror",
+      "to": "mirror-reversal",
+      "reason": "鏡像反轉是平面鏡成像的一個重要特性。"
+    },
+    {
+      "from": "spherical-mirror",
+      "to": "focal-point-length-mirror",
+      "reason": "焦點和焦距是球面鏡的重要光學特性。"
+    },
+    {
+      "from": "spherical-mirror",
+      "to": "ray-diagram-spherical-mirror",
+      "reason": "光線追蹤法是分析球面鏡成像位置和性質的工具。"
+    },
+    {
+      "from": "paraxial-approximation",
+      "to": "mirror-equation",
+      "reason": "鏡面方程式在近軸近似下成立。"
+    },
+    {
+      "from": "paraxial-approximation",
+      "to": "focal-point-length-mirror",
+      "reason": "鏡面焦距的定義在近軸近似下成立。"
+    },
+    {
+      "from": "mirror-equation",
+      "to": "magnification-spherical-mirror",
+      "reason": "球面鏡放大率公式與鏡面方程式共同描述成像。"
+    },
+    {
+      "from": "spherical-mirror",
+      "to": "sign-conventions-mirror",
+      "reason": "球面鏡成像的計算需要遵循特定的符號慣例。"
+    },
+    {
+      "from": "spherical-mirror",
+      "to": "spherical-aberration",
+      "reason": "球面鏡會產生球面像差，影響成像品質。"
+    },
+    {
+      "from": "spherical-aberration",
+      "to": "parabolic-mirror",
+      "reason": "拋物面鏡是解決球面像差的一種方法。"
+    },
+    {
+      "from": "refraction",
+      "to": "refraction-formula-spherical-surface",
+      "reason": "球面折射面公式描述了折射現象在球面介面上的定量關係。"
+    },
+    {
+      "from": "refraction-formula-spherical-surface",
+      "to": "magnification-spherical-refraction",
+      "reason": "球面折射面放大率公式與球面折射面公式共同描述成像。"
+    },
+    {
+      "from": "refraction-formula-spherical-surface",
+      "to": "refraction-formula-flat-surface",
+      "reason": "平面折射面公式是球面折射面公式在曲率半徑無限大時的特例。"
+    },
+    {
+      "from": "lens",
+      "to": "focal-point-length-lens",
+      "reason": "焦點和焦距是透鏡的重要光學特性。"
+    },
+    {
+      "from": "focal-point-length-lens",
+      "to": "converging-lens",
+      "reason": "會聚透鏡的特性與其焦距和焦點位置相關。"
+    },
+    {
+      "from": "focal-point-length-lens",
+      "to": "diverging-lens",
+      "reason": "發散透鏡的特性與其焦距和焦點位置相關。"
+    },
+    {
+      "from": "refraction-formula-spherical-surface",
+      "to": "lens-makers-equation",
+      "reason": "透鏡製造者公式是基於光線在兩個球面折射面上的連續折射推導而來。"
+    },
+    {
+      "from": "lens-makers-equation",
+      "to": "thin-lens-equation",
+      "reason": "薄透鏡方程式是透鏡製造者公式在透鏡厚度可忽略時的簡化形式。"
+    },
+    {
+      "from": "thin-lens-equation",
+      "to": "magnification-thin-lens",
+      "reason": "薄透鏡放大率公式與薄透鏡方程式共同描述成像。"
+    },
+    {
+      "from": "lens",
+      "to": "ray-diagram-thin-lens",
+      "reason": "光線追蹤法是分析薄透鏡成像位置和性質的工具。"
+    },
+    {
+      "from": "ray-diagram-thin-lens",
+      "to": "lens-image-inversion",
+      "reason": "光線追蹤法可以視覺化地展示透鏡成像的倒立特性。"
+    },
+    {
+      "from": "lens",
+      "to": "spherical-aberration",
+      "reason": "透鏡也會產生球面像差，影響成像品質。"
+    },
+    {
+      "from": "lens",
+      "to": "chromatic-aberration",
+      "reason": "透鏡會產生色像差，影響成像品質。"
+    },
+    {
+      "from": "thin-lens-equation",
+      "to": "camera-lens-equation",
+      "reason": "照相機透鏡方程式是薄透鏡方程式在照相機系統中的應用。"
+    },
+    {
+      "from": "camera",
+      "to": "camera-lens-equation",
+      "reason": "照相機的成像原理由照相機透鏡方程式描述。"
+    },
+    {
+      "from": "focal-point-length-lens",
+      "to": "wide-angle-lens",
+      "reason": "廣角鏡頭的定義與其焦距特性直接相關。"
+    },
+    {
+      "from": "focal-point-length-lens",
+      "to": "telephoto-lens",
+      "reason": "望遠鏡頭的定義與其焦距特性直接相關。"
+    },
+    {
+      "from": "f-number",
+      "to": "light-intensity-f-number",
+      "reason": "f值直接決定了進入鏡頭的光強度。"
+    },
+    {
+      "from": "f-number",
+      "to": "exposure-time",
+      "reason": "f值與曝光時間共同決定影像的亮度。"
+    },
+    {
+      "from": "light-intensity-f-number",
+      "to": "exposure-triangle",
+      "reason": "光強度是曝光三角中的一個關鍵因素。"
+    },
+    {
+      "from": "exposure-time",
+      "to": "exposure-triangle",
+      "reason": "曝光時間是曝光三角中的一個關鍵因素。"
+    },
+    {
+      "from": "focal-point-length-lens",
+      "to": "zoom-lens",
+      "reason": "變焦鏡頭的核心功能是改變焦距。"
+    },
+    {
+      "from": "thin-lens-equation",
+      "to": "eye-lens-equation",
+      "reason": "人眼透鏡方程式是薄透鏡方程式在人眼系統中的應用。"
+    },
+    {
+      "from": "human-eye",
+      "to": "eye-lens-equation",
+      "reason": "人眼的成像原理由人眼透鏡方程式描述。"
+    },
+    {
+      "from": "human-eye",
+      "to": "near-point",
+      "reason": "近點是衡量人眼調節能力的重要參數。"
+    },
+    {
+      "from": "human-eye",
+      "to": "far-point",
+      "reason": "遠點是衡量人眼調節能力的重要參數。"
+    },
+    {
+      "from": "human-eye",
+      "to": "color-vision-cones",
+      "reason": "錐狀細胞是人眼感知顏色的生理基礎。"
+    },
+    {
+      "from": "human-eye",
+      "to": "farsightedness-hyperopia",
+      "reason": "遠視是人眼常見的屈光不正問題。"
+    },
+    {
+      "from": "human-eye",
+      "to": "nearsightedness-myopia",
+      "reason": "近視是人眼常見的屈光不正問題。"
+    },
+    {
+      "from": "human-eye",
+      "to": "presbyopia",
+      "reason": "老花眼是人眼晶狀體老化導致的視力問題。"
+    },
+    {
+      "from": "human-eye",
+      "to": "astigmatism",
+      "reason": "散光是人眼角膜或晶狀體形狀不規則導致的視力問題。"
+    },
+    {
+      "from": "farsightedness-hyperopia",
+      "to": "converging-lens",
+      "reason": "會聚透鏡用於矯正遠視，將影像前移至視網膜上。"
+    },
+    {
+      "from": "nearsightedness-myopia",
+      "to": "diverging-lens",
+      "reason": "發散透鏡用於矯正近視，將影像後移至視網膜上。"
+    },
+    {
+      "from": "diopter",
+      "to": "farsightedness-hyperopia",
+      "reason": "屈光度用於量化矯正遠視所需的透鏡度數。"
+    },
+    {
+      "from": "diopter",
+      "to": "nearsightedness-myopia",
+      "reason": "屈光度用於量化矯正近視所需的透鏡度數。"
+    },
+    {
+      "from": "diopter",
+      "to": "presbyopia",
+      "reason": "屈光度用於量化矯正老花眼所需的透鏡度數。"
+    },
+    {
+      "from": "astigmatism",
+      "to": "cylindrical-lens",
+      "reason": "柱面透鏡是矯正散光的主要光學元件。"
+    },
+    {
+      "from": "lens",
+      "to": "simple-magnifier",
+      "reason": "簡易放大鏡是會聚透鏡的一種應用。"
+    },
+    {
+      "from": "angular-magnification",
+      "to": "compound-microscope",
+      "reason": "複式顯微鏡的放大能力通過角放大率來衡量。"
+    },
+    {
+      "from": "simple-magnifier",
+      "to": "angular-magnification",
+      "reason": "簡易放大鏡的放大能力通過角放大率來衡量。"
+    },
+    {
+      "from": "simple-magnifier",
+      "to": "compound-microscope",
+      "reason": "複式顯微鏡是基於簡易放大鏡原理的更複雜光學系統。"
+    },
+    {
+      "from": "compound-microscope",
+      "to": "total-angular-magnification-microscope",
+      "reason": "複式顯微鏡的總角放大率公式描述其放大能力。"
+    },
+    {
+      "from": "lens",
+      "to": "refracting-telescope",
+      "reason": "折射望遠鏡是利用透鏡進行遠距離觀察的光學系統。"
+    },
+    {
+      "from": "angular-magnification",
+      "to": "refracting-telescope",
+      "reason": "折射望遠鏡的放大能力通過角放大率來衡量。"
+    },
+    {
+      "from": "refracting-telescope",
+      "to": "refracting-telescope-length",
+      "reason": "折射望遠鏡的長度是其設計和性能的重要參數。"
+    },
+    {
+      "from": "refracting-telescope",
+      "to": "angular-magnification-refracting-telescope",
+      "reason": "折射望遠鏡的角放大率公式描述其放大能力。"
+    },
+    {
+      "from": "spherical-mirror",
+      "to": "reflecting-telescope",
+      "reason": "反射望遠鏡是利用球面鏡作為物鏡的光學系統。"
+    },
+    {
+      "from": "chromatic-aberration",
+      "to": "reflecting-telescope",
+      "reason": "反射望遠鏡的優勢之一是能有效避免色像差。"
+    }
+  ],
+  "chapter_number": 34,
+  "usage": {
+    "input_tokens": 19828,
+    "output_tokens": 8719
+  }
+}

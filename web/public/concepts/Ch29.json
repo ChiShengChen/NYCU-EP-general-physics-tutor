@@ -1,0 +1,923 @@
+{
+  "nodes": [
+    {
+      "id": "induction-experiments-observation",
+      "label": "感應實驗觀察",
+      "kind": "concept",
+      "summary": "感應電流產生於通過線圈的磁場變化。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "magnetic-flux-definition",
+      "label": "磁通量定義",
+      "kind": "definition",
+      "summary": "磁通量是通過某面積的磁場量，表示為磁場與面積向量的點積。",
+      "latex": "d\\Phi_B = \\vec{B} \\cdot d\\vec{A} = B_\\perp dA = B dA \\cos \\phi",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "faradays-law-of-induction",
+      "label": "法拉第感應定律",
+      "kind": "law",
+      "summary": "感應電動勢與通過電路磁通量的時間變化率成正比。",
+      "latex": "\\mathcal{E} = (-) \\frac{d\\Phi_B}{dt}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "faradays-law-integral-form",
+      "label": "法拉第定律積分形式",
+      "kind": "formula",
+      "summary": "感應電場沿閉合路徑的環路積分等於磁通量的時間變化率。",
+      "latex": "\\oint \\vec{E}_{ind.} \\cdot d\\vec{l} = (-) \\frac{d(\\int \\vec{B} \\cdot d\\vec{a})}{dt}",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "electric-potential-definition",
+      "label": "電位定義",
+      "kind": "definition",
+      "summary": "電位是靜電場中單位電荷的位能，其環路積分為零。",
+      "latex": "\\Delta V = -\\int_a^b \\vec{E}_q \\cdot d\\vec{l}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "electromotive-force-definition",
+      "label": "電動勢定義",
+      "kind": "definition",
+      "summary": "電動勢是單位電荷所受非靜電力沿閉合路徑做的功。",
+      "latex": "\\mathcal{E} = \\oint \\vec{F} \\cdot d\\vec{l} = \\oint \\vec{E}_x \\cdot d\\vec{l}",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "right-hand-rule-dl-da",
+      "label": "右手定則 (dl, da)",
+      "kind": "method",
+      "summary": "用於判斷環路積分方向與其所圍面積向量方向之間的關係。",
+      "latex": "",
+      "pages": [
+        5
+      ]
+    },
+    {
+      "id": "faradays-law-n-loops",
+      "label": "N匝線圈法拉第定律",
+      "kind": "formula",
+      "summary": "對於N匝線圈，總感應電動勢是單匝線圈磁通量變化率的N倍。",
+      "latex": "\\mathcal{E} = -N \\frac{d\\Phi_B}{dt}",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "induced-e-solenoid-outside",
+      "label": "螺線管外感應電場",
+      "kind": "formula",
+      "summary": "由螺線管內時變電流產生的螺線管外部感應電場強度。",
+      "latex": "E = \\frac{\\mu_0 n R^2 \\omega I_{\\text{max}}}{2r} \\sin \\omega t \\quad (r > R)",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "induced-e-solenoid-inside",
+      "label": "螺線管內感應電場",
+      "kind": "formula",
+      "summary": "由螺線管內時變電流產生的螺線管內部感應電場強度。",
+      "latex": "E = \\frac{\\mu_0 n r \\omega I_{\\text{max}}}{2} \\sin \\omega t \\quad (r < R)",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "lenzs-law",
+      "label": "冷次定律",
+      "kind": "law",
+      "summary": "感應電流的方向總是抵抗引起該電流的磁通量變化。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "motional-emf-concept",
+      "label": "動生電動勢",
+      "kind": "concept",
+      "summary": "導體在恆定磁場中運動時，由於電荷受磁力作用而產生的電動勢。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "motional-emf-formula",
+      "label": "動生電動勢公式",
+      "kind": "formula",
+      "summary": "導體棒在垂直磁場中運動時產生的動生電動勢大小。",
+      "latex": "|\\mathcal{E}| = vB\\ell",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "motional-electric-field",
+      "label": "動生電場",
+      "kind": "formula",
+      "summary": "運動導體內電荷受到的有效電場，由速度與磁場的叉積決定。",
+      "latex": "\\vec{E}_{\\text{Motion}} = \\vec{v} \\times \\vec{B}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "motional-emf-integral-form",
+      "label": "動生電動勢積分形式",
+      "kind": "formula",
+      "summary": "動生電動勢是動生電場沿閉合路徑的環路積分。",
+      "latex": "\\mathcal{E}_{\\text{Motion}} = \\oint (\\vec{v} \\times \\vec{B}) \\cdot d\\vec{l}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "sliding-conducting-bar-setup",
+      "label": "滑動導體棒",
+      "kind": "concept",
+      "summary": "導體棒在導軌上滑動，形成閉合迴路並在磁場中產生感應電流。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "motional-emf-from-faraday",
+      "label": "動生電動勢與法拉第定律一致性",
+      "kind": "principle",
+      "summary": "動生電動勢可透過法拉第定律從磁通量變化率推導，兩者結果一致。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "energy-conservation-motional-emf",
+      "label": "動生電動勢能量守恆",
+      "kind": "principle",
+      "summary": "維持導體運動的外力所做的功，最終轉化為電路中的熱能耗散。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "motional-emf-open-circuit",
+      "label": "開路動生電動勢",
+      "kind": "concept",
+      "summary": "在開路情況下，導體運動雖產生電動勢但無電流，故無磁力阻礙運動。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "sliding-bar-velocity-decay",
+      "label": "滑動導體棒速度衰減",
+      "kind": "formula",
+      "summary": "受磁力阻礙的滑動導體棒，其速度隨時間呈指數衰減。",
+      "latex": "v(t) = v_i e^{-t/\\tau} \\quad \\text{where } \\tau = \\frac{mR}{B^2 \\ell^2}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "motional-emf-rotating-bar",
+      "label": "旋轉導體棒動生電動勢",
+      "kind": "formula",
+      "summary": "在均勻磁場中繞一端旋轉的導體棒所產生的動生電動勢。",
+      "latex": "\\varepsilon = \\frac{1}{2}B\\omega\\ell^2",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "faraday-disk-dynamo",
+      "label": "法拉第圓盤發電機",
+      "kind": "concept",
+      "summary": "一種單極發電機，利用旋轉導體盤在磁場中產生直流電動勢。",
+      "latex": "",
+      "pages": [
+        15
+      ]
+    },
+    {
+      "id": "induced-vs-motional-emf",
+      "label": "感應與動生電動勢區別",
+      "kind": "concept",
+      "summary": "區分由磁通量變化引起的感應電動勢與導體運動引起的動生電動勢。",
+      "latex": "",
+      "pages": [
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "id": "faradays-law-general-form",
+      "label": "法拉第定律一般形式",
+      "kind": "formula",
+      "summary": "電場沿閉合路徑的環路積分等於磁通量對時間的負導數。",
+      "latex": "\\oint \\vec{E} \\cdot d\\vec{\\ell} = -\\frac{d \\int \\vec{B} \\cdot d\\vec{A}}{dt}",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "faradays-paradox",
+      "label": "法拉第悖論",
+      "kind": "concept",
+      "summary": "關於磁場旋轉與否對感應電動勢影響的經典問題，用於區分兩種電動勢。",
+      "latex": "",
+      "pages": [
+        18
+      ]
+    },
+    {
+      "id": "induced-electric-field",
+      "label": "感應電場",
+      "kind": "concept",
+      "summary": "由時變磁場在空間中產生的非保守電場。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "induced-electric-field-integral-form",
+      "label": "感應電場環路積分公式",
+      "kind": "formula",
+      "summary": "感應電場沿閉合路徑的環路積分與磁場對時間的偏導數有關。",
+      "latex": "\\mathcal{E}_{\\text{induced}} = \\oint \\vec{E}_{\\text{induction}} \\cdot d\\vec{l} = -\\int \\left(\\frac{\\partial \\vec{B}}{\\partial t}\\right) \\cdot d\\vec{a}",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "nonconservative-induced-electric-field",
+      "label": "非保守感應電場",
+      "kind": "concept",
+      "summary": "感應電場對電荷沿閉合路徑做功不為零，因此是非保守場。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "ac-generator",
+      "label": "交流發電機",
+      "kind": "concept",
+      "summary": "將機械能轉化為交流電能的裝置，利用線圈在磁場中旋轉產生感應電動勢。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "ac-generator-emf-formula",
+      "label": "交流發電機電動勢公式",
+      "kind": "formula",
+      "summary": "旋轉線圈在均勻磁場中產生的交流感應電動勢。",
+      "latex": "\\mathcal{E} = NAB\\omega \\sin \\omega t",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "dc-generator",
+      "label": "直流發電機",
+      "kind": "concept",
+      "summary": "將機械能轉化為直流電能的裝置，透過換向器使輸出電流方向一致。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "commutator",
+      "label": "換向器",
+      "kind": "concept",
+      "summary": "直流發電機中用於使旋轉線圈的感應電流方向保持一致的裝置。",
+      "latex": "",
+      "pages": [
+        21
+      ]
+    },
+    {
+      "id": "dc-generator-average-emf",
+      "label": "直流發電機平均電動勢",
+      "kind": "formula",
+      "summary": "直流發電機整流後輸出電動勢的平均值。",
+      "latex": "\\mathcal{E}_{av} = \\frac{2NAB\\omega}{\\pi}",
+      "pages": [
+        22
+      ]
+    },
+    {
+      "id": "electric-motor",
+      "label": "電動機",
+      "kind": "concept",
+      "summary": "將電能轉化為機械能的裝置，其原理與發電機相反。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "back-emf",
+      "label": "反電動勢",
+      "kind": "concept",
+      "summary": "電動機旋轉時自身產生的感應電動勢，其方向與外加電壓相反。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "homopolar-motor",
+      "label": "單極電動機",
+      "kind": "concept",
+      "summary": "利用電流與磁場相互作用產生連續旋轉的電動機，結構簡單。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "eddy-currents",
+      "label": "渦電流",
+      "kind": "concept",
+      "summary": "金屬塊在時變磁場中或相對磁場運動時，內部產生的環狀感應電流。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "eddy-current-damping",
+      "label": "渦電流阻尼",
+      "kind": "principle",
+      "summary": "渦電流與磁場相互作用產生阻力，將機械能轉化為熱能，達到阻尼效果。",
+      "latex": "",
+      "pages": [
+        25
+      ]
+    },
+    {
+      "id": "metal-detector",
+      "label": "金屬探測器",
+      "kind": "method",
+      "summary": "利用電磁感應原理，透過檢測金屬物體產生的渦電流來探測金屬。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "ground-fault-interrupter",
+      "label": "接地故障斷路器 (GFI)",
+      "kind": "method",
+      "summary": "利用感應原理檢測電路中進出電流的差異，以防止漏電觸電。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "ac-clamp-power-meter",
+      "label": "交流鉗形電流表",
+      "kind": "method",
+      "summary": "利用電磁感應原理，無需斷開電路即可測量交流電流。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "rogowski-coils",
+      "label": "羅果夫斯基線圈",
+      "kind": "method",
+      "summary": "一種用於測量交流電流的感應線圈，具有靈活的環形結構。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "electric-guitar-pickup",
+      "label": "電吉他拾音器",
+      "kind": "concept",
+      "summary": "利用磁化琴弦振動改變磁通量，在線圈中產生電信號。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "eddy-current-damper-device",
+      "label": "渦電流阻尼器",
+      "kind": "method",
+      "summary": "利用渦電流產生阻尼力，使機械系統快速停止振動或運動的裝置。",
+      "latex": "",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "aragos-disk",
+      "label": "阿拉戈圓盤",
+      "kind": "concept",
+      "summary": "演示磁場與導體相對運動時，感應渦電流產生相互作用力的實驗。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "induction-welding",
+      "label": "感應焊接",
+      "kind": "method",
+      "summary": "利用高頻感應電流在金屬中產生渦電流加熱，實現焊接。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    },
+    {
+      "id": "shrunken-coins-phenomenon",
+      "label": "縮小硬幣現象",
+      "kind": "concept",
+      "summary": "強大脈衝磁場在硬幣中產生巨大渦電流，導致硬幣受力變形縮小。",
+      "latex": "",
+      "pages": [
+        32
+      ]
+    },
+    {
+      "id": "displacement-current",
+      "label": "位移電流",
+      "kind": "concept",
+      "summary": "由時變電場在介質中產生的等效電流，彌補安培定律的不足。",
+      "latex": "I_d \\equiv \\varepsilon_0 \\frac{d\\Phi_E}{dt}",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "amperes-law",
+      "label": "安培定律",
+      "kind": "law",
+      "summary": "磁場沿閉合路徑的環路積分與該路徑所圍繞的電流成正比。",
+      "latex": "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 I",
+      "pages": [
+        34
+      ]
+    },
+    {
+      "id": "ampere-maxwell-law",
+      "label": "安培-馬克士威定律",
+      "kind": "law",
+      "summary": "修正後的安培定律，將位移電流納入，使其適用於時變電場情況。",
+      "latex": "\\oint_P \\vec{B} \\cdot d\\vec{l} = \\mu_0 I + \\mu_0 \\left( \\varepsilon_0 \\frac{d\\Phi_E}{dt} \\right)",
+      "pages": [
+        35
+      ]
+    },
+    {
+      "id": "displacement-current-in-conductor",
+      "label": "導體中的位移電流",
+      "kind": "concept",
+      "summary": "即使在導體中，時變電場也會產生位移電流，但通常遠小於傳導電流。",
+      "latex": "",
+      "pages": [
+        36
+      ]
+    },
+    {
+      "id": "displacement-current-capacitor",
+      "label": "電容器中的位移電流",
+      "kind": "formula",
+      "summary": "充電電容器中，位移電流等於電容乘以電壓對時間的變化率。",
+      "latex": "I_d = C\\frac{dV(t)}{dt}",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "magnetic-field-charging-capacitor",
+      "label": "充電電容器內磁場",
+      "kind": "formula",
+      "summary": "充電平行板電容器內部，由位移電流產生的磁場。",
+      "latex": "B = \\frac{\\mu_0 r}{2\\pi R^2} i_C",
+      "pages": [
+        37
+      ]
+    },
+    {
+      "id": "maxwells-equations",
+      "label": "馬克士威方程式",
+      "kind": "law",
+      "summary": "描述所有經典電磁現象的四個基本方程式，預測了電磁波的存在。",
+      "latex": "",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "gauss-law-electric",
+      "label": "高斯定律 (電)",
+      "kind": "law",
+      "summary": "電場通量與封閉曲面內所含淨電荷成正比。",
+      "latex": "\\oint \\vec{E} \\cdot d\\vec{a} = \\frac{q}{\\epsilon_0}",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "gauss-law-magnetic",
+      "label": "高斯定律 (磁)",
+      "kind": "law",
+      "summary": "磁場通量通過任何封閉曲面總是為零，表示不存在磁單極。",
+      "latex": "\\oint \\vec{B} \\cdot d\\vec{a} = 0",
+      "pages": [
+        38
+      ]
+    },
+    {
+      "id": "lorentz-force",
+      "label": "勞侖茲力",
+      "kind": "law",
+      "summary": "電荷在電場和磁場中受到的總力，與馬克士威方程式共同描述電磁作用。",
+      "latex": "\\vec{F} = q(\\vec{E} + \\vec{v} \\times \\vec{B})",
+      "pages": [
+        38
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "magnetic-flux-definition",
+      "to": "faradays-law-of-induction",
+      "reason": "法拉第定律的定義需要磁通量概念作為基礎。"
+    },
+    {
+      "from": "induction-experiments-observation",
+      "to": "faradays-law-of-induction",
+      "reason": "實驗觀察到磁場變化產生電流，是法拉第定律的經驗基礎。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "faradays-law-integral-form",
+      "reason": "積分形式是法拉第定律在電場與磁通量關係上的更一般表達。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "faradays-law-n-loops",
+      "reason": "N匝線圈的法拉第定律是單匝線圈定律的直接推廣應用。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "lenzs-law",
+      "reason": "冷次定律解釋了法拉第定律中感應電動勢或電流的方向。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "induced-electric-field",
+      "reason": "法拉第定律表明時變磁通量會產生感應電場。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "motional-emf-from-faraday",
+      "reason": "動生電動勢與法拉第定律的一致性表明動生電動勢可從法拉第定律推導。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "ac-generator-emf-formula",
+      "reason": "交流發電機電動勢公式是法拉第定律在旋轉線圈中的應用。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "dc-generator-average-emf",
+      "reason": "直流發電機平均電動勢公式是法拉第定律的應用，考慮了整流效果。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "induced-e-solenoid-outside",
+      "reason": "螺線管內外感應電場的計算是法拉第定律的具體應用。"
+    },
+    {
+      "from": "faradays-law-of-induction",
+      "to": "induced-e-solenoid-inside",
+      "reason": "螺線管內外感應電場的計算是法拉第定律的具體應用。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "faradays-law-of-induction",
+      "reason": "法拉第定律定義了感應電動勢，而電動勢的普遍定義是其基礎。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "motional-emf-concept",
+      "reason": "動生電動勢是一種電動勢，理解電動勢的普遍定義有助於理解動生電動勢。"
+    },
+    {
+      "from": "electric-potential-definition",
+      "to": "electromotive-force-definition",
+      "reason": "理解電動勢需要先區分其與電位的不同概念。"
+    },
+    {
+      "from": "right-hand-rule-dl-da",
+      "to": "faradays-law-integral-form",
+      "reason": "法拉第定律的積分形式中，需要右手定則來判斷環路積分與面積向量的方向關係。"
+    },
+    {
+      "from": "right-hand-rule-dl-da",
+      "to": "motional-emf-integral-form",
+      "reason": "動生電動勢的積分形式中，需要右手定則來判斷環路積分與面積向量的方向關係。"
+    },
+    {
+      "from": "right-hand-rule-dl-da",
+      "to": "induced-electric-field-integral-form",
+      "reason": "感應電場環路積分公式中，需要右手定則來判斷環路積分與面積向量的方向關係。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "motional-emf-formula",
+      "reason": "動生電動勢公式是對動生電動勢概念的量化表達。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "motional-electric-field",
+      "reason": "動生電動勢是由動生電場產生的。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "sliding-conducting-bar-setup",
+      "reason": "滑動導體棒是動生電動勢的典型應用場景，有助於理解其產生機制。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "motional-emf-rotating-bar",
+      "reason": "旋轉導體棒是動生電動勢的另一種應用，展示了其在不同運動形式下的表現。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "faraday-disk-dynamo",
+      "reason": "法拉第圓盤發電機是動生電動勢原理的具體應用。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "induced-vs-motional-emf",
+      "reason": "理解動生電動勢是區分其與感應電動勢的基礎。"
+    },
+    {
+      "from": "motional-emf-concept",
+      "to": "homopolar-motor",
+      "reason": "單極電動機的原理涉及動生電動勢的產生與應用。"
+    },
+    {
+      "from": "motional-emf-formula",
+      "to": "sliding-conducting-bar-setup",
+      "reason": "滑動導體棒的電動勢計算直接應用了動生電動勢公式。"
+    },
+    {
+      "from": "motional-emf-formula",
+      "to": "motional-emf-from-faraday",
+      "reason": "動生電動勢公式的結果與從法拉第定律推導的結果一致，證明了兩者的一致性。"
+    },
+    {
+      "from": "motional-emf-formula",
+      "to": "energy-conservation-motional-emf",
+      "reason": "能量守恆分析中需要動生電動勢公式來計算電路中的功率耗散。"
+    },
+    {
+      "from": "motional-emf-formula",
+      "to": "sliding-bar-velocity-decay",
+      "reason": "導體棒速度衰減的推導過程應用了動生電動勢公式來計算磁力。"
+    },
+    {
+      "from": "motional-emf-formula",
+      "to": "motional-emf-rotating-bar",
+      "reason": "旋轉導體棒的電動勢計算是動生電動勢公式的推廣應用。"
+    },
+    {
+      "from": "sliding-conducting-bar-setup",
+      "to": "energy-conservation-motional-emf",
+      "reason": "能量守恆分析是理解滑動導體棒系統中能量轉換的重要部分。"
+    },
+    {
+      "from": "sliding-conducting-bar-setup",
+      "to": "motional-emf-open-circuit",
+      "reason": "開路情況是滑動導體棒問題的特殊討論，有助於理解電流對磁力的影響。"
+    },
+    {
+      "from": "sliding-conducting-bar-setup",
+      "to": "sliding-bar-velocity-decay",
+      "reason": "導體棒的運動衰減是其動力學分析的結果，基於其在磁場中的受力。"
+    },
+    {
+      "from": "motional-electric-field",
+      "to": "motional-emf-integral-form",
+      "reason": "動生電動勢的積分形式是動生電場沿閉合路徑的環路積分。"
+    },
+    {
+      "from": "induced-electric-field",
+      "to": "nonconservative-induced-electric-field",
+      "reason": "感應電場的非保守性是其與靜電場區別的重要特性。"
+    },
+    {
+      "from": "induced-electric-field",
+      "to": "induced-electric-field-integral-form",
+      "reason": "積分形式是感應電場的量化表達，用於計算感應電動勢。"
+    },
+    {
+      "from": "induced-electric-field",
+      "to": "faradays-paradox",
+      "reason": "法拉第悖論的討論涉及對感應電場來源的理解。"
+    },
+    {
+      "from": "ac-generator",
+      "to": "ac-generator-emf-formula",
+      "reason": "交流發電機電動勢公式描述了交流發電機的輸出特性。"
+    },
+    {
+      "from": "ac-generator",
+      "to": "electric-motor",
+      "reason": "電動機是發電機的逆向操作，兩者原理密切相關。"
+    },
+    {
+      "from": "ac-generator",
+      "to": "dc-generator",
+      "reason": "直流發電機是交流發電機的變體，透過換向器實現直流輸出。"
+    },
+    {
+      "from": "dc-generator",
+      "to": "commutator",
+      "reason": "換向器是直流發電機的關鍵組件，用於實現直流輸出。"
+    },
+    {
+      "from": "dc-generator",
+      "to": "dc-generator-average-emf",
+      "reason": "平均電動勢是直流發電機的重要輸出特性，需要理解其計算方法。"
+    },
+    {
+      "from": "electric-motor",
+      "to": "back-emf",
+      "reason": "反電動勢是電動機運作中的重要現象，影響其電流和轉速。"
+    },
+    {
+      "from": "electric-motor",
+      "to": "homopolar-motor",
+      "reason": "單極電動機是一種電動機，其原理是電動機普遍原理的具體體現。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "eddy-current-damping",
+      "reason": "渦電流阻尼是渦電流與磁場相互作用的直接後果。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "metal-detector",
+      "reason": "金屬探測器利用渦電流原理來檢測金屬物體。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "electric-guitar-pickup",
+      "reason": "電吉他拾音器利用弦振動引起的磁通量變化產生渦電流，進而產生電信號。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "eddy-current-damper-device",
+      "reason": "渦電流阻尼器是渦電流阻尼原理的實際應用裝置。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "aragos-disk",
+      "reason": "阿拉戈圓盤實驗演示了渦電流與磁場的相互作用。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "induction-welding",
+      "reason": "感應焊接利用渦電流在金屬中產生熱量。"
+    },
+    {
+      "from": "eddy-currents",
+      "to": "shrunken-coins-phenomenon",
+      "reason": "縮小硬幣現象是由強大脈衝磁場產生巨大渦電流所致。"
+    },
+    {
+      "from": "eddy-current-damping",
+      "to": "eddy-current-damper-device",
+      "reason": "渦電流阻尼器是渦電流阻尼原理的應用，用於實現阻尼效果。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "displacement-current",
+      "reason": "安培定律在時變電場情況下失效，促使馬克士威引入位移電流概念。"
+    },
+    {
+      "from": "amperes-law",
+      "to": "ampere-maxwell-law",
+      "reason": "安培-馬克士威定律是安培定律的修正版，解決了其在時變電場下的不一致性。"
+    },
+    {
+      "from": "displacement-current",
+      "to": "ampere-maxwell-law",
+      "reason": "位移電流是安培-馬克士威定律的關鍵組成部分，使其能夠描述時變電場。"
+    },
+    {
+      "from": "displacement-current",
+      "to": "displacement-current-in-conductor",
+      "reason": "位移電流的概念延伸到導體中，解釋了導體內電場變化引起的效應。"
+    },
+    {
+      "from": "displacement-current",
+      "to": "displacement-current-capacitor",
+      "reason": "電容器是位移電流的典型應用場景，其充電過程涉及位移電流。"
+    },
+    {
+      "from": "displacement-current",
+      "to": "magnetic-field-charging-capacitor",
+      "reason": "充電電容器內部磁場的產生是由位移電流引起的。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "gauss-law-electric",
+      "reason": "高斯定律 (電) 是馬克士威方程式的四個基本定律之一。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "gauss-law-magnetic",
+      "reason": "高斯定律 (磁) 是馬克士威方程式的四個基本定律之一。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "faradays-law-integral-form",
+      "reason": "法拉第定律積分形式是馬克士威方程式的四個基本定律之一。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "ampere-maxwell-law",
+      "reason": "安培-馬克士威定律是馬克士威方程式的四個基本定律之一。"
+    },
+    {
+      "from": "maxwells-equations",
+      "to": "lorentz-force",
+      "reason": "勞侖茲力與馬克士威方程式共同構成了經典電磁學的完整描述。"
+    },
+    {
+      "from": "magnetic-flux-definition",
+      "to": "gauss-law-magnetic",
+      "reason": "高斯定律 (磁) 涉及磁通量概念，是其定義的基礎。"
+    },
+    {
+      "from": "magnetic-flux-definition",
+      "to": "faradays-law-integral-form",
+      "reason": "法拉第定律積分形式涉及磁通量概念，是其定義的基礎。"
+    },
+    {
+      "from": "faradays-law-general-form",
+      "to": "maxwells-equations",
+      "reason": "法拉第定律的一般形式是馬克士威方程式之一。"
+    },
+    {
+      "from": "induced-electric-field-integral-form",
+      "to": "faradays-law-general-form",
+      "reason": "感應電場環路積分公式是法拉第定律一般形式的具體表達。"
+    },
+    {
+      "from": "faraday-disk-dynamo",
+      "to": "homopolar-motor",
+      "reason": "法拉第圓盤發電機與單極電動機原理相似，互為逆過程。"
+    },
+    {
+      "from": "induced-vs-motional-emf",
+      "to": "faradays-paradox",
+      "reason": "法拉第悖論是區分感應電動勢與動生電動勢的經典案例，有助於深入理解兩者。"
+    }
+  ],
+  "chapter_number": 29,
+  "usage": {
+    "input_tokens": 16084,
+    "output_tokens": 9287
+  }
+}

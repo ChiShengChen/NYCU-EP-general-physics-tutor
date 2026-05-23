@@ -1,0 +1,722 @@
+{
+  "nodes": [
+    {
+      "id": "electric-current-definition",
+      "label": "電流定義",
+      "kind": "definition",
+      "summary": "電流是單位時間內通過某區域的電荷量。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "ampere-unit",
+      "label": "安培",
+      "kind": "definition",
+      "summary": "電流的SI單位，定義為每秒一庫侖的電荷流量。",
+      "latex": "",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "average-current-formula",
+      "label": "平均電流公式",
+      "kind": "formula",
+      "summary": "平均電流等於電荷變化量除以時間變化量。",
+      "latex": "I_{av} = \\frac{\\Delta Q}{\\Delta t}",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "instantaneous-current-formula",
+      "label": "瞬時電流公式",
+      "kind": "formula",
+      "summary": "瞬時電流是電荷對時間的微分。",
+      "latex": "I = \\frac{dQ}{dt}",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "id": "conventional-current-direction",
+      "label": "傳統電流方向",
+      "kind": "concept",
+      "summary": "傳統上，電流方向定義為正電荷的流動方向，與電子流動方向相反。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "charge-carrier",
+      "label": "載流子",
+      "kind": "definition",
+      "summary": "任何移動中的電荷，例如金屬中的自由電子或電解質中的離子。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "drude-model",
+      "label": "德魯德模型",
+      "kind": "concept",
+      "summary": "一種經典的電傳導模型，將金屬中的傳導電子視為自由電子氣。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "conduction-electron",
+      "label": "傳導電子",
+      "kind": "concept",
+      "summary": "金屬中可自由移動並參與導電的電子。",
+      "latex": "",
+      "pages": [
+        6
+      ]
+    },
+    {
+      "id": "drift-velocity",
+      "label": "漂移速度",
+      "kind": "definition",
+      "summary": "電荷載子在電場作用下，除了隨機熱運動外，所產生的平均淨移動速度。",
+      "latex": "",
+      "pages": [
+        7
+      ]
+    },
+    {
+      "id": "drift-velocity-formula",
+      "label": "漂移速度公式",
+      "kind": "formula",
+      "summary": "漂移速度與電場、電荷、平均自由時間成正比，與質量成反比。",
+      "latex": "\\vec{v}_d = \\frac{q\\vec{E}}{m}\\tau",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "mean-free-time",
+      "label": "平均自由時間",
+      "kind": "definition",
+      "summary": "電荷載子在兩次碰撞之間平均移動的時間。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "mean-free-path",
+      "label": "平均自由徑",
+      "kind": "definition",
+      "summary": "電荷載子在兩次碰撞之間平均移動的距離。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "electric-field-propagation",
+      "label": "電場傳播速度",
+      "kind": "concept",
+      "summary": "電場以接近光速傳播，使電路中的電子幾乎同時響應，而非等待漂移速度緩慢的電子移動。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "microscopic-current-formula",
+      "label": "微觀電流公式",
+      "kind": "formula",
+      "summary": "電流等於載流子密度、電荷、漂移速度和截面積的乘積。",
+      "latex": "I = n q v_d A",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "current-density-definition",
+      "label": "電流密度定義",
+      "kind": "definition",
+      "summary": "電流密度是單位截面積的電流，是一個向量，方向與電流方向相同。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "current-density-formula",
+      "label": "電流密度公式",
+      "kind": "formula",
+      "summary": "電流密度等於載流子密度、電荷和漂移速度的乘積。",
+      "latex": "\\vec{J} = n q \\vec{v}_d",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "charge-density",
+      "label": "電荷密度",
+      "kind": "definition",
+      "summary": "單位體積內的電荷量。",
+      "latex": "",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "id": "ohms-law-microscopic",
+      "label": "歐姆定律(微觀)",
+      "kind": "law",
+      "summary": "對於許多材料，電流密度與電場的比值是一個常數，稱為電導率。",
+      "latex": "\\mathbf{J} = \\sigma \\mathbf{E}",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "conductivity-definition",
+      "label": "電導率定義",
+      "kind": "definition",
+      "summary": "材料傳導電流能力的量度，是電阻率的倒數。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "ohmic-material",
+      "label": "歐姆材料",
+      "kind": "concept",
+      "summary": "遵守歐姆定律的材料，其電導率獨立於電場。",
+      "latex": "",
+      "pages": [
+        11
+      ]
+    },
+    {
+      "id": "conductivity-formula",
+      "label": "電導率公式",
+      "kind": "formula",
+      "summary": "電導率與載流子密度、電荷平方、平均自由時間成正比，與電子質量成反比。",
+      "latex": "\\sigma = \\frac{nq^2\\tau}{m_e}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "resistivity-definition",
+      "label": "電阻率定義",
+      "kind": "definition",
+      "summary": "材料抵抗電流流動能力的量度，是電導率的倒數。",
+      "latex": "",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "resistivity-formula",
+      "label": "電阻率公式",
+      "kind": "formula",
+      "summary": "電阻率與電子質量成正比，與載流子密度、電荷平方、平均自由時間成反比。",
+      "latex": "\\rho = \\frac{m_e}{nq^2\\tau}",
+      "pages": [
+        12
+      ]
+    },
+    {
+      "id": "ohms-law-macroscopic",
+      "label": "歐姆定律(宏觀)",
+      "kind": "law",
+      "summary": "導體兩端的電位差與流經導體的電流成正比，比例常數為電阻。",
+      "latex": "\\Delta V = IR",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "resistance-definition",
+      "label": "電阻定義",
+      "kind": "definition",
+      "summary": "導體對電流流動的阻礙程度，定義為電位差與電流的比值。",
+      "latex": "",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "resistance-formula",
+      "label": "電阻公式",
+      "kind": "formula",
+      "summary": "電阻與導體長度、電阻率成正比，與截面積成反比。",
+      "latex": "R = \\frac{\\ell}{\\sigma A} = \\rho \\frac{\\ell}{A}",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "id": "resistance-geometry-dependence",
+      "label": "電阻幾何依賴性",
+      "kind": "concept",
+      "summary": "導體的電阻不僅取決於材料，還取決於其幾何形狀和電流流動方向。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "nonohmic-material",
+      "label": "非歐姆材料",
+      "kind": "concept",
+      "summary": "不遵守歐姆定律的材料，其電阻率或電導率會隨電場變化。",
+      "latex": "",
+      "pages": [
+        14
+      ]
+    },
+    {
+      "id": "cylindrical-resistance-formula",
+      "label": "圓柱體電阻公式",
+      "kind": "formula",
+      "summary": "徑向電流通過同心圓柱體導體的電阻公式。",
+      "latex": "R = \\frac{\\rho}{2\\pi L} \\ln\\left(\\frac{b}{a}\\right)",
+      "pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "resistivity-temperature-dependence",
+      "label": "電阻率溫度依賴性",
+      "kind": "formula",
+      "summary": "導體的電阻率在一定溫度範圍內與溫度呈近似線性關係。",
+      "latex": "\\rho = \\rho_0 [1 + \\alpha(T - T_0)]",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "temperature-coefficient-resistivity",
+      "label": "電阻率溫度係數",
+      "kind": "definition",
+      "summary": "描述材料電阻率隨溫度變化的程度的物理量。",
+      "latex": "",
+      "pages": [
+        16
+      ]
+    },
+    {
+      "id": "residual-resistivity",
+      "label": "殘餘電阻率",
+      "kind": "concept",
+      "summary": "金屬在極低溫度下仍存在的電阻率，主要由雜質和晶格缺陷引起。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "semiconductor-resistivity-temp",
+      "label": "半導體電阻率與溫度",
+      "kind": "concept",
+      "summary": "半導體的電阻率隨溫度升高而降低，因為載流子密度增加。",
+      "latex": "",
+      "pages": [
+        17
+      ]
+    },
+    {
+      "id": "superconductor-definition",
+      "label": "超導體定義",
+      "kind": "definition",
+      "summary": "一類材料，其電阻在低於某個臨界溫度時會驟降至零。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "critical-temperature",
+      "label": "臨界溫度",
+      "kind": "definition",
+      "summary": "超導材料電阻降至零的特定溫度。",
+      "latex": "",
+      "pages": [
+        19
+      ]
+    },
+    {
+      "id": "superconductor-zero-resistance",
+      "label": "超導體零電阻",
+      "kind": "concept",
+      "summary": "一旦電流在超導體中建立，它將在沒有任何施加電壓的情況下持續存在，因為電阻為零。",
+      "latex": "",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "electrical-power-definition",
+      "label": "電功率定義",
+      "kind": "definition",
+      "summary": "電路中能量轉換的速率，等於電流與電位差的乘積。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "electrical-power-formula",
+      "label": "電功率公式",
+      "kind": "formula",
+      "summary": "電功率可表示為電流乘以電位差，或電流平方乘以電阻，或電位差平方除以電阻。",
+      "latex": "P = I\\Delta V = I^2 R = \\frac{(\\Delta V)^2}{R}",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "power-transmission-loss",
+      "label": "電力傳輸損耗",
+      "kind": "concept",
+      "summary": "電力傳輸中，為減少電阻造成的功率損耗，通常採用高電壓、低電流的方式。",
+      "latex": "",
+      "pages": [
+        23
+      ]
+    },
+    {
+      "id": "electromotive-force-definition",
+      "label": "電動勢定義",
+      "kind": "definition",
+      "summary": "驅動電荷移動的電位差，是能量源而非力，通常由電池等提供。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "charge-pump-analogy",
+      "label": "電荷泵浦類比",
+      "kind": "concept",
+      "summary": "電動勢源可被視為將電荷從低電位「泵浦」到高電位的裝置。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "circuit-water-analogy",
+      "label": "電路水路類比",
+      "kind": "concept",
+      "summary": "將電路中的電壓類比為水壓，電流類比為水流，電阻類比為水輪，有助於理解電路原理。",
+      "latex": "",
+      "pages": [
+        28
+      ]
+    },
+    {
+      "id": "internal-resistance",
+      "label": "內電阻",
+      "kind": "definition",
+      "summary": "電源（如電池）本身對電流流動的阻礙，導致其端電壓低於電動勢。",
+      "latex": "",
+      "pages": [
+        29
+      ]
+    },
+    {
+      "id": "terminal-voltage-formula",
+      "label": "端電壓公式",
+      "kind": "formula",
+      "summary": "電源的端電壓等於電動勢減去電流通過內電阻造成的電壓降。",
+      "latex": "\\Delta V = \\mathcal{E} - Ir",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "current-with-internal-resistance",
+      "label": "含內阻電路電流",
+      "kind": "formula",
+      "summary": "含有內電阻的電路中，電流等於電動勢除以總電阻（外電阻加內電阻）。",
+      "latex": "I = \\frac{\\mathcal{E}}{R+r}",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "energy-conservation-circuit",
+      "label": "電路能量守恆",
+      "kind": "principle",
+      "summary": "電源提供的總功率等於外部負載消耗的功率與內部電阻消耗的功率之和。",
+      "latex": "I\\mathcal{E} = I^2R + I^2r",
+      "pages": [
+        30
+      ]
+    },
+    {
+      "id": "maximum-power-transfer-theorem",
+      "label": "最大功率傳輸定理",
+      "kind": "principle",
+      "summary": "當負載電阻等於電源的內電阻時，傳輸到負載的功率最大。",
+      "latex": "",
+      "pages": [
+        31
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "electric-current-definition",
+      "to": "ampere-unit",
+      "reason": "安培是電流的SI單位，其定義基於電流的定義。"
+    },
+    {
+      "from": "electric-current-definition",
+      "to": "average-current-formula",
+      "reason": "平均電流公式是根據電流的定義來計算電荷流量的平均速率。"
+    },
+    {
+      "from": "electric-current-definition",
+      "to": "instantaneous-current-formula",
+      "reason": "瞬時電流公式是根據電流的定義來計算電荷流量的瞬時速率。"
+    },
+    {
+      "from": "electric-current-definition",
+      "to": "conventional-current-direction",
+      "reason": "傳統電流方向是為了描述電流流動而建立的約定。"
+    },
+    {
+      "from": "charge-carrier",
+      "to": "drude-model",
+      "reason": "德魯德模型將金屬中的傳導電子視為電荷載流子。"
+    },
+    {
+      "from": "charge-carrier",
+      "to": "drift-velocity",
+      "reason": "漂移速度是電荷載流子在電場作用下的平均淨速度。"
+    },
+    {
+      "from": "drift-velocity",
+      "to": "drift-velocity-formula",
+      "reason": "漂移速度公式定量描述了漂移速度的計算方式。"
+    },
+    {
+      "from": "mean-free-time",
+      "to": "drift-velocity-formula",
+      "reason": "平均自由時間是漂移速度公式中的一個關鍵參數。"
+    },
+    {
+      "from": "mean-free-path",
+      "to": "mean-free-time",
+      "reason": "平均自由時間與平均自由徑和平均速度相關。"
+    },
+    {
+      "from": "electric-current-definition",
+      "to": "microscopic-current-formula",
+      "reason": "微觀電流公式從電荷載流子的角度解釋了電流的產生。"
+    },
+    {
+      "from": "charge-carrier",
+      "to": "microscopic-current-formula",
+      "reason": "微觀電流公式中包含了電荷載流子的數量和電荷。"
+    },
+    {
+      "from": "drift-velocity",
+      "to": "microscopic-current-formula",
+      "reason": "微觀電流公式中包含了電荷載流子的漂移速度。"
+    },
+    {
+      "from": "microscopic-current-formula",
+      "to": "current-density-definition",
+      "reason": "電流密度是電流除以截面積，因此需要先理解電流的微觀模型。"
+    },
+    {
+      "from": "current-density-definition",
+      "to": "current-density-formula",
+      "reason": "電流密度公式是電流密度的定量表達。"
+    },
+    {
+      "from": "charge-density",
+      "to": "current-density-formula",
+      "reason": "電流密度公式中包含了電荷密度。"
+    },
+    {
+      "from": "current-density-formula",
+      "to": "ohms-law-microscopic",
+      "reason": "微觀歐姆定律描述了電流密度與電場之間的關係。"
+    },
+    {
+      "from": "conductivity-definition",
+      "to": "ohms-law-microscopic",
+      "reason": "電導率是微觀歐姆定律中的比例常數。"
+    },
+    {
+      "from": "drift-velocity-formula",
+      "to": "conductivity-formula",
+      "reason": "電導率公式是從漂移速度的微觀模型推導而來。"
+    },
+    {
+      "from": "resistivity-definition",
+      "to": "conductivity-definition",
+      "reason": "電阻率是電導率的倒數，兩者定義相互關聯。"
+    },
+    {
+      "from": "conductivity-formula",
+      "to": "resistivity-formula",
+      "reason": "電阻率公式是從電導率公式推導而來。"
+    },
+    {
+      "from": "ohms-law-microscopic",
+      "to": "ohms-law-macroscopic",
+      "reason": "宏觀歐姆定律是從微觀歐姆定律和導體幾何特性推導而來。"
+    },
+    {
+      "from": "resistance-definition",
+      "to": "ohms-law-macroscopic",
+      "reason": "電阻是宏觀歐姆定律中的比例常數。"
+    },
+    {
+      "from": "resistivity-definition",
+      "to": "resistance-formula",
+      "reason": "電阻公式中包含了電阻率。"
+    },
+    {
+      "from": "resistance-geometry-dependence",
+      "to": "resistance-formula",
+      "reason": "電阻公式明確展示了電阻對導體幾何形狀的依賴性。"
+    },
+    {
+      "from": "ohms-law-macroscopic",
+      "to": "ohmic-material",
+      "reason": "歐姆材料的定義是遵守宏觀歐姆定律的材料。"
+    },
+    {
+      "from": "ohms-law-macroscopic",
+      "to": "nonohmic-material",
+      "reason": "非歐姆材料的定義是不遵守宏觀歐姆定律的材料。"
+    },
+    {
+      "from": "resistance-formula",
+      "to": "cylindrical-resistance-formula",
+      "reason": "圓柱體電阻公式是電阻公式在特定幾何形狀下的應用。"
+    },
+    {
+      "from": "resistivity-definition",
+      "to": "resistivity-temperature-dependence",
+      "reason": "電阻率溫度依賴性公式描述了電阻率如何隨溫度變化。"
+    },
+    {
+      "from": "temperature-coefficient-resistivity",
+      "to": "resistivity-temperature-dependence",
+      "reason": "電阻率溫度係數是電阻率溫度依賴性公式中的一個參數。"
+    },
+    {
+      "from": "resistivity-temperature-dependence",
+      "to": "residual-resistivity",
+      "reason": "殘餘電阻率是電阻率溫度依賴性在低溫極限下的表現。"
+    },
+    {
+      "from": "resistivity-temperature-dependence",
+      "to": "semiconductor-resistivity-temp",
+      "reason": "半導體電阻率與溫度的關係是電阻率溫度依賴性的一個特例。"
+    },
+    {
+      "from": "superconductor-definition",
+      "to": "critical-temperature",
+      "reason": "臨界溫度是超導體定義中的一個關鍵特性。"
+    },
+    {
+      "from": "critical-temperature",
+      "to": "superconductor-zero-resistance",
+      "reason": "超導體在低於臨界溫度時表現出零電阻特性。"
+    },
+    {
+      "from": "electric-current-definition",
+      "to": "electrical-power-definition",
+      "reason": "電功率的定義涉及電流和電位差。"
+    },
+    {
+      "from": "electrical-power-definition",
+      "to": "electrical-power-formula",
+      "reason": "電功率公式是電功率的定量表達。"
+    },
+    {
+      "from": "ohms-law-macroscopic",
+      "to": "electrical-power-formula",
+      "reason": "電功率公式可以結合歐姆定律以不同形式表達。"
+    },
+    {
+      "from": "electrical-power-formula",
+      "to": "power-transmission-loss",
+      "reason": "電力傳輸損耗的計算基於電功率公式。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "charge-pump-analogy",
+      "reason": "電荷泵浦類比有助於理解電動勢的物理作用。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "circuit-water-analogy",
+      "reason": "電路水路類比有助於理解電動勢在電路中的作用。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "internal-resistance",
+      "reason": "實際的電動勢源通常具有內電阻。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "terminal-voltage-formula",
+      "reason": "端電壓公式描述了電動勢、內電阻和電流如何影響電源的實際輸出電壓。"
+    },
+    {
+      "from": "internal-resistance",
+      "to": "terminal-voltage-formula",
+      "reason": "內電阻是影響電源端電壓的關鍵因素。"
+    },
+    {
+      "from": "terminal-voltage-formula",
+      "to": "current-with-internal-resistance",
+      "reason": "含內阻電路電流公式是從端電壓公式和歐姆定律推導而來。"
+    },
+    {
+      "from": "internal-resistance",
+      "to": "current-with-internal-resistance",
+      "reason": "內電阻是計算含內阻電路電流的必要參數。"
+    },
+    {
+      "from": "electromotive-force-definition",
+      "to": "current-with-internal-resistance",
+      "reason": "電動勢是驅動含內阻電路電流的來源。"
+    },
+    {
+      "from": "current-with-internal-resistance",
+      "to": "energy-conservation-circuit",
+      "reason": "電路能量守恆原理的表達式中包含了電流和電動勢。"
+    },
+    {
+      "from": "current-with-internal-resistance",
+      "to": "maximum-power-transfer-theorem",
+      "reason": "最大功率傳輸定理的推導和應用需要理解含內阻電路中的電流。"
+    },
+    {
+      "from": "internal-resistance",
+      "to": "maximum-power-transfer-theorem",
+      "reason": "最大功率傳輸定理的核心條件是負載電阻與內電阻相等。"
+    }
+  ],
+  "chapter_number": 25,
+  "usage": {
+    "input_tokens": 11305,
+    "output_tokens": 6400
+  }
+}
