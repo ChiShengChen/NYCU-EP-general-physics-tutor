@@ -39,11 +39,16 @@ interface FormulaEdge {
   from: string;
   to: string;
   reason: string;
+  cross?: boolean;
 }
 
 interface FormulaGraphData {
   nodes: FormulaNode[];
   edges: FormulaEdge[];
+}
+
+interface CrossEdgesFile {
+  edges: Array<{ from: string; to: string; reason: string; confidence: string }>;
 }
 
 const CATEGORY_STYLE: Record<Category, { label: string; bg: string; bgDark: string; border: string; text: string; dot: string }> = {
@@ -125,16 +130,32 @@ export function FormulaNetwork({ onNavigate }: Props) {
   const [chapterRange, setChapterRange] = useState<[number, number]>([1, 36]);
   const [searchRaw, setSearchRaw] = useState("");
   const search = useDeferredValue(searchRaw.trim().toLowerCase());
+  const [showCrossEdges, setShowCrossEdges] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/concepts/all-formulas.json")
-      .then((r) => {
+    Promise.all([
+      fetch("/concepts/all-formulas.json").then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((j: FormulaGraphData) => {
-        if (!cancelled) setData(j);
+        return r.json() as Promise<FormulaGraphData>;
+      }),
+      fetch("/concepts/cross-chapter-edges.json")
+        .then((r) => (r.ok ? (r.json() as Promise<CrossEdgesFile>) : null))
+        .catch(() => null),
+    ])
+      .then(([base, cross]) => {
+        if (cancelled) return;
+        if (cross) {
+          const crossEdges: FormulaEdge[] = cross.edges.map((e) => ({
+            from: e.from,
+            to: e.to,
+            reason: e.reason,
+            cross: true,
+          }));
+          setData({ nodes: base.nodes, edges: [...base.edges, ...crossEdges] });
+        } else {
+          setData(base);
+        }
       })
       .catch((e) => {
         if (!cancelled) setError(String(e));
@@ -171,16 +192,23 @@ export function FormulaNetwork({ onNavigate }: Props) {
 
     const flowEdges: Edge[] = data.edges
       .filter((e) => visibleIds.has(e.from) && visibleIds.has(e.to))
+      .filter((e) => showCrossEdges || !e.cross)
       .map((e) => ({
         id: `${e.from}->${e.to}`,
         source: e.from,
         target: e.to,
-        style: { stroke: theme === "dark" ? "#475569" : "#94a3b8", strokeWidth: 1 },
+        style: e.cross
+          ? {
+              stroke: theme === "dark" ? "#818cf8" : "#6366f1",
+              strokeWidth: 1.5,
+              strokeDasharray: "5 4",
+            }
+          : { stroke: theme === "dark" ? "#475569" : "#94a3b8", strokeWidth: 1 },
       }));
 
     const laidOut = layoutNodes(flowNodes, flowEdges);
     return { initialNodes: laidOut, initialEdges: flowEdges };
-  }, [data, categoryFilter, chapterRange, search, theme]);
+  }, [data, categoryFilter, chapterRange, search, theme, showCrossEdges]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
@@ -212,7 +240,7 @@ export function FormulaNetwork({ onNavigate }: Props) {
     if (!data || !selectedId) return [];
     return data.edges
       .filter((e) => e.to === selectedId)
-      .map((e) => ({ node: data.nodes.find((n) => n.id === e.from)!, reason: e.reason }))
+      .map((e) => ({ node: data.nodes.find((n) => n.id === e.from)!, reason: e.reason, cross: !!e.cross }))
       .filter((x) => x.node);
   }, [data, selectedId]);
 
@@ -220,7 +248,7 @@ export function FormulaNetwork({ onNavigate }: Props) {
     if (!data || !selectedId) return [];
     return data.edges
       .filter((e) => e.from === selectedId)
-      .map((e) => ({ node: data.nodes.find((n) => n.id === e.to)!, reason: e.reason }))
+      .map((e) => ({ node: data.nodes.find((n) => n.id === e.to)!, reason: e.reason, cross: !!e.cross }))
       .filter((x) => x.node);
   }, [data, selectedId]);
 
@@ -296,6 +324,23 @@ export function FormulaNetwork({ onNavigate }: Props) {
             );
           })}
         </div>
+
+        <button
+          onClick={() => setShowCrossEdges((v) => !v)}
+          className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs border transition-all"
+          style={{
+            background: showCrossEdges ? (theme === "dark" ? "#312e81" : "#eef2ff") : "transparent",
+            borderColor: showCrossEdges ? "#a5b4fc" : "#cbd5e1",
+            color: showCrossEdges ? (theme === "dark" ? "#e0e7ff" : "#3730a3") : "#94a3b8",
+            opacity: showCrossEdges ? 1 : 0.5,
+          }}
+          title="跨章節先備關係（Gemini 2.5 Pro 推理）"
+        >
+          <svg width="18" height="8">
+            <line x1="0" y1="4" x2="18" y2="4" stroke="#6366f1" strokeWidth="1.5" strokeDasharray="4 3" />
+          </svg>
+          跨章邊
+        </button>
 
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">
           {nodes.length} 顯示 / {data?.nodes.length ?? 0} 公式 · {edges.length} 邊
@@ -404,7 +449,7 @@ export function FormulaNetwork({ onNavigate }: Props) {
                     先備（{selectedPrereqs.length}）
                   </div>
                   <div className="space-y-1">
-                    {selectedPrereqs.map(({ node, reason }) => (
+                    {selectedPrereqs.map(({ node, reason, cross }) => (
                       <button
                         key={node.id}
                         onClick={() => setSelectedId(node.id)}
@@ -415,6 +460,11 @@ export function FormulaNetwork({ onNavigate }: Props) {
                           <span className="font-medium text-slate-700 dark:text-slate-200">
                             Ch{String(node.chapter).padStart(2, "0")} · {node.label}
                           </span>
+                          {cross && (
+                            <span className="text-[9px] px-1 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
+                              跨章
+                            </span>
+                          )}
                         </div>
                         <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 pl-3 leading-snug">{reason}</div>
                       </button>
@@ -429,7 +479,7 @@ export function FormulaNetwork({ onNavigate }: Props) {
                     後續（{selectedNexts.length}）
                   </div>
                   <div className="space-y-1">
-                    {selectedNexts.map(({ node, reason }) => (
+                    {selectedNexts.map(({ node, reason, cross }) => (
                       <button
                         key={node.id}
                         onClick={() => setSelectedId(node.id)}
@@ -440,6 +490,11 @@ export function FormulaNetwork({ onNavigate }: Props) {
                           <span className="font-medium text-slate-700 dark:text-slate-200">
                             Ch{String(node.chapter).padStart(2, "0")} · {node.label}
                           </span>
+                          {cross && (
+                            <span className="text-[9px] px-1 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
+                              跨章
+                            </span>
+                          )}
                         </div>
                         <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 pl-3 leading-snug">{reason}</div>
                       </button>

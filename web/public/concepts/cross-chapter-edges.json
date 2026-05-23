@@ -1,0 +1,459 @@
+{
+  "edges": [
+    {
+      "from": "ch01:scalar-product-definition",
+      "to": "ch06:work-constant-force",
+      "reason": "定力作功的定義是力向量與位移向量的純量積（內積）。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:scalar-product-definition",
+      "to": "ch22:electric-flux-uniform-field-formula",
+      "reason": "均勻電場中的電通量定義為電場向量與面積向量的純量積。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:scalar-product-definition",
+      "to": "ch27:potential-energy-magnetic-dipole",
+      "reason": "磁偶極在磁場中的位能定義為磁偶極矩與磁場向量內積的負值。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:vector-product-definition",
+      "to": "ch09:tangential-velocity-vector-formula",
+      "reason": "切線速度向量可表示為角速度向量與位置向量的向量積（外積）。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:vector-product-definition",
+      "to": "ch10:torque-magnitude",
+      "reason": "力矩的向量定義是位置向量與作用力的向量積（外積）。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:vector-product-definition",
+      "to": "ch27:magnetic-force-on-moving-charge",
+      "reason": "移動電荷所受磁力的方向與大小由電荷、速度向量與磁場向量的外積決定。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:vector-product-definition",
+      "to": "ch28:biot-savart-law-current-element",
+      "reason": "畢歐-薩伐爾定律中，電流元產生的磁場方向由電流元向量與位置向量的外積決定。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch01:vector-product-definition",
+      "to": "ch32:poynting-vector",
+      "reason": "坡印亭向量定義為電場與磁場的向量積，表示電磁波能量傳播方向與大小。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch03:centripetal-acceleration-magnitude",
+      "to": "ch05:centripetal-force-formula",
+      "reason": "向心力公式是牛頓第二定律應用於向心加速度的直接結果，即 F_net = m * a_c。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch05:centripetal-force-formula",
+      "reason": "向心力是造成向心加速度的淨力，是牛頓第二定律 F=ma 的直接應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch06:work-kinetic-energy-theorem",
+      "reason": "功動能定理由牛頓第二定律 F=ma 對位移進行積分直接推導而來。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch08:newtons-second-law-momentum-form",
+      "reason": "動量形式的牛頓第二定律 F=dp/dt 是 F=ma 的更一般性表述。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch08:impulse-momentum-theorem",
+      "reason": "衝量動量定理由牛頓第二定律 F=dp/dt 對時間進行積分直接推導而來。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch10:torque-angular-acceleration-relation",
+      "reason": "轉動的牛頓第二定律 τ=Iα 是將 F=ma 應用於剛體中每個質點後積分得到的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch13:shm-differential-equation",
+      "reason": "簡諧運動微分方程是將牛頓第二定律應用於滿足虎克定律的恢復力系統得到的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch15:linear-wave-equation",
+      "reason": "繩波的波動方程式是將牛頓第二定律應用於繩子的一個微小元素推導出來的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch04:newtons-second-law",
+      "to": "ch12:free-fall-acceleration-formula",
+      "reason": "自由落體加速度是將萬有引力代入牛頓第二定律（F=mg）後解出的加速度 g。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch05:centripetal-force-formula",
+      "to": "ch12:keplers-3rd-law",
+      "reason": "克卜勒第三定律是將萬有引力作為行星運動的向心力，結合圓周運動公式推導得出。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch05:centripetal-force-formula",
+      "to": "ch27:radius-circular-motion",
+      "reason": "帶電粒子在磁場中的圓周運動半徑，是將磁勞侖茲力設為向心力推導得出的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:hookes-law",
+      "to": "ch07:elastic-potential-energy-formula",
+      "reason": "彈力位能是計算抵抗彈簧力（虎克定律）做功所儲存的能量。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:hookes-law",
+      "to": "ch13:shm-potential-energy",
+      "reason": "簡諧運動的位能是彈力位能，其形式由虎克定律決定。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:work-kinetic-energy-theorem",
+      "to": "ch07:mechanical-energy-formula",
+      "reason": "當系統中只有保守力作功時，功動能定理可轉換為力學能（動能+位能）守恆的形式。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:work-kinetic-energy-theorem",
+      "to": "ch14:bernoulli-equation",
+      "reason": "白努利方程式本質上是功動能定理在理想流體流動中的應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:work-varying-force",
+      "to": "ch23:potential-difference",
+      "reason": "電位差的定義是移動單位電荷時電場力所作的功，是變力作功積分概念的應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch06:work-constant-force",
+      "to": "ch19:work-isobaric-process-formula",
+      "reason": "等壓過程做功 W=-PΔV 是力學功 W=FΔx (其中力 F=PA) 在熱力學中的直接應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch07:gravitational-potential-energy-formula",
+      "to": "ch12:gravitational-potential-energy-near-surface",
+      "reason": "近地表重力位能公式 ΔU=mgΔy 是廣義重力位能公式在地球表面附近的近似結果。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch07:elastic-potential-energy-formula",
+      "to": "ch13:shm-total-mechanical-energy",
+      "reason": "簡諧運動的總力學能是其動能與彈力位能的和，直接使用了彈力位能的定義。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch07:conservation-of-energy-principle",
+      "to": "ch19:first-law-thermodynamics",
+      "reason": "熱力學第一定律是能量守恆定律在熱力學系統中的表述，將熱量和內能包含進來。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch07:conservative-force-from-potential-1d",
+      "to": "ch23:e-field-from-potential-gradient",
+      "reason": "電場由電位梯度求得，是保守力與位能關係 F=-dU/dx 在靜電學中的直接類比與應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch08:newtons-second-law-momentum-form",
+      "to": "ch10:newtons-second-law-rotational",
+      "reason": "轉動定律 τ=dL/dt 是線性定律 F=dp/dt 的直接轉動類比形式。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch08:impulse-momentum-theorem",
+      "to": "ch18:pressure-kinetic-theory",
+      "reason": "氣體壓力公式的推導基於分子與器壁碰撞的動量變化（衝量）來計算平均作用力。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch09:parallel-axis-theorem",
+      "to": "ch13:physical-pendulum-period",
+      "reason": "計算複擺週期需要其繞支點的轉動慣量，通常需用平行軸定理從質心轉動慣量換算得到。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch10:torque-angular-acceleration-relation",
+      "to": "ch13:torsional-pendulum-period",
+      "reason": "扭擺的運動方程式 τ=-κθ，與 τ=Iα 結合，可推導出其簡諧運動的週期。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch10:conservation-of-angular-momentum",
+      "to": "ch12:keplers-2nd-law",
+      "reason": "克卜勒第二定律（等面積速率定律）是行星在中心引力場中運動時角動量守恆的直接體現。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch13:shm-differential-equation",
+      "to": "ch30:lc-circuit-diff-eq-kirchhoff",
+      "reason": "LC電路的電荷振盪微分方程在數學形式上與簡諧運動的位移微分方程完全相同。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch15:linear-wave-equation",
+      "to": "ch32:em-wave-equation-vacuum",
+      "reason": "真空中的電磁波方程式是標準的波動方程式，其數學形式與力學波動方程式相同。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch15:interference-conditions-path-difference",
+      "to": "ch35:constructive-interference-path-condition",
+      "reason": "光的建設性干涉條件是普適的波干涉路徑差條件在電磁波上的直接應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch15:interference-conditions-path-difference",
+      "to": "ch35:destructive-interference-path-condition",
+      "reason": "光的破壞性干涉條件是普適的波干涉路徑差條件在電磁波上的直接應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch15:standing-wave-equation",
+      "to": "ch16:standing-waves-closed-tube-frequencies",
+      "reason": "閉管中的聲波共振頻率是由在管中形成駐波的條件決定的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch15:standing-wave-equation",
+      "to": "ch32:standing-em-wave-fields",
+      "reason": "電磁駐波的數學形式與場分佈是力學駐波概念在電磁場上的直接應用。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch19:first-law-thermodynamics",
+      "to": "ch18:cp-cv-relation",
+      "reason": "定壓與定容比熱的關係式 c_p - c_v = R 是對等壓過程應用熱力學第一定律推導出來的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch19:first-law-thermodynamics",
+      "to": "ch20:carnot-engine-efficiency",
+      "reason": "卡諾熱機效率的推導需要對循環中的吸熱和放熱過程應用熱力學第一定律。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch19:first-law-thermodynamics",
+      "to": "ch20:entropy-change-reversible-process",
+      "reason": "計算熵變需要知道可逆過程中的熱量傳遞 dQ，這通常由熱力學第一定律確定。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch19:adiabatic-process-ideal-gas-formula",
+      "to": "ch20:otto-cycle-efficiency",
+      "reason": "奧圖循環包含兩個絕熱過程，其效率的計算依賴於絕熱過程的壓力-體積關係式。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch21:coulombs-law",
+      "to": "ch22:gauss-law",
+      "reason": "高斯定律可由庫侖定律和電場疊加原理推導得出，是描述靜電場的等效且更通用的形式。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch21:coulombs-law",
+      "to": "ch23:electric-potential-point-charge-absolute",
+      "reason": "點電荷的電位是透過對點電荷電場（源自庫侖定律）從無窮遠處積分到特定點得到的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch21:conservation-of-charge",
+      "to": "ch26:kirchhoffs-junction-rule-law",
+      "reason": "克希荷夫節點定則是電荷守恆定律在電路節點上的直接應用，即流入的總電流等於流出的總電流。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch21:electric-force-in-field",
+      "to": "ch25:drift-velocity-formula",
+      "reason": "導體中載子的漂移速度是由電場力 F=qE 驅動，並受碰撞阻礙而達到的一個平均速度。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch21:electric-force-in-field",
+      "to": "ch27:lorentz-force",
+      "reason": "勞侖茲力是帶電粒子在電磁場中受到的總力，包含了電場力 F=qE 和磁力。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch22:gauss-law",
+      "to": "ch23:e-field-conductor-surface",
+      "reason": "導體表面電場公式是應用高斯定律於緊貼導體表面的柱狀高斯面推導出來的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch22:gauss-law",
+      "to": "ch24:gauss-law-dielectrics",
+      "reason": "介電質中的高斯定律是原始高斯定律的修正形式，用以處理由自由電荷產生的電場。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch22:electric-field-parallel-plates",
+      "to": "ch24:parallel-plate-capacitor-capacitance",
+      "reason": "平行板電容值的計算，需要先用此公式求出板間電場，再積分求得電位差，最後由 C=Q/V 得出。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch23:potential-difference",
+      "to": "ch25:ohms-law-macroscopic",
+      "reason": "宏觀歐姆定律描述了導體兩端的電位差與流經其中電流的線性關係。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch23:potential-difference",
+      "to": "ch26:kirchhoffs-loop-rule-law",
+      "reason": "克希荷夫迴路定則指出，沿任何閉合電路迴路，所有元件的電位差總和為零。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch24:parallel-plate-capacitor-capacitance",
+      "to": "ch31:capacitive-reactance",
+      "reason": "容抗是根據電容的電流電壓關係 I=C(dV/dt) 在交流電路中推導出的，其中C是電容值。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch25:electrical-power-formula",
+      "to": "ch26:energy-dissipated-resistor-charging-rc-formula",
+      "reason": "RC電路中電阻的總耗能是透過對瞬時功率 P=I²R 隨時間積分得到的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch26:kirchhoffs-loop-rule-law",
+      "to": "ch30:rl-circuit-diff-eq-build-up",
+      "reason": "RL電路電流建立的微分方程是將克希荷夫迴路定則應用於包含電源、電阻和電感的電路。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch26:kirchhoffs-loop-rule-law",
+      "to": "ch30:lc-circuit-diff-eq-kirchhoff",
+      "reason": "LC電路振盪的微分方程是將克希荷夫迴路定則應用於包含電感和電容的無源電路。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch26:kirchhoffs-loop-rule-law",
+      "to": "ch30:rlc-circuit-diff-eq",
+      "reason": "RLC串聯電路的微分方程是將克希荷夫迴路定則應用於包含電阻、電感和電容的電路。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch27:magnetic-force-on-moving-charge",
+      "to": "ch29:motional-emf-formula",
+      "reason": "動生電動勢的微觀來源是磁場對導體內自由電荷的作用力，使其移動產生電位差。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch27:magnetic-force-straight-wire",
+      "to": "ch28:magnetic-force-parallel-conductors",
+      "reason": "平行導線間的磁力，是一條導線產生的磁場對另一條載流導線作用的力。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch28:amperes-law",
+      "to": "ch29:ampere-maxwell-law",
+      "reason": "安培-馬克士威定律是安培定律的推廣，加入了位移電流項以使其在含時變電場時也成立。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch28:solenoid-magnetic-field",
+      "to": "ch30:inductance-solenoid",
+      "reason": "螺線管的電感值是利用其內部磁場公式計算單匝線圈的磁通量，再根據電感定義 L=NΦ/I 求得。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch29:faradays-law-of-induction",
+      "to": "ch30:self-induced-emf-formula",
+      "reason": "自感電動勢是法拉第感應定律的一個特例，其中磁通量的變化是由線圈自身的電流變化引起的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch29:faradays-law-of-induction",
+      "to": "ch30:mutual-inductance-emf-formula",
+      "reason": "互感電動勢是法拉第感應定律的應用，一個線圈的磁通量變化由另一個線圈的電流變化引起。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch29:faradays-law-of-induction",
+      "to": "ch31:transformer-voltage-ratio",
+      "reason": "變壓器原理基於法拉第感應定律：初級線圈變化的磁通量在次級線圈中產生感應電動勢。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch29:ampere-maxwell-law",
+      "to": "ch32:em-wave-equation-vacuum",
+      "reason": "電磁波方程式是聯立法拉第定律與安培-馬克士威定律的微分形式，在無源空間中推導出來的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch30:self-induced-emf-formula",
+      "to": "ch31:inductive-reactance",
+      "reason": "感抗是根據電感兩端的電壓與電流的關係 V=L(dI/dt) 在正弦交流電路中推導出的阻礙效應。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch30:lc-circuit-angular-frequency",
+      "to": "ch31:resonance-frequency",
+      "reason": "RLC串聯電路的諧振頻率，就是其對應的無阻尼LC電路的自然振盪頻率。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch32:speed-em-wave-in-matter",
+      "to": "ch33:snells-law",
+      "reason": "介質的折射率 n 定義為 c/v，斯涅爾定律正是基於不同介質中光速 v 不同而推導出的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch33:snells-law",
+      "to": "ch34:refraction-formula-spherical-surface",
+      "reason": "球面折射公式是在近軸近似（小角度近似）下，對通過球面的光線應用斯涅爾定律推導出來的。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch35:constructive-interference-path-condition",
+      "to": "ch36:single-slit-destructive-interference-condition",
+      "reason": "單狹縫繞射的暗紋可視為狹縫上半部與下半部發出的子波源之間的成對破壞性干涉。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch35:constructive-interference-path-condition",
+      "to": "ch36:diffraction-grating-maxima-condition",
+      "reason": "繞射光柵的亮紋（主極大）條件是來自所有狹縫的光線都滿足建設性干涉的路徑差條件。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch35:constructive-interference-path-condition",
+      "to": "ch36:bragg-s-law",
+      "reason": "布拉格定律描述了X射線在晶格各原子平面反射後，發生建設性干涉的光程差條件。",
+      "confidence": "high"
+    },
+    {
+      "from": "ch35:intensity-distribution-formula",
+      "to": "ch36:two-slit-diffraction-interference-combined-intensity",
+      "reason": "雙狹縫的實際光強度分佈是理想雙縫干涉圖樣與單縫繞射圖樣（繞射因子）的乘積。",
+      "confidence": "high"
+    }
+  ],
+  "model": "gemini-2.5-pro",
+  "usage": {
+    "input_tokens": 52966,
+    "output_tokens": 8278
+  }
+}
