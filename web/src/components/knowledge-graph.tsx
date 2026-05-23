@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useTheme } from "./theme-provider";
 import { ConceptDetailGraph } from "./concept-detail-graph";
+import { FormulaNetwork } from "./formula-network";
 
 /* ─── Concept Graph Data ─── */
 /* Categories:
@@ -145,7 +146,7 @@ interface KnowledgeGraphProps {
 }
 
 export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
-  const [tab, setTab] = useState<"overview" | "detail">("overview");
+  const [tab, setTab] = useState<"overview" | "detail" | "formulas">("overview");
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const { effective: theme } = useTheme();
@@ -212,6 +213,16 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
           >
             細節圖譜
           </button>
+          <button
+            onClick={() => setTab("formulas")}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              tab === "formulas"
+                ? "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+            }`}
+          >
+            公式網路
+          </button>
         </div>
 
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系 · 普通物理</span>
@@ -220,6 +231,10 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
       {tab === "detail" ? (
         <div className="flex-1 overflow-hidden px-4 py-4 min-h-0">
           <ConceptDetailGraph onNavigate={onNavigate} />
+        </div>
+      ) : tab === "formulas" ? (
+        <div className="flex-1 overflow-hidden px-4 py-4 min-h-0">
+          <FormulaNetwork onNavigate={onNavigate} />
         </div>
       ) : (
       <div className="flex-1 overflow-auto px-4 py-6">
