@@ -3,11 +3,37 @@
 /* Tiny theme system — 3-state (system / light / dark), persists in
  * localStorage, applies `.dark` to <html> for Tailwind's dark: variant. */
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 export type ThemePref = "system" | "light" | "dark";
 
 const STORAGE_KEY = "physics_tutor_theme";
+
+/* Module-scoped listener set so setPref (same-tab) can notify
+ * useSyncExternalStore subscribers; storage events only fire across tabs. */
+const listeners = new Set<() => void>();
+function notify(): void {
+  listeners.forEach((cb) => cb());
+}
+
+function subscribePref(cb: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  listeners.add(cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    listeners.delete(cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+
+function readPref(): ThemePref {
+  if (typeof window === "undefined") return "system";
+  return (localStorage.getItem(STORAGE_KEY) as ThemePref | null) ?? "system";
+}
+
+function serverPref(): ThemePref {
+  return "system";
+}
 
 function resolveEffective(pref: ThemePref): "light" | "dark" {
   if (pref !== "system") return pref;
@@ -20,45 +46,49 @@ function applyToHtml(effective: "light" | "dark") {
   document.documentElement.classList.toggle("dark", effective === "dark");
 }
 
+/* For the effective ("dark" | "light") store we keep a separate
+ * subscription that combines pref reads with the OS prefers-color-scheme
+ * media query, so consumers can ask for the resolved value in one hook
+ * call without recomputing every render. */
+function readEffective(): "light" | "dark" {
+  return resolveEffective(readPref());
+}
+
+function subscribeEffective(cb: () => void): () => void {
+  const offPref = subscribePref(cb);
+  if (typeof window === "undefined") return offPref;
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener("change", cb);
+  return () => {
+    offPref();
+    mq.removeEventListener("change", cb);
+  };
+}
+
 export function useTheme(): {
   pref: ThemePref;
   effective: "light" | "dark";
   setPref: (p: ThemePref) => void;
 } {
-  const [pref, setPrefState] = useState<ThemePref>("system");
-  const [effective, setEffective] = useState<"light" | "dark">("light");
+  const pref = useSyncExternalStore(subscribePref, readPref, serverPref);
+  const effective = useSyncExternalStore<"light" | "dark">(
+    subscribeEffective,
+    readEffective,
+    () => "light",
+  );
 
-  // Initial hydration
+  // Keep the <html> class in sync with the resolved theme. This is the
+  // one allowed side effect — the inline THEME_INIT_SCRIPT handles the
+  // first paint; this just keeps subsequent transitions correct.
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const stored = (localStorage.getItem(STORAGE_KEY) as ThemePref | null) ?? "system";
-    setPrefState(stored);
-    const eff = resolveEffective(stored);
-    setEffective(eff);
-    applyToHtml(eff);
-  }, []);
-
-  // React to system theme changes when on "system" mode
-  useEffect(() => {
-    if (pref !== "system" || typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      const eff = mq.matches ? "dark" : "light";
-      setEffective(eff);
-      applyToHtml(eff);
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [pref]);
+    applyToHtml(effective);
+  }, [effective]);
 
   const setPref = useCallback((p: ThemePref) => {
-    setPrefState(p);
     if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, p);
     }
-    const eff = resolveEffective(p);
-    setEffective(eff);
-    applyToHtml(eff);
+    notify();
   }, []);
 
   return { pref, effective, setPref };

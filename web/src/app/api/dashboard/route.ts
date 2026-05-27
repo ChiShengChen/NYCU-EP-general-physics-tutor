@@ -28,7 +28,6 @@ export async function GET(req: NextRequest) {
 
   // 3. Compute activity heatmap (messages per day)
   const activityMap: Record<string, number> = {};
-  const dailyTopics: Record<string, string[]> = {};
   for (const msg of chatData ?? []) {
     const day = msg.created_at.slice(0, 10); // YYYY-MM-DD
     activityMap[day] = (activityMap[day] ?? 0) + 1;

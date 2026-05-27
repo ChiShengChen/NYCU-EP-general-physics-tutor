@@ -3,7 +3,10 @@
 /* 🎯 學習目標 — set a short-term target ("this week I want Ch08") and
  * watch progress fill in automatically from attempts + student_state. */
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 
 interface ChapterInfo { chapter_number: number; page_count: number; sections: string[] }
 
@@ -38,12 +41,14 @@ interface GoalsViewProps {
 }
 
 export function GoalsView({ onBack }: GoalsViewProps) {
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
-  const [goals, setGoals] = useState<Goal[] | null>(null);
-  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  const studentId = useStudentId() ?? "";
+  const { data: goalsData, mutate: refresh } = useSWR<{ goals: Goal[] }>(
+    apiKey("/api/goals", { studentId }),
+  );
+  const { data: lecturesData } = useSWR<{ chapters: ChapterInfo[] }>("/api/lectures");
+  const goals = goalsData ? (goalsData.goals ?? []) : null;
+  const chapters = lecturesData?.chapters ?? [];
+
   const [showForm, setShowForm] = useState(false);
 
   // New-goal form state
@@ -52,19 +57,6 @@ export function GoalsView({ onBack }: GoalsViewProps) {
   const [concept, setConcept] = useState("");
   const [targetDate, setTargetDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const refresh = useCallback(async () => {
-    if (!studentId) return;
-    const res = await fetch(`/api/goals?studentId=${studentId}`);
-    const data = await res.json();
-    setGoals((data.goals ?? []) as Goal[]);
-  }, [studentId]);
-
-  useEffect(() => { refresh(); }, [refresh]);
-
-  useEffect(() => {
-    fetch("/api/lectures").then((r) => r.json()).then((d) => setChapters(d.chapters ?? [])).catch(() => {});
-  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -5,7 +5,9 @@
  *   - high-confidence wrong answers   (likely misconceptions)
  *   - low-confidence right answers    (knew it, but lacked confidence) */
 
-import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line, Legend } from "recharts";
 import { useChartColors } from "./theme-provider";
 
@@ -48,21 +50,11 @@ interface CalibrationViewProps {
 }
 
 export function CalibrationView({ onBack }: CalibrationViewProps) {
-  const [data, setData] = useState<CalibrationData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
-
-  useEffect(() => {
-    if (!studentId) { setLoading(false); return; }
-    fetch(`/api/calibration?studentId=${studentId}`)
-      .then((r) => r.json())
-      .then((d: CalibrationData) => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [studentId]);
+  const studentId = useStudentId() ?? "";
+  const { data, isLoading } = useSWR<CalibrationData>(
+    apiKey("/api/calibration", { studentId }),
+  );
+  const loading = !!studentId && isLoading;
 
   const colors = useChartColors();
 

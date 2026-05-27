@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ConfidenceSelector } from "./confidence-selector";
 import { ReportQuestionButton } from "./report-question-button";
@@ -82,22 +85,13 @@ interface AttemptsHistoryProps {
 }
 
 export function AttemptsHistory({ onBack }: AttemptsHistoryProps) {
-  const [attempts, setAttempts] = useState<AttemptSummary[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
-
-  useEffect(() => {
-    if (!studentId) { setLoading(false); return; }
-    fetch(`/api/attempts?studentId=${studentId}`)
-      .then((r) => r.json())
-      .then((d) => { setAttempts(d.attempts ?? []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [studentId]);
+  const studentId = useStudentId() ?? "";
+  const { data, isLoading } = useSWR<{ attempts: AttemptSummary[] }>(
+    apiKey("/api/attempts", { studentId }),
+  );
+  const attempts = data?.attempts ?? [];
+  const loading = !!studentId && isLoading;
 
   if (selectedId !== null) {
     return (
@@ -184,15 +178,10 @@ function AttemptDetailView({
   onBack: () => void;
   onBackToModes: () => void;
 }) {
-  const [attempt, setAttempt] = useState<AttemptDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`/api/attempts?studentId=${studentId}&id=${attemptId}`)
-      .then((r) => r.json())
-      .then((d) => { setAttempt(d.attempt ?? null); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [studentId, attemptId]);
+  const { data: detail, isLoading: loading } = useSWR<{ attempt: AttemptDetail | null }>(
+    apiKey("/api/attempts", { studentId, id: attemptId }),
+  );
+  const attempt = detail?.attempt ?? null;
 
   if (loading) {
     return (

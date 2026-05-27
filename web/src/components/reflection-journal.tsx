@@ -5,7 +5,10 @@
  * mastery snapshot to /api/reflection, surfaces personalised AI feedback.
  * History list with collapsible past entries. */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 interface Reflection {
@@ -34,10 +37,11 @@ interface ReflectionJournalProps {
 }
 
 export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
+  const studentId = useStudentId() ?? "";
+  const { data: listData, mutate: refresh } = useSWR<{ reflections: Reflection[] }>(
+    apiKey("/api/reflection", { studentId }),
+  );
+  const list = listData ? (listData.reflections ?? []) : null;
 
   // Stable per-mount prompt so it doesn't reshuffle on every keystroke.
   const promptOfTheDay = useMemo(() => {
@@ -47,18 +51,8 @@ export function ReflectionJournal({ onBack }: ReflectionJournalProps) {
 
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [list, setList] = useState<Reflection[] | null>(null);
   const [latestFeedback, setLatestFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const refresh = useCallback(async () => {
-    if (!studentId) return;
-    const res = await fetch(`/api/reflection?studentId=${studentId}`);
-    const data = await res.json();
-    setList((data.reflections ?? []) as Reflection[]);
-  }, [studentId]);
-
-  useEffect(() => { refresh(); }, [refresh]);
 
   const submit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 /* ─── Types ─── */
@@ -52,27 +55,13 @@ interface WrongNotebookProps {
 }
 
 export function WrongNotebook({ onBack }: WrongNotebookProps) {
-  const [data, setData] = useState<WrongResponse | null>(null);
-  const [loading, setLoading] = useState(true);
   const [filterChapter, setFilterChapter] = useState<number | null>(null);
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
-
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
-
-  useEffect(() => {
-    if (!studentId) { setLoading(false); return; }
-    setLoading(true);
-    const url = filterChapter
-      ? `/api/wrong-questions?studentId=${studentId}&chapter=${filterChapter}`
-      : `/api/wrong-questions?studentId=${studentId}`;
-    fetch(url)
-      .then((r) => r.json())
-      .then((d: WrongResponse) => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [studentId, filterChapter]);
+  const studentId = useStudentId() ?? "";
+  const { data, isLoading } = useSWR<WrongResponse>(
+    apiKey("/api/wrong-questions", { studentId, chapter: filterChapter ?? undefined }),
+  );
+  const loading = !!studentId && isLoading;
 
   // For chapter filter chips, we want unique sorted chapters from the *unfiltered*
   // dataset. So fetch one initial unfiltered call too — but to keep it simple we

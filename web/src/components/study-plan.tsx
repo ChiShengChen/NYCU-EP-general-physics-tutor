@@ -56,13 +56,16 @@ interface ReviewDueItem {
 
 interface StudyPlanProps {
   onBack: () => void;
+  /** Wired up so the prereq-gap analyzer's "→ 進入教學模式複習這章"
+   *  button can deep-link into TeachingMode with the chapter pre-selected. */
+  onNavigateToTeaching?: (chapter: number) => void;
 }
 
 type StudyPlanResponse =
   | { empty: true }
   | { empty?: false; plan: StudyPlan; reviewDue?: ReviewDueItem[] };
 
-export function StudyPlanView({ onBack }: StudyPlanProps) {
+export function StudyPlanView({ onBack, onNavigateToTeaching }: StudyPlanProps) {
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     return localStorage.getItem("physics_tutor_student_id") ?? "";
@@ -100,7 +103,7 @@ export function StudyPlanView({ onBack }: StudyPlanProps) {
             even when the AI study plan below is still generating or the
             student has no history yet (it just shows all-grey prereqs). */}
         <div className="max-w-3xl mx-auto mb-6">
-          <PrereqPathPanel studentId={studentId || null} />
+          <PrereqPathPanel studentId={studentId || null} onNavigateToChapter={onNavigateToTeaching} />
         </div>
 
         {loading ? (

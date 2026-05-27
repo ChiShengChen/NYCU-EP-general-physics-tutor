@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { useDailyStatus } from "./daily-review";
 import { ThemeToggle } from "./theme-provider";
 import { UsageWidget } from "./usage-widget";
@@ -17,7 +17,7 @@ type HomeStats = {
 };
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim") => void;
 }
 
 function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
@@ -43,13 +43,10 @@ function KbdBadge({ k }: { k: string }) {
 }
 
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
-  // Read studentId once on mount so the daily banner can show today's status
-  // + streak for this browser's anonymous student profile.
-  const [studentId, setStudentId] = useState<string | null>(null);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setStudentId(localStorage.getItem("physics_tutor_student_id"));
-  }, []);
+  // Read studentId from localStorage via useSyncExternalStore so the daily
+  // banner can show today's status + streak for this browser's anonymous
+  // student profile, without tripping React 19's set-state-in-effect rule.
+  const studentId = useStudentId();
   const { todayDone, streak } = useDailyStatus(studentId);
 
   // Homepage headline numbers — single small API call. Goes through SWR
@@ -247,6 +244,26 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             </span>
           </button>
         </div>
+
+        {/* Interactive simulators banner — calls attention to the new
+            Batch 3 sandbox without crowding the existing 4-col grids. */}
+        <button
+          onClick={() => onSelectMode("sim")}
+          className="w-full max-w-5xl mb-5 flex items-center gap-4 text-left p-4 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 transition-all"
+        >
+          <span className="text-3xl shrink-0">🔬</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
+              互動模擬器 <span className="text-[10px] font-normal text-indigo-600 dark:text-indigo-300 ml-1">NEW</span>
+            </div>
+            <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+              自由落體 · 彈簧 SHM · RC 電路。滑桿即時調參，看 g、k、τ 怎麼改變現象。
+            </div>
+          </div>
+          <span className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
+            進入沙盒 →
+          </span>
+        </button>
 
         {/* Learning-support row: tools that aren't a full study session,
             but help students clarify, look up, plan or reflect. */}

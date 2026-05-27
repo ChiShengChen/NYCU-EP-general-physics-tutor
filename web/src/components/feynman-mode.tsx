@@ -196,13 +196,18 @@ function FeynmanChat({
     typeof crypto !== "undefined" ? crypto.randomUUID() : "feynman",
   );
 
+  // Refs so the transport's body callback reads latest values without
+  // rebuilding the transport (which would re-init useChat mid-session).
+  /* eslint-disable react-hooks/refs */
   const conceptRef = useRef(concept);
   conceptRef.current = concept;
   const studentIdRef = useRef(studentId);
   studentIdRef.current = studentId;
   const sessionIdRef = useRef(sessionId);
   sessionIdRef.current = sessionId;
+  /* eslint-enable react-hooks/refs */
 
+  /* eslint-disable react-hooks/refs */
   const [transport] = useState(
     () => new DefaultChatTransport({
       body: () => ({
@@ -213,6 +218,7 @@ function FeynmanChat({
       }),
     }),
   );
+  /* eslint-enable react-hooks/refs */
 
   const { messages, sendMessage, status } = useChat({
     transport,

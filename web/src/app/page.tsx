@@ -21,8 +21,9 @@ import { ConceptCompare } from "@/components/concept-compare";
 import { ReflectionJournal } from "@/components/reflection-journal";
 import { LibraryView } from "@/components/library-view";
 import { GoalsView } from "@/components/goals-view";
+import { SimulatorsMode } from "@/components/simulators";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -41,11 +42,16 @@ export default function Home() {
   /** Active session id for the 自由問答 view. Fresh QA entry mints a new
    *  one; resume reuses the original. Stamped on every chat_messages row. */
   const [chatSessionId, setChatSessionId] = useState<string | null>(null);
+  /** When the user enters teaching mode via a deep link from the concept
+   *  graph or prereq-gap analyzer, the target chapter rides along here so
+   *  TeachingMode can pre-select it instead of showing the chapter picker. */
+  const [teachingInitialChapter, setTeachingInitialChapter] = useState<number | undefined>(undefined);
 
   const goHome = useCallback(() => {
     setMode(null);
     setResume(null);
     setChatSessionId(null);
+    setTeachingInitialChapter(undefined);
   }, []);
 
   // ModeSelector dispatcher: intercept "qa" cold-entry to mint a new session.
@@ -54,7 +60,15 @@ export default function Home() {
       setResume(null);
       setChatSessionId(crypto.randomUUID());
     }
+    setTeachingInitialChapter(undefined);
     setMode(m);
+  }, []);
+
+  // Deep link → teaching mode with a specific chapter pre-selected. Used by
+  // the knowledge graph and the prereq-gap analyzer.
+  const navigateToTeaching = useCallback((chapter: number) => {
+    setTeachingInitialChapter(chapter);
+    setMode("teaching");
   }, []);
 
   // Global keyboard shortcuts:
@@ -121,20 +135,20 @@ export default function Home() {
       />
     );
   }
-  if (mode === "teaching") return <TeachingMode onBack={goHome} />;
+  if (mode === "teaching") return <TeachingMode onBack={goHome} initialChapter={teachingInitialChapter} />;
   if (mode === "quiz") return <QuizMode onBack={goHome} />;
   if (mode === "exam") return <ExamMode onBack={goHome} />;
   if (mode === "graph") {
     return (
       <KnowledgeGraph
         onBack={goHome}
-        onNavigate={(targetMode, _chapter) => {
-          if (targetMode === "teaching") setMode("teaching");
+        onNavigate={(targetMode, chapter) => {
+          if (targetMode === "teaching") navigateToTeaching(chapter);
         }}
       />
     );
   }
-  if (mode === "study-plan") return <StudyPlanView onBack={goHome} />;
+  if (mode === "study-plan") return <StudyPlanView onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
   if (mode === "dashboard") return <Dashboard onBack={goHome} />;
   if (mode === "history") {
     return (
@@ -166,6 +180,7 @@ export default function Home() {
   if (mode === "reflection") return <ReflectionJournal onBack={goHome} />;
   if (mode === "library") return <LibraryView onBack={goHome} />;
   if (mode === "goals") return <GoalsView onBack={goHome} />;
+  if (mode === "sim") return <SimulatorsMode onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }

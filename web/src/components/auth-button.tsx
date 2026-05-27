@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
@@ -12,35 +12,7 @@ export function AuthButton({ className = "" }: { className?: string }) {
   const [merging, setMerging] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  useEffect(() => {
-    const supabase = createClient();
-    let cancelled = false;
-
-    supabase.auth.getUser().then(({ data }) => {
-      if (!cancelled) {
-        setUser(data.user);
-        setLoading(false);
-      }
-    });
-
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      if (event === "SIGNED_IN") {
-        runSync();
-      }
-      if (event === "SIGNED_OUT") {
-        // Do NOT delete the localStorage student_id — anonymous mode continues
-        // to work on this device after sign-out using the same profile row.
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
-
-  async function runSync() {
+  const runSync = useCallback(async () => {
     setMerging(true);
     try {
       const localStudentId = localStorage.getItem(STUDENT_ID_KEY) ?? undefined;
@@ -72,7 +44,35 @@ export function AuthButton({ className = "" }: { className?: string }) {
     } finally {
       setMerging(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    const supabase = createClient();
+    let cancelled = false;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (!cancelled) {
+        setUser(data.user);
+        setLoading(false);
+      }
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (event === "SIGNED_IN") {
+        runSync();
+      }
+      if (event === "SIGNED_OUT") {
+        // Do NOT delete the localStorage student_id — anonymous mode continues
+        // to work on this device after sign-out using the same profile row.
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, [runSync]);
 
   async function signIn() {
     const supabase = createClient();

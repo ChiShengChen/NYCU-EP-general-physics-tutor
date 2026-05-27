@@ -82,12 +82,12 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
   });
 
   // Socratic mode: AI doesn't give direct answers, asks guiding questions
-  // first. Preference persists in localStorage.
-  const [socratic, setSocraticState] = useState<boolean>(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (localStorage.getItem("physics_tutor_socratic") === "1") setSocraticState(true);
-  }, []);
+  // first. Preference persists in localStorage. Initial value is read
+  // lazily so we don't pay a setState-in-effect roundtrip on every mount.
+  const [socratic, setSocraticState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("physics_tutor_socratic") === "1";
+  });
   const setSocratic = useCallback((v: boolean) => {
     setSocraticState(v);
     if (typeof window !== "undefined") {
@@ -96,14 +96,26 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
   }, []);
 
   // Refs so the transport's body callback always reads the latest values
-  // (useState lazy init captures the initial closure once).
+  // without rebuilding the transport (which would re-init useChat and
+  // wipe the in-flight stream / message history). The ref writes are
+  // intentional — the alternative (useEffect → setState mirror) just
+  // moves the write to a slightly later tick without the consistency
+  // win, so we eslint-disable the React 19 refs rule for these.
+  /* eslint-disable react-hooks/refs */
   const sessionIdRef = useRef(sessionId);
   sessionIdRef.current = sessionId;
   const studentIdRef = useRef(studentId);
   studentIdRef.current = studentId;
   const socraticRef = useRef(socratic);
   socraticRef.current = socratic;
+  /* eslint-enable react-hooks/refs */
 
+  // Transport built once on mount; the body callback fires per-request
+  // and reads through refs above, so toggling socratic mid-conversation
+  // affects the next message without rebuilding useChat's state. The
+  // body() closure is dispatched outside of render, but eslint can't
+  // tell, hence the block-level disable.
+  /* eslint-disable react-hooks/refs */
   const [transport] = useState(
     () => new DefaultChatTransport({
       body: () => ({
@@ -113,6 +125,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
       }),
     }),
   );
+  /* eslint-enable react-hooks/refs */
 
   const { messages, sendMessage, status } = useChat({
     id: `qa-${resumeKey ?? "fresh"}`,

@@ -5,7 +5,10 @@
  * self-rating nudges the per-concept mastery_score, so this loop feeds
  * the AI study plan & dashboard. */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 interface Question {
@@ -54,29 +57,20 @@ interface DailyReviewProps {
 }
 
 export function DailyReview({ onBack }: DailyReviewProps) {
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
+  const studentId = useStudentId() ?? "";
+  const { data, isLoading } = useSWR<{ items: ReviewItem[] }>(
+    apiKey("/api/daily-review", { studentId }),
+  );
+  // Memoize so the `finish` callback's deps stay stable when SWR returns
+  // a structurally-equal payload on revalidation.
+  const items = useMemo(() => (data ? (data.items ?? []) : null), [data]);
+  const loading = !!studentId && isLoading;
 
-  const [items, setItems] = useState<ReviewItem[] | null>(null);
   const [idx, setIdx] = useState(0);
   const [revealed, setRevealed] = useState<Record<number, boolean>>({});
   const [ratings, setRatings] = useState<Record<number, -1 | 0 | 1>>({});
   const [done, setDone] = useState(false);
   const [streak, setStreak] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!studentId) { setLoading(false); return; }
-    fetch(`/api/daily-review?studentId=${studentId}`)
-      .then((r) => r.json())
-      .then((d) => {
-        setItems((d.items ?? []) as ReviewItem[]);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [studentId]);
 
   const finish = useCallback(async () => {
     if (!studentId || !items) return;
@@ -314,22 +308,24 @@ function Wrapper({ onBack, title, children }: { onBack: () => void; title: strin
 
 /** Helper for the mode-selector tile so the home page can show today's status. */
 export function useDailyStatus(studentId: string | null) {
-  const [todayDone, setTodayDone] = useState(false);
-  const [streak, setStreak] = useState(0);
-  useEffect(() => {
-    if (!studentId || typeof window === "undefined") return;
-    setTodayDone(localStorage.getItem(TODAY_KEY(studentId)) === "1");
-    const s = parseInt(localStorage.getItem(STREAK_KEY(studentId)) ?? "0", 10) || 0;
-    const lastDate = localStorage.getItem(STREAK_DATE_KEY(studentId));
-    const yesterday = new Date(Date.now() - 86400_000).toISOString().slice(0, 10);
-    const today = new Date().toISOString().slice(0, 10);
-    // If they haven't done it today and the last streak day was older than yesterday,
-    // the streak is effectively broken — show 0.
-    if (lastDate !== today && lastDate !== yesterday) {
-      setStreak(0);
-    } else {
-      setStreak(s);
-    }
-  }, [studentId]);
+  // We read from localStorage on every render (cheap), guarding for SSR.
+  // The values change only when `finish()` runs in this same component
+  // tree, which already triggers a re-render via setState — so a cached
+  // useState mirror would just duplicate the source of truth. Doing the
+  // read synchronously dodges the React 19 set-state-in-effect rule and
+  // is correct because the component re-renders whenever the parent
+  // does (mode-selector reads it once on mount, then re-mounts on
+  // navigation back to home).
+  if (!studentId || typeof window === "undefined") {
+    return { todayDone: false, streak: 0 };
+  }
+  const todayDone = localStorage.getItem(TODAY_KEY(studentId)) === "1";
+  const s = parseInt(localStorage.getItem(STREAK_KEY(studentId)) ?? "0", 10) || 0;
+  const lastDate = localStorage.getItem(STREAK_DATE_KEY(studentId));
+  const yesterday = new Date(Date.now() - 86400_000).toISOString().slice(0, 10);
+  const today = new Date().toISOString().slice(0, 10);
+  // If they haven't done it today and the last streak day was older than
+  // yesterday, the streak is effectively broken — show 0.
+  const streak = lastDate !== today && lastDate !== yesterday ? 0 : s;
   return { todayDone, streak };
 }

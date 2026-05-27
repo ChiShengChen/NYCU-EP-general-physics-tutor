@@ -166,7 +166,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
       setState("answering");
       console.error("Quiz grading error:", err);
     }
-  }, [quiz, answers, studentId]);
+  }, [quiz, answers, studentId, confidences, hintUsage]);
 
   const answeredCount = quiz ? quiz.questions.filter((q) => answers[q.id]?.trim()).length : 0;
   const totalQuestions = quiz?.questions.length ?? 0;

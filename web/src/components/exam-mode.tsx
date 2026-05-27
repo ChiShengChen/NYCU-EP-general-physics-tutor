@@ -56,7 +56,6 @@ export function ExamMode({ onBack }: ExamModeProps) {
   const [state, setState] = useState<ExamState>("select");
   const [examType, setExamType] = useState<"midterm" | "final">("midterm");
   const [exam, setExam] = useState<Exam | null>(null);
-  const [timeLimit, setTimeLimit] = useState(50);
   const [timeLeft, setTimeLeft] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
@@ -94,14 +93,6 @@ export function ExamMode({ onBack }: ExamModeProps) {
     };
   }, [state]);
 
-  // Auto-submit when time runs out
-  useEffect(() => {
-    if (autoSubmitRef.current && state === "exam" && timeLeft === 0 && exam) {
-      autoSubmitRef.current = false;
-      handleSubmit();
-    }
-  }, [timeLeft, state, exam]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const generateExam = useCallback(async () => {
     setState("loading");
     setError(null);
@@ -122,7 +113,6 @@ export function ExamMode({ onBack }: ExamModeProps) {
 
       const data = await res.json();
       setExam(data.exam);
-      setTimeLimit(data.timeLimit);
       setTimeLeft(data.timeLimit * 60);
       setState("exam");
     } catch (err) {
@@ -130,7 +120,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
       setState("select");
       console.error("Exam generation error:", err);
     }
-  }, [examType]);
+  }, [examType, studentId]);
 
   const handleSubmit = useCallback(async () => {
     if (!exam) return;
@@ -163,7 +153,16 @@ export function ExamMode({ onBack }: ExamModeProps) {
       setState("exam");
       console.error("Exam grading error:", err);
     }
-  }, [exam, answers, studentId, examType]);
+  }, [exam, answers, studentId, examType, confidences, hintUsage]);
+
+  // Auto-submit when time runs out. Must come after handleSubmit so we
+  // can include it in the effect's dependency list cleanly.
+  useEffect(() => {
+    if (autoSubmitRef.current && state === "exam" && timeLeft === 0 && exam) {
+      autoSubmitRef.current = false;
+      handleSubmit();
+    }
+  }, [timeLeft, state, exam, handleSubmit]);
 
   const answeredCount = exam ? exam.questions.filter((q) => answers[q.id]?.trim()).length : 0;
   const totalQuestions = exam?.questions.length ?? 0;

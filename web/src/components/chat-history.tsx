@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
+import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 /* ─── Types ─── */
@@ -42,31 +45,14 @@ interface ChatHistoryProps {
 }
 
 export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [totalMessages, setTotalMessages] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
-
-  const [studentId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("physics_tutor_student_id") ?? "";
-  });
-
-  useEffect(() => {
-    if (!studentId) {
-      setLoading(false);
-      return;
-    }
-
-    fetch(`/api/history?studentId=${studentId}`)
-      .then((res) => res.json())
-      .then((d) => {
-        setSessions(d.sessions ?? []);
-        setTotalMessages(d.totalMessages ?? 0);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [studentId]);
+  const studentId = useStudentId() ?? "";
+  const { data, isLoading } = useSWR<{ sessions: Session[]; totalMessages: number }>(
+    apiKey("/api/history", { studentId }),
+  );
+  const sessions = data?.sessions ?? [];
+  const totalMessages = data?.totalMessages ?? 0;
+  const loading = !!studentId && isLoading;
 
   // Session detail view
   if (selectedSession) {

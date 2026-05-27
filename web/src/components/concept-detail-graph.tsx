@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import useSWR from "swr";
 import {
   ReactFlow,
   Background,
@@ -133,35 +134,20 @@ interface Props {
 export function ConceptDetailGraph({ initialChapter = 1, onNavigate }: Props) {
   const { effective: theme } = useTheme();
   const [chapter, setChapter] = useState<number>(initialChapter);
-  const [data, setData] = useState<ChapterData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [kindFilter, setKindFilter] = useState<Set<Kind>>(new Set(KIND_ORDER));
 
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-    setSelectedId(null);
-    fetch(`/concepts/Ch${String(chapter).padStart(2, "0")}.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((j: ChapterData) => {
-        if (!cancelled) setData(j);
-      })
-      .catch((e) => {
-        if (!cancelled) setError(String(e));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [chapter]);
+  const { data, error: fetchError, isLoading: loading } = useSWR<ChapterData>(
+    `/concepts/Ch${String(chapter).padStart(2, "0")}.json`,
+  );
+  const error = fetchError ? String(fetchError) : null;
+
+  // Reset the per-chapter selection when the chapter prop changes. This
+  // stays as a setState-in-effect because React's recommended "use a key
+  // to reset" alternative would require splitting this component, which
+  // isn't worth it for one line of state.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setSelectedId(null); }, [chapter]);
 
   const { initialNodes, initialEdges } = useMemo(() => {
     if (!data) return { initialNodes: [] as Node[], initialEdges: [] as Edge[] };

@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
-import { useRef, useEffect, useState, useCallback, type FormEvent } from "react";
+import { useRef, useEffect, useMemo, useState, useCallback, useSyncExternalStore, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 
 interface ChapterInfo {
@@ -28,14 +28,42 @@ function getTextContent(message: UIMessage): string {
     .join("");
 }
 
-interface TeachingModeProps {
-  onBack: () => void;
+/* Module-scoped external store for the slide-pane visibility toggle. Lives
+ * outside the component so `notifySlideVisible` from one click rerenders
+ * any other TeachingMode instance on the page (and survives swap-prop
+ * navigation). Same-tab writes don't fire `storage` events, so we keep
+ * our own listener set and ping it after each setItem. */
+const SLIDE_KEY = "physics_tutor_slide_visible";
+const slideListeners = new Set<() => void>();
+function readSlideVisible(): boolean {
+  if (typeof window === "undefined") return true;
+  return localStorage.getItem(SLIDE_KEY) !== "0";
+}
+function subscribeSlideVisible(cb: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  slideListeners.add(cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    slideListeners.delete(cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+function notifySlideVisible(): void {
+  slideListeners.forEach((cb) => cb());
 }
 
-export function TeachingMode({ onBack }: TeachingModeProps) {
+interface TeachingModeProps {
+  onBack: () => void;
+  /** Pre-select this chapter on mount instead of showing the chapter
+   *  picker. Used when the user enters via a deep link from the concept
+   *  graph or the prereq-gap analyzer ("→ 進入教學模式複習這章"). */
+  initialChapter?: number;
+}
+
+export function TeachingMode({ onBack, initialChapter }: TeachingModeProps) {
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [loadingChapters, setLoadingChapters] = useState(true);
-  const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<number | null>(initialChapter ?? null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [pageChunks, setPageChunks] = useState<PageChunk[]>([]);
@@ -54,11 +82,19 @@ export function TeachingMode({ onBack }: TeachingModeProps) {
     fetch("/api/lectures")
       .then((res) => res.json())
       .then((data) => {
-        setChapters(data.chapters ?? []);
+        const list = (data.chapters ?? []) as ChapterInfo[];
+        setChapters(list);
         setLoadingChapters(false);
+        // When entering via a deep link (initialChapter), the constructor
+        // pre-selected the chapter but couldn't know the page count yet.
+        // Resolve it once the metadata arrives.
+        if (initialChapter !== undefined) {
+          const meta = list.find((c) => c.chapter_number === initialChapter);
+          if (meta) setTotalPages(meta.page_count);
+        }
       })
       .catch(() => setLoadingChapters(false));
-  }, []);
+  }, [initialChapter]);
 
   const handleSelectChapter = useCallback((chapterNum: number) => {
     const chapter = chapters.find((c) => c.chapter_number === chapterNum);
@@ -208,27 +244,31 @@ function PageViewer({
 }) {
   const [input, setInput] = useState("");
   const chatScrollRef = useRef<HTMLDivElement>(null);
-  const [chatKey, setChatKey] = useState(0);
   const hasSentInitial = useRef(false);
 
   // Slide pane visibility — collapsed gives the chat full width, which is
   // much friendlier for long math expressions and AI explanations.
-  // Preference persists across page navigation.
-  const [slideVisible, setSlideVisibleState] = useState<boolean>(true);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const stored = localStorage.getItem("physics_tutor_slide_visible");
-    if (stored === "0") setSlideVisibleState(false);
-  }, []);
+  // Preference persists across page navigation via localStorage, read
+  // through useSyncExternalStore so initial paint sees the right value
+  // without a re-render cascade.
+  const slideVisible = useSyncExternalStore(
+    subscribeSlideVisible,
+    readSlideVisible,
+    () => true,
+  );
   const setSlideVisible = useCallback((v: boolean) => {
-    setSlideVisibleState(v);
     if (typeof window !== "undefined") {
       localStorage.setItem("physics_tutor_slide_visible", v ? "1" : "0");
     }
+    notifySlideVisible();
   }, []);
 
-  // Create transport that passes teaching mode params
-  const [transport, setTransport] = useState(
+  // Transport that passes teaching-mode params. Derived via useMemo so
+  // it's rebuilt automatically when the page (or chapter or student)
+  // changes — that avoids a setTransport-in-effect lint hit and keeps
+  // useChat's transport identity stable between page changes when only
+  // unrelated state moves.
+  const transport = useMemo(
     () =>
       new DefaultChatTransport({
         body: () => ({
@@ -238,31 +278,21 @@ function PageViewer({
           studentId,
         }),
       }),
+    [chapterNumber, currentPage, studentId],
   );
 
   const { messages, sendMessage, status } = useChat({
     transport,
-    id: `teaching-${chapterNumber}-${currentPage}-${chatKey}`,
+    id: `teaching-${chapterNumber}-${currentPage}`,
   });
   const isBusy = status === "streaming" || status === "submitted";
 
-  // Fetch page content and reset chat when page changes
+  // Fetch page content and reset chat when page changes. The useChat id
+  // includes chapterNumber + currentPage, so message history resets
+  // automatically on navigation — no manual key bump needed here.
   useEffect(() => {
     hasSentInitial.current = false;
     onSetLoadingPage(true);
-
-    // Recreate transport for new page
-    setTransport(
-      new DefaultChatTransport({
-        body: () => ({
-          mode: "teaching",
-          chapterNumber,
-          pageNumber: currentPage,
-          studentId,
-        }),
-      }),
-    );
-    setChatKey((k) => k + 1);
 
     // Fetch page chunks
     fetch(`/api/lectures?chapter=${chapterNumber}&page=${currentPage}`)
@@ -318,15 +348,6 @@ function PageViewer({
     }
   };
 
-  // Build page content markdown
-  const pageContent = pageChunks
-    .map((c) => {
-      const prefix = c.is_counterexample ? "> ⚠️ **此為反例/錯誤示範**\n\n" : "";
-      const sectionHeader = c.section_title ? `### ${c.section_title}\n\n` : "";
-      return `${sectionHeader}${prefix}${c.content}`;
-    })
-    .join("\n\n---\n\n");
-
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -371,6 +392,12 @@ function PageViewer({
               </button>
             </div>
             <div className="flex-1 overflow-y-auto flex items-start justify-center bg-slate-100 dark:bg-slate-800 p-2">
+              {/* Plain <img> on purpose — the slide URL is built per-page from
+                  a Supabase Storage public path, which next/image's loader
+                  would need extra remote-pattern config + custom loader to
+                  accept; the slide is also already a hand-sized JPEG so
+                  LCP optimization buys little here. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/slides/ch_${chapterNumber}_page_${currentPage}.jpg`}
                 alt={`Ch${String(chapterNumber).padStart(2, "0")} Page ${currentPage}`}
