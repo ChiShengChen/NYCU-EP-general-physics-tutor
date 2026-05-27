@@ -18,9 +18,49 @@ interface SimChromeProps {
   controls: ReactNode;      // parameter sliders + reset/play
   readouts: ReactNode;      // derived quantities + formulas
   notes?: ReactNode;        // optional pedagogy blurb under the readouts
+  /** Inline mode for embedding inside another scrolling page (e.g. the
+   *  teaching-mode page viewer). Drops the full-height layout + header
+   *  back-button, uses a height cap that lets the surrounding scroll
+   *  container drive the page, and keeps the controls/readouts panel
+   *  visible without forcing horizontal split on narrow embeds. */
+  inline?: boolean;
 }
 
-export function SimChrome({ title, subtitle, onBack, canvas, controls, readouts, notes }: SimChromeProps) {
+export function SimChrome({ title, subtitle, onBack, canvas, controls, readouts, notes, inline }: SimChromeProps) {
+  if (inline) {
+    return (
+      <div className="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-white dark:bg-slate-900">
+        <header className="flex items-center gap-2 px-4 py-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+          <span className="text-lg">🔬</span>
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100">{title}</h3>
+          {subtitle && <span className="text-[11px] text-slate-400 dark:text-slate-500 ml-2">{subtitle}</span>}
+        </header>
+
+        <div className="flex flex-col lg:flex-row">
+          <div className="flex-1 min-h-0 bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-3 max-h-[50vh] overflow-hidden">
+            {canvas}
+          </div>
+
+          <aside className="w-full lg:w-72 shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+            <section className="p-3 border-b border-slate-200 dark:border-slate-700">
+              <h4 className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">參數</h4>
+              <div className="space-y-2.5">{controls}</div>
+            </section>
+            <section className="p-3 border-b border-slate-200 dark:border-slate-700">
+              <h4 className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">即時讀數</h4>
+              <div className="space-y-1 text-xs">{readouts}</div>
+            </section>
+            {notes && (
+              <section className="p-3 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                {notes}
+              </section>
+            )}
+          </aside>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <header className="flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shrink-0">

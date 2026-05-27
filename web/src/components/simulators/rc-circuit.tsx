@@ -47,7 +47,7 @@ function step(prev: State, dt: number, mode: Mode, vBatt: number, r: number, c: 
   return { vC: prev.vC + dV, t: prev.t + dt };
 }
 
-export function RCCircuitSim({ onBack }: { onBack?: () => void }) {
+export function RCCircuitSim({ onBack, inline }: { onBack?: () => void; inline?: boolean }) {
   const [vBatt, setVBatt] = useState(9);            // V
   const [r, setR] = useState(1000);                 // Ω
   const [cFarads, setCFarads] = useState(0.001);    // F (= 1 mF default)
@@ -96,6 +96,7 @@ export function RCCircuitSim({ onBack }: { onBack?: () => void }) {
       title="RC 電路模擬"
       subtitle="Capacitor charge / discharge · Ch24 / Ch26"
       onBack={onBack}
+      inline={inline}
       canvas={
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

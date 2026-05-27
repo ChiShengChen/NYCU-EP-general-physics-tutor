@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
 import { useRef, useEffect, useMemo, useState, useCallback, useSyncExternalStore, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { TeachingSimEmbed } from "./teaching-sim-embed";
 
 interface ChapterInfo {
   chapter_number: number;
@@ -391,22 +392,26 @@ function PageViewer({
                 收合 ▸
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto flex items-start justify-center bg-slate-100 dark:bg-slate-800 p-2">
-              {/* Plain <img> on purpose — the slide URL is built per-page from
-                  a Supabase Storage public path, which next/image's loader
-                  would need extra remote-pattern config + custom loader to
-                  accept; the slide is also already a hand-sized JPEG so
-                  LCP optimization buys little here. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/slides/ch_${chapterNumber}_page_${currentPage}.jpg`}
-                alt={`Ch${String(chapterNumber).padStart(2, "0")} Page ${currentPage}`}
-                className="max-w-full h-auto rounded-lg shadow-sm"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                  (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex items-center justify-center h-32 text-slate-400 dark:text-slate-500">此頁無投影片</div>';
-                }}
-              />
+            <div className="flex-1 overflow-y-auto bg-slate-100 dark:bg-slate-800 p-2">
+              <div className="flex items-start justify-center">
+                {/* Plain <img> on purpose — the slide URL is built per-page from
+                    a Supabase Storage public path, which next/image's loader
+                    would need extra remote-pattern config + custom loader to
+                    accept; the slide is also already a hand-sized JPEG so
+                    LCP optimization buys little here. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/slides/ch_${chapterNumber}_page_${currentPage}.jpg`}
+                  alt={`Ch${String(chapterNumber).padStart(2, "0")} Page ${currentPage}`}
+                  className="max-w-full h-auto rounded-lg shadow-sm"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                    (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex items-center justify-center h-32 text-slate-400 dark:text-slate-500">此頁無投影片</div>';
+                  }}
+                />
+              </div>
+              {/* Inline simulator if this chapter/page has one mapped. */}
+              <TeachingSimEmbed chapter={chapterNumber} page={currentPage} />
             </div>
           </div>
         )}

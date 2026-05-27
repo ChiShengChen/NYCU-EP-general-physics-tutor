@@ -66,7 +66,7 @@ function yToPx(yMeters: number): number {
   return GROUND_Y - yMeters * PIXELS_PER_M;
 }
 
-export function FreeFallSim({ onBack }: { onBack?: () => void }) {
+export function FreeFallSim({ onBack, inline }: { onBack?: () => void; inline?: boolean }) {
   const [h0, setH0] = useState(10);                              // initial height (m)
   const [g, setG] = useState(9.8);                               // gravity (m/s²)
   const [e, setE] = useState(0.7);                               // restitution (0–1)
@@ -107,6 +107,7 @@ export function FreeFallSim({ onBack }: { onBack?: () => void }) {
       title="自由落體模擬"
       subtitle="Free Fall · Ch02 / Ch04"
       onBack={onBack}
+      inline={inline}
       canvas={
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

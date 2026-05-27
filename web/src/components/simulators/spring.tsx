@@ -60,7 +60,7 @@ function springPath(y1: number, y2: number, x: number, coils = 14, width = 18): 
   return pts.join(" ");
 }
 
-export function SpringSim({ onBack }: { onBack?: () => void }) {
+export function SpringSim({ onBack, inline }: { onBack?: () => void; inline?: boolean }) {
   const [m, setM] = useState(1);              // mass (kg)
   const [k, setK] = useState(20);             // spring constant (N/m)
   const [c, setC] = useState(0.5);            // damping (kg/s)
@@ -105,6 +105,7 @@ export function SpringSim({ onBack }: { onBack?: () => void }) {
       title="彈簧 / 簡諧運動模擬"
       subtitle="SHM · Ch13"
       onBack={onBack}
+      inline={inline}
       canvas={
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
