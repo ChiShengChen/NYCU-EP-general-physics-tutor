@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { PrereqPathPanel } from "./prereq-path";
 
 /** Defensive un-escape: Gemini occasionally double-escapes JSON strings so
  *  what the API returns contains literal backslash-n / backslash-t /
@@ -55,41 +58,25 @@ interface StudyPlanProps {
   onBack: () => void;
 }
 
-export function StudyPlanView({ onBack }: StudyPlanProps) {
-  const [plan, setPlan] = useState<StudyPlan | null>(null);
-  const [reviewDue, setReviewDue] = useState<ReviewDueItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [empty, setEmpty] = useState(false);
+type StudyPlanResponse =
+  | { empty: true }
+  | { empty?: false; plan: StudyPlan; reviewDue?: ReviewDueItem[] };
 
+export function StudyPlanView({ onBack }: StudyPlanProps) {
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     return localStorage.getItem("physics_tutor_student_id") ?? "";
   });
 
-  useEffect(() => {
-    if (!studentId) {
-      setEmpty(true);
-      setLoading(false);
-      return;
-    }
+  const { data, error: fetchError, isLoading } = useSWR<StudyPlanResponse>(
+    apiKey("/api/study-plan", { studentId }),
+  );
 
-    fetch(`/api/study-plan?studentId=${studentId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.empty) {
-          setEmpty(true);
-        } else {
-          setPlan(data.plan);
-          setReviewDue(data.reviewDue ?? []);
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("載入失敗，請稍後再試");
-        setLoading(false);
-      });
-  }, [studentId]);
+  const empty = !studentId || (data && "empty" in data && data.empty === true);
+  const plan = data && !empty && "plan" in data ? data.plan : null;
+  const reviewDue = data && !empty && "reviewDue" in data ? (data.reviewDue ?? []) : [];
+  const loading = !!studentId && isLoading;
+  const error = fetchError ? "載入失敗，請稍後再試" : null;
 
   return (
     <div className="flex flex-col h-screen">
@@ -109,6 +96,13 @@ export function StudyPlanView({ onBack }: StudyPlanProps) {
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
+        {/* Always-on prereq analyzer. Data-driven and instant — works
+            even when the AI study plan below is still generating or the
+            student has no history yet (it just shows all-grey prereqs). */}
+        <div className="max-w-3xl mx-auto mb-6">
+          <PrereqPathPanel studentId={studentId || null} />
+        </div>
+
         {loading ? (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
             <div className="relative w-16 h-16">

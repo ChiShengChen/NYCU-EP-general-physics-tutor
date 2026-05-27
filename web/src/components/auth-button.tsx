@@ -54,14 +54,20 @@ export function AuthButton({ className = "" }: { className?: string }) {
         setToast(`同步失敗：${err.error ?? res.status}`);
         return;
       }
-      const { studentId, mergedAnonymous } = (await res.json()) as {
+      const { studentId, mergedAnonymous, isNewAccount } = (await res.json()) as {
         studentId: string;
         mergedAnonymous: boolean;
+        isNewAccount?: boolean;
       };
       if (studentId && studentId !== localStudentId) {
         localStorage.setItem(STUDENT_ID_KEY, studentId);
       }
-      setToast(mergedAnonymous ? "已將本機學習紀錄連到此 Google 帳號 ✓" : "已登入 ✓");
+      const msg = mergedAnonymous
+        ? "已將本機學習紀錄連到此 Google 帳號 ✓"
+        : isNewAccount
+          ? "歡迎！已建立帳號 ✓"
+          : "已登入 ✓";
+      setToast(msg);
       setTimeout(() => setToast(null), 4000);
     } finally {
       setMerging(false);

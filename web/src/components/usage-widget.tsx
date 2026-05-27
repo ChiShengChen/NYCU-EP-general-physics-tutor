@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
 
 type UsageSummary = {
   studentId: string;
@@ -78,16 +80,8 @@ const ENDPOINT_LABELS: Record<string, string> = {
 };
 
 export function UsageWidget({ studentId }: { studentId: string | null }) {
-  const [data, setData] = useState<UsageSummary | null>(null);
+  const { data } = useSWR<UsageSummary>(apiKey("/api/usage/me", { studentId }));
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    if (!studentId) return;
-    fetch(`/api/usage/me?studentId=${studentId}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (d && !d.error) setData(d); })
-      .catch(() => {});
-  }, [studentId]);
 
   if (!data || data.totals.calls === 0) return null;
 

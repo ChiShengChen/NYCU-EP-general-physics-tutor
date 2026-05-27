@@ -1,10 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
 import { useDailyStatus } from "./daily-review";
 import { ThemeToggle } from "./theme-provider";
 import { UsageWidget } from "./usage-widget";
 import { AuthButton } from "./auth-button";
+
+type HomeStats = {
+  attemptsCount: number;
+  avgAccuracy: number | null;
+  reviewedConcepts: number;
+  avgMastery: number | null;
+  dailyDueCount: number;
+};
 
 interface ModeSelectorProps {
   onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals") => void;
@@ -22,6 +32,16 @@ function StatPill({ emoji, label, value }: { emoji: string; label: string; value
   );
 }
 
+/** Small keyboard shortcut indicator. The number lines up with the global
+ *  1–9 handler in app/page.tsx so power users learn the binding by sight. */
+function KbdBadge({ k }: { k: string }) {
+  return (
+    <kbd className="absolute top-2 right-2 hidden lg:inline-flex items-center justify-center w-5 h-5 rounded-md border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-mono text-slate-500 dark:text-slate-400">
+      {k}
+    </kbd>
+  );
+}
+
 export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
   // Read studentId once on mount so the daily banner can show today's status
   // + streak for this browser's anonymous student profile.
@@ -32,19 +52,10 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
   }, []);
   const { todayDone, streak } = useDailyStatus(studentId);
 
-  // Homepage headline numbers — single small API call.
-  const [stats, setStats] = useState<{
-    attemptsCount: number; avgAccuracy: number | null;
-    reviewedConcepts: number; avgMastery: number | null;
-    dailyDueCount: number;
-  } | null>(null);
-  useEffect(() => {
-    if (!studentId) return;
-    fetch(`/api/home-stats?studentId=${studentId}`)
-      .then((r) => r.json())
-      .then((d) => setStats(d))
-      .catch(() => {});
-  }, [studentId]);
+  // Homepage headline numbers — single small API call. Goes through SWR
+  // so a quick mode → back trip uses the cached payload instead of
+  // re-hitting the API.
+  const { data: stats } = useSWR<HomeStats>(apiKey("/api/home-stats", { studentId }));
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -83,12 +94,13 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             see at a glance whether today's habit is checked off. */}
         <button
           onClick={() => onSelectMode("daily")}
-          className={`w-full max-w-5xl mb-6 flex items-center gap-4 text-left p-4 rounded-2xl border shadow-sm hover:shadow-md transition-all ${
+          className={`relative w-full max-w-5xl mb-6 flex items-center gap-4 text-left p-4 rounded-2xl border shadow-sm hover:shadow-md transition-all ${
             todayDone
               ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 hover:border-emerald-300 dark:border-emerald-700"
               : "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 hover:border-amber-300 dark:border-amber-700"
           }`}
         >
+          <KbdBadge k="9" />
           <span className="text-3xl shrink-0">📅</span>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
@@ -114,8 +126,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">
           <button
             onClick={() => onSelectMode("preview")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="1" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🔭</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">章節預習</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -128,8 +141,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("teaching")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="2" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📖</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">教學模式</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -142,8 +156,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("qa")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="3" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">💬</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">自由問答</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -156,8 +171,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("quiz")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="4" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📝</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">自動測驗</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -173,8 +189,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full mb-5">
           <button
             onClick={() => onSelectMode("feynman")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 dark:border-amber-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 dark:border-amber-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="5" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎓</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">教 AI（費曼法）</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -187,8 +204,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("exam")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="6" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📋</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">考試模擬</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -201,8 +219,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("graph")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="7" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🧠</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">概念圖譜</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -215,8 +234,9 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
 
           <button
             onClick={() => onSelectMode("study-plan")}
-            className="group flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
+            <KbdBadge k="8" />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📅</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">AI 學習計畫</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -333,6 +353,13 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             </div>
           </button>
         </div>
+
+        <p className="hidden lg:flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-8 text-[11px] text-slate-400 dark:text-slate-500">
+          <span>💡 快捷鍵：</span>
+          <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">1</kbd>–<kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">9</kbd> 切換模式</span>
+          <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">Esc</kbd> 返回首頁</span>
+          <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">⌘/Ctrl</kbd>+<kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">Enter</kbd> 送出</span>
+        </p>
       </div>
     </div>
   );

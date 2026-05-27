@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { apiKey } from "@/lib/api";
 import {
   RadarChart,
   Radar,
@@ -62,33 +64,23 @@ interface DashboardProps {
 }
 
 export function Dashboard({ onBack }: DashboardProps) {
-  const [data, setData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [studentId] = useState(() => {
     if (typeof window === "undefined") return "";
     return localStorage.getItem("physics_tutor_student_id") ?? "";
   });
 
-  useEffect(() => {
-    if (!studentId) {
-      setError("尚未使用過系統，無學習紀錄");
-      setLoading(false);
-      return;
-    }
+  const { data, error: fetchError, isLoading } = useSWR<DashboardData>(
+    apiKey("/api/dashboard", { studentId }),
+  );
 
-    fetch(`/api/dashboard?studentId=${studentId}`)
-      .then((res) => res.json())
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("載入失敗");
-        setLoading(false);
-      });
-  }, [studentId]);
+  // Distinguish "no student yet" (empty state) from "API error" (transient
+  // failure to load) so the EmptyState message reads correctly to the user.
+  const error = !studentId
+    ? "尚未使用過系統，無學習紀錄"
+    : fetchError
+      ? "載入失敗"
+      : null;
+  const loading = !!studentId && isLoading;
 
   return (
     <div className="flex flex-col h-screen">
