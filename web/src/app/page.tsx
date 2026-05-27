@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { UIMessage } from "ai";
 import { Chat } from "@/components/chat";
 import { ModeSelector } from "@/components/mode-selector";
@@ -42,20 +42,73 @@ export default function Home() {
    *  one; resume reuses the original. Stamped on every chat_messages row. */
   const [chatSessionId, setChatSessionId] = useState<string | null>(null);
 
-  const goHome = () => {
+  const goHome = useCallback(() => {
     setMode(null);
     setResume(null);
     setChatSessionId(null);
-  };
+  }, []);
 
   // ModeSelector dispatcher: intercept "qa" cold-entry to mint a new session.
-  const onSelectMode = (m: NonNullable<Mode>) => {
+  const onSelectMode = useCallback((m: NonNullable<Mode>) => {
     if (m === "qa") {
       setResume(null);
       setChatSessionId(crypto.randomUUID());
     }
     setMode(m);
-  };
+  }, []);
+
+  // Global keyboard shortcuts:
+  //   - 1–9 on the home screen → jump to the corresponding mode (matches
+  //     the badges on ModeSelector cards).
+  //   - Esc on any detail screen → go home (matches the back arrow).
+  //   - Cmd/Ctrl+Enter inside a <form> → submit. Lets students send chat
+  //     messages, reflections, etc. without reaching for the mouse, and
+  //     works uniformly across <input> and multi-line <textarea>.
+  useEffect(() => {
+    const KEY_TO_MODE: Record<string, NonNullable<Mode>> = {
+      "1": "preview",
+      "2": "teaching",
+      "3": "qa",
+      "4": "quiz",
+      "5": "feynman",
+      "6": "exam",
+      "7": "graph",
+      "8": "study-plan",
+      "9": "daily",
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.isComposing) return;  // don't hijack IME composition
+      const target = e.target as HTMLElement | null;
+
+      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+        const form = target?.closest?.("form") as HTMLFormElement | null;
+        if (form) {
+          e.preventDefault();
+          if (typeof form.requestSubmit === "function") form.requestSubmit();
+          else form.submit();
+        }
+        return;
+      }
+
+      if (e.key === "Escape" && mode !== null) {
+        e.preventDefault();
+        goHome();
+        return;
+      }
+
+      if (mode === null && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const inEditable = !!target?.closest?.("input, textarea, [contenteditable='true']");
+        if (inEditable) return;
+        const next = KEY_TO_MODE[e.key];
+        if (next) {
+          e.preventDefault();
+          onSelectMode(next);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mode, goHome, onSelectMode]);
 
   if (mode === "qa") {
     return (

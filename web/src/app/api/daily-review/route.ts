@@ -8,8 +8,15 @@ export const maxDuration = 30;
  *
  * Pulls 3–5 "due" questions for a quick spaced-repetition session:
  *   - Source: past wrong-answered questions from attempts (last 60 days).
- *   - Filter (forgetting curve): only include if it's been ≥ 1 day since the
- *     student saw this question. Older mistakes weight higher.
+ *   - Filter: skip if seen <1 day ago (let consolidation happen first).
+ *   - Rank by Ebbinghaus-style forgetting probability with a half-life of
+ *     ~3 days: w_forget = 1 − exp(−t/τ). After 1 day ≈ 28% forgotten,
+ *     after 3 days ≈ 63%, after a week ≈ 90%. Pure linear-by-age (the
+ *     previous heuristic) over-prioritized 60-day-old mistakes that have
+ *     long-since saturated; this curve plateaus naturally and leaves room
+ *     for a struggle boost (concepts the student missed multiple times
+ *     get +log1p(n_miss) weight) so genuine misconceptions float up
+ *     ahead of one-off slips of similar age.
  *   - Dedupe by question text so the same item doesn't appear twice if it
  *     was missed across multiple attempts.
  *   - No AI generation — pure data shuffling, instant + $0.
@@ -21,6 +28,9 @@ export const maxDuration = 30;
  *      knewIt = 0   (有點忘) →  0
  *      knewIt = -1  (完全忘) → -0.20
  */
+
+const FORGET_HALF_LIFE_DAYS = 3;
+const STRUGGLE_WEIGHT = 0.4;
 
 type Q = {
   id: number;
@@ -60,6 +70,20 @@ export async function GET(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+  // First pass: count how often each concept has been missed, so we can
+  // boost recurring misconceptions over one-off slips of similar age.
+  const conceptMissCount = new Map<string, number>();
+  for (const a of (data ?? []) as AttemptRow[]) {
+    const qById = new Map(a.questions.map((q) => [q.id, q] as const));
+    for (const r of a.results) {
+      if (r.isCorrect) continue;
+      const q = qById.get(r.questionId);
+      const concept = q?.concept;
+      if (!concept) continue;
+      conceptMissCount.set(concept, (conceptMissCount.get(concept) ?? 0) + 1);
+    }
+  }
+
   const seenQuestions = new Set<string>();
   const candidates: {
     attemptId: number;
@@ -67,6 +91,7 @@ export async function GET(req: NextRequest) {
     daysSinceMistake: number;
     question: Q;
     feedback: string;
+    weight: number;
   }[] = [];
 
   const now = Date.now();
@@ -81,8 +106,16 @@ export async function GET(req: NextRequest) {
       seenQuestions.add(key);
 
       const daysSinceMistake = (now - new Date(a.created_at).getTime()) / 86400_000;
-      // Forgetting-curve: too fresh (<1 day) → skip (let the brain consolidate first).
+      // Too fresh (<1 day) → skip; the question is still in short-term memory
+      // and reviewing now wastes effort that's better spent after some decay.
       if (daysSinceMistake < 1) continue;
+
+      // Ebbinghaus-style forgetting probability with τ ≈ 3 days, then
+      // boost concepts the student keeps missing (struggle signal).
+      const forget = 1 - Math.exp(-daysSinceMistake / FORGET_HALF_LIFE_DAYS);
+      const missCount = q.concept ? (conceptMissCount.get(q.concept) ?? 1) : 1;
+      const struggleBoost = 1 + STRUGGLE_WEIGHT * Math.log1p(missCount - 1);
+      const weight = forget * struggleBoost;
 
       candidates.push({
         attemptId: a.id,
@@ -90,12 +123,12 @@ export async function GET(req: NextRequest) {
         daysSinceMistake,
         question: q,
         feedback: r.feedback ?? "",
+        weight,
       });
     }
   }
 
-  // Higher priority for items the student missed longer ago (more forgetting expected).
-  candidates.sort((a, b) => b.daysSinceMistake - a.daysSinceMistake);
+  candidates.sort((a, b) => b.weight - a.weight);
   const picks = candidates.slice(0, 5);
 
   return NextResponse.json({
