@@ -24,11 +24,13 @@ supabase = create_client(
 COURSE_SUMMARY = (
     "This is content from '普通物理' (General Physics, taught by 楊本立 at NYCU "
     "Department of Electrophysics). The course follows University Physics (Young & Freedman) "
-    "and covers Ch01–Ch32: kinematics, Newton's laws, work and energy, momentum, "
+    "and covers Ch01–Ch37: kinematics, Newton's laws, work and energy, momentum, "
     "rotational motion, gravitation, oscillations, fluid mechanics, mechanical waves, "
     "sound, thermodynamics, electric charge and field, Gauss's law, electric potential, "
     "capacitance, current and resistance, DC circuits, magnetic fields and forces, "
-    "electromagnetic induction, inductance, AC circuits, and electromagnetic waves."
+    "electromagnetic induction, inductance, AC circuits, electromagnetic waves, "
+    "geometric and physical optics (propagation, lenses, interference, diffraction), "
+    "and special relativity."
 )
 
 

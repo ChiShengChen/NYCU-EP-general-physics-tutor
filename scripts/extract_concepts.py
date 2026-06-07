@@ -131,7 +131,7 @@ def extract_chapter(chapter: int, temperature: float = 0.0) -> dict:
             "response_mime_type": "application/json",
             "response_schema": SCHEMA,
             "temperature": temperature,
-            "max_output_tokens": 16384,
+            "max_output_tokens": 32768,
         },
     )
     resp = model.generate_content(PROMPT.format(chapter=chapter, markdown=markdown))

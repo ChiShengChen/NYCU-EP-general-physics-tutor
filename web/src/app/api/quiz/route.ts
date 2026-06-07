@@ -69,7 +69,7 @@ async function handleGenerate(body: { studentId?: string; chapter?: number; chap
   // — the most exam-critical kind of question that single-chapter quizzes
   // can't capture (e.g. rolling-ball = energy + angular momentum;
   // RLC = SHM + circuit laws).
-  if (Array.isArray(chapters) && chapters.length >= 2 && chapters.length <= 3 && chapters.every((c) => Number.isInteger(c) && c >= 1 && c <= 32)) {
+  if (Array.isArray(chapters) && chapters.length >= 2 && chapters.length <= 3 && chapters.every((c) => Number.isInteger(c) && c >= 1 && c <= 37)) {
     const sortedChapters = [...chapters].sort((a, b) => a - b);
     const chunksPerChapter = await Promise.all(
       sortedChapters.map((ch) =>
@@ -154,7 +154,7 @@ ${context}
 
   // === Chapter-scoped quiz: skip weak-concept logic, retrieve only from that chapter ===
   // Generate 20 questions in two parallel batches to stay under Vercel's 60s limit.
-  if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 32) {
+  if (chapter && Number.isInteger(chapter) && chapter >= 1 && chapter <= 37) {
     const chunks = await retrieveChunks(
       "key concepts, formulas, derivations, worked examples",
       { matchCount: 16, matchThreshold: 0.3, filterChapter: chapter },

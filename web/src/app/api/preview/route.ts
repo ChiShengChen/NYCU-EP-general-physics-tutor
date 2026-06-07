@@ -11,7 +11,7 @@ export const maxDuration = 60;
 const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
 
 function validChapter(n: unknown): n is number {
-  return typeof n === "number" && Number.isInteger(n) && n >= 1 && n <= 32;
+  return typeof n === "number" && Number.isInteger(n) && n >= 1 && n <= 37;
 }
 
 function buildPrompt(chapter: number, context: string): string {

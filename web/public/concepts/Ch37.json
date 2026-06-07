@@ -1,0 +1,476 @@
+{
+  "nodes": [
+    {
+      "id": "galilean-relativity-principle",
+      "label": "伽利略相對性原理",
+      "kind": "principle",
+      "summary": "力學定律在所有慣性參考系中都具有相同的形式，不存在絕對的靜止參考系。",
+      "latex": "",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "galilean-transformation",
+      "label": "伽利略轉換",
+      "kind": "formula",
+      "summary": "描述不同慣性參考系之間時空座標轉換的古典方程式。",
+      "latex": "x' = x - vt, y' = y, z' = z, t' = t",
+      "pages": [
+        4,
+        36
+      ]
+    },
+    {
+      "id": "galilean-velocity-transformation",
+      "label": "伽利略速度轉換",
+      "kind": "formula",
+      "summary": "描述不同慣性參考系之間速度如何疊加的古典方程式。",
+      "latex": "u'_x = u_x - v",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "id": "michelson-morley-experiment",
+      "label": "邁克生-莫雷實驗",
+      "kind": "concept",
+      "summary": "一項旨在測量地球相對於「以太」運動的實驗，其零結果否定了以太的存在，並啟發了相對論。",
+      "latex": "",
+      "pages": [
+        5,
+        6
+      ]
+    },
+    {
+      "id": "relativity-postulate",
+      "label": "相對性原理",
+      "kind": "principle",
+      "summary": "所有物理定律（不只力學）在所有慣性參考系中都具有相同的形式。",
+      "latex": "",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "id": "light-speed-constancy-postulate",
+      "label": "光速不變原理",
+      "kind": "principle",
+      "summary": "真空中的光速在所有慣性參考系中對所有觀測者都是相同的，與光源或觀測者的運動無關。",
+      "latex": "",
+      "pages": [
+        9
+      ]
+    },
+    {
+      "id": "relativity-of-simultaneity",
+      "label": "同時的相對性",
+      "kind": "concept",
+      "summary": "在一個參考系中同時發生的兩個事件，在相對於該參考系運動的另一個參考系中，通常並不同時。",
+      "latex": "",
+      "pages": [
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "id": "proper-time",
+      "label": "固有時間",
+      "kind": "definition",
+      "summary": "在一個慣性參考系中，於同一地點發生之兩個事件間的時間間隔。",
+      "latex": "",
+      "pages": [
+        18,
+        20
+      ]
+    },
+    {
+      "id": "time-dilation",
+      "label": "時間膨脹",
+      "kind": "concept",
+      "summary": "運動中的時鐘相對於靜止觀測者的時鐘走得更慢的現象。",
+      "latex": "",
+      "pages": [
+        19,
+        20
+      ]
+    },
+    {
+      "id": "lorentz-factor",
+      "label": "勞倫茲因子",
+      "kind": "definition",
+      "summary": "相對論中常用的一個因子 γ，定義為 1 除以根號 1 減 v²/c²，量化了相對論效應的強度。",
+      "latex": "\\gamma = \\frac{1}{\\sqrt{1-v^2/c^2}}",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "time-dilation-formula",
+      "label": "時間膨脹公式",
+      "kind": "formula",
+      "summary": "運動參考系測量的時間間隔 Δt 與固有時間 Δt₀ 之間的關係式。",
+      "latex": "\\Delta t = \\gamma \\Delta t_0",
+      "pages": [
+        20
+      ]
+    },
+    {
+      "id": "twin-paradox",
+      "label": "雙生子悖論",
+      "kind": "concept",
+      "summary": "一個關於時間膨脹的思想實驗，其中進行高速太空旅行的雙胞胎回來後比留在地球上的雙胞胎更年輕。",
+      "latex": "",
+      "pages": [
+        24
+      ]
+    },
+    {
+      "id": "proper-length",
+      "label": "固有長度",
+      "kind": "definition",
+      "summary": "在物體靜止的參考系中所測量的物體長度。",
+      "latex": "",
+      "pages": [
+        26
+      ]
+    },
+    {
+      "id": "length-contraction",
+      "label": "長度收縮",
+      "kind": "concept",
+      "summary": "運動中的物體在其運動方向上的長度，會比其固有長度縮短的現象。",
+      "latex": "",
+      "pages": [
+        27
+      ]
+    },
+    {
+      "id": "length-contraction-formula",
+      "label": "長度收縮公式",
+      "kind": "formula",
+      "summary": "運動物體測量長度 L 與其固有長度 L₀ 之間的關係式。",
+      "latex": "L = L_0 / \\gamma",
+      "pages": [
+        27,
+        39
+      ]
+    },
+    {
+      "id": "barn-pole-paradox",
+      "label": "穀倉桿子悖論",
+      "kind": "concept",
+      "summary": "一個關於長度收縮與同時相對性的思想實驗，探討一個長桿子是否能完全容納在一個較短的穀倉中。",
+      "latex": "",
+      "pages": [
+        28,
+        29
+      ]
+    },
+    {
+      "id": "lorentz-transformation",
+      "label": "勞倫茲轉換",
+      "kind": "formula",
+      "summary": "聯繫兩個作相對勻速運動的慣性參考系之間時空座標的轉換關係式。",
+      "latex": "x' = \\gamma(x - vt), t' = \\gamma(t - vx/c^2)",
+      "pages": [
+        36,
+        37
+      ]
+    },
+    {
+      "id": "causality-principle",
+      "label": "因果律",
+      "kind": "principle",
+      "summary": "任何效應的發生時間不能早於其原因的發生時間，這要求資訊傳遞速度不能超過光速。",
+      "latex": "",
+      "pages": [
+        41,
+        42
+      ]
+    },
+    {
+      "id": "relativistic-velocity-transformation",
+      "label": "相對論速度轉換",
+      "kind": "formula",
+      "summary": "在不同慣性參考系之間轉換速度的相對論公式，取代了伽利略速度轉換。",
+      "latex": "u = \\frac{u' + v}{1 + u'v/c^2}",
+      "pages": [
+        45
+      ]
+    },
+    {
+      "id": "relativistic-momentum",
+      "label": "相對論動量",
+      "kind": "definition",
+      "summary": "物體的動量在相對論中被重新定義為勞倫茲因子、質量與速度的乘積，以確保動量守恆。",
+      "latex": "\\vec{p} = \\gamma m\\vec{v}",
+      "pages": [
+        46
+      ]
+    },
+    {
+      "id": "rest-energy",
+      "label": "靜止能量",
+      "kind": "concept",
+      "summary": "物體因其自身質量而具有的能量，即使在靜止時也存在，也稱為質能等價。",
+      "latex": "E_0 = mc^2",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "relativistic-kinetic-energy",
+      "label": "相對論動能",
+      "kind": "definition",
+      "summary": "物體的總能量與其靜止能量之差，在高速時顯著偏離古典動能。",
+      "latex": "K = (\\gamma - 1)mc^2",
+      "pages": [
+        48,
+        50
+      ]
+    },
+    {
+      "id": "total-relativistic-energy",
+      "label": "相對論總能",
+      "kind": "definition",
+      "summary": "物體的總能量是其靜止能量和動能的總和。",
+      "latex": "E = \\gamma mc^2",
+      "pages": [
+        49
+      ]
+    },
+    {
+      "id": "energy-momentum-relation",
+      "label": "質能動量關係式",
+      "kind": "formula",
+      "summary": "聯繫物體總能量、動量和靜止質量的相對論公式。",
+      "latex": "E^2 = (pc)^2 + (mc^2)^2",
+      "pages": [
+        51
+      ]
+    },
+    {
+      "id": "relativistic-doppler-effect",
+      "label": "相對論都卜勒效應",
+      "kind": "formula",
+      "summary": "描述光源與觀測者相對運動時，觀測到的光頻率變化的相對論公式。",
+      "latex": "f = f_0 \\sqrt{\\frac{1+\\beta}{1-\\beta}}",
+      "pages": [
+        52,
+        53,
+        54
+      ]
+    },
+    {
+      "id": "transverse-doppler-effect",
+      "label": "橫向都卜勒效應",
+      "kind": "concept",
+      "summary": "當光源的運動方向垂直於觀測者視線時，由於時間膨脹而觀測到的頻率紅移現象。",
+      "latex": "f = f_0 \\sqrt{1-\\beta^2}",
+      "pages": [
+        57
+      ]
+    },
+    {
+      "id": "principle-of-equivalence",
+      "label": "等效原理",
+      "kind": "principle",
+      "summary": "在一個小區域內，引力場的效應與一個加速參考系的效應是無法區分的。",
+      "latex": "",
+      "pages": [
+        58,
+        59
+      ]
+    },
+    {
+      "id": "general-relativity-postulates",
+      "label": "廣義相對論公設",
+      "kind": "principle",
+      "summary": "物理定律在所有參考系（包括加速系）中形式相同，且引力場等效於加速參考系。",
+      "latex": "",
+      "pages": [
+        59
+      ]
+    },
+    {
+      "id": "spacetime-curvature",
+      "label": "時空彎曲",
+      "kind": "concept",
+      "summary": "廣義相對論的核心思想，即質量和能量會使周圍的時空發生彎曲，引力是這種彎曲的表現。",
+      "latex": "",
+      "pages": [
+        60
+      ]
+    },
+    {
+      "id": "gravitational-lensing",
+      "label": "重力透鏡效應",
+      "kind": "concept",
+      "summary": "大質量天體彎曲周圍時空，使背景光源發出的光線路徑偏折，如同透鏡一樣的現象。",
+      "latex": "",
+      "pages": [
+        61
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "galilean-relativity-principle",
+      "to": "galilean-transformation",
+      "reason": "伽利略轉換是伽利略相對性原理在座標變換上的數學體現。"
+    },
+    {
+      "from": "galilean-transformation",
+      "to": "galilean-velocity-transformation",
+      "reason": "速度轉換是通過對時空座標轉換進行時間微分得到的。"
+    },
+    {
+      "from": "michelson-morley-experiment",
+      "to": "light-speed-constancy-postulate",
+      "reason": "實驗的零結果支持了光速不變的假設，否定了以太風的存在。"
+    },
+    {
+      "from": "relativity-postulate",
+      "to": "lorentz-transformation",
+      "reason": "勞倫茲轉換是為了讓物理定律在所有慣性系中形式不變而推導出來的。"
+    },
+    {
+      "from": "light-speed-constancy-postulate",
+      "to": "lorentz-transformation",
+      "reason": "勞倫茲轉換必須保證在所有慣性系中光速恆為 c。"
+    },
+    {
+      "from": "light-speed-constancy-postulate",
+      "to": "relativity-of-simultaneity",
+      "reason": "光速不變是導致同時性相對的直接原因，因為光傳播到不同位置的觀測者需要時間。"
+    },
+    {
+      "from": "relativity-of-simultaneity",
+      "to": "time-dilation",
+      "reason": "時間膨脹的推導基於對同時性的重新理解，特別是在測量運動時鐘的兩個事件時。"
+    },
+    {
+      "from": "relativity-of-simultaneity",
+      "to": "length-contraction",
+      "reason": "長度測量需要同時確定兩端點位置，因此同時的相對性導致了長度收縮。"
+    },
+    {
+      "from": "time-dilation",
+      "to": "time-dilation-formula",
+      "reason": "公式是時間膨脹現象的數學表達。"
+    },
+    {
+      "from": "proper-time",
+      "to": "time-dilation-formula",
+      "reason": "時間膨脹公式描述了任意時間間隔與固有時間的關係。"
+    },
+    {
+      "from": "lorentz-factor",
+      "to": "time-dilation-formula",
+      "reason": "時間膨脹公式使用勞倫茲因子來表示膨脹的程度。"
+    },
+    {
+      "from": "length-contraction",
+      "to": "length-contraction-formula",
+      "reason": "公式是長度收縮現象的數學表達。"
+    },
+    {
+      "from": "proper-length",
+      "to": "length-contraction-formula",
+      "reason": "長度收縮公式描述了測量長度與固有長度的關係。"
+    },
+    {
+      "from": "lorentz-factor",
+      "to": "length-contraction-formula",
+      "reason": "長度收縮公式使用勞倫茲因子來表示收縮的程度。"
+    },
+    {
+      "from": "time-dilation",
+      "to": "twin-paradox",
+      "reason": "雙生子悖論是時間膨脹效應的一個著名思想實驗。"
+    },
+    {
+      "from": "length-contraction",
+      "to": "barn-pole-paradox",
+      "reason": "穀倉桿子悖論是長度收縮效應的一個著名思想實驗。"
+    },
+    {
+      "from": "lorentz-transformation",
+      "to": "relativistic-velocity-transformation",
+      "reason": "相對論速度轉換公式是通過對勞倫茲轉換求導得出的。"
+    },
+    {
+      "from": "light-speed-constancy-postulate",
+      "to": "causality-principle",
+      "reason": "光速作為資訊傳遞的上限是保證因果律不被違反的基礎。"
+    },
+    {
+      "from": "lorentz-factor",
+      "to": "relativistic-momentum",
+      "reason": "相對論動量的定義中包含了勞倫茲因子，以修正古典動量在高速下的不足。"
+    },
+    {
+      "from": "relativistic-momentum",
+      "to": "total-relativistic-energy",
+      "reason": "相對論總能與動量密切相關，它們共同構成了能量-動量四維向量。"
+    },
+    {
+      "from": "rest-energy",
+      "to": "relativistic-kinetic-energy",
+      "reason": "相對論動能被定義為總能量與靜止能量之差。"
+    },
+    {
+      "from": "rest-energy",
+      "to": "total-relativistic-energy",
+      "reason": "總能量包含靜止能量作為其一部分。"
+    },
+    {
+      "from": "relativistic-kinetic-energy",
+      "to": "total-relativistic-energy",
+      "reason": "總能量是靜止能量與動能之和。"
+    },
+    {
+      "from": "total-relativistic-energy",
+      "to": "energy-momentum-relation",
+      "reason": "質能動量關係式聯繫了總能量與動量。"
+    },
+    {
+      "from": "relativistic-momentum",
+      "to": "energy-momentum-relation",
+      "reason": "質能動量關係式聯繫了相對論動量與總能量。"
+    },
+    {
+      "from": "time-dilation",
+      "to": "relativistic-doppler-effect",
+      "reason": "相對論都卜勒效應的推導中需要考慮時間膨脹對光源週期的影響。"
+    },
+    {
+      "from": "time-dilation",
+      "to": "transverse-doppler-effect",
+      "reason": "橫向都卜勒效應是純粹由時間膨脹引起的頻率變化。"
+    },
+    {
+      "from": "principle-of-equivalence",
+      "to": "general-relativity-postulates",
+      "reason": "等效原理是廣義相對論的兩大基石之一。"
+    },
+    {
+      "from": "general-relativity-postulates",
+      "to": "spacetime-curvature",
+      "reason": "時空彎曲是廣義相對論描述引力的核心概念，是其公設的直接推論。"
+    },
+    {
+      "from": "spacetime-curvature",
+      "to": "gravitational-lensing",
+      "reason": "重力透鏡效應是時空彎曲導致光線偏折的直接觀測證據。"
+    }
+  ],
+  "chapter_number": 37,
+  "usage": {
+    "input_tokens": 21971,
+    "output_tokens": 4543
+  }
+}

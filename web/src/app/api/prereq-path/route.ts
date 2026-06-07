@@ -62,8 +62,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "studentId required" }, { status: 400 });
   }
   const chapter = chapterParam ? parseInt(chapterParam) : NaN;
-  if (!Number.isInteger(chapter) || chapter < 1 || chapter > 36) {
-    return NextResponse.json({ error: "invalid chapter (1..36)" }, { status: 400 });
+  if (!Number.isInteger(chapter) || chapter < 1 || chapter > 37) {
+    return NextResponse.json({ error: "invalid chapter (1..37)" }, { status: 400 });
   }
 
   const targetMeta = CHAPTER_NODES.find((n) => n.chapter === chapter);

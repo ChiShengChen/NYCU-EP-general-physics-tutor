@@ -6,7 +6,7 @@ import { Providers } from "@/components/providers";
 
 const SITE_URL = "https://nycu-ep-general-physics-tutor.vercel.app";
 const SITE_TITLE = "普通物理 AI 助教";
-const SITE_DESCRIPTION = "NYCU 電物系普通物理課程（楊本立老師）AI 助教系統 — RAG + Gemini + 32 章教材，含蘇格拉底引導、費曼學習、章節 / 跨章節測驗、信心校準、錯題本、每日 5 分鐘複習等十餘種主動學習工具。";
+const SITE_DESCRIPTION = "NYCU 電物系普通物理課程（楊本立老師）AI 助教系統 — RAG + Gemini + 37 章教材（含相對論），含蘇格拉底引導、費曼學習、章節 / 跨章節測驗、信心校準、錯題本、每日 5 分鐘複習等十餘種主動學習工具。";
 
 export const metadata: Metadata = {
   title: { default: SITE_TITLE, template: `%s · ${SITE_TITLE}` },

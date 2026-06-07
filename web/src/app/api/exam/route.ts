@@ -58,7 +58,7 @@ async function handleGenerate(body: { examType: string; studentId?: string }) {
   const { examType, studentId } = body as { examType: "midterm" | "final"; studentId?: string };
 
   const isMidterm = examType === "midterm";
-  const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch32（熱學、電磁學、電路、電磁波）";
+  const chapterRange = isMidterm ? "Ch01–Ch16（力學、振盪、流體、波動、聲學）" : "Ch17–Ch37（熱學、電磁學、電路、電磁波、光學、相對論）";
 
   // Topic blurb for the prompt (full breadth shown to the model).
   const topicListForPrompt = isMidterm

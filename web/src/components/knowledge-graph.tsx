@@ -18,7 +18,7 @@ interface ConceptNode {
   id: string;
   label: string;
   chapter: number;
-  category: "mechanics" | "waves_fluid" | "thermo" | "em" | "optics";
+  category: "mechanics" | "waves_fluid" | "thermo" | "em" | "optics" | "modern";
   x: number;
   y: number;
 }
@@ -76,6 +76,9 @@ const NODES: ConceptNode[] = [
   { id: "ch34", label: "幾何光學", chapter: 34, category: "optics", x: 230, y: 760 },
   { id: "ch35", label: "干涉", chapter: 35, category: "optics", x: 370, y: 760 },
   { id: "ch36", label: "繞射", chapter: 36, category: "optics", x: 510, y: 760 },
+
+  // Modern physics — row 8 (Ch37+)
+  { id: "ch37", label: "相對論", chapter: 37, category: "modern", x: 90, y: 880 },
 ];
 
 const EDGES: ConceptEdge[] = [
@@ -126,6 +129,10 @@ const EDGES: ConceptEdge[] = [
   { from: "ch33", to: "ch35" },
   { from: "ch15", to: "ch35" },
   { from: "ch35", to: "ch36" },
+  // Special relativity: builds on EM-wave / light invariance (Ch32) and
+  // the relativistic energy story extends mechanical energy (Ch07).
+  { from: "ch32", to: "ch37" },
+  { from: "ch07", to: "ch37" },
 ];
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
@@ -134,9 +141,10 @@ const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string
   thermo:      { bg: "bg-amber-50 dark:bg-amber-950/30",   border: "border-amber-300 dark:border-amber-700",   text: "text-amber-700 dark:text-amber-300",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
   em:          { bg: "bg-purple-50 dark:bg-purple-950/30",  border: "border-purple-300 dark:border-purple-700",  text: "text-purple-700 dark:text-purple-300",  label: "電磁學",          svgFill: "#faf5ff", svgStroke: "#d8b4fe", svgFillSelected: "#f3e8ff", svgStrokeSelected: "#a855f7" },
   optics:      { bg: "bg-rose-50 dark:bg-rose-950/30",      border: "border-rose-300 dark:border-rose-700",      text: "text-rose-700 dark:text-rose-300",      label: "光學",            svgFill: "#fff1f2", svgStroke: "#fda4af", svgFillSelected: "#ffe4e6", svgStrokeSelected: "#f43f5e" },
+  modern:      { bg: "bg-slate-50 dark:bg-slate-900",       border: "border-slate-400 dark:border-slate-600",     text: "text-slate-700 dark:text-slate-200",   label: "近代物理",        svgFill: "#f8fafc", svgStroke: "#cbd5e1", svgFillSelected: "#e2e8f0", svgStrokeSelected: "#475569" },
 };
 
-const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em", "optics"];
+const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em", "optics", "modern"];
 
 /* ─── Component ─── */
 
@@ -175,7 +183,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
   const selectedNodeData = selectedNode ? nodeMap.get(selectedNode) : null;
 
   const svgWidth = 1100;
-  const svgHeight = 820;
+  const svgHeight = 940;
 
   return (
     <div className="flex flex-col h-screen">

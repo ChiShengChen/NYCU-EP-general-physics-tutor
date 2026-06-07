@@ -31,11 +31,13 @@ interface CachedPreview {
 
 /* ─── Category palette (mirror knowledge-graph) ─── */
 
-function categoryFor(ch: number): "mechanics" | "waves_fluid" | "thermo" | "em" {
+function categoryFor(ch: number): "mechanics" | "waves_fluid" | "thermo" | "em" | "optics" | "modern" {
   if (ch <= 12) return "mechanics";
   if (ch <= 16) return "waves_fluid";
   if (ch <= 20) return "thermo";
-  return "em";
+  if (ch <= 32) return "em";
+  if (ch <= 36) return "optics";
+  return "modern";
 }
 
 const CATEGORY_STYLE = {
@@ -43,6 +45,8 @@ const CATEGORY_STYLE = {
   waves_fluid: { card: "bg-emerald-50/50 border-emerald-200 dark:border-emerald-800", pill: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300", accent: "text-emerald-700 dark:text-emerald-300", label: "振盪 / 流體 / 波動" },
   thermo:      { card: "bg-amber-50/50 border-amber-200 dark:border-amber-800",   pill: "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300",   accent: "text-amber-700 dark:text-amber-300",   label: "熱學" },
   em:          { card: "bg-purple-50/50 border-purple-200 dark:border-purple-800", pill: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300", accent: "text-purple-700 dark:text-purple-300",  label: "電磁學" },
+  optics:      { card: "bg-rose-50/50 border-rose-200 dark:border-rose-800",       pill: "bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300",        accent: "text-rose-700 dark:text-rose-300",     label: "光學" },
+  modern:      { card: "bg-slate-50/50 border-slate-300 dark:border-slate-700",    pill: "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200",       accent: "text-slate-700 dark:text-slate-200",   label: "近代物理" },
 };
 
 /* ─── Component ─── */

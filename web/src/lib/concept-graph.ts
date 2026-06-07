@@ -10,7 +10,7 @@
  * read from the same arrays.
  */
 
-export type ChapterCategory = "mechanics" | "waves_fluid" | "thermo" | "em" | "optics";
+export type ChapterCategory = "mechanics" | "waves_fluid" | "thermo" | "em" | "optics" | "modern";
 
 export interface ChapterNode {
   id: string;        // "ch01"
@@ -74,6 +74,9 @@ export const CHAPTER_NODES: ChapterNode[] = [
   { id: "ch34", label: "幾何光學", chapter: 34, category: "optics", x: 230, y: 760 },
   { id: "ch35", label: "干涉", chapter: 35, category: "optics", x: 370, y: 760 },
   { id: "ch36", label: "繞射", chapter: 36, category: "optics", x: 510, y: 760 },
+
+  // Modern physics — row 8 (Ch37+)
+  { id: "ch37", label: "相對論", chapter: 37, category: "modern", x: 90, y: 880 },
 ];
 
 export const CHAPTER_EDGES: ChapterEdge[] = [
@@ -123,6 +126,10 @@ export const CHAPTER_EDGES: ChapterEdge[] = [
   { from: "ch33", to: "ch35" },
   { from: "ch15", to: "ch35" },
   { from: "ch35", to: "ch36" },
+  // Special relativity: builds on EM-wave / light invariance (Ch32) and
+  // the relativistic energy story extends mechanical energy (Ch07).
+  { from: "ch32", to: "ch37" },
+  { from: "ch07", to: "ch37" },
 ];
 
 export function chapterIdOf(n: number): string {
