@@ -118,10 +118,10 @@ export function AttemptsHistory({ onBack }: AttemptsHistoryProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">📚</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">測驗紀錄</h1>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">共 {attempts.length} 次</span>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
@@ -194,6 +194,7 @@ function AttemptDetailView({
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
           <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">載入中...</h1>
+          <ThemeToggle className="ml-auto" />
         </header>
       </div>
     );
@@ -217,10 +218,10 @@ function AttemptDetailView({
         <button onClick={onBack} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="返回列表">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">{kindEmoji(attempt)}</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100 truncate">{attempt.title || kindLabel(attempt)}</h1>
         <button onClick={onBackToModes} className="ml-auto text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:text-indigo-300">返回選擇模式</button>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">

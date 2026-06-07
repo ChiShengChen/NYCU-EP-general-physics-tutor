@@ -113,7 +113,6 @@ export function GoalsView({ onBack }: GoalsViewProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">🎯</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">學習目標</h1>
         <button
@@ -122,6 +121,7 @@ export function GoalsView({ onBack }: GoalsViewProps) {
         >
           {showForm ? "取消" : "+ 新目標"}
         </button>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-5">

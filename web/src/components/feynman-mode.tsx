@@ -104,10 +104,10 @@ function ConceptPicker({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">🎓</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">教 AI — 費曼學習法</h1>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">用「教給別人」的方式學最深</span>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
@@ -270,7 +270,6 @@ function FeynmanChat({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">🎓</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100 truncate">教 AI — {concept}</h1>
         <button
@@ -279,6 +278,7 @@ function FeynmanChat({
         >
           換概念
         </button>
+        <ThemeToggle />
       </header>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">

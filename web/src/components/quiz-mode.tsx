@@ -186,7 +186,6 @@ export function QuizMode({ onBack }: QuizModeProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">📝</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
           {state === "results" ? "測驗結果" : "自動測驗"}
@@ -202,6 +201,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           </span>
         )}
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系</span>
+        <ThemeToggle />
       </header>
 
       {/* Content */}

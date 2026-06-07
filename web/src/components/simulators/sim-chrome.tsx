@@ -35,6 +35,7 @@ export function SimChrome({ title, subtitle, onBack, canvas, controls, readouts,
           <span className="text-lg">🔬</span>
           <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100">{title}</h3>
           {subtitle && <span className="text-[11px] text-slate-400 dark:text-slate-500 ml-2">{subtitle}</span>}
+          <ThemeToggle className="ml-auto" />
         </header>
 
         <div className="flex flex-col lg:flex-row">
@@ -76,10 +77,10 @@ export function SimChrome({ title, subtitle, onBack, canvas, controls, readouts,
             </svg>
           </button>
         )}
-        <ThemeToggle />
         <span className="text-xl">⚙️</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{title}</h1>
         {subtitle && <span className="text-xs text-slate-400 dark:text-slate-500 ml-2">{subtitle}</span>}
+        <ThemeToggle className="ml-auto" />
       </header>
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">

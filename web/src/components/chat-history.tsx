@@ -90,7 +90,6 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">🕒</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">對話歷史</h1>
         {totalMessages > 0 && (
@@ -99,6 +98,7 @@ export function ChatHistory({ onBack, onResume }: ChatHistoryProps) {
           </span>
         )}
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系</span>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
@@ -178,7 +178,6 @@ function SessionDetail({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <ThemeToggle />
         <span className="text-xl">💬</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
           {formatDate(session.startTime)}
@@ -203,6 +202,7 @@ function SessionDetail({
         >
           返回首頁
         </button>
+        <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 max-w-3xl mx-auto w-full">

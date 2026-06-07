@@ -221,7 +221,6 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
             </svg>
           </button>
         )}
-        <ThemeToggle />
         <span className="text-xl">🔬</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">普通物理 AI 助教</h1>
         <button
@@ -240,6 +239,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
           🦉 蘇格拉底 {socratic ? "ON" : "OFF"}
         </button>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系 · 楊本立老師</span>
+        <ThemeToggle />
       </header>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
