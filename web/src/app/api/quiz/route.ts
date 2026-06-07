@@ -23,7 +23,7 @@ const QuizQuestionSchema = z.object({
   options: z
     .array(z.string())
     .optional()
-    .describe("4 options for multiple choice (A/B/C/D), null for short answer"),
+    .describe("4 plain option strings for multiple choice — do NOT prepend 'A.' / 'B.' etc., the UI adds the letter prefix when rendering. Null for short answer."),
   correctAnswer: z.string().describe("The correct answer: A/B/C/D for MC, or expected answer for short answer"),
   explanation: z.string().describe("Detailed explanation of why the answer is correct, with LaTeX if needed"),
   sourceChapter: z.number().describe("Which chapter (1..32) this question is based on"),

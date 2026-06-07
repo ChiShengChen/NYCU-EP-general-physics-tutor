@@ -21,7 +21,7 @@ const ExamSchema = z.object({
       concept: z.string(),
       difficulty: z.enum(["easy", "medium", "hard"]),
       question: z.string(),
-      options: z.array(z.string()).optional(),
+      options: z.array(z.string()).optional().describe("4 plain option strings — do NOT prepend 'A.' / 'B.' etc., the UI adds the letter prefix when rendering."),
       correctAnswer: z.string(),
       explanation: z.string(),
       sourceChapter: z.number(),

@@ -8,6 +8,7 @@ import { HintPanel } from "./hint-panel";
 import { ReportQuestionButton } from "./report-question-button";
 import { RegenerateQuestionButton } from "./regenerate-question-button";
 import { ThemeToggle } from "./theme-provider";
+import { stripOptionLetter } from "@/lib/strip-option-letter";
 
 /* ─── Types ─── */
 
@@ -494,7 +495,7 @@ function ExamView({
                     {letter}.{" "}
                   </span>
                   <span className={isSelected ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-200"}>
-                    <MarkdownRenderer content={option} />
+                    <MarkdownRenderer content={stripOptionLetter(option, i)} />
                   </span>
                 </button>
               );

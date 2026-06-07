@@ -8,6 +8,7 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { ConfidenceSelector } from "./confidence-selector";
 import { ReportQuestionButton } from "./report-question-button";
 import { ThemeToggle } from "./theme-provider";
+import { stripOptionLetter } from "@/lib/strip-option-letter";
 
 /* ─── Types ─── */
 
@@ -318,7 +319,7 @@ function AttemptDetailView({
                       return (
                         <div key={i} className={`px-3 py-2 rounded-lg border text-sm flex items-start gap-2 ${cls}`}>
                           <span className="font-semibold shrink-0">{letter}.</span>
-                          <span className="flex-1"><MarkdownRenderer content={opt} /></span>
+                          <span className="flex-1"><MarkdownRenderer content={stripOptionLetter(opt, i)} /></span>
                           {isCorrect && <span className="text-xs shrink-0">正解</span>}
                           {!isCorrect && isUser && <span className="text-xs shrink-0">你的答案</span>}
                         </div>
