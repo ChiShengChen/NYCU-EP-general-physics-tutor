@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import useSWR from "swr";
 import { apiKey } from "@/lib/api";
 import { useStudentId } from "@/lib/use-student-id";
@@ -33,10 +34,14 @@ function StatPill({ emoji, label, value }: { emoji: string; label: string; value
 }
 
 /** Small keyboard shortcut indicator. The number lines up with the global
- *  1–9 handler in app/page.tsx so power users learn the binding by sight. */
-function KbdBadge({ k }: { k: string }) {
+ *  1–9 handler in app/page.tsx so power users learn the binding by sight.
+ *  Hidden by default; the bottom-of-page shortcut hint footer toggles
+ *  visibility so the numbers only show once the student has noticed that
+ *  shortcuts exist. */
+function KbdBadge({ k, show }: { k: string; show: boolean }) {
+  if (!show) return null;
   return (
-    <kbd className="absolute top-2 right-2 hidden lg:inline-flex items-center justify-center w-5 h-5 rounded-md border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-mono text-slate-500 dark:text-slate-400">
+    <kbd className="absolute top-2 right-2 inline-flex items-center justify-center w-5 h-5 rounded-md border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-mono text-slate-500 dark:text-slate-400">
       {k}
     </kbd>
   );
@@ -48,6 +53,12 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
   // student profile, without tripping React 19's set-state-in-effect rule.
   const studentId = useStudentId();
   const { todayDone, streak } = useDailyStatus(studentId);
+
+  // Keyboard-shortcut number badges are off by default — they clutter the
+  // grid for the average student who never uses them. Clicking the
+  // bottom-of-page "快捷鍵" hint footer reveals them so power users can
+  // opt in and learn the bindings by sight.
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   // Homepage headline numbers — single small API call. Goes through SWR
   // so a quick mode → back trip uses the cached payload instead of
@@ -97,7 +108,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
               : "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 hover:border-amber-300 dark:border-amber-700"
           }`}
         >
-          <KbdBadge k="9" />
+          <KbdBadge k="9" show={showShortcuts} />
           <span className="text-3xl shrink-0">📅</span>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
@@ -125,7 +136,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("preview")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="1" />
+            <KbdBadge k="1" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🔭</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">章節預習</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -140,7 +151,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("teaching")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="2" />
+            <KbdBadge k="2" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📖</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">教學模式</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -155,7 +166,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("qa")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="3" />
+            <KbdBadge k="3" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">💬</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">自由問答</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -170,7 +181,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("quiz")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="4" />
+            <KbdBadge k="4" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📝</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">自動測驗</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -188,7 +199,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("feynman")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 dark:border-amber-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="5" />
+            <KbdBadge k="5" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎓</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">教 AI（費曼法）</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -203,7 +214,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("exam")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="6" />
+            <KbdBadge k="6" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📋</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">考試模擬</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -218,7 +229,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("graph")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="7" />
+            <KbdBadge k="7" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🧠</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">概念圖譜</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -233,7 +244,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             onClick={() => onSelectMode("study-plan")}
             className="group relative flex flex-col items-center text-center p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <KbdBadge k="8" />
+            <KbdBadge k="8" show={showShortcuts} />
             <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📅</span>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-1.5">AI 學習計畫</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
@@ -371,12 +382,18 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </button>
         </div>
 
-        <p className="hidden lg:flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-8 text-[11px] text-slate-400 dark:text-slate-500">
-          <span>💡 快捷鍵：</span>
+        <button
+          type="button"
+          onClick={() => setShowShortcuts((v) => !v)}
+          aria-pressed={showShortcuts}
+          title={showShortcuts ? "隱藏每張卡片角落的 1–9 數字" : "顯示每張卡片角落的 1–9 數字"}
+          className="hidden lg:flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-8 text-[11px] text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:text-indigo-300 transition-colors cursor-pointer"
+        >
+          <span>{showShortcuts ? "🔢 顯示中（點擊隱藏）·" : "💡 快捷鍵（點此顯示數字）："}</span>
           <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">1</kbd>–<kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">9</kbd> 切換模式</span>
           <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">Esc</kbd> 返回首頁</span>
           <span><kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">⌘/Ctrl</kbd>+<kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 font-mono">Enter</kbd> 送出</span>
-        </p>
+        </button>
       </div>
     </div>
   );
