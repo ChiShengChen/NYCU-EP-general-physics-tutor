@@ -1,6 +1,7 @@
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
+import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -38,6 +39,12 @@ export async function POST(req: Request) {
 
   if (!studentId || !content) {
     return NextResponse.json({ error: "studentId + content required" }, { status: 400 });
+  }
+
+  const quota = await checkDailyQuota(studentId);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
   }
 
   const supabase = createServiceClient();

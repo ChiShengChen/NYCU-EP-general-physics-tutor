@@ -23,6 +23,13 @@ type UsageSummary = {
     costUsd: number;
   }[];
   daily: { date: string; tokens: number; costUsd: number }[];
+  quota?: {
+    used: number;
+    limit: number;
+    remaining: number;
+    isAuthenticated: boolean;
+    resetAt: string;
+  };
 };
 
 function fmtTokens(n: number): string {
@@ -83,7 +90,18 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
   const { data } = useSWR<UsageSummary>(apiKey("/api/usage/me", { studentId }));
   const [expanded, setExpanded] = useState(false);
 
-  if (!data || data.totals.calls === 0) return null;
+  // Surface the widget even with zero usage if the student is anonymous —
+  // the small daily cap is exactly the thing they'd want to know about
+  // before hitting it. For authenticated users we keep the original
+  // "no usage yet → no widget" behaviour to avoid clutter on a fresh
+  // account that hasn't done anything.
+  if (!data) return null;
+  const showAlways = data.quota && !data.quota.isAuthenticated;
+  if (data.totals.calls === 0 && !showAlways) return null;
+
+  const quota = data.quota;
+  const dailyPct = quota ? Math.min(100, Math.round((quota.used / quota.limit) * 100)) : 0;
+  const dailyBarColor = dailyPct >= 90 ? "bg-rose-500" : dailyPct >= 70 ? "bg-amber-500" : "bg-emerald-500";
 
   return (
     <div className="w-full max-w-5xl mb-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm">
@@ -111,6 +129,34 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
           </span>
         </div>
       </button>
+
+      {/* Daily quota bar — drawn outside the collapsible block so the cap
+          status is always visible. Colour shifts to amber at 70% and rose
+          at 90% so a student about to hit the wall sees it coming. */}
+      {quota && (
+        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex items-baseline justify-between text-xs mb-1.5">
+            <span className="text-slate-600 dark:text-slate-300">
+              今日剩餘 <strong className="tabular-nums">{fmtTokens(quota.remaining)}</strong>
+              <span className="text-slate-400 dark:text-slate-500"> / {fmtTokens(quota.limit)}</span>
+              <span className="ml-2 text-[10px] text-slate-400 dark:text-slate-500">
+                ({quota.isAuthenticated ? "已登入" : "匿名"} · 00:00 Taipei 重置)
+              </span>
+            </span>
+            <span className={`tabular-nums ${dailyPct >= 90 ? "text-rose-600 dark:text-rose-300 font-semibold" : "text-slate-500 dark:text-slate-400"}`}>
+              {dailyPct}%
+            </span>
+          </div>
+          <div className="h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div className={`h-full ${dailyBarColor}`} style={{ width: `${dailyPct}%` }} />
+          </div>
+          {!quota.isAuthenticated && (
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5">
+              登入 Google / GitHub 可把每日額度從 {fmtTokens(quota.limit)} 升到 200K。
+            </p>
+          )}
+        </div>
+      )}
 
       {expanded && (
         <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 overflow-x-auto">

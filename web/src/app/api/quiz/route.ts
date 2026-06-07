@@ -5,6 +5,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
+import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -50,7 +51,15 @@ const GradeResultSchema = z.object({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { action } = body;
+  const { action, studentId } = body;
+
+  // Both generate and grade hit Gemini; one quota check up front covers
+  // either branch and lets us 429 before any RAG/aggregation work runs.
+  const quota = await checkDailyQuota(typeof studentId === "string" ? studentId : null);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
+  }
 
   if (action === "generate") return handleGenerate(body);
   if (action === "grade") return handleGrade(body);

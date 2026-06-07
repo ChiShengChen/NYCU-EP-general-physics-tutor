@@ -4,6 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
+import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -49,6 +50,12 @@ export async function POST(req: Request) {
   }
   const reason: string = typeof body.reason === "string" ? body.reason : "";
   const studentId = typeof body.studentId === "string" ? body.studentId : null;
+
+  const quota = await checkDailyQuota(studentId);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
+  }
 
   // RAG context on the same chapter.
   const chunks = await retrieveChunks(

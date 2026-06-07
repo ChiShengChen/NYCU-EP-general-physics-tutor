@@ -4,6 +4,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { PreviewSchema } from "@/lib/preview-schema";
+import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -94,8 +95,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const chapter = Number(body?.chapter);
+  const studentId = typeof body?.studentId === "string" ? body.studentId : null;
   if (!validChapter(chapter)) {
     return NextResponse.json({ error: "invalid chapter" }, { status: 400 });
+  }
+
+  const quota = await checkDailyQuota(studentId);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
   }
 
   const chunks = await retrieveChunks(

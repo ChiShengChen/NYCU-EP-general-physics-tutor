@@ -1,5 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
-import { estimateCost } from "@/lib/usage-log";
+import { estimateCost, checkDailyQuota } from "@/lib/usage-log";
 import { NextRequest, NextResponse } from "next/server";
 
 /** GET /api/usage/me?studentId=xxx
@@ -100,6 +100,11 @@ export async function GET(req: NextRequest) {
       costUsd: Number(v.costUsd.toFixed(4)),
     }));
 
+  // Daily quota status for the widget — same helper the gate routes use,
+  // so the "today remaining" number can never get out of sync with what
+  // the API actually enforces.
+  const quota = await checkDailyQuota(studentId);
+
   return NextResponse.json({
     studentId,
     periodStart: monthStart.toISOString(),
@@ -112,5 +117,12 @@ export async function GET(req: NextRequest) {
     },
     endpoints,
     daily,
+    quota: {
+      used: quota.used,
+      limit: quota.limit,
+      remaining: quota.remaining,
+      isAuthenticated: quota.isAuthenticated,
+      resetAt: quota.resetAt,
+    },
   });
 }

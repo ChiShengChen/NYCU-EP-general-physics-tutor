@@ -58,3 +58,123 @@ export function logUsage(ctx: UsageContext, usage: UsageNumbers | undefined | nu
     }
   })();
 }
+
+/* ─── Daily quota ──────────────────────────────────────────────────────
+ *
+ * Per-student daily token budget, enforced at the entry of every route
+ * that calls Gemini. Two tiers:
+ *
+ *   - Authenticated (student_profiles.auth_user_id IS NOT NULL): 200k/day
+ *   - Anonymous (no auth_user_id, or unknown studentId):              5k/day
+ *
+ * The smaller anonymous quota deters abuse while still giving brand-new
+ * visitors enough room to try a couple of features before they sign in.
+ *
+ * Day boundary is midnight in Asia/Taipei — the course is taught in
+ * Taiwan, so resetting at 00:00 UTC (8am Taipei) would surprise students
+ * mid-study session. Computed by shifting clock forward 8h, snapping to
+ * UTC midnight, then shifting back.
+ */
+
+export const DAILY_LIMIT_AUTH = 200_000;
+export const DAILY_LIMIT_ANON = 5_000;
+
+const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
+
+/** ISO timestamp of the most recent 00:00 Asia/Taipei boundary. */
+function startOfDayTaipei(): string {
+  const now = Date.now();
+  const taipei = new Date(now + TAIPEI_OFFSET_MS);
+  taipei.setUTCHours(0, 0, 0, 0);
+  return new Date(taipei.getTime() - TAIPEI_OFFSET_MS).toISOString();
+}
+
+export interface QuotaStatus {
+  used: number;
+  limit: number;
+  remaining: number;
+  blocked: boolean;
+  isAuthenticated: boolean;
+  resetAt: string;   // ISO of the next 00:00 Taipei boundary
+}
+
+/** Look up today's token usage for a student and compare to their daily
+ *  limit. Treats missing studentId or DB lookup failures as anonymous so
+ *  a half-broken auth path can't accidentally hand out the bigger quota.
+ *  Does NOT throw — callers should branch on `.blocked`. */
+export async function checkDailyQuota(studentId: string | null | undefined): Promise<QuotaStatus> {
+  const startISO = startOfDayTaipei();
+  const resetAt = new Date(new Date(startISO).getTime() + 24 * 60 * 60 * 1000).toISOString();
+
+  // Anonymous tier wins when no student id is available at all.
+  if (!studentId) {
+    return {
+      used: 0,
+      limit: DAILY_LIMIT_ANON,
+      remaining: DAILY_LIMIT_ANON,
+      blocked: false,
+      isAuthenticated: false,
+      resetAt,
+    };
+  }
+
+  const supabase = createServiceClient();
+
+  // One round-trip each to determine the tier and to sum today's usage.
+  // Both are short queries; we don't bother caching since /api/chat is
+  // streaming-bound and a single sub-50ms DB read is negligible next to
+  // the model latency it gates.
+  const [{ data: profile }, { data: rows }] = await Promise.all([
+    supabase.from("student_profiles").select("auth_user_id").eq("id", studentId).maybeSingle(),
+    supabase
+      .from("token_usage")
+      .select("total_tokens")
+      .eq("student_id", studentId)
+      .gte("created_at", startISO),
+  ]);
+
+  const isAuthenticated = !!profile?.auth_user_id;
+  const limit = isAuthenticated ? DAILY_LIMIT_AUTH : DAILY_LIMIT_ANON;
+  const used = (rows ?? []).reduce((acc, r) => acc + (r.total_tokens ?? 0), 0);
+  const remaining = Math.max(0, limit - used);
+
+  return {
+    used,
+    limit,
+    remaining,
+    blocked: used >= limit,
+    isAuthenticated,
+    resetAt,
+  };
+}
+
+/** Convenience: standardised 429 payload so all routes return the same
+ *  shape, which the client can recognise and surface as a banner. */
+export function quotaExceededResponse(q: QuotaStatus): {
+  status: 429;
+  body: {
+    error: "quota_exceeded";
+    message: string;
+    used: number;
+    limit: number;
+    remaining: number;
+    isAuthenticated: boolean;
+    resetAt: string;
+  };
+} {
+  const msg = q.isAuthenticated
+    ? `今日 token 額度已用完（${q.limit.toLocaleString()} tokens），明天 00:00 重置再回來。`
+    : `匿名額度已用完（${q.limit.toLocaleString()} tokens / day）。登入 Google / GitHub 帳號可拿到 ${DAILY_LIMIT_AUTH.toLocaleString()} / day。`;
+  return {
+    status: 429,
+    body: {
+      error: "quota_exceeded",
+      message: msg,
+      used: q.used,
+      limit: q.limit,
+      remaining: q.remaining,
+      isAuthenticated: q.isAuthenticated,
+      resetAt: q.resetAt,
+    },
+  };
+}

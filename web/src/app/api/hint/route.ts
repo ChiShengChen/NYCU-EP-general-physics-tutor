@@ -4,6 +4,7 @@ import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
+import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -42,6 +43,12 @@ export async function POST(req: Request) {
 
   if (!question) {
     return NextResponse.json({ error: "question required" }, { status: 400 });
+  }
+
+  const quota = await checkDailyQuota(studentId);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
   }
 
   // Pull a little RAG context from the relevant chapter so hints can cite

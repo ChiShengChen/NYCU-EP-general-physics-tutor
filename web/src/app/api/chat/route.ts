@@ -1,6 +1,7 @@
 import { google } from "@ai-sdk/google";
 import { streamText, tool, convertToModelMessages } from "ai";
-import { logUsage } from "@/lib/usage-log";
+import { logUsage, checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt, type RetrievedChunk } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
@@ -143,6 +144,15 @@ const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「*
 
 export async function POST(req: Request) {
   const { messages, studentId, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = await req.json();
+
+  // Quota gate: same daily token cap that all the JSON routes use, but
+  // here it has to happen before streamText() — once that returns its
+  // ReadableStream we can't cleanly inject a 429 mid-stream.
+  const quota = await checkDailyQuota(studentId);
+  if (quota.blocked) {
+    const r = quotaExceededResponse(quota);
+    return NextResponse.json(r.body, { status: r.status });
+  }
 
   // Lazy-create anonymous student profile if needed
   if (studentId) {

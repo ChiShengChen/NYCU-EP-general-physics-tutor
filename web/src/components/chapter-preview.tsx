@@ -5,6 +5,7 @@ import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { PreviewSchema, type PreviewConcept } from "@/lib/preview-schema";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
+import { useStudentId } from "@/lib/use-student-id";
 import { ThemeToggle } from "./theme-provider";
 
 /** Auto-wrap raw LaTeX in $$..$$ when the model forgot the delimiters,
@@ -57,6 +58,7 @@ interface ChapterPreviewProps {
 }
 
 export function ChapterPreview({ onBack }: ChapterPreviewProps) {
+  const studentId = useStudentId();
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [cached, setCached] = useState<CachedPreview | null>(null);
@@ -93,7 +95,7 @@ export function ChapterPreview({ onBack }: ChapterPreviewProps) {
         if (d.cached) {
           setCached({ cached: true, content: d.content, generatedAt: d.generatedAt });
         } else {
-          submit({ chapter: ch });
+          submit({ chapter: ch, studentId });
         }
       } catch (err) {
         console.error(err);
@@ -102,7 +104,7 @@ export function ChapterPreview({ onBack }: ChapterPreviewProps) {
         setCacheCheckLoading(false);
       }
     },
-    [submit, clear],
+    [submit, clear, studentId],
   );
 
   const back = () => {
