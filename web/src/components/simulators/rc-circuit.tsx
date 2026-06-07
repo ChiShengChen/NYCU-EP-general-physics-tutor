@@ -106,11 +106,17 @@ export function RCCircuitSim({ onBack, inline }: { onBack?: () => void; inline?:
           {/* Wires (a rectangle loop, with breaks for the components) */}
           <g className="stroke-slate-700 dark:stroke-slate-300" strokeWidth={2} fill="none">
             <line x1={80} y1={80} x2={170} y2={80} />
-            <line x1={250} y1={80} x2={340} y2={80} />
-            <line x1={340} y1={80} x2={340} y2={130} />
-            <line x1={340} y1={210} x2={340} y2={240} />
+            {/* Extend from the switch's right contact (x=210) so the gap
+                between the switch and the resistor isn't visible; the
+                resistor's zigzag draws on top of the same wire region. */}
+            <line x1={210} y1={80} x2={340} y2={80} />
+            {/* Right-side wires reach all the way to the capacitor plates
+                (y=155 top, y=185 bottom) — previously they stopped 25px
+                short on each side, which read as a broken loop. */}
+            <line x1={340} y1={80} x2={340} y2={155} />
+            <line x1={340} y1={185} x2={340} y2={240} />
             <line x1={340} y1={240} x2={80} y2={240} />
-            <line x1={80} y1={240} x2={80} y2={170} />
+            <line x1={80} y1={240} x2={80} y2={165} />
             <line x1={80} y1={130} x2={80} y2={80} />
           </g>
 
