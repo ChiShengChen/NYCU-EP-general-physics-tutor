@@ -152,7 +152,7 @@ export function UsageWidget({ studentId }: { studentId: string | null }) {
           </div>
           {!quota.isAuthenticated && (
             <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5">
-              登入 Google / GitHub 可把每日額度從 {fmtTokens(quota.limit)} 升到 200K。
+              登入 Google / GitHub 可把每日額度從 {fmtTokens(quota.limit)} 升到 2M。
             </p>
           )}
         </div>

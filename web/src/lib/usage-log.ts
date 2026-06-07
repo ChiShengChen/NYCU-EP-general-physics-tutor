@@ -64,11 +64,15 @@ export function logUsage(ctx: UsageContext, usage: UsageNumbers | undefined | nu
  * Per-student daily token budget, enforced at the entry of every route
  * that calls Gemini. Two tiers:
  *
- *   - Authenticated (student_profiles.auth_user_id IS NOT NULL): 200k/day
- *   - Anonymous (no auth_user_id, or unknown studentId):              5k/day
+ *   - Authenticated (student_profiles.auth_user_id IS NOT NULL): 2M/day
+ *   - Anonymous (no auth_user_id, or unknown studentId):           5k/day
  *
- * The smaller anonymous quota deters abuse while still giving brand-new
- * visitors enough room to try a couple of features before they sign in.
+ * 2M / day on Flash works out to roughly NT$7–12 per student per day if
+ * they actually hit the cap — generous enough that even a heavy
+ * study-session day (1–2 hours of nonstop Q&A + a couple of exam runs)
+ * stays comfortably under. The anonymous quota stays tight: enough to
+ * try one or two features and decide to sign in, not enough to be worth
+ * scraping with throwaway browsers.
  *
  * Day boundary is midnight in Asia/Taipei — the course is taught in
  * Taiwan, so resetting at 00:00 UTC (8am Taipei) would surprise students
@@ -76,7 +80,7 @@ export function logUsage(ctx: UsageContext, usage: UsageNumbers | undefined | nu
  * UTC midnight, then shifting back.
  */
 
-export const DAILY_LIMIT_AUTH = 200_000;
+export const DAILY_LIMIT_AUTH = 2_000_000;
 export const DAILY_LIMIT_ANON = 5_000;
 
 const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
