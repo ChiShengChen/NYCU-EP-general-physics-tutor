@@ -287,7 +287,11 @@ function ConceptCardView({
       </div>
 
       {formula.trim() && (
-        <div className="mb-3 px-3 py-2 rounded-xl bg-white/70 border border-slate-200 dark:border-slate-700 text-sm overflow-x-auto">
+        // Force a white background + dark text even in dark mode so KaTeX
+        // formulas stay readable. The surrounding card already gives the
+        // dark theme its mood; the formula plate is the one thing that
+        // benefits from being a high-contrast island.
+        <div className="mb-3 px-3 py-2 rounded-xl bg-white border border-slate-200 dark:border-slate-700 text-sm text-slate-900 overflow-x-auto">
           <MarkdownRenderer content={restoreLatexEscapes(ensureMathBlock(formula))} />
         </div>
       )}
