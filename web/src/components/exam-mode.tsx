@@ -7,6 +7,7 @@ import { ConfidenceSelector } from "./confidence-selector";
 import { HintPanel } from "./hint-panel";
 import { ReportQuestionButton } from "./report-question-button";
 import { RegenerateQuestionButton } from "./regenerate-question-button";
+import { ThemeToggle } from "./theme-provider";
 
 /* ─── Types ─── */
 
@@ -180,6 +181,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🎓</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
           {state === "results" ? "考試結果" : "考試模擬"}

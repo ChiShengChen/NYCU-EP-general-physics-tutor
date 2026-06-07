@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { ThemeToggle } from "../theme-provider";
 
 /**
  * Shared chrome for every simulator: a 2-pane layout with the SVG canvas
@@ -75,6 +76,7 @@ export function SimChrome({ title, subtitle, onBack, canvas, controls, readouts,
             </svg>
           </button>
         )}
+        <ThemeToggle />
         <span className="text-xl">⚙️</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{title}</h1>
         {subtitle && <span className="text-xs text-slate-400 dark:text-slate-500 ml-2">{subtitle}</span>}

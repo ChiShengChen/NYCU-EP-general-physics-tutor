@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useTheme } from "./theme-provider";
+import { useTheme, ThemeToggle } from "./theme-provider";
 import { ConceptDetailGraph } from "./concept-detail-graph";
 import { FormulaNetwork } from "./formula-network";
 
@@ -197,6 +197,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🧠</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">概念知識圖譜</h1>
 

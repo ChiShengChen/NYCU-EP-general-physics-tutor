@@ -9,7 +9,7 @@ import useSWR from "swr";
 import { apiKey } from "@/lib/api";
 import { useStudentId } from "@/lib/use-student-id";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line, Legend } from "recharts";
-import { useChartColors } from "./theme-provider";
+import { useChartColors, ThemeToggle } from "./theme-provider";
 
 interface Bucket {
   confidence: number;
@@ -86,6 +86,7 @@ export function CalibrationView({ onBack }: CalibrationViewProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🎯</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">信心校準</h1>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">

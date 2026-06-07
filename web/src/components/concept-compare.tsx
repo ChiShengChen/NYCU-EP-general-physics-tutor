@@ -8,6 +8,7 @@
 
 import { useCallback, useState } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { ThemeToggle } from "./theme-provider";
 
 interface ComparisonRow {
   dimension: string;
@@ -108,6 +109,7 @@ export function ConceptCompare({ onBack }: ConceptCompareProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🔗</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">概念對比</h1>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">discrimination learning</span>

@@ -19,7 +19,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { useChartColors } from "./theme-provider";
+import { useChartColors, ThemeToggle } from "./theme-provider";
 
 /* ─── Types ─── */
 
@@ -94,6 +94,7 @@ export function Dashboard({ onBack }: DashboardProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">📊</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">學習儀表板</h1>
         <button

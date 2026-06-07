@@ -6,6 +6,7 @@ import { useRef, useEffect, useState, useCallback, type FormEvent, type ChangeEv
 import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { AiSketch } from "./ai-sketch";
+import { ThemeToggle } from "./theme-provider";
 
 const SUGGESTED_QUESTIONS = [
   "解釋牛頓第二定律的向量形式",
@@ -220,6 +221,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
             </svg>
           </button>
         )}
+        <ThemeToggle />
         <span className="text-xl">🔬</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">普通物理 AI 助教</h1>
         <button

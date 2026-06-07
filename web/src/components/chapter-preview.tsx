@@ -5,6 +5,7 @@ import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { PreviewSchema, type PreviewConcept } from "@/lib/preview-schema";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
+import { ThemeToggle } from "./theme-provider";
 
 /** Auto-wrap raw LaTeX in $$..$$ when the model forgot the delimiters,
  *  so KaTeX renders instead of showing literal backslashes. */
@@ -120,6 +121,7 @@ export function ChapterPreview({ onBack }: ChapterPreviewProps) {
           <button onClick={onBack} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="返回">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
+          <ThemeToggle />
           <span className="text-xl">🔭</span>
           <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">章節預習 — 選擇章節</h1>
           <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">5–7 張概念卡 · 1 分鐘速覽</span>
@@ -174,6 +176,7 @@ export function ChapterPreview({ onBack }: ChapterPreviewProps) {
         <button onClick={back} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="返回章節列表">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🔭</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{chLabel} 預習</h1>
         <span className={`text-xs px-2 py-0.5 rounded-full ${sty.pill}`}>{sty.label}</span>

@@ -2,7 +2,6 @@
 
 import { SWRConfig } from "swr";
 import { apiFetcher } from "@/lib/api";
-import { ThemeToggle } from "./theme-provider";
 
 /**
  * App-wide client providers. Currently:
@@ -26,14 +25,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-      {/* Global floating dark/light toggle — pinned bottom-right so every
-          mode (not just the home picker) can flip themes without us having
-          to wire <ThemeToggle /> into 20-odd per-page headers. Backdrop
-          blur + shadow lift it off whatever's underneath, and z-50 keeps
-          it above sim canvases / chat scroll panes. */}
-      <div className="fixed bottom-3 right-3 z-50 rounded-xl bg-white/85 dark:bg-slate-900/85 backdrop-blur shadow-md border border-slate-200 dark:border-slate-700">
-        <ThemeToggle />
-      </div>
     </SWRConfig>
   );
 }

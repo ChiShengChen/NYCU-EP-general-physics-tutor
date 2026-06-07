@@ -7,6 +7,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { apiKey } from "@/lib/api";
 import { useStudentId } from "@/lib/use-student-id";
+import { ThemeToggle } from "./theme-provider";
 
 interface ChapterInfo { chapter_number: number; page_count: number; sections: string[] }
 
@@ -112,6 +113,7 @@ export function GoalsView({ onBack }: GoalsViewProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">🎯</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">學習目標</h1>
         <button

@@ -5,6 +5,7 @@ import { type UIMessage, DefaultChatTransport } from "ai";
 import { useRef, useEffect, useMemo, useState, useCallback, useSyncExternalStore, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { TeachingSimEmbed } from "./teaching-sim-embed";
+import { ThemeToggle } from "./theme-provider";
 
 interface ChapterInfo {
   chapter_number: number;
@@ -164,6 +165,7 @@ function ChapterSelector({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">📖</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">教學模式 — 選擇章節</h1>
         <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">NYCU 電物系</span>
@@ -362,6 +364,7 @@ function PageViewer({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <ThemeToggle />
         <span className="text-xl">📖</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Ch{String(chapterNumber).padStart(2, "0")}</h1>
         <span className="text-sm text-slate-500 dark:text-slate-400">
