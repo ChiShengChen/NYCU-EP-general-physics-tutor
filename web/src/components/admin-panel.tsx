@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { apiKey } from "@/lib/api";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ThemeToggle } from "./theme-provider";
+import { CHAPTER_NODES } from "@/lib/concept-graph";
 
 /**
  * 「管理員後台」 — two-tab triage panel for the people whose emails are
@@ -103,7 +104,19 @@ interface Report {
 }
 interface ReportsData { reports: Report[] }
 
-type Tab = "usage" | "reports";
+type Tab = "usage" | "reports" | "class";
+
+interface ClassData {
+  windowDays: number;
+  totals: {
+    registeredStudents: number;
+    activeStudents: number;
+    totalAttempts: number;
+    avgScoreRatio: number;
+  };
+  perChapter: { chapter: number; correct: number; total: number; correctRatio: number; students: number }[];
+  weakConcepts: { concept: string; avgMastery: number; studentCount: number; attemptCount: number }[];
+}
 
 export function AdminPanel({ onBack }: { onBack: () => void }) {
   const [tab, setTab] = useState<Tab>("usage");
@@ -129,6 +142,12 @@ export function AdminPanel({ onBack }: { onBack: () => void }) {
             📊 Token 使用
           </button>
           <button
+            onClick={() => setTab("class")}
+            className={`px-3 py-1.5 rounded-lg ${tab === "class" ? "bg-indigo-600 text-white" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          >
+            🏫 班級儀表板
+          </button>
+          <button
             onClick={() => setTab("reports")}
             className={`px-3 py-1.5 rounded-lg ${tab === "reports" ? "bg-indigo-600 text-white" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
           >
@@ -139,7 +158,7 @@ export function AdminPanel({ onBack }: { onBack: () => void }) {
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        {tab === "usage" ? <UsageView /> : <ReportsView />}
+        {tab === "usage" ? <UsageView /> : tab === "class" ? <ClassView /> : <ReportsView />}
       </div>
     </div>
   );
@@ -698,6 +717,151 @@ function MiniStat({ label, value }: { label: string; value: string }) {
       <div className="text-[10px] text-slate-500 dark:text-slate-400">{label}</div>
       <div className="text-sm font-semibold tabular-nums text-slate-800 dark:text-slate-100">{value}</div>
     </div>
+  );
+}
+
+/* ─── Class dashboard tab ─── */
+
+function ClassView() {
+  const [range, setRange] = useState<RangeValue>("30");
+  const { data, error, isLoading } = useSWR<ClassData>(apiKey("/api/admin/class", { days: range }));
+
+  if (isLoading) return <Centered>載入中...</Centered>;
+  if (error) {
+    const status = (error as { status?: number })?.status;
+    if (status === 403) return <Forbidden />;
+    return <Centered>讀取失敗：{String(error)}</Centered>;
+  }
+  if (!data) return null;
+
+  const rangeLabel = data.windowDays === 0 ? "全部" : `${data.windowDays} 天`;
+  const exportDays = range === "all" ? "365" : range;
+  const labelByChapter = new Map(CHAPTER_NODES.map((n) => [n.chapter, n.label]));
+  const chapterMap = new Map(data.perChapter.map((p) => [p.chapter, p]));
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-5">
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs text-slate-500 dark:text-slate-400">時間區間：</span>
+        {RANGE_OPTIONS.map((o) => (
+          <button
+            key={o.value}
+            onClick={() => setRange(o.value)}
+            className={`px-2.5 py-1 rounded-lg border text-xs ${
+              range === o.value
+                ? "bg-indigo-600 border-indigo-600 text-white"
+                : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+        <div className="ml-auto flex gap-1">
+          <DownloadCsvButton href={`/api/admin/export/class?kind=attempts&days=${exportDays}`}>
+            全班 attempts
+          </DownloadCsvButton>
+          <DownloadCsvButton href={`/api/admin/export/class?kind=tokens&days=${exportDays}`}>
+            全班 tokens
+          </DownloadCsvButton>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat label="註冊學生" value={String(data.totals.registeredStudents)} />
+        <Stat label={`活躍學生（${rangeLabel}）`} value={String(data.totals.activeStudents)} />
+        <Stat label="測驗總數" value={String(data.totals.totalAttempts)} />
+        <Stat
+          label="平均答對率"
+          value={`${Math.round(data.totals.avgScoreRatio * 100)}%`}
+          emphasis
+        />
+      </div>
+
+      <Section title={`🔥 章節答對率熱圖（${rangeLabel}）`}>
+        {data.perChapter.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500 py-4 text-center">
+            這個區間沒有測驗紀錄
+          </p>
+        ) : (
+          <div className="grid grid-cols-6 sm:grid-cols-9 gap-1.5">
+            {Array.from({ length: 36 }, (_, i) => i + 1).map((ch) => {
+              const cell = chapterMap.get(ch);
+              const ratio = cell?.correctRatio ?? null;
+              const tone = ratio === null
+                ? "bg-slate-100 dark:bg-slate-800 text-slate-400"
+                : ratio < 0.4
+                  ? "bg-rose-200 dark:bg-rose-900/60 text-rose-900 dark:text-rose-100"
+                  : ratio < 0.6
+                    ? "bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-100"
+                    : ratio < 0.8
+                      ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-900 dark:text-emerald-100"
+                      : "bg-emerald-300 dark:bg-emerald-700/70 text-emerald-900 dark:text-emerald-50";
+              return (
+                <div
+                  key={ch}
+                  className={`rounded-lg p-2 text-center text-[10px] ${tone}`}
+                  title={
+                    cell
+                      ? `Ch${ch} ${labelByChapter.get(ch) ?? ""}：${Math.round((ratio ?? 0) * 100)}% 答對（${cell.correct}/${cell.total}） · ${cell.students} 位學生`
+                      : `Ch${ch} ${labelByChapter.get(ch) ?? ""}：無紀錄`
+                  }
+                >
+                  <div className="font-mono text-[10px] opacity-70">Ch{String(ch).padStart(2, "0")}</div>
+                  <div className="font-semibold tabular-nums">
+                    {ratio === null ? "—" : `${Math.round(ratio * 100)}%`}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <div className="flex justify-end gap-3 mt-3 text-[10px] text-slate-500 dark:text-slate-400 flex-wrap">
+          <Legend tone="bg-rose-200 dark:bg-rose-900/60" label="< 40%" />
+          <Legend tone="bg-amber-200 dark:bg-amber-900/60" label="40–60%" />
+          <Legend tone="bg-emerald-100 dark:bg-emerald-900/40" label="60–80%" />
+          <Legend tone="bg-emerald-300 dark:bg-emerald-700/70" label="≥ 80%" />
+          <Legend tone="bg-slate-100 dark:bg-slate-800" label="無紀錄" />
+        </div>
+      </Section>
+
+      <Section title="🥶 全班最弱概念 Top 20">
+        {data.weakConcepts.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500 py-4 text-center">
+            還沒有可比較的概念（每個概念至少要有 2 位學生有紀錄）
+          </p>
+        ) : (
+          <Table
+            headers={["概念", "平均掌握度", "學生數", "練習次數"]}
+            rows={data.weakConcepts.map((w) => [
+              <span key="0" className="truncate inline-block max-w-[280px] align-middle">{w.concept}</span>,
+              <span
+                key="1"
+                className={
+                  w.avgMastery < 0.4
+                    ? "text-rose-600 dark:text-rose-300 font-semibold"
+                    : w.avgMastery < 0.6
+                      ? "text-amber-600 dark:text-amber-300 font-medium"
+                      : ""
+                }
+              >
+                {Math.round(w.avgMastery * 100)}%
+              </span>,
+              String(w.studentCount),
+              String(w.attemptCount),
+            ])}
+          />
+        )}
+      </Section>
+    </div>
+  );
+}
+
+function Legend({ tone, label }: { tone: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className={`inline-block w-3 h-3 rounded ${tone}`} />
+      {label}
+    </span>
   );
 }
 
