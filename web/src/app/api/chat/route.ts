@@ -4,7 +4,7 @@ import { streamText, tool, convertToModelMessages } from "ai";
 import { logUsage, checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
-import { captureRouteError } from "@/lib/sentry";
+import { captureRouteError, initBreadcrumbs } from "@/lib/sentry";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt, type RetrievedChunk } from "@/lib/rag";
@@ -167,6 +167,7 @@ const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「*
 ${OUTPUT_DISCIPLINE}`;
 
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const { messages, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = body;
   // studentId resolved from the auth session when possible, so a logged-in

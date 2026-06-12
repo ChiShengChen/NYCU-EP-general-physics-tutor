@@ -7,7 +7,7 @@ import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
-import { captureRouteError } from "@/lib/sentry";
+import { captureRouteError, initBreadcrumbs } from "@/lib/sentry";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -45,6 +45,7 @@ const NotesQuizSchema = z.object({
  * notes don't enter the lecture corpus.
  */
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json().catch(() => ({}));
   const images: { url?: unknown; mediaType?: unknown }[] = Array.isArray(body?.images) ? body.images : [];
   const cleanImages = images

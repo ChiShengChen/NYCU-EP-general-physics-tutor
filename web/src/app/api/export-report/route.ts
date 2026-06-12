@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
@@ -18,6 +19,7 @@ export const maxDuration = 45;
  * (Content-Type: text/markdown) so the browser triggers a download.
  */
 export async function GET(req: NextRequest) {
+  initBreadcrumbs();
   // Auth-derived studentId wins — the report contains a full dump of a
   // student's attempts + reflections + chat, so we must not let a caller
   // download another user's history by guessing their UUID.

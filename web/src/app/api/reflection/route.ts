@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
@@ -19,6 +20,7 @@ export const maxDuration = 30;
  *        spots / a concrete next step. Saves both to DB.
  */
 export async function GET(req: NextRequest) {
+  initBreadcrumbs();
   // Reflections can be deeply personal — don't let a caller list someone
   // else's reflections by guessing their UUID. Auth-derived id wins.
   const querySid = req.nextUrl.searchParams.get("studentId");
@@ -38,6 +40,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const content = String(body.content ?? "").trim().slice(0, 5000);
   const promptUsed = String(body.promptUsed ?? "").slice(0, 500);

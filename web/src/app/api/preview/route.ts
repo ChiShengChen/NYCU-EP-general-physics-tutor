@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { streamObject } from "ai";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { createServiceClient } from "@/lib/supabase/server";
@@ -57,6 +58,7 @@ ${context}
  * follows up with POST, which overwrites).
  */
 export async function GET(req: NextRequest) {
+  initBreadcrumbs();
   const chapterParam = req.nextUrl.searchParams.get("chapter");
   if (!chapterParam) {
     return NextResponse.json({ error: "chapter required" }, { status: 400 });
@@ -104,6 +106,7 @@ export async function GET(req: NextRequest) {
  * button instead.
  */
 export async function POST(req: NextRequest) {
+  initBreadcrumbs();
   const body = await req.json().catch(() => ({}));
   const chapter = Number(body?.chapter);
   const { studentId } = await resolveStudentId(body?.studentId);

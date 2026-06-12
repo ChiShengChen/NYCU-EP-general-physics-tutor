@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -36,6 +37,7 @@ const HintSchema = z.object({
  * never echo it back. Prompt explicitly forbids leaking the full answer.
  */
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const question = String(body.question ?? "").slice(0, 4000);
   const correctAnswer = String(body.correctAnswer ?? "").slice(0, 2000);

@@ -13,12 +13,67 @@
  * errors are POSTed directly to Sentry's Store API endpoint without
  * needing the SDK. Wired into the API route try/catches via
  * `captureRouteError` and into the browser via `setupClientErrorHook`.
+ *
+ * Breadcrumbs: each route opens its own scope via `initBreadcrumbs()`
+ * at handler entry, then drops `addBreadcrumb()` markers at meaningful
+ * stages (rate-limit hit, RAG fetch, model call, etc). When the route
+ * later throws, captureRouteError attaches the accumulated trail so
+ * Sentry shows "this is where the request was when it died" rather
+ * than just the bare exception. Per-request isolation is handled by
+ * AsyncLocalStorage so we don't need to thread a context object
+ * through every helper signature.
  */
+
+import { AsyncLocalStorage } from "node:async_hooks";
 
 interface ServerContext {
   endpoint: string;
   studentId?: string | null;
   meta?: Record<string, unknown>;
+}
+
+export interface Breadcrumb {
+  // Standard Sentry categories: "http", "db", "auth", "ai.call", etc.
+  // Anything string is fine; the Sentry UI groups by exact match.
+  category: string;
+  message?: string;
+  level?: "debug" | "info" | "warning" | "error";
+  // Small structured payload (token counts, model name, status). Keep
+  // it scalar — Sentry shows this verbatim and large objects make the
+  // breadcrumb panel unreadable.
+  data?: Record<string, string | number | boolean | null>;
+}
+
+interface StoredBreadcrumb extends Breadcrumb {
+  timestamp: string;
+}
+
+const BREADCRUMB_LIMIT = 50;
+const breadcrumbStore = new AsyncLocalStorage<StoredBreadcrumb[]>();
+
+/**
+ * Open a breadcrumb scope for the current async context. Call once at
+ * the top of every route handler that wants Sentry breadcrumbs. Safe
+ * to call multiple times — only the first call wins per request.
+ */
+export function initBreadcrumbs(): void {
+  if (breadcrumbStore.getStore()) return;
+  breadcrumbStore.enterWith([]);
+}
+
+/**
+ * Push a breadcrumb onto the current scope. No-op (and no warning) if
+ * called outside `initBreadcrumbs()` — that way third-party helpers
+ * can drop breadcrumbs unconditionally without forcing every consumer
+ * to opt in.
+ */
+export function addBreadcrumb(crumb: Breadcrumb): void {
+  const store = breadcrumbStore.getStore();
+  if (!store) return;
+  store.push({ ...crumb, timestamp: new Date().toISOString() });
+  // Ring-buffer cap so a long-running request can't blow up the
+  // captured payload size if it logs in a tight loop.
+  if (store.length > BREADCRUMB_LIMIT) store.shift();
 }
 
 const SENTRY_DSN = process.env.SENTRY_DSN;
@@ -63,6 +118,7 @@ export function captureRouteError(err: unknown, ctx: ServerContext): void {
     sdk: { name: "nycu-physics-tutor", version: "0.0.1" },
   });
   const itemHeader = JSON.stringify({ type: "event" });
+  const crumbs = breadcrumbStore.getStore() ?? [];
   const payload = JSON.stringify({
     event_id: eventId,
     platform: "node",
@@ -77,6 +133,7 @@ export function captureRouteError(err: unknown, ctx: ServerContext): void {
         stacktrace: { frames: stack.map((line) => ({ filename: "trace", function: line.trim() })) },
       }],
     },
+    breadcrumbs: { values: crumbs },
     tags: { endpoint: ctx.endpoint },
     extra: ctx.meta,
     user: ctx.studentId ? { id: ctx.studentId } : undefined,

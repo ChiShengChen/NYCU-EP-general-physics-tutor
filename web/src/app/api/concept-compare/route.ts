@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -36,6 +37,7 @@ const CompareSchema = z.object({
  * 電位 / 動能 vs 位能 see exactly where they overlap and where they don't.
  */
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const conceptA = String(body.conceptA ?? "").trim().slice(0, 200);
   const conceptB = String(body.conceptB ?? "").trim().slice(0, 200);

@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -50,6 +51,7 @@ const GradeSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const { action } = body;
 

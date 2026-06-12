@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -38,6 +39,7 @@ const SingleQuestionSchema = z.object({
  *   the prompt so the new version explicitly avoids the prior pitfall.
  */
 export async function POST(req: Request) {
+  initBreadcrumbs();
   const body = await req.json();
   const prev = body.previous as {
     id: number;

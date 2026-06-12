@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { addBreadcrumb } from "@/lib/sentry";
 
 /** Gemini 2.5 Flash pricing per 1M tokens (USD). Used at query time to
  *  estimate cost from stored prompt/completion token counts. Keep this
@@ -46,6 +47,18 @@ export function logUsage(ctx: UsageContext, usage: UsageNumbers | undefined | nu
   const completion = usage.completionTokens ?? usage.outputTokens ?? 0;
   const total = usage.totalTokens ?? prompt + completion;
   if (!prompt && !completion && !total) return;
+
+  addBreadcrumb({
+    category: "ai.call",
+    level: "info",
+    message: ctx.label ?? ctx.endpoint,
+    data: {
+      model: ctx.model,
+      prompt,
+      completion,
+      total,
+    },
+  });
 
   void (async () => {
     try {
@@ -175,12 +188,25 @@ export async function checkDailyQuota(studentId: string | null | undefined): Pro
   const limit = isAuthenticated ? DAILY_LIMIT_AUTH : DAILY_LIMIT_ANON;
   const used = (rows ?? []).reduce((acc, r) => acc + (r.total_tokens ?? 0), 0);
   const remaining = Math.max(0, limit - used);
+  const blocked = used >= limit;
+
+  addBreadcrumb({
+    category: "quota",
+    level: blocked ? "warning" : "info",
+    message: blocked ? "daily quota exceeded" : "daily quota ok",
+    data: {
+      isAuthenticated,
+      used,
+      limit,
+      remaining,
+    },
+  });
 
   return {
     used,
     limit,
     remaining,
-    blocked: used >= limit,
+    blocked,
     isAuthenticated,
     resetAt,
   };

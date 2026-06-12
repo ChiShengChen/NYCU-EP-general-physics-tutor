@@ -21,6 +21,7 @@
  */
 
 import type { NextRequest } from "next/server";
+import { addBreadcrumb } from "@/lib/sentry";
 
 interface Bucket {
   /** Sliding window of request timestamps (ms since epoch). */
@@ -88,6 +89,12 @@ export function checkIpRateLimit(req: Request | NextRequest): IpRateLimitStatus 
   }
 
   if (bucket.hits.length >= LIMIT) {
+    addBreadcrumb({
+      category: "rate-limit",
+      level: "warning",
+      message: "ip rate limit exceeded",
+      data: { ip, hits: bucket.hits.length, limit: LIMIT },
+    });
     return {
       allowed: false,
       remaining: 0,
@@ -97,6 +104,12 @@ export function checkIpRateLimit(req: Request | NextRequest): IpRateLimitStatus 
   }
 
   bucket.hits.push(now);
+  addBreadcrumb({
+    category: "rate-limit",
+    level: "info",
+    message: "ip rate limit ok",
+    data: { ip, remaining: LIMIT - bucket.hits.length },
+  });
   return {
     allowed: true,
     remaining: LIMIT - bucket.hits.length,

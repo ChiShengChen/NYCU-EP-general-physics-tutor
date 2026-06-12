@@ -1,5 +1,6 @@
 import { google } from "@ai-sdk/google";
 import { pickModel } from "@/lib/models";
+import { initBreadcrumbs } from "@/lib/sentry";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
@@ -37,6 +38,7 @@ const StudyPlanSchema = z.object({
 
 /** GET /api/study-plan?studentId=xxx */
 export async function GET(req: NextRequest) {
+  initBreadcrumbs();
   // Auth-derived studentId wins so a logged-in user can't read or trigger
   // a study-plan generation against another user's data via ?studentId=.
   const querySid = req.nextUrl.searchParams.get("studentId");
