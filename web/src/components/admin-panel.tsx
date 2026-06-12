@@ -175,9 +175,17 @@ function DownloadCsvButton({ href, children }: { href: string; children: React.R
 /* ─── Usage tab ─── */
 
 const STUDENTS_PER_PAGE = 25;
+const RANGE_OPTIONS = [
+  { label: "7 天", value: "7" },
+  { label: "30 天", value: "30" },
+  { label: "90 天", value: "90" },
+  { label: "全部", value: "all" },
+] as const;
+type RangeValue = (typeof RANGE_OPTIONS)[number]["value"];
 
 function UsageView() {
-  const { data, error, isLoading } = useSWR<UsageData>("/api/admin/usage");
+  const [range, setRange] = useState<RangeValue>("30");
+  const { data, error, isLoading } = useSWR<UsageData>(apiKey("/api/admin/usage", { days: range }));
   // Which row is expanded into a per-student detail drawer. We render
   // the drawer inline under the table rather than as a modal so admins
   // can keep scrolling through other rows without losing context.
@@ -202,21 +210,46 @@ function UsageView() {
   const pageStudents = data.topStudents.slice(pageStart, pageStart + STUDENTS_PER_PAGE);
   const selectedStudent = data.topStudents.find((s) => s.id && s.id === selectedId) ?? null;
 
+  // Friendly label for headers / file names. windowDays=0 is the
+  // "all-time" sentinel the route returns when ?days=all.
+  const rangeLabel = data.windowDays === 0 ? "全部" : `${data.windowDays} 天`;
+  const exportDays = range === "all" ? "365" : range;
+
   return (
     <div className="max-w-5xl mx-auto space-y-5">
-      <div className="flex justify-end">
-        <DownloadCsvButton href={`/api/admin/export/usage?days=${data.windowDays}`}>
-          匯出全班 CSV（{data.windowDays} 天）
-        </DownloadCsvButton>
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs text-slate-500 dark:text-slate-400">時間區間：</span>
+        {RANGE_OPTIONS.map((o) => (
+          <button
+            key={o.value}
+            onClick={() => {
+              setRange(o.value);
+              setStudentsPage(1);
+              setSelectedId(null);
+            }}
+            className={`px-2.5 py-1 rounded-lg border text-xs ${
+              range === o.value
+                ? "bg-indigo-600 border-indigo-600 text-white"
+                : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+        <div className="ml-auto">
+          <DownloadCsvButton href={`/api/admin/export/usage?days=${exportDays}`}>
+            匯出全班 CSV（{rangeLabel}）
+          </DownloadCsvButton>
+        </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat label="呼叫總數" value={String(data.totals.calls)} />
-        <Stat label="Tokens (30 天)" value={fmtTokens(data.totals.totalTokens)} />
+        <Stat label={`Tokens (${rangeLabel})`} value={fmtTokens(data.totals.totalTokens)} />
         <Stat label="估算成本" value={fmtCost(data.totals.costUsd)} emphasis />
         <Stat label="活躍學生" value={String(data.totals.distinctStudents)} />
       </div>
 
-      <Section title={`📈 每日 Tokens（最近 ${data.windowDays} 天）`}>
+      <Section title={`📈 每日 Tokens（${rangeLabel}）`}>
         <div className="flex items-end gap-1 h-32">
           {data.daily.map((d) => {
             const h = Math.max(2, (d.tokens / maxDaily) * 120);

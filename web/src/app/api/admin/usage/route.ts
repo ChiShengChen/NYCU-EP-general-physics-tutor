@@ -1,7 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { getAdminContext } from "@/lib/is-admin";
 import { estimateCost } from "@/lib/usage-log";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
@@ -20,7 +20,12 @@ export const maxDuration = 30;
  * not have profile ids leaking into chat logs.
  */
 
-const WINDOW_DAYS = 30;
+const DEFAULT_DAYS = 30;
+const MAX_DAYS = 365;
+// Sentinel that means "no cutoff" — admin asked for the full history.
+// Cap at the table's lifetime since we still pass an ISO timestamp to
+// Supabase; 5 years comfortably covers the project's age.
+const ALL_DAYS = 365 * 5;
 
 interface UsageRow {
   student_id: string;
@@ -32,12 +37,23 @@ interface UsageRow {
   created_at: string;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const { isAdmin } = await getAdminContext();
   if (!isAdmin) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
+  // Window selection: ?days=7|30|90 for fixed buckets, ?days=all for the
+  // full table. Any other value falls back to 30 so a bad client doesn't
+  // accidentally trigger a 5-year scan.
+  const raw = req.nextUrl.searchParams.get("days") ?? "";
+  const days = raw === "all"
+    ? ALL_DAYS
+    : Number.isFinite(Number(raw))
+      ? Math.min(Math.max(1, Math.floor(Number(raw))), MAX_DAYS)
+      : DEFAULT_DAYS;
+  const reportedDays = raw === "all" ? 0 : days;
+
   const supabase = createServiceClient();
-  const cutoff = new Date(Date.now() - WINDOW_DAYS * 86400_000).toISOString();
+  const cutoff = new Date(Date.now() - days * 86400_000).toISOString();
 
   // Pull everything we need in one shot — both queries hit indexes (the
   // token_usage scan by created_at, the profiles lookup by id).
@@ -150,7 +166,8 @@ export async function GET() {
     }));
 
   return NextResponse.json({
-    windowDays: WINDOW_DAYS,
+    // 0 means "all-time" so the panel can render it as 「全部」.
+    windowDays: reportedDays,
     totals: {
       calls: totalCalls,
       totalTokens,
