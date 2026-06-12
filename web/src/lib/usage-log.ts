@@ -111,7 +111,11 @@ export async function checkDailyQuota(studentId: string | null | undefined): Pro
   const resetAt = new Date(new Date(startISO).getTime() + 24 * 60 * 60 * 1000).toISOString();
 
   // Anonymous tier wins when no student id is available at all.
-  if (!studentId) {
+  // Empty-string is explicitly anonymous too — without this guard the
+  // `!studentId` falsy check passes but the subsequent .eq("student_id",
+  // "") query against student_profiles spuriously matches nothing and
+  // we'd silently fall into the 0-used / authenticated-limit branch.
+  if (!studentId || studentId.length === 0) {
     return {
       used: 0,
       limit: DAILY_LIMIT_ANON,

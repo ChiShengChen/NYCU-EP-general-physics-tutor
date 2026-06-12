@@ -73,6 +73,13 @@ export function restoreLatexEscapes(text: string): string {
  */
 export function stripMetaCommentary(text: string): string {
   if (!text) return text;
+  // Bail out fast when the whole answer is English. The legitimate case
+  // is a student asking "what is X" about an English physics term, or
+  // requesting a translation — wiping the entire reply because no
+  // paragraph happens to contain Chinese is much worse than letting
+  // through the rare meta leak we'd otherwise catch.
+  if (!/[一-鿿]/.test(text)) return text;
+
   const paragraphs = text.split(/\n{2,}/);
   let dropFrom = paragraphs.length;
   for (let i = paragraphs.length - 1; i >= 0; i--) {

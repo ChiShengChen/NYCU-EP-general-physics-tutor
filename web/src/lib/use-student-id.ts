@@ -13,23 +13,26 @@ import { useSyncExternalStore } from "react";
  *   2. Stays SSR-safe — the server snapshot is always `null`, which the
  *      callers already treat as "no student yet" via apiKey()'s
  *      missing-param skip.
- *   3. Cross-tab updates (e.g. another tab calls /api/auth/sync and
- *      writes a new id) propagate via the native `storage` event.
- *      Same-tab updates aren't picked up because none of our writers
- *      need that — they happen as part of an explicit sign-in flow that
- *      navigates / reloads anyway.
- *
- * This is intentionally read-only. Components that lazily mint a new
- * UUID when none exists keep their own useState initializer for now —
- * mixing read-or-create semantics into a snapshot hook would muddy it.
+ *   3. Propagates both cross-tab and same-tab updates. The browser's
+ *      native `storage` event only fires across tabs, so a sign-in flow
+ *      that writes a new id via /api/auth/sync would leave the current
+ *      tab reading the stale value until a reload. `notifyStudentId()`
+ *      fires a custom event that the in-tab subscribers also pick up,
+ *      so the auth-button toast → useSWR re-key → UI refresh chain
+ *      completes immediately.
  */
 
 const STUDENT_ID_KEY = "physics_tutor_student_id";
+const SAME_TAB_EVENT = "physics_tutor_student_id_change";
 
 function subscribe(notify: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   window.addEventListener("storage", notify);
-  return () => window.removeEventListener("storage", notify);
+  window.addEventListener(SAME_TAB_EVENT, notify);
+  return () => {
+    window.removeEventListener("storage", notify);
+    window.removeEventListener(SAME_TAB_EVENT, notify);
+  };
 }
 
 function getSnapshot(): string | null {
@@ -43,4 +46,15 @@ function getServerSnapshot(): string | null {
 
 export function useStudentId(): string | null {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+/**
+ * Call after writing a new value to `localStorage[STUDENT_ID_KEY]` from
+ * the same tab (e.g. the auth-button's `/api/auth/sync` flow) so any
+ * `useStudentId()` subscribers in this tab re-render. Cross-tab updates
+ * are still handled automatically by the native `storage` event.
+ */
+export function notifyStudentIdChange(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(SAME_TAB_EVENT));
 }

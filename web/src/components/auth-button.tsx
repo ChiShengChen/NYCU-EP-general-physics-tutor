@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { notifyStudentIdChange } from "@/lib/use-student-id";
 import type { User } from "@supabase/supabase-js";
 
 const STUDENT_ID_KEY = "physics_tutor_student_id";
@@ -33,6 +34,9 @@ export function AuthButton({ className = "" }: { className?: string }) {
       };
       if (studentId && studentId !== localStudentId) {
         localStorage.setItem(STUDENT_ID_KEY, studentId);
+        // Same-tab broadcast so every useStudentId() subscriber picks up
+        // the merged id immediately (storage events only fire cross-tab).
+        notifyStudentIdChange();
       }
       const msg = mergedAnonymous
         ? "已將本機學習紀錄連到此 Google 帳號 ✓"

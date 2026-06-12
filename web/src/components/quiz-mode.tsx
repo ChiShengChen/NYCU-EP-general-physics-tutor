@@ -462,8 +462,23 @@ function AnsweringState({
   onReplaceQuestion: (oldId: number, newQ: QuizQuestion) => void;
   onResetForQuestion: (qid: number) => void;
 }) {
-  const q = quiz.questions[currentQuestion];
   const total = quiz.questions.length;
+  // Guard against an empty questions array (network glitch / malformed
+  // /api/quiz response). Accessing questions[0] on [] otherwise yields
+  // undefined and the JSX below crashes on `q.type`.
+  if (total === 0) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-12 text-center">
+        <p className="text-3xl mb-3">⚠️</p>
+        <p className="text-slate-700 dark:text-slate-200 font-medium">這份測驗沒有題目，可能是生成時出問題。</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">回上一步重新出題試試。</p>
+      </div>
+    );
+  }
+  // Clamp the index so a stale `currentQuestion` from a prior longer quiz
+  // can't index past the end of a freshly-loaded shorter one.
+  const idx = Math.min(Math.max(0, currentQuestion), total - 1);
+  const q = quiz.questions[idx];
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">

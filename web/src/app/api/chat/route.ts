@@ -262,16 +262,38 @@ export async function POST(req: Request) {
   const FEYNMAN_BEGIN_SENTINEL = "__FEYNMAN_BEGIN__";
   const isFeynmanOpener = mode === "feynman" && query.trim() === FEYNMAN_BEGIN_SENTINEL;
 
-  // Convert UIMessages → ModelMessages for streamText (with fallback for robustness)
+  // Convert UIMessages → ModelMessages for streamText. The fallback path
+  // is itself try-wrapped because a malformed payload (parts === null,
+  // m === null, etc.) previously crashed `m.parts?.filter(...)` and
+  // bricked the stream — the request would just hang from the client's
+  // point of view. We bail to a 400 instead so the user sees a real error.
   let modelMessages;
   try {
     modelMessages = await convertToModelMessages(messages);
   } catch {
-    // Fallback: manually build model messages from parts
-    modelMessages = messages.map((m: { role: string; parts?: { type: string; text: string }[]; content?: string }) => {
-      const text = m.parts?.filter(p => p.type === "text").map(p => p.text).join("") ?? m.content ?? "";
-      return { role: m.role as "user" | "assistant", content: text };
-    });
+    try {
+      modelMessages = (Array.isArray(messages) ? messages : []).flatMap(
+        (m: { role?: string; parts?: { type?: string; text?: string }[]; content?: string } | null | undefined) => {
+          if (!m || typeof m !== "object") return [];
+          const partsArr = Array.isArray(m.parts) ? m.parts : [];
+          const text = partsArr
+            .filter((p): p is { type: string; text: string } =>
+              !!p && typeof p === "object" && p.type === "text" && typeof p.text === "string"
+            )
+            .map((p) => p.text)
+            .join("") || (typeof m.content === "string" ? m.content : "");
+          if (!text) return [];
+          const role: "assistant" | "user" = m.role === "assistant" ? "assistant" : "user";
+          return [{ role, content: text }];
+        },
+      );
+    } catch (err) {
+      console.error("[chat] convertToModelMessages fallback failed:", err);
+      return NextResponse.json({ error: "invalid messages payload" }, { status: 400 });
+    }
+  }
+  if (!Array.isArray(modelMessages) || modelMessages.length === 0) {
+    return NextResponse.json({ error: "empty messages" }, { status: 400 });
   }
 
   if (isFeynmanOpener && Array.isArray(modelMessages) && modelMessages.length > 0) {

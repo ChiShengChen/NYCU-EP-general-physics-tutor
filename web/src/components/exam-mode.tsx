@@ -412,9 +412,21 @@ function ExamView({
   onSubmit: () => void;
   answeredCount: number;
 }) {
-  const q = exam.questions[currentQuestion];
   const total = exam.questions.length;
   const [showConfirm, setShowConfirm] = useState(false);
+  // Same guard as quiz-mode: an empty questions array would crash the
+  // JSX below on `q.type` etc. when /api/exam returns a malformed shape.
+  if (total === 0) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-12 text-center">
+        <p className="text-3xl mb-3">⚠️</p>
+        <p className="text-slate-700 dark:text-slate-200 font-medium">這份考試沒有題目，可能是生成時出問題。</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">回上一步重新出題試試。</p>
+      </div>
+    );
+  }
+  const idx = Math.min(Math.max(0, currentQuestion), total - 1);
+  const q = exam.questions[idx];
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
