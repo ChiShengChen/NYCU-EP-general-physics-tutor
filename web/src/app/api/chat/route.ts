@@ -351,19 +351,22 @@ export async function POST(req: Request) {
           "Use this immediately after STEP 1 of the structured visual-reasoning workflow, whenever the student attached an image that contains a diagram " +
           "(phasor diagram, free-body diagram, vector diagram, circuit, geometric figure). " +
           "Emit a minimal SVG that re-draws what you observed: each labelled object with its name, position, direction. " +
-          "Skip this tool for photos of typed text / formulas where there is nothing geometric to draw. " +
+          "ALSO use this when the student uploaded a photo of HANDWRITTEN WORK (a multi-step solution / derivation / sketch with annotations) and explicitly asked for critique or correction. " +
+          "In that case render a clean step-by-step diagram of THEIR solution flow with green ✓ next to each correct step, red ✗ next to wrong steps, and a short Chinese caption per ✗ stating what's wrong. " +
+          "Skip this tool for plain text photos of typed formulas where there is nothing geometric or step-structured to draw. " +
           "Students will compare your sketch with their original image and immediately tell you if anything was misread. " +
           "Keep the SVG self-contained (no external resources) and keep it small (≤ 480px wide).",
         inputSchema: z.object({
-          title: z.string().describe("Short label for the sketch in Traditional Chinese, e.g. '相量圖 (a) — 我看到的'"),
+          title: z.string().describe("Short label for the sketch in Traditional Chinese, e.g. '相量圖 (a) — 我看到的' or '作業批改 — 你的解題步驟'"),
           svg: z.string().describe(
             "Self-contained SVG markup. MUST start with <svg ...> and end with </svg>. " +
             "Use a viewBox like '0 0 320 240' so it scales. Add labels with <text>. " +
             "Use stroke colors that distinguish vectors (e.g. purple for current, orange for voltage). " +
+            "For work-critique mode: green strokes/circles for correct steps, red strokes/circles for wrong steps. " +
             "Do NOT include <script>, on* attributes, javascript: URIs, or any external <image href>. " +
             "If you must label LaTeX, just write the variable name in plain text (e.g. 'I_max', 'phi') — students will understand.",
           ),
-          notes: z.string().optional().describe("Optional 1-line caption summarising the key visual feature, e.g. 'I_max 比 ΔV_max 更靠近 +y 軸'"),
+          notes: z.string().optional().describe("Optional 1-line caption summarising the key visual feature or, in critique mode, the highest-priority correction."),
         }),
         execute: async ({ title, svg, notes }) => ({ title, svg, notes: notes ?? "" }),
       }),

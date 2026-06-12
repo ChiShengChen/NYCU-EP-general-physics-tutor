@@ -18,7 +18,7 @@ type HomeStats = {
 };
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz") => void;
 }
 
 function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
@@ -273,6 +273,26 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </div>
           <span className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
             進入沙盒 →
+          </span>
+        </button>
+
+        {/* Notes-quiz banner — students upload their own lecture notes and
+            the model OCRs + generates a self-quiz from them. */}
+        <button
+          onClick={() => onSelectMode("notes-quiz")}
+          className="w-full max-w-5xl mb-5 flex items-center gap-4 text-left p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 hover:shadow-md hover:border-emerald-300 dark:border-emerald-700 transition-all"
+        >
+          <span className="text-3xl shrink-0">📷</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
+              從我的筆記出題 <span className="text-[10px] font-normal text-emerald-600 dark:text-emerald-300 ml-1">NEW</span>
+            </div>
+            <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+              拍 1–4 張你自己的筆記，AI 讀完直接出 3–8 題測驗，題目完全跟著你寫的走。圖片不儲存。
+            </div>
+          </div>
+          <span className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
+            上傳筆記 →
           </span>
         </button>
 

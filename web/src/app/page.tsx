@@ -22,8 +22,9 @@ import { ReflectionJournal } from "@/components/reflection-journal";
 import { LibraryView } from "@/components/library-view";
 import { GoalsView } from "@/components/goals-view";
 import { SimulatorsMode } from "@/components/simulators";
+import { NotesQuiz } from "@/components/notes-quiz";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -181,6 +182,7 @@ export default function Home() {
   if (mode === "library") return <LibraryView onBack={goHome} />;
   if (mode === "goals") return <GoalsView onBack={goHome} />;
   if (mode === "sim") return <SimulatorsMode onBack={goHome} />;
+  if (mode === "notes-quiz") return <NotesQuiz onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }
