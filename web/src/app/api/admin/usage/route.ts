@@ -110,6 +110,7 @@ export async function GET() {
     .map(([sid, v]) => {
       if (sid === "__deleted__") {
         return {
+          id: null,
           label: "已刪除帳號",
           isAuthenticated: false,
           calls: v.calls,
@@ -120,6 +121,10 @@ export async function GET() {
       const p = profilesById.get(sid);
       const label = p?.email ?? p?.name ?? `匿名 ${sid.slice(0, 8)}`;
       return {
+        // Expose the raw id so the panel's drilldown can fetch this
+        // student's per-day tokens / chats / attempts. Admin-only route,
+        // so leaking the uuid here is fine.
+        id: sid,
         label,
         isAuthenticated: !!p?.email,
         calls: v.calls,

@@ -43,9 +43,48 @@ const REASON_TONES: Record<string, string> = {
 interface UsageData {
   windowDays: number;
   totals: { calls: number; totalTokens: number; costUsd: number; distinctStudents: number };
-  topStudents: { label: string; isAuthenticated: boolean; calls: number; totalTokens: number; costUsd: number }[];
+  topStudents: { id: string | null; label: string; isAuthenticated: boolean; calls: number; totalTokens: number; costUsd: number }[];
   endpoints: { endpoint: string; calls: number; totalTokens: number; costUsd: number }[];
   daily: { date: string; tokens: number; costUsd: number }[];
+}
+
+interface StudentDetail {
+  windowDays: number;
+  profile: {
+    id: string;
+    email: string | null;
+    displayName: string | null;
+    createdAt: string;
+    lastSignedInAt: string | null;
+  } | null;
+  totals: { calls: number; totalTokens: number; costUsd: number };
+  daily: { date: string; tokens: number; calls: number; costUsd: number }[];
+  endpoints: { endpoint: string; calls: number; tokens: number; costUsd: number }[];
+  chatSessions: {
+    sessionId: string | null;
+    startedAt: string;
+    lastAt: string;
+    messageCount: number;
+    firstUserMessage: string | null;
+  }[];
+  attempts: {
+    id: number;
+    kind: "quiz" | "exam";
+    examType: string | null;
+    title: string;
+    totalScore: number;
+    maxScore: number;
+    grade: string | null;
+    createdAt: string;
+  }[];
+}
+
+interface ChatMessage {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  chunks_used: number[] | null;
+  created_at: string;
 }
 
 interface Report {
@@ -119,6 +158,10 @@ function fmtCost(usd: number): string {
 
 function UsageView() {
   const { data, error, isLoading } = useSWR<UsageData>("/api/admin/usage");
+  // Which row is expanded into a per-student detail drawer. We render
+  // the drawer inline under the table rather than as a modal so admins
+  // can keep scrolling through other top-25 rows without losing context.
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   if (isLoading) return <Centered>載入中...</Centered>;
   if (error) {
@@ -129,6 +172,7 @@ function UsageView() {
   if (!data) return null;
 
   const maxDaily = Math.max(1, ...data.daily.map((d) => d.tokens));
+  const selectedStudent = data.topStudents.find((s) => s.id && s.id === selectedId) ?? null;
 
   return (
     <div className="max-w-5xl mx-auto space-y-5">
@@ -160,19 +204,54 @@ function UsageView() {
         </div>
       </Section>
 
-      <Section title="🔝 用量前 25 名學生">
-        <Table
-          headers={["學生", "次數", "Tokens", "估算成本"]}
-          rows={data.topStudents.map((s) => [
-            <span key="0" className="truncate inline-block max-w-[260px] align-middle">
-              {s.label}{" "}
-              {!s.isAuthenticated && <span className="text-[10px] text-slate-400">匿名</span>}
-            </span>,
-            String(s.calls),
-            fmtTokens(s.totalTokens),
-            fmtCost(s.costUsd),
-          ])}
-        />
+      <Section title="🔝 用量前 25 名學生（點擊展開明細）">
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs min-w-[420px]">
+            <thead>
+              <tr className="text-slate-500 dark:text-slate-400 text-left">
+                <th className="font-normal pb-2">學生</th>
+                <th className="font-normal pb-2 text-right">次數</th>
+                <th className="font-normal pb-2 text-right">Tokens</th>
+                <th className="font-normal pb-2 text-right">估算成本</th>
+              </tr>
+            </thead>
+            <tbody className="text-slate-700 dark:text-slate-200">
+              {data.topStudents.map((s, i) => {
+                const clickable = !!s.id;
+                const isOpen = clickable && s.id === selectedId;
+                return (
+                  <tr
+                    key={i}
+                    onClick={() => clickable && setSelectedId(isOpen ? null : s.id!)}
+                    className={`border-t border-slate-100 dark:border-slate-800 ${
+                      clickable ? "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60" : ""
+                    } ${isOpen ? "bg-indigo-50 dark:bg-indigo-950/30" : ""}`}
+                    title={clickable ? "點擊查看每日 tokens / 對話 / 測驗紀錄" : "已刪除帳號 — 無法查看明細"}
+                  >
+                    <td className="py-1.5">
+                      <span className="truncate inline-block max-w-[260px] align-middle">
+                        {clickable && <span className="text-slate-400 mr-1">{isOpen ? "▾" : "▸"}</span>}
+                        {s.label}{" "}
+                        {!s.isAuthenticated && s.id && (
+                          <span className="text-[10px] text-slate-400">匿名</span>
+                        )}
+                      </span>
+                    </td>
+                    <td className="py-1.5 tabular-nums text-right">{s.calls}</td>
+                    <td className="py-1.5 tabular-nums text-right">{fmtTokens(s.totalTokens)}</td>
+                    <td className="py-1.5 tabular-nums text-right">{fmtCost(s.costUsd)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {selectedStudent?.id && (
+          <div className="mt-4 border-t border-slate-200 dark:border-slate-700 pt-4">
+            <StudentDetail id={selectedStudent.id} label={selectedStudent.label} />
+          </div>
+        )}
       </Section>
 
       <Section title="🔀 各 API 端點用量">
@@ -186,6 +265,206 @@ function UsageView() {
           ])}
         />
       </Section>
+    </div>
+  );
+}
+
+/* ─── Per-student drilldown ─── */
+
+function StudentDetail({ id, label }: { id: string; label: string }) {
+  const { data, error, isLoading } = useSWR<StudentDetail>(apiKey("/api/admin/student", { id }));
+
+  if (isLoading) {
+    return <p className="text-xs text-slate-500 dark:text-slate-400">載入 {label} 明細中...</p>;
+  }
+  if (error) {
+    return <p className="text-xs text-rose-500">讀取明細失敗：{String(error)}</p>;
+  }
+  if (!data) return null;
+
+  const maxDaily = Math.max(1, ...data.daily.map((d) => d.tokens));
+
+  return (
+    <div className="space-y-4">
+      <div className="text-xs text-slate-600 dark:text-slate-300">
+        <span className="font-medium text-slate-800 dark:text-slate-100">{label}</span>
+        {data.profile?.createdAt && (
+          <span className="ml-2 text-slate-400 dark:text-slate-500">
+            註冊 {new Date(data.profile.createdAt).toLocaleDateString("zh-TW")}
+          </span>
+        )}
+        {data.profile?.lastSignedInAt && (
+          <span className="ml-2 text-slate-400 dark:text-slate-500">
+            · 最近登入 {new Date(data.profile.lastSignedInAt).toLocaleDateString("zh-TW")}
+          </span>
+        )}
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        <MiniStat label="呼叫" value={String(data.totals.calls)} />
+        <MiniStat label="Tokens" value={fmtTokens(data.totals.totalTokens)} />
+        <MiniStat label="成本" value={fmtCost(data.totals.costUsd)} />
+      </div>
+
+      <div>
+        <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">
+          📅 每日 Tokens（最近 {data.windowDays} 天）
+        </h3>
+        {data.daily.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500">這位學生 30 天內沒有 token 使用紀錄</p>
+        ) : (
+          <>
+            <div className="flex items-end gap-1 h-20">
+              {data.daily.map((d) => {
+                const h = Math.max(2, (d.tokens / maxDaily) * 72);
+                return (
+                  <div
+                    key={d.date}
+                    className="flex-1 bg-emerald-500 dark:bg-emerald-400 rounded-t"
+                    style={{ height: `${h}px` }}
+                    title={`${d.date}: ${d.tokens.toLocaleString()} tokens · ${d.calls} 次 · ${fmtCost(d.costUsd)}`}
+                  />
+                );
+              })}
+            </div>
+            <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+              <span>{data.daily[0]?.date}</span>
+              <span>{data.daily[data.daily.length - 1]?.date}</span>
+            </div>
+          </>
+        )}
+      </div>
+
+      {data.endpoints.length > 0 && (
+        <div>
+          <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">🔀 端點分布</h3>
+          <Table
+            headers={["端點", "次數", "Tokens", "成本"]}
+            rows={data.endpoints.slice(0, 12).map((e) => [
+              <span key="0" className="font-mono text-[10px]">{e.endpoint}</span>,
+              String(e.calls),
+              fmtTokens(e.tokens),
+              fmtCost(e.costUsd),
+            ])}
+          />
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">
+          💬 自由問答 session（最近 {data.chatSessions.length} 場）
+        </h3>
+        {data.chatSessions.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500">沒有對話紀錄</p>
+        ) : (
+          <ul className="space-y-1.5">
+            {data.chatSessions.map((s) => (
+              <ChatSessionRow key={s.sessionId ?? "__legacy__"} studentId={id} session={s} />
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div>
+        <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">
+          📝 測驗紀錄（最近 {data.attempts.length} 場）
+        </h3>
+        {data.attempts.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500">沒有測驗紀錄</p>
+        ) : (
+          <Table
+            headers={["類型", "標題", "分數", "日期"]}
+            rows={data.attempts.map((a) => [
+              <span key="0" className="font-mono text-[10px]">
+                {a.kind === "exam" ? `考試·${a.examType ?? ""}` : "練習"}
+              </span>,
+              <span key="1" className="truncate inline-block max-w-[220px] align-middle">{a.title || "—"}</span>,
+              <span key="2">
+                {a.totalScore.toFixed(1)} / {a.maxScore.toFixed(0)}
+                {a.grade && <span className="ml-1 text-[10px] text-slate-400">({a.grade})</span>}
+              </span>,
+              <span key="3" className="text-[10px] text-slate-400">
+                {new Date(a.createdAt).toLocaleDateString("zh-TW")}
+              </span>,
+            ])}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ChatSessionRow({
+  studentId,
+  session,
+}: {
+  studentId: string;
+  session: StudentDetail["chatSessions"][number];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const sessionKey = session.sessionId ?? "__legacy__";
+  const { data, isLoading } = useSWR<{ messages: ChatMessage[] }>(
+    expanded ? apiKey("/api/admin/student/chat", { id: studentId, session: sessionKey }) : null,
+  );
+
+  return (
+    <li className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl">
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="w-full text-left px-3 py-2 text-xs flex items-start gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl"
+      >
+        <span className="text-slate-400 mt-0.5">{expanded ? "▾" : "▸"}</span>
+        <span className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-[10px] text-slate-400 dark:text-slate-500">
+              {new Date(session.startedAt).toLocaleString("zh-TW")}
+            </span>
+            <span className="text-[10px] text-slate-400 dark:text-slate-500">· {session.messageCount} 則</span>
+            {session.sessionId === null && (
+              <span className="text-[10px] text-slate-400 dark:text-slate-500">· 舊版資料</span>
+            )}
+          </div>
+          <div className="text-slate-700 dark:text-slate-200 line-clamp-2">
+            {session.firstUserMessage ?? "(無內容)"}
+          </div>
+        </span>
+      </button>
+      {expanded && (
+        <div className="border-t border-slate-200 dark:border-slate-700 px-3 py-2 space-y-2 max-h-96 overflow-y-auto">
+          {isLoading && <p className="text-[10px] text-slate-400">載入訊息中...</p>}
+          {data?.messages.map((m) => (
+            <div
+              key={m.id}
+              className={`rounded-lg p-2 text-xs ${
+                m.role === "user"
+                  ? "bg-indigo-50 dark:bg-indigo-950/40"
+                  : "bg-slate-50 dark:bg-slate-800/60"
+              }`}
+            >
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 mb-1">
+                {m.role === "user" ? "👤 學生" : "🤖 AI"}
+                <span className="ml-2">{new Date(m.created_at).toLocaleTimeString("zh-TW")}</span>
+              </div>
+              <div className="text-slate-800 dark:text-slate-100 whitespace-pre-wrap break-words">
+                {m.content.slice(0, 4000)}
+                {m.content.length > 4000 && <span className="text-slate-400">…(已截斷)</span>}
+              </div>
+            </div>
+          ))}
+          {data?.messages.length === 0 && (
+            <p className="text-[10px] text-slate-400">這個 session 沒有訊息</p>
+          )}
+        </div>
+      )}
+    </li>
+  );
+}
+
+function MiniStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+      <div className="text-[10px] text-slate-500 dark:text-slate-400">{label}</div>
+      <div className="text-sm font-semibold tabular-nums text-slate-800 dark:text-slate-100">{value}</div>
     </div>
   );
 }
