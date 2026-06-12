@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -11,7 +12,7 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("compare");
 
 const CompareSchema = z.object({
   rows: z.array(
@@ -65,7 +66,7 @@ export async function POST(req: Request) {
   const contextB = formatChunksForPrompt(chunksB);
 
   const { object } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("compare")),
     schema: CompareSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，請為兩個概念做一份**並列對比表**幫學生釐清。
 這是 discrimination learning（區辨學習）— 學生看到兩個概念並列、知道哪裡像哪裡不像，才能深度理解。

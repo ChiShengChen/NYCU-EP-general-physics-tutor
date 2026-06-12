@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
@@ -80,7 +81,7 @@ export async function POST(req: Request) {
 ${(stateRows ?? []).map((r) => `- ${r.concept}: ${(r.mastery_score * 100).toFixed(0)}%${r.last_misconception ? `（迷思：${r.last_misconception}）` : ""}`).join("\n")}`;
 
   const { text: aiFeedback } = await generateText({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("reflection")),
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，正在幫學生看他的本週「反思日誌」。
 這是後設認知（metacognition）訓練 — 學生願意寫下自己學什麼、卡哪裡，是非常珍貴的事。
 

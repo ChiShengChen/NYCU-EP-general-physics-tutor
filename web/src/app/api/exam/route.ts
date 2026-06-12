@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -12,7 +13,7 @@ import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("exam");
 
 const ExamSchema = z.object({
   title: z.string(),
@@ -139,7 +140,7 @@ async function handleGenerate(body: { examType: string; studentId?: string }) {
 教材內容：
 ${context}`;
 
-  const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+  const model = google(pickModel("exam"));
   const batches = await Promise.all([
     withLLMRetry(() => generateObject({
       model,
@@ -214,7 +215,7 @@ async function handleGrade(body: {
   }));
 
   const { object: resultRaw } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("exam")),
     schema: GradeSchema,
     prompt: `批改${examType === "midterm" ? "期中考" : "期末考"}模擬試題。
 

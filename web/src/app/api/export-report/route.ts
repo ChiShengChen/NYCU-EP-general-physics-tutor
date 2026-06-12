@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
@@ -126,7 +127,7 @@ ${reflections.slice(0, 3).map((r) => `> ${r.content.slice(0, 150)}${r.content.le
   let aiSummary = "（AI 總結生成失敗）";
   try {
     const { text } = await generateText({
-      model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+      model: google(pickModel("export")),
       prompt: summaryPrompt,
     });
     aiSummary = text;

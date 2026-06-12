@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -11,7 +12,7 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("hint");
 
 const HintSchema = z.object({
   hint: z.string().describe(
@@ -89,7 +90,7 @@ export async function POST(req: Request) {
     : "";
 
   const { object } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("hint")),
     schema: HintSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，學生在做題卡住了，請給一個**有層級的提示**幫他自己推到答案，**絕對不要直接給答案**。
 

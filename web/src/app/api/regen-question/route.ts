@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -11,7 +12,7 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("regen");
 
 const SingleQuestionSchema = z.object({
   question: z.object({
@@ -83,7 +84,7 @@ export async function POST(req: Request) {
   };
 
   const { object } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("regen")),
     schema: SingleQuestionSchema,
     prompt: `你是交通大學電物系「普通物理」課程的 AI 助教，請**重新生成一題**取代學生回報有問題的題目。
 

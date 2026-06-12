@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
@@ -11,7 +12,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("study-plan");
 
 const StudyPlanSchema = z.object({
   summary: z.string().describe("一句話總結學習狀況"),
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
 
   // Generate AI study plan
   const { object: plan } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("study-plan")),
     schema: StudyPlanSchema,
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請根據學生的學習數據生成個人化學習計畫。
 

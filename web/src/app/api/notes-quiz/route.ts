@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { restoreLatexInObject } from "@/lib/restore-latex";
@@ -11,7 +12,7 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("notes-quiz");
 
 const NotesQuizSchema = z.object({
   notesSummary: z.string().describe("3–5 sentence Traditional Chinese summary of what concepts the notes cover — anchors the quiz so the student can confirm the OCR worked."),

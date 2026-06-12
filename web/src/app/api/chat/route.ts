@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { streamText, tool, convertToModelMessages } from "ai";
 import { logUsage, checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
@@ -312,7 +313,7 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("chat")),
     system: systemPrompt,
     messages: modelMessages,
     tools: {
@@ -407,7 +408,7 @@ export async function POST(req: Request) {
           studentId: studentId ?? null,
           endpoint: "/api/chat",
           label: "chat/turn",
-          model: process.env.CHAT_MODEL ?? "gemini-2.5-flash",
+          model: pickModel("chat"),
         },
         usage,
       );

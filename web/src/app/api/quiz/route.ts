@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { pickModel } from "@/lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
@@ -12,7 +13,7 @@ import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
 
-const MODEL_NAME = process.env.CHAT_MODEL ?? "gemini-2.5-flash";
+const MODEL_NAME = pickModel("quiz");
 
 /* ─── Zod schemas for structured quiz output ─── */
 
@@ -138,7 +139,7 @@ ${context}
 - 題目用繁體中文，公式用 LaTeX
 - 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`;
 
-    const synthModel = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+    const synthModel = google(pickModel("quiz"));
     const synthBatches = await Promise.all([
       withLLMRetry(() => generateObject({
         model: synthModel,
@@ -210,7 +211,7 @@ ${context}
     // Split into 4 parallel batches of 5 questions each. Smaller batches
     // finish faster (each ~10-15s instead of 25-40s for a 10-question call),
     // dropping total wall time enough to stay clear of Vercel's 60s budget.
-    const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+    const model = google(pickModel("quiz"));
     const batches = await Promise.all([
       withLLMRetry(() => generateObject({
         model,
@@ -309,7 +310,7 @@ ${context}
 ${extraGuidance}`;
 
   // 4 parallel batches of 5 questions to stay well clear of the 60s budget.
-  const model = google(process.env.CHAT_MODEL ?? "gemini-2.5-flash");
+  const model = google(pickModel("quiz"));
   const basicHint = isIntroQuiz
     ? "- 對新同學請以基本概念建立題為主"
     : "- 重點放在掌握度最低的概念上，幫學生鞏固基礎";
@@ -373,7 +374,7 @@ async function handleGrade(body: {
   }));
 
   const { object: gradeResultRaw } = await withLLMRetry(() => generateObject({
-    model: google(process.env.CHAT_MODEL ?? "gemini-2.5-flash"),
+    model: google(pickModel("quiz")),
     schema: GradeResultSchema,
     prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
 
