@@ -14,6 +14,12 @@ export const maxDuration = 60;
 
 const MODEL_NAME = pickModel("preview");
 
+// Bump when the chapter-preview prompt template changes. The cached
+// chapter_previews rows are tagged with the version that produced them;
+// a mismatch is treated as a cache miss so stale shapes don't survive a
+// prompt edit. Override via env without a code change for hot-fixes.
+const PREVIEW_PROMPT_VERSION = process.env.PREVIEW_PROMPT_VERSION?.trim() || "v1";
+
 function validChapter(n: unknown): n is number {
   return typeof n === "number" && Number.isInteger(n) && n >= 1 && n <= 37;
 }
@@ -68,19 +74,21 @@ export async function GET(req: NextRequest) {
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("chapter_previews")
-    .select("content, generated_at")
+    .select("content, generated_at, prompt_version")
     .eq("chapter_number", chapter)
-    .single();
+    .eq("prompt_version", PREVIEW_PROMPT_VERSION)
+    .maybeSingle();
 
   if (data) {
     return NextResponse.json({
       chapter,
       content: restoreLatexInObject(data.content),
       generatedAt: data.generated_at,
+      promptVersion: data.prompt_version,
       cached: true,
     });
   }
-  return NextResponse.json({ chapter, cached: false });
+  return NextResponse.json({ chapter, cached: false, promptVersion: PREVIEW_PROMPT_VERSION });
 }
 
 /**
@@ -134,7 +142,12 @@ export async function POST(req: NextRequest) {
       const restored = restoreLatexInObject(obj);
       const supabase = createServiceClient();
       return supabase.from("chapter_previews").upsert(
-        { chapter_number: chapter, content: restored, generated_at: new Date().toISOString() },
+        {
+          chapter_number: chapter,
+          content: restored,
+          generated_at: new Date().toISOString(),
+          prompt_version: PREVIEW_PROMPT_VERSION,
+        },
         { onConflict: "chapter_number" },
       );
     })
