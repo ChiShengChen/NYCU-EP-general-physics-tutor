@@ -27,6 +27,14 @@ const MAX_DAYS = 365;
 // Supabase; 5 years comfortably covers the project's age.
 const ALL_DAYS = 365 * 5;
 
+// Per-student token thresholds for highlighting in the panel. Compared
+// against this student's total over the *current view's* window, so
+// switching range from 7d → 90d will naturally shift which students go
+// yellow / red. Defaults are intentionally generous; tighten via env if
+// you actually want alarms to fire.
+const WARN_TOKENS = Number(process.env.ADMIN_USAGE_WARN_TOKENS ?? 200_000);
+const DANGER_TOKENS = Number(process.env.ADMIN_USAGE_DANGER_TOKENS ?? 500_000);
+
 interface UsageRow {
   student_id: string;
   endpoint: string;
@@ -168,6 +176,10 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     // 0 means "all-time" so the panel can render it as 「全部」.
     windowDays: reportedDays,
+    thresholds: {
+      warnTokens: Number.isFinite(WARN_TOKENS) ? WARN_TOKENS : 200_000,
+      dangerTokens: Number.isFinite(DANGER_TOKENS) ? DANGER_TOKENS : 500_000,
+    },
     totals: {
       calls: totalCalls,
       totalTokens,

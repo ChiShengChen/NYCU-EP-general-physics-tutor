@@ -42,6 +42,7 @@ const REASON_TONES: Record<string, string> = {
 
 interface UsageData {
   windowDays: number;
+  thresholds: { warnTokens: number; dangerTokens: number };
   totals: { calls: number; totalTokens: number; costUsd: number; distinctStudents: number };
   topStudents: { id: string | null; label: string; isAuthenticated: boolean; calls: number; totalTokens: number; costUsd: number }[];
   endpoints: { endpoint: string; calls: number; totalTokens: number; costUsd: number }[];
@@ -284,7 +285,7 @@ function UsageView() {
           q ? `${totalStudents} / ${data.topStudents.length}` : `共 ${totalStudents}`
         } 人，第 ${safePage} / ${totalPages} 頁）`}
       >
-        <div className="mb-3">
+        <div className="mb-3 flex items-center gap-3 flex-wrap">
           <input
             type="search"
             value={studentQuery}
@@ -294,8 +295,11 @@ function UsageView() {
               setSelectedId(null);
             }}
             placeholder="搜尋學生（email / 名字 / 匿名 prefix）"
-            className="w-full max-w-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400"
+            className="flex-1 min-w-[200px] max-w-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400"
           />
+          <span className="text-[10px] text-slate-500 dark:text-slate-400">
+            ⚠️ ≥ {fmtTokens(data.thresholds.warnTokens)}　🚨 ≥ {fmtTokens(data.thresholds.dangerTokens)}
+          </span>
         </div>
         {totalStudents === 0 ? (
           <p className="text-xs text-slate-500 dark:text-slate-400 py-6 text-center">
@@ -316,18 +320,50 @@ function UsageView() {
               {pageStudents.map((s, i) => {
                 const clickable = !!s.id;
                 const isOpen = clickable && s.id === selectedId;
+                const level: "ok" | "warn" | "danger" =
+                  s.totalTokens >= data.thresholds.dangerTokens
+                    ? "danger"
+                    : s.totalTokens >= data.thresholds.warnTokens
+                      ? "warn"
+                      : "ok";
+                // Selected-row tint wins visually but threshold colour
+                // still bleeds through via the Tokens cell so admin
+                // doesn't lose the signal while drilling down.
+                const rowTone = isOpen
+                  ? "bg-indigo-50 dark:bg-indigo-950/30"
+                  : level === "danger"
+                    ? "bg-rose-50 dark:bg-rose-950/30"
+                    : level === "warn"
+                      ? "bg-amber-50 dark:bg-amber-950/30"
+                      : "";
+                const tokensTone =
+                  level === "danger"
+                    ? "text-rose-700 dark:text-rose-300 font-semibold"
+                    : level === "warn"
+                      ? "text-amber-700 dark:text-amber-300 font-medium"
+                      : "";
                 return (
                   <tr
                     key={i}
                     onClick={() => clickable && setSelectedId(isOpen ? null : s.id!)}
                     className={`border-t border-slate-100 dark:border-slate-800 ${
                       clickable ? "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60" : ""
-                    } ${isOpen ? "bg-indigo-50 dark:bg-indigo-950/30" : ""}`}
-                    title={clickable ? "點擊查看每日 tokens / 對話 / 測驗紀錄" : "已刪除帳號 — 無法查看明細"}
+                    } ${rowTone}`}
+                    title={
+                      level === "danger"
+                        ? `超過警示閥值 ${fmtTokens(data.thresholds.dangerTokens)} tokens`
+                        : level === "warn"
+                          ? `接近警示閥值 ${fmtTokens(data.thresholds.warnTokens)} tokens`
+                          : clickable
+                            ? "點擊查看每日 tokens / 對話 / 測驗紀錄"
+                            : "已刪除帳號 — 無法查看明細"
+                    }
                   >
                     <td className="py-1.5">
                       <span className="truncate inline-block max-w-[260px] align-middle">
                         {clickable && <span className="text-slate-400 mr-1">{isOpen ? "▾" : "▸"}</span>}
+                        {level === "danger" && <span className="mr-1">🚨</span>}
+                        {level === "warn" && <span className="mr-1">⚠️</span>}
                         {s.label}{" "}
                         {!s.isAuthenticated && s.id && (
                           <span className="text-[10px] text-slate-400">匿名</span>
@@ -335,7 +371,7 @@ function UsageView() {
                       </span>
                     </td>
                     <td className="py-1.5 tabular-nums text-right">{s.calls}</td>
-                    <td className="py-1.5 tabular-nums text-right">{fmtTokens(s.totalTokens)}</td>
+                    <td className={`py-1.5 tabular-nums text-right ${tokensTone}`}>{fmtTokens(s.totalTokens)}</td>
                     <td className="py-1.5 tabular-nums text-right">{fmtCost(s.costUsd)}</td>
                   </tr>
                 );
