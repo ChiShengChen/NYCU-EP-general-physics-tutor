@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -12,7 +13,8 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(req: NextRequest) {
   const supabase = createServiceClient();
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   const chapterParam = req.nextUrl.searchParams.get("chapter");
 
   if (!studentId) {

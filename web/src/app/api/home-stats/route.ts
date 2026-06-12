@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 15;
@@ -14,7 +15,8 @@ export const maxDuration = 15;
  *   - dailyDueCount        how many wrong questions are due for today's review
  */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const supabase = createServiceClient();

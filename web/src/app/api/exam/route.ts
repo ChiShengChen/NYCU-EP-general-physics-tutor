@@ -6,6 +6,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -48,12 +49,14 @@ const GradeSchema = z.object({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { action, studentId } = body;
+  const { action } = body;
 
-  // Single quota gate covering both generate and grade (each fans out to
-  // multiple Gemini calls; checking here means a maxed-out student doesn't
-  // sneak in a "grade" that runs after the cap was hit by "generate").
-  const quota = await checkDailyQuota(typeof studentId === "string" ? studentId : null);
+  // Auth-derived studentId beats body-supplied so a logged-in student
+  // can't burn another student's daily quota by passing their UUID here.
+  const { studentId } = await resolveStudentId(body.studentId);
+  body.studentId = studentId;
+
+  const quota = await checkDailyQuota(studentId);
   if (quota.blocked) {
     const r = quotaExceededResponse(quota);
     return NextResponse.json(r.body, { status: r.status });

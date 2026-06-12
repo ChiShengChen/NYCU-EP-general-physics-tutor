@@ -1,11 +1,13 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { estimateCost, checkDailyQuota } from "@/lib/usage-log";
 import { NextRequest, NextResponse } from "next/server";
 
 /** GET /api/usage/me?studentId=xxx
  *  Returns this-month token usage + cost estimate, grouped by endpoint. */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const supabase = createServiceClient();

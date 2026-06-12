@@ -5,6 +5,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -34,7 +35,10 @@ const StudyPlanSchema = z.object({
 
 /** GET /api/study-plan?studentId=xxx */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  // Auth-derived studentId wins so a logged-in user can't read or trigger
+  // a study-plan generation against another user's data via ?studentId=.
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const quota = await checkDailyQuota(studentId);

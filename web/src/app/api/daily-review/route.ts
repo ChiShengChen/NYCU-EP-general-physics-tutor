@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -55,7 +56,8 @@ type AttemptRow = {
 };
 
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const supabase = createServiceClient();
@@ -146,8 +148,19 @@ export async function GET(req: NextRequest) {
 export async function POST(req: Request) {
   const body = await req.json();
   if (body.action !== "record") return NextResponse.json({ error: "invalid action" }, { status: 400 });
-  const studentId = String(body.studentId ?? "");
-  const items: { concept?: string; knewIt: -1 | 0 | 1 }[] = Array.isArray(body.items) ? body.items : [];
+  // Auth-derived id so a caller can't nudge another student's mastery
+  // scores by passing their UUID in the body.
+  const { studentId } = await resolveStudentId(body.studentId);
+  // Validate knewIt strictly — only ±1 / 0 are accepted; anything else
+  // becomes 0 (no-op) so a malformed client can't apply unbounded deltas.
+  const items: { concept?: string; knewIt: -1 | 0 | 1 }[] = (Array.isArray(body.items) ? body.items : [])
+    .filter((it: unknown): it is { concept?: string; knewIt: number } =>
+      typeof it === "object" && it !== null
+    )
+    .map((it: { concept?: string; knewIt: number }) => ({
+      concept: typeof it.concept === "string" ? it.concept : undefined,
+      knewIt: (it.knewIt === 1 || it.knewIt === -1 ? it.knewIt : 0) as -1 | 0 | 1,
+    }));
   if (!studentId || items.length === 0) return NextResponse.json({ ok: true });
 
   const supabase = createServiceClient();

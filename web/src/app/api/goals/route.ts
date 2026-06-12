@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 20;
@@ -8,8 +9,15 @@ export const maxDuration = 20;
  *
  * GET    /api/goals?studentId=xxx       → list goals with computed progress
  * POST   /api/goals                     → create  { studentId, title, target_chapter?, target_concept?, target_date?, notes? }
- * PATCH  /api/goals?id=N                → update  { status? | notes? }
- * DELETE /api/goals?id=N                → remove
+ * PATCH  /api/goals?id=N                → update  { status? | notes? } (ownership enforced)
+ * DELETE /api/goals?id=N                → remove (ownership enforced)
+ *
+ * Security: studentId always resolved via the auth session when one is
+ * present; the request-supplied id is only honoured for anonymous users
+ * who don't have one yet. PATCH and DELETE additionally check that the
+ * `learning_goals` row belongs to the resolved studentId before mutating
+ * — previously they trusted only the `id` param, which was an IDOR vector
+ * (any signed-in user could complete/delete any other user's goal).
  *
  * Progress derivation per goal (no separate table, computed live):
  *   - If target_chapter set:
@@ -20,7 +28,8 @@ export const maxDuration = 20;
  *   - Days remaining = target_date - today (if target_date set)
  */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const supabase = createServiceClient();
@@ -84,7 +93,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const studentId = String(body.studentId ?? "");
+  // Resolve from auth so a signed-in user can't insert goals into another
+  // student's account by passing their UUID in the body.
+  const { studentId } = await resolveStudentId(body.studentId);
   const title = String(body.title ?? "").trim();
   if (!studentId || !title) return NextResponse.json({ error: "studentId + title required" }, { status: 400 });
 
@@ -107,6 +118,9 @@ export async function PATCH(req: NextRequest) {
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
   const body = await req.json();
 
+  const { studentId } = await resolveStudentId(body.studentId);
+  if (!studentId) return NextResponse.json({ error: "auth required" }, { status: 401 });
+
   const update: Record<string, unknown> = {};
   if (typeof body.status === "string" && ["active", "done", "abandoned"].includes(body.status)) {
     update.status = body.status;
@@ -115,17 +129,37 @@ export async function PATCH(req: NextRequest) {
   if (typeof body.notes === "string") update.notes = body.notes;
   if (Object.keys(update).length === 0) return NextResponse.json({ error: "nothing to update" }, { status: 400 });
 
+  // Ownership guard: the WHERE clause pins to BOTH the row id AND the
+  // resolved student_id. If the goal belongs to someone else, the update
+  // matches zero rows and the caller gets a 404, never a write through.
   const supabase = createServiceClient();
-  const { error } = await supabase.from("learning_goals").update(update).eq("id", parseInt(id));
+  const { data, error } = await supabase
+    .from("learning_goals")
+    .update(update)
+    .eq("id", parseInt(id))
+    .eq("student_id", studentId)
+    .select("id");
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (!data || data.length === 0) return NextResponse.json({ error: "not found" }, { status: 404 });
   return NextResponse.json({ ok: true });
 }
 
 export async function DELETE(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+  const body = await req.json().catch(() => ({}));
+
+  const { studentId } = await resolveStudentId(body?.studentId);
+  if (!studentId) return NextResponse.json({ error: "auth required" }, { status: 401 });
+
   const supabase = createServiceClient();
-  const { error } = await supabase.from("learning_goals").delete().eq("id", parseInt(id));
+  const { data, error } = await supabase
+    .from("learning_goals")
+    .delete()
+    .eq("id", parseInt(id))
+    .eq("student_id", studentId)
+    .select("id");
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (!data || data.length === 0) return NextResponse.json({ error: "not found" }, { status: 404 });
   return NextResponse.json({ ok: true });
 }

@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 15;
@@ -36,9 +37,13 @@ export async function POST(req: Request) {
 
   const q = (body.question ?? {}) as { question?: string; correctAnswer?: string; sourceChapter?: number };
 
+  // Resolve from auth so a malicious caller can't file reports under
+  // someone else's name (which would muddy the moderation signal).
+  const { studentId } = await resolveStudentId(body.studentId);
+
   const supabase = createServiceClient();
   const { error } = await supabase.from("question_reports").insert({
-    student_id: body.studentId ?? null,
+    student_id: studentId,
     attempt_id: typeof body.attemptId === "number" ? body.attemptId : null,
     question_id: typeof body.questionId === "number" ? body.questionId : null,
     source_chapter: typeof q.sourceChapter === "number" ? q.sourceChapter : null,

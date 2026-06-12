@@ -1,6 +1,7 @@
 import { google } from "@ai-sdk/google";
 import { streamText, tool, convertToModelMessages } from "ai";
 import { logUsage, checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt, type RetrievedChunk } from "@/lib/rag";
@@ -163,7 +164,12 @@ const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「*
 ${OUTPUT_DISCIPLINE}`;
 
 export async function POST(req: Request) {
-  const { messages, studentId, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = await req.json();
+  const body = await req.json();
+  const { messages, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = body;
+  // studentId resolved from the auth session when possible, so a logged-in
+  // student can't spoof another user's id in the body to read/write into
+  // their chat history.
+  const { studentId } = await resolveStudentId(body.studentId);
 
   // Quota gate: same daily token cap that all the JSON routes use, but
   // here it has to happen before streamText() — once that returns its

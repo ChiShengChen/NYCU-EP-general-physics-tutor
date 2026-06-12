@@ -5,6 +5,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const conceptA = String(body.conceptA ?? "").trim().slice(0, 200);
   const conceptB = String(body.conceptB ?? "").trim().slice(0, 200);
-  const studentId = typeof body.studentId === "string" ? body.studentId : null;
+  const { studentId } = await resolveStudentId(body.studentId);
   if (!conceptA || !conceptB) {
     return NextResponse.json({ error: "both conceptA and conceptB required" }, { status: 400 });
   }

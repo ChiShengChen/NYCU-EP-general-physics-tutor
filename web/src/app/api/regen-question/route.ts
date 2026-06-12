@@ -5,6 +5,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "previous question required" }, { status: 400 });
   }
   const reason: string = typeof body.reason === "string" ? body.reason : "";
-  const studentId = typeof body.studentId === "string" ? body.studentId : null;
+  const { studentId } = await resolveStudentId(body.studentId);
 
   const quota = await checkDailyQuota(studentId);
   if (quota.blocked) {

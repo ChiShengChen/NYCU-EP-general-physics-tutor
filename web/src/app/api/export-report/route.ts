@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 45;
@@ -15,7 +16,11 @@ export const maxDuration = 45;
  * (Content-Type: text/markdown) so the browser triggers a download.
  */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  // Auth-derived studentId wins — the report contains a full dump of a
+  // student's attempts + reflections + chat, so we must not let a caller
+  // download another user's history by guessing their UUID.
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const quota = await checkDailyQuota(studentId);

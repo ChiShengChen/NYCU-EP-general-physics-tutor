@@ -5,6 +5,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
   const draftAnswer = String(body.draftAnswer ?? "").slice(0, 2000);
   const sourceChapter = typeof body.sourceChapter === "number" ? body.sourceChapter : null;
   const level = Math.max(1, Math.min(3, Number(body.level) || 1)) as 1 | 2 | 3;
-  const studentId = typeof body.studentId === "string" ? body.studentId : null;
+  const { studentId } = await resolveStudentId(body.studentId);
 
   if (!question) {
     return NextResponse.json({ error: "question required" }, { status: 400 });

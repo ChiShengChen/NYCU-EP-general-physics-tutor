@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 30;
@@ -16,7 +17,10 @@ export const maxDuration = 30;
  *        spots / a concrete next step. Saves both to DB.
  */
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  // Reflections can be deeply personal — don't let a caller list someone
+  // else's reflections by guessing their UUID. Auth-derived id wins.
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
   const supabase = createServiceClient();
@@ -33,10 +37,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const studentId = String(body.studentId ?? "");
   const content = String(body.content ?? "").trim().slice(0, 5000);
   const promptUsed = String(body.promptUsed ?? "").slice(0, 500);
 
+  // Resolve from auth so a logged-in caller can't write a reflection into
+  // another user's journal by passing their UUID in the body.
+  const { studentId } = await resolveStudentId(body.studentId);
   if (!studentId || !content) {
     return NextResponse.json({ error: "studentId + content required" }, { status: 400 });
   }

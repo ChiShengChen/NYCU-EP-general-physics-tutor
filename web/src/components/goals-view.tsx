@@ -87,14 +87,21 @@ export function GoalsView({ onBack }: GoalsViewProps) {
     await fetch(`/api/goals?id=${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
+      // Send studentId so anonymous (cookie-less) users still pass the
+      // server-side ownership check; logged-in users get studentId from
+      // the auth cookie and the body value is ignored.
+      body: JSON.stringify({ status, studentId }),
     });
     await refresh();
   };
 
   const remove = async (id: number) => {
     if (!confirm("確定刪除這個目標？")) return;
-    await fetch(`/api/goals?id=${id}`, { method: "DELETE" });
+    await fetch(`/api/goals?id=${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ studentId }),
+    });
     await refresh();
   };
 

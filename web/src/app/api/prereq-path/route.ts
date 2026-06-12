@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { CHAPTER_NODES, findPrereqChapters } from "@/lib/concept-graph";
 
 export const maxDuration = 15;
@@ -56,7 +57,8 @@ function statusFor(total: number, accuracy: number | null): PrereqStatus {
 }
 
 export async function GET(req: NextRequest) {
-  const studentId = req.nextUrl.searchParams.get("studentId");
+  const querySid = req.nextUrl.searchParams.get("studentId");
+  const { studentId } = await resolveStudentId(querySid);
   const chapterParam = req.nextUrl.searchParams.get("chapter");
   if (!studentId) {
     return NextResponse.json({ error: "studentId required" }, { status: 400 });

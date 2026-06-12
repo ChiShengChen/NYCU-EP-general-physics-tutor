@@ -2,29 +2,14 @@
 
 /* AI-generated SVG sketches embedded in chat messages.
  * The model emits <svg>...</svg> via the `sketchVisualUnderstanding` tool;
- * we sanitize and inline it so students can compare with their original image. */
+ * we sanitize and inline it so students can compare with their original image.
+ *
+ * Sanitisation is delegated to `@/lib/sanitize-svg` which is a strict
+ * DOM-walking whitelist — much stronger than the regex stripper that
+ * lived here before and that audit issue #8 flagged for missing
+ * `<image href>` / `<animate>` / `<use>` / `<foreignObject>` vectors. */
 
-/** Strip XSS vectors from model-generated SVG. Allowed: standard shape /
- *  text / group tags. Stripped: <script>, on* event handlers, javascript:
- *  URIs, external href that aren't simple #fragments. */
-function sanitizeSvg(raw: string): string {
-  let s = raw.trim();
-  // Keep only the <svg>...</svg> block if extra text leaked in.
-  const m = s.match(/<svg[\s\S]*?<\/svg>/i);
-  if (m) s = m[0];
-
-  // Remove <script>...</script> entirely.
-  s = s.replace(/<script[\s\S]*?<\/script>/gi, "");
-  // Remove on*="..." event handlers.
-  s = s.replace(/\s+on[a-z]+\s*=\s*"(?:\\.|[^"\\])*"/gi, "");
-  s = s.replace(/\s+on[a-z]+\s*=\s*'(?:\\.|[^'\\])*'/gi, "");
-  // Neutralise javascript: URIs.
-  s = s.replace(/(href|xlink:href)\s*=\s*"(?:\s*javascript:)[^"]*"/gi, '$1="#"');
-  s = s.replace(/(href|xlink:href)\s*=\s*'(?:\s*javascript:)[^']*'/gi, "$1='#'");
-  // Remove any <foreignObject> (can host arbitrary HTML).
-  s = s.replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, "");
-  return s;
-}
+import { sanitizeSvg } from "@/lib/sanitize-svg";
 
 interface AiSketchProps {
   title: string;

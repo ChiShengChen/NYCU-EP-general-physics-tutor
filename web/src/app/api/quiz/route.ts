@@ -6,6 +6,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -51,11 +52,15 @@ const GradeResultSchema = z.object({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { action, studentId } = body;
+  const { action } = body;
 
-  // Both generate and grade hit Gemini; one quota check up front covers
-  // either branch and lets us 429 before any RAG/aggregation work runs.
-  const quota = await checkDailyQuota(typeof studentId === "string" ? studentId : null);
+  // Resolve identity from auth (preferred) before quota or AI work so a
+  // logged-in user can't burn another student's quota by passing their
+  // UUID in the body. Anonymous tier still accepts body-supplied id.
+  const { studentId } = await resolveStudentId(body.studentId);
+  body.studentId = studentId;  // downstream handlers read body.studentId
+
+  const quota = await checkDailyQuota(studentId);
   if (quota.blocked) {
     const r = quotaExceededResponse(quota);
     return NextResponse.json(r.body, { status: r.status });
