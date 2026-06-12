@@ -216,8 +216,15 @@ export async function POST(req: Request) {
       .replace(/\{concept\}/g, concept.trim())
       .replace("{context}", context);
   } else {
-    // Q&A mode: RAG similarity search
-    const chunks = await retrieveChunks(query);
+    // Q&A mode: RAG similarity search. The library's default threshold of
+    // 0.65 was way too strict for cross-language queries — a student
+    // asking "勞侖茲變換" got "no relevant content" because the embedding
+    // similarity to the English lecture chunks landed in the 0.4–0.5
+    // band. 0.35 matches the threshold used by other routes (preview,
+    // concept-compare, feynman) and recovers the missing hits without
+    // pulling in obviously-unrelated material; bumping matchCount to 8
+    // gives the model more to ground in for longer derivations.
+    const chunks = await retrieveChunks(query, { matchCount: 8, matchThreshold: 0.35 });
     context = formatChunksForPrompt(chunks);
     chunkIds = chunks.map((c) => c.id);
     systemPrompt = (socratic ? QA_SOCRATIC_SYSTEM_PROMPT : QA_SYSTEM_PROMPT).replace("{context}", context);

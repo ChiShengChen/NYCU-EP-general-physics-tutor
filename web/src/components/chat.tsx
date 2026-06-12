@@ -7,6 +7,7 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { FormulaHelp } from "./formula-help";
 import { AiSketch } from "./ai-sketch";
 import { ThemeToggle } from "./theme-provider";
+import { restoreLatexEscapes } from "@/lib/restore-latex";
 
 const SUGGESTED_QUESTIONS = [
   "解釋牛頓第二定律的向量形式",
@@ -298,7 +299,7 @@ export function Chat({ onBack, initialMessages, resumeKey, pendingMessage, sessi
                   {text && (
                     m.role === "user"
                       ? <p className="whitespace-pre-wrap">{text}</p>
-                      : <MarkdownRenderer content={text} />
+                      : <MarkdownRenderer content={restoreLatexEscapes(text)} />
                   )}
                   {sketches.map((s) => (
                     <AiSketch key={s.key} title={s.title} svg={s.svg} notes={s.notes} />

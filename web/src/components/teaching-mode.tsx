@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { type UIMessage, DefaultChatTransport } from "ai";
 import { useRef, useEffect, useMemo, useState, useCallback, useSyncExternalStore, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { restoreLatexEscapes } from "@/lib/restore-latex";
 import { TeachingSimEmbed } from "./teaching-sim-embed";
 import { ThemeToggle } from "./theme-provider";
 
@@ -455,7 +456,7 @@ function PageViewer({
                       {m.role === "user" ? (
                         <p className="whitespace-pre-wrap text-sm">{text}</p>
                       ) : (
-                        <MarkdownRenderer content={text} />
+                        <MarkdownRenderer content={restoreLatexEscapes(text)} />
                       )}
                     </div>
                   </div>

@@ -19,7 +19,13 @@ export async function retrieveChunks(
   query: string,
   options: { matchCount?: number; matchThreshold?: number; filterChapter?: number } = {},
 ): Promise<RetrievedChunk[]> {
-  const { matchCount = 6, matchThreshold = 0.65, filterChapter } = options;
+  // Default threshold lowered from 0.65 → 0.35 after a Q&A regression: the
+  // chat route was using the default and missing chunks whose embedding
+  // similarity to a Chinese query landed in the 0.4–0.5 band, even when the
+  // chunk's English content clearly covered the topic. 0.35 is the value
+  // every other route was already passing explicitly; keeping the default
+  // in line with that makes new callers safe by default.
+  const { matchCount = 6, matchThreshold = 0.35, filterChapter } = options;
 
   const { embedding } = await embed({
     model: google.embedding(EMBED_MODEL),
