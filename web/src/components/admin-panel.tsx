@@ -154,6 +154,24 @@ function fmtCost(usd: number): string {
   return `$${usd.toFixed(2)}`;
 }
 
+/**
+ * Anchor styled as a small button. We use a real <a> so the browser
+ * streams the CSV directly via its download UI — wrapping fetch() and
+ * blob URLs would also work but would pull the whole CSV into memory
+ * just to re-export it.
+ */
+function DownloadCsvButton({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-1"
+      title="下載 CSV（UTF-8 BOM，Excel 直接打開不會亂碼）"
+    >
+      ⬇ {children}
+    </a>
+  );
+}
+
 /* ─── Usage tab ─── */
 
 const STUDENTS_PER_PAGE = 25;
@@ -186,6 +204,11 @@ function UsageView() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-5">
+      <div className="flex justify-end">
+        <DownloadCsvButton href={`/api/admin/export/usage?days=${data.windowDays}`}>
+          匯出全班 CSV（{data.windowDays} 天）
+        </DownloadCsvButton>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat label="呼叫總數" value={String(data.totals.calls)} />
         <Stat label="Tokens (30 天)" value={fmtTokens(data.totals.totalTokens)} />
@@ -311,18 +334,29 @@ function StudentDetail({ id, label }: { id: string; label: string }) {
 
   return (
     <div className="space-y-4">
-      <div className="text-xs text-slate-600 dark:text-slate-300">
+      <div className="flex items-center gap-2 flex-wrap text-xs text-slate-600 dark:text-slate-300">
         <span className="font-medium text-slate-800 dark:text-slate-100">{label}</span>
         {data.profile?.createdAt && (
-          <span className="ml-2 text-slate-400 dark:text-slate-500">
+          <span className="text-slate-400 dark:text-slate-500">
             註冊 {new Date(data.profile.createdAt).toLocaleDateString("zh-TW")}
           </span>
         )}
         {data.profile?.lastSignedInAt && (
-          <span className="ml-2 text-slate-400 dark:text-slate-500">
+          <span className="text-slate-400 dark:text-slate-500">
             · 最近登入 {new Date(data.profile.lastSignedInAt).toLocaleDateString("zh-TW")}
           </span>
         )}
+        <div className="ml-auto flex items-center gap-1">
+          <DownloadCsvButton href={`/api/admin/export/student?id=${id}&kind=usage&days=${data.windowDays}`}>
+            usage
+          </DownloadCsvButton>
+          <DownloadCsvButton href={`/api/admin/export/student?id=${id}&kind=chats`}>
+            chats
+          </DownloadCsvButton>
+          <DownloadCsvButton href={`/api/admin/export/student?id=${id}&kind=attempts`}>
+            attempts
+          </DownloadCsvButton>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-2">
@@ -611,6 +645,9 @@ function ReportsView() {
           </button>
         ))}
         <span className="ml-auto text-slate-400 dark:text-slate-500">共 {data.reports.length} 筆</span>
+        <DownloadCsvButton href={`/api/admin/export/reports?status=${status}`}>
+          匯出 CSV
+        </DownloadCsvButton>
       </div>
 
       {data.reports.length === 0 ? (
