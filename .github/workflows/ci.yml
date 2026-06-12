@@ -50,3 +50,6 @@ jobs:
 
       - name: Lint
         run: npx eslint .
+
+      - name: Unit tests
+        run: npm test

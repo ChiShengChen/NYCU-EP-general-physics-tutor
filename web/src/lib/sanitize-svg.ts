@@ -103,9 +103,11 @@ function attributeValueIsSafe(name: string, value: string): boolean {
 function sanitizeElement(el: Element): void {
   const tag = el.tagName.toLowerCase();
 
-  // Forbidden tag → remove subtree entirely.
+  // Forbidden tag → remove subtree entirely. Use parentNode.removeChild
+  // (rather than the newer el.remove()) so the same code works under
+  // both browser DOM and the @xmldom shim we use in unit tests.
   if (FORBIDDEN_TAGS.has(tag) || !ALLOWED_TAGS.has(tag)) {
-    el.remove();
+    el.parentNode?.removeChild(el);
     return;
   }
 
@@ -141,13 +143,26 @@ export function sanitizeSvg(raw: string): string {
   if (!s) return "";
 
   const parser = new DOMParser();
-  const doc = parser.parseFromString(s, "image/svg+xml");
-  // parseerror element is how DOMParser reports invalid SVG — drop it.
+  let doc: Document;
+  try {
+    doc = parser.parseFromString(s, "image/svg+xml");
+  } catch {
+    // @xmldom (used in unit tests) throws on invalid XML rather than
+    // returning a parsererror element. Either way → reject.
+    return "";
+  }
   if (doc.getElementsByTagName("parsererror").length > 0) return "";
 
   const root = doc.documentElement;
   if (!root || root.tagName.toLowerCase() !== "svg") return "";
 
   sanitizeElement(root);
-  return root.outerHTML;
+  // outerHTML lands on the browser Element; in non-browser test envs
+  // (jsdom / @xmldom) fall back to an XMLSerializer round-trip so the
+  // helper stays exercise-able from unit tests.
+  if (typeof root.outerHTML === "string") return root.outerHTML;
+  if (typeof XMLSerializer !== "undefined") {
+    return new XMLSerializer().serializeToString(root);
+  }
+  return "";
 }

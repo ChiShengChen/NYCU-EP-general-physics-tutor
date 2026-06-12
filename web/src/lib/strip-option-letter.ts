@@ -12,7 +12,11 @@
  * legitimate option like "A 為真，B 為假" — where "A" is content, not a
  * prefix — survives untouched.
  */
-const PREFIX_RE = /^\s*[(（]?([A-Da-d])[)）。．.、:：]\s+/;
+// Whitespace after the punctuation is optional: Chinese-style
+// punctuation (、:：。．) is commonly used without a trailing space, and
+// the function's positional-letter check still keeps the strip narrow
+// enough that legitimate content like "A 為真" doesn't get mangled.
+const PREFIX_RE = /^\s*[(（]?([A-Da-d])[)）。．.、:：]\s*/;
 
 export function stripOptionLetter(option: string, index: number): string {
   if (!option) return option;
