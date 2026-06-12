@@ -57,6 +57,22 @@ interface DashboardData {
   stats: Stats;
 }
 
+interface CohortChapter {
+  chapter: number;
+  title: string;
+  cohortAccuracy: number | null;
+  cohortAttempts: number | null;
+  cohortStudents: number;
+  yourAccuracy: number | null;
+  yourAttempts: number;
+}
+
+interface CohortStats {
+  windowDays: number;
+  minCohortStudents: number;
+  perChapter: CohortChapter[];
+}
+
 /* ─── Component ─── */
 
 interface DashboardProps {
@@ -71,6 +87,12 @@ export function Dashboard({ onBack }: DashboardProps) {
 
   const { data, error: fetchError, isLoading } = useSWR<DashboardData>(
     apiKey("/api/dashboard", { studentId }),
+  );
+  // Anonymous peer comparison — separate endpoint so dashboard's own
+  // fetch isn't blocked on the cohort aggregation, and so the panel can
+  // gracefully degrade when the cohort hasn't crossed the privacy floor.
+  const { data: cohort } = useSWR<CohortStats>(
+    apiKey("/api/cohort-stats", { studentId }),
   );
 
   // Distinguish "no student yet" (empty state) from "API error" (transient
@@ -130,6 +152,7 @@ export function Dashboard({ onBack }: DashboardProps) {
               <TrendSection trendLine={data.trendLine} />
             </div>
             <ActivitySection activity={data.activityHeatmap} />
+            {cohort && <CohortCompareSection cohort={cohort} />}
             <MasteryTable mastery={data.mastery} />
           </div>
         )}
@@ -302,6 +325,86 @@ function ActivitySection({ activity }: { activity: ActivityItem[] }) {
           </BarChart>
         </ResponsiveContainer>
       )}
+    </div>
+  );
+}
+
+/* ─── Cohort Comparison ─── */
+
+function CohortCompareSection({ cohort }: { cohort: CohortStats }) {
+  // Only show chapters where THIS student has at least one attempt AND
+  // the cohort floor has been met — otherwise the row is just two empty
+  // bars and adds noise. Sort by absolute gap so the most interesting
+  // comparisons surface first (where you stand out either way).
+  const rows = cohort.perChapter
+    .filter((c) => c.yourAttempts > 0 && c.cohortAccuracy !== null)
+    .map((c) => ({
+      ...c,
+      // Non-null narrowing for the renderer.
+      cohortAccuracy: c.cohortAccuracy as number,
+      yourAccuracy: c.yourAccuracy ?? 0,
+      gap: (c.yourAccuracy ?? 0) - (c.cohortAccuracy as number),
+    }))
+    .sort((a, b) => Math.abs(b.gap) - Math.abs(a.gap))
+    .slice(0, 12);
+
+  if (rows.length === 0) {
+    return (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">👥 班級匿名比較</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          目前還沒有足夠的同學在你做過的章節留下資料（每章節最少需 {cohort.minCohortStudents} 人才會顯示，保護匿名性）。
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">👥 班級匿名比較</h3>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+        最近 {cohort.windowDays} 天內，你的對答率 vs 全班平均（每章節最少 {cohort.minCohortStudents} 人才入列，無從識別個人）。
+      </p>
+      <div className="space-y-2">
+        {rows.map((c) => {
+          const yourPct = Math.round(c.yourAccuracy * 100);
+          const cohortPct = Math.round(c.cohortAccuracy * 100);
+          const gapLabel =
+            c.gap > 0.05 ? "領先" :
+            c.gap < -0.05 ? "落後" :
+            "持平";
+          const gapTone =
+            c.gap > 0.05 ? "text-emerald-700 dark:text-emerald-300" :
+            c.gap < -0.05 ? "text-rose-700 dark:text-rose-300" :
+            "text-slate-500 dark:text-slate-400";
+          return (
+            <div key={c.chapter} className="grid grid-cols-12 gap-2 items-center text-xs">
+              <div className="col-span-3 truncate">
+                <span className="font-mono text-slate-500 dark:text-slate-400">Ch{String(c.chapter).padStart(2, "0")}</span>
+                <span className="ml-1.5 text-slate-700 dark:text-slate-200">{c.title}</span>
+              </div>
+              <div className="col-span-7 flex items-center gap-1">
+                <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <div className="h-full bg-indigo-500" style={{ width: `${yourPct}%` }} />
+                </div>
+                <span className="tabular-nums text-indigo-700 dark:text-indigo-300 w-9 text-right">{yourPct}%</span>
+                <span className="text-slate-300 dark:text-slate-600">·</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <div className="h-full bg-slate-400 dark:bg-slate-500" style={{ width: `${cohortPct}%` }} />
+                </div>
+                <span className="tabular-nums text-slate-500 dark:text-slate-400 w-9 text-right">{cohortPct}%</span>
+              </div>
+              <div className={`col-span-2 text-right tabular-nums ${gapTone}`}>
+                {c.gap > 0 ? "+" : ""}{Math.round(c.gap * 100)}% {gapLabel}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-3 flex items-center gap-3 text-[10px] text-slate-400 dark:text-slate-500">
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-indigo-500" />你</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500" />班級平均</span>
+      </div>
     </div>
   );
 }
