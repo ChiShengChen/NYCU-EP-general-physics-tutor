@@ -23,8 +23,9 @@ import { LibraryView } from "@/components/library-view";
 import { GoalsView } from "@/components/goals-view";
 import { SimulatorsMode } from "@/components/simulators";
 import { NotesQuiz } from "@/components/notes-quiz";
+import { AdminPanel } from "@/components/admin-panel";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "admin" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -183,6 +184,7 @@ export default function Home() {
   if (mode === "goals") return <GoalsView onBack={goHome} />;
   if (mode === "sim") return <SimulatorsMode onBack={goHome} />;
   if (mode === "notes-quiz") return <NotesQuiz onBack={goHome} />;
+  if (mode === "admin") return <AdminPanel onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;
 }

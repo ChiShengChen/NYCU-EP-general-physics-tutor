@@ -18,7 +18,7 @@ type HomeStats = {
 };
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "admin") => void;
 }
 
 function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
@@ -64,6 +64,11 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
   // so a quick mode → back trip uses the cached payload instead of
   // re-hitting the API.
   const { data: stats } = useSWR<HomeStats>(apiKey("/api/home-stats", { studentId }));
+  // Admin status — only shown for emails in ADMIN_EMAILS env. SWR
+  // dedupes the call across re-renders so the home page isn't doing
+  // extra work for non-admins.
+  const { data: adminCheck } = useSWR<{ isAdmin: boolean }>("/api/admin/check");
+  const isAdmin = !!adminCheck?.isAdmin;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,6 +76,15 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         <span className="text-xl">🔬</span>
         <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">普通物理 AI 助教</h1>
         <div className="ml-auto flex items-center gap-2">
+          {isAdmin && (
+            <button
+              onClick={() => onSelectMode("admin")}
+              className="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-xs text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+              title="管理員後台 — Token 使用 + 問題回報"
+            >
+              🛡️ 後台
+            </button>
+          )}
           <AuthButton />
           <ThemeToggle />
         </div>
