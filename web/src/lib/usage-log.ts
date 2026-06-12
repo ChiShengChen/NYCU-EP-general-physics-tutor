@@ -19,7 +19,14 @@ export type UsageContext = {
   endpoint: string;
   label?: string;
   model: string;
+  /** Optional override for the prompt-version tag stored with the row.
+   *  When unset we read process.env.PROMPT_VERSION (default "v1") so
+   *  every existing call sites stay one-liner. Pass an explicit value
+   *  when you need finer granularity per route (e.g. "preview-v3"). */
+  promptVersion?: string;
 };
+
+const DEFAULT_PROMPT_VERSION = process.env.PROMPT_VERSION?.trim() || "v1";
 
 export type UsageNumbers = {
   promptTokens?: number;
@@ -51,6 +58,7 @@ export function logUsage(ctx: UsageContext, usage: UsageNumbers | undefined | nu
         prompt_tokens: prompt,
         completion_tokens: completion,
         total_tokens: total,
+        prompt_version: ctx.promptVersion ?? DEFAULT_PROMPT_VERSION,
       });
       if (error) console.error("[usage-log] insert failed:", error);
     } catch (err) {

@@ -43,6 +43,7 @@ interface UsageRow {
   completion_tokens: number;
   total_tokens: number;
   created_at: string;
+  prompt_version: string | null;
 }
 
 export async function GET(req: NextRequest) {
@@ -68,7 +69,7 @@ export async function GET(req: NextRequest) {
   const [{ data: rows, error: usageErr }, { data: profiles }] = await Promise.all([
     supabase
       .from("token_usage")
-      .select("student_id, endpoint, model, prompt_tokens, completion_tokens, total_tokens, created_at")
+      .select("student_id, endpoint, model, prompt_tokens, completion_tokens, total_tokens, created_at, prompt_version")
       .gte("created_at", cutoff)
       .limit(50_000),
     supabase
@@ -89,6 +90,10 @@ export async function GET(req: NextRequest) {
   const byStudent = new Map<string, StudentSlot>();
   const byEndpoint = new Map<string, EndpointSlot>();
   const byDay = new Map<string, { tokens: number; cost: number }>();
+  // Prompt-version rollup so A/B comparisons across prompt iterations
+  // surface without a second query. Pre-versioning rows show up under
+  // 'v1' because the migration back-fills them that way.
+  const byVersion = new Map<string, { calls: number; tokens: number; cost: number }>();
 
   let totalCalls = 0;
   let totalTokens = 0;
@@ -116,6 +121,13 @@ export async function GET(req: NextRequest) {
     e.total += r.total_tokens;
     e.cost += c;
     byEndpoint.set(r.endpoint, e);
+
+    const v = r.prompt_version ?? "v1";
+    const vSlot = byVersion.get(v) ?? { calls: 0, tokens: 0, cost: 0 };
+    vSlot.calls += 1;
+    vSlot.tokens += r.total_tokens;
+    vSlot.cost += c;
+    byVersion.set(v, vSlot);
 
     const day = r.created_at.slice(0, 10);
     const dayEntry = byDay.get(day) ?? { tokens: 0, cost: 0 };
@@ -191,5 +203,13 @@ export async function GET(req: NextRequest) {
     topStudents: allStudents,
     endpoints,
     daily,
+    promptVersions: Array.from(byVersion.entries())
+      .sort(([, a], [, b]) => b.tokens - a.tokens)
+      .map(([version, v]) => ({
+        version,
+        calls: v.calls,
+        tokens: v.tokens,
+        costUsd: Number(v.cost.toFixed(4)),
+      })),
   });
 }

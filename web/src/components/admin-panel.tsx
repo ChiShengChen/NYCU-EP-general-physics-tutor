@@ -48,6 +48,7 @@ interface UsageData {
   topStudents: { id: string | null; label: string; isAuthenticated: boolean; calls: number; totalTokens: number; costUsd: number }[];
   endpoints: { endpoint: string; calls: number; totalTokens: number; costUsd: number }[];
   daily: { date: string; tokens: number; costUsd: number }[];
+  promptVersions: { version: string; calls: number; tokens: number; costUsd: number }[];
 }
 
 interface StudentDetail {
@@ -433,6 +434,23 @@ function UsageView() {
           ])}
         />
       </Section>
+
+      {data.promptVersions.length > 1 && (
+        <Section title="🧪 Prompt 版本用量（A/B 對照）">
+          <Table
+            headers={["版本", "次數", "Tokens", "估算成本"]}
+            rows={data.promptVersions.map((v) => [
+              <span key="0" className="font-mono text-[11px]">{v.version}</span>,
+              String(v.calls),
+              fmtTokens(v.tokens),
+              fmtCost(v.costUsd),
+            ])}
+          />
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2">
+            版本透過 <span className="font-mono">PROMPT_VERSION</span> env 切換。改 prompt 時記得 bump 版本，這張表就能對照新舊用量與成本。
+          </p>
+        </Section>
+      )}
     </div>
   );
 }
