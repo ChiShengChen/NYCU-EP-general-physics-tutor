@@ -21,7 +21,6 @@ export const maxDuration = 30;
  */
 
 const WINDOW_DAYS = 30;
-const TOP_STUDENTS = 25;
 
 interface UsageRow {
   student_id: string;
@@ -101,12 +100,12 @@ export async function GET() {
     byDay.set(day, dayEntry);
   }
 
-  // Sort + tag students. Hide raw UUIDs — the panel only needs
-  // a human-readable label and a short suffix to disambiguate when two
-  // anonymous profiles share a display name.
-  const topStudents = Array.from(byStudent.entries())
+  // Sort all students by usage. We return the full sorted list (no
+  // server-side slice) so the panel can paginate client-side without a
+  // roundtrip per page change. The 30-day token_usage cap at 50k rows
+  // bounds the response size enough that this stays cheap.
+  const allStudents = Array.from(byStudent.entries())
     .sort(([, a], [, b]) => b.total - a.total)
-    .slice(0, TOP_STUDENTS)
     .map(([sid, v]) => {
       if (sid === "__deleted__") {
         return {
@@ -158,7 +157,9 @@ export async function GET() {
       costUsd: Number(totalCost.toFixed(4)),
       distinctStudents: byStudent.size,
     },
-    topStudents,
+    // Field kept named `topStudents` for backwards compatibility with the
+    // admin panel; the panel slices it client-side for pagination.
+    topStudents: allStudents,
     endpoints,
     daily,
   });

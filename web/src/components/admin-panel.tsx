@@ -156,12 +156,17 @@ function fmtCost(usd: number): string {
 
 /* ─── Usage tab ─── */
 
+const STUDENTS_PER_PAGE = 25;
+
 function UsageView() {
   const { data, error, isLoading } = useSWR<UsageData>("/api/admin/usage");
   // Which row is expanded into a per-student detail drawer. We render
   // the drawer inline under the table rather than as a modal so admins
-  // can keep scrolling through other top-25 rows without losing context.
+  // can keep scrolling through other rows without losing context.
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Pagination for the student usage table. 1-indexed because that's
+  // what the page selector shows the admin.
+  const [studentsPage, setStudentsPage] = useState(1);
 
   if (isLoading) return <Centered>載入中...</Centered>;
   if (error) {
@@ -172,6 +177,11 @@ function UsageView() {
   if (!data) return null;
 
   const maxDaily = Math.max(1, ...data.daily.map((d) => d.tokens));
+  const totalStudents = data.topStudents.length;
+  const totalPages = Math.max(1, Math.ceil(totalStudents / STUDENTS_PER_PAGE));
+  const safePage = Math.min(studentsPage, totalPages);
+  const pageStart = (safePage - 1) * STUDENTS_PER_PAGE;
+  const pageStudents = data.topStudents.slice(pageStart, pageStart + STUDENTS_PER_PAGE);
   const selectedStudent = data.topStudents.find((s) => s.id && s.id === selectedId) ?? null;
 
   return (
@@ -204,7 +214,7 @@ function UsageView() {
         </div>
       </Section>
 
-      <Section title="🔝 用量前 25 名學生（點擊展開明細）">
+      <Section title={`🔝 學生用量排行（共 ${totalStudents} 人，第 ${safePage} / ${totalPages} 頁）`}>
         <div className="overflow-x-auto">
           <table className="w-full text-xs min-w-[420px]">
             <thead>
@@ -216,7 +226,7 @@ function UsageView() {
               </tr>
             </thead>
             <tbody className="text-slate-700 dark:text-slate-200">
-              {data.topStudents.map((s, i) => {
+              {pageStudents.map((s, i) => {
                 const clickable = !!s.id;
                 const isOpen = clickable && s.id === selectedId;
                 return (
@@ -246,6 +256,21 @@ function UsageView() {
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 && (
+          <Pagination
+            page={safePage}
+            totalPages={totalPages}
+            onChange={(p) => {
+              setStudentsPage(p);
+              // Close the drilldown when jumping pages — the previously
+              // selected row probably isn't on this page anymore, and
+              // leaving a phantom drawer dangling between pages is
+              // disorienting.
+              setSelectedId(null);
+            }}
+          />
+        )}
 
         {selectedStudent?.id && (
           <div className="mt-4 border-t border-slate-200 dark:border-slate-700 pt-4">
@@ -458,6 +483,78 @@ function ChatSessionRow({
       )}
     </li>
   );
+}
+
+/**
+ * Compact 1-N page selector with windowed page numbers. Shows prev/next
+ * arrows, the first page, an ellipsis, a small window around the current
+ * page, another ellipsis, and the last page. Keeps the row short even
+ * when there are 50+ pages.
+ */
+function Pagination({
+  page,
+  totalPages,
+  onChange,
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (p: number) => void;
+}) {
+  const pages = buildPageWindow(page, totalPages);
+  return (
+    <div className="mt-4 flex items-center justify-center gap-1 text-xs flex-wrap">
+      <button
+        onClick={() => onChange(Math.max(1, page - 1))}
+        disabled={page <= 1}
+        className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        ‹ 上一頁
+      </button>
+      {pages.map((p, i) =>
+        p === "…" ? (
+          <span key={`gap-${i}`} className="px-1 text-slate-400">…</span>
+        ) : (
+          <button
+            key={p}
+            onClick={() => onChange(p)}
+            className={`min-w-[28px] px-2 py-1 rounded-lg border tabular-nums ${
+              p === page
+                ? "bg-indigo-600 border-indigo-600 text-white"
+                : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+            }`}
+          >
+            {p}
+          </button>
+        ),
+      )}
+      <button
+        onClick={() => onChange(Math.min(totalPages, page + 1))}
+        disabled={page >= totalPages}
+        className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        下一頁 ›
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Build a list like [1, "…", 4, 5, 6, "…", 20] for the current page.
+ * Always includes 1 and totalPages; pads up to ±2 around `page`; collapses
+ * the rest with ellipses.
+ */
+function buildPageWindow(page: number, totalPages: number): (number | "…")[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  const out: (number | "…")[] = [1];
+  const start = Math.max(2, page - 2);
+  const end = Math.min(totalPages - 1, page + 2);
+  if (start > 2) out.push("…");
+  for (let p = start; p <= end; p++) out.push(p);
+  if (end < totalPages - 1) out.push("…");
+  out.push(totalPages);
+  return out;
 }
 
 function MiniStat({ label, value }: { label: string; value: string }) {
