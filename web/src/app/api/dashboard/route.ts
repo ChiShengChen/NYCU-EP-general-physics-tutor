@@ -14,19 +14,23 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServiceClient();
 
-  // 1. Concept mastery data (for radar chart)
-  const { data: masteryData } = await supabase
-    .from("student_state")
-    .select("concept, mastery_score, attempt_count, last_misconception, updated_at")
-    .eq("student_id", studentId)
-    .order("concept");
-
-  // 2. Chat messages (for activity heatmap + learning time)
-  const { data: chatData } = await supabase
-    .from("chat_messages")
-    .select("role, created_at, content")
-    .eq("student_id", studentId)
-    .order("created_at", { ascending: true });
+  // 1. + 2. Two independent reads from different tables — run them in
+  //    parallel. Was sequential before, costing one round-trip of latency
+  //    on every dashboard load.
+  const [masteryResp, chatResp] = await Promise.all([
+    supabase
+      .from("student_state")
+      .select("concept, mastery_score, attempt_count, last_misconception, updated_at")
+      .eq("student_id", studentId)
+      .order("concept"),
+    supabase
+      .from("chat_messages")
+      .select("role, created_at, content")
+      .eq("student_id", studentId)
+      .order("created_at", { ascending: true }),
+  ]);
+  const masteryData = masteryResp.data;
+  const chatData = chatResp.data;
 
   // 3. Compute activity heatmap (messages per day)
   const activityMap: Record<string, number> = {};

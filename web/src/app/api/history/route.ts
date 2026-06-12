@@ -20,12 +20,20 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServiceClient();
 
-  const { data, error } = await supabase
+  // Cap at the most recent ~2000 messages. A power user can blow well
+  // past that across a semester; the older history hasn't been useful
+  // to anyone in the UI (which only ever scrolled within the latest
+  // few dozen sessions) and was making the payload >1MB on heavy
+  // accounts. We pull descending + reverse so the cap lands on the
+  // OLDEST trim point, then ascending order is restored client-side.
+  const { data: descRows, error } = await supabase
     .from("chat_messages")
     .select("id, role, content, created_at, session_id")
     .eq("student_id", studentId)
-    .order("created_at", { ascending: true })
-    .order("id", { ascending: true });
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(2000);
+  const data = (descRows ?? []).slice().reverse();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

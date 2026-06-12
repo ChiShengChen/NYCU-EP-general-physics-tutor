@@ -1,6 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { resolveStudentId } from "@/lib/resolve-student-id";
-import { estimateCost, checkDailyQuota } from "@/lib/usage-log";
+import { estimateCost, getDailyLimit, startOfDayTaipei } from "@/lib/usage-log";
 import { NextRequest, NextResponse } from "next/server";
 
 /** GET /api/usage/me?studentId=xxx
@@ -53,6 +53,11 @@ export async function GET(req: NextRequest) {
 
   const monthStartMs = monthStart.getTime();
   const sevenDaysAgoMs = sevenDaysAgo.getTime();
+  // Compute today's usage inline from the same row set we already pulled,
+  // so we don't need to fire a second token_usage scan from
+  // checkDailyQuota. Saves one round-trip per dashboard render.
+  const todayStartMs = new Date(startOfDayTaipei()).getTime();
+  let todayUsed = 0;
 
   for (const r of rows ?? []) {
     const rowCost = estimateCost(r.model, r.prompt_tokens, r.completion_tokens);
@@ -81,6 +86,10 @@ export async function GET(req: NextRequest) {
         bucket.costUsd += rowCost;
       }
     }
+
+    if (tsMs >= todayStartMs) {
+      todayUsed += r.total_tokens ?? 0;
+    }
   }
 
   const endpoints = Array.from(byEndpoint.entries())
@@ -102,10 +111,12 @@ export async function GET(req: NextRequest) {
       costUsd: Number(v.costUsd.toFixed(4)),
     }));
 
-  // Daily quota status for the widget — same helper the gate routes use,
-  // so the "today remaining" number can never get out of sync with what
-  // the API actually enforces.
-  const quota = await checkDailyQuota(studentId);
+  // Tier lookup only — `todayUsed` already computed above from the same
+  // row set, so we don't pay a second `token_usage` scan that
+  // `checkDailyQuota` would otherwise do.
+  const { limit, isAuthenticated } = await getDailyLimit(studentId);
+  const remaining = Math.max(0, limit - todayUsed);
+  const resetAt = new Date(new Date(startOfDayTaipei()).getTime() + 24 * 60 * 60 * 1000).toISOString();
 
   return NextResponse.json({
     studentId,
@@ -120,11 +131,11 @@ export async function GET(req: NextRequest) {
     endpoints,
     daily,
     quota: {
-      used: quota.used,
-      limit: quota.limit,
-      remaining: quota.remaining,
-      isAuthenticated: quota.isAuthenticated,
-      resetAt: quota.resetAt,
+      used: todayUsed,
+      limit,
+      remaining,
+      isAuthenticated,
+      resetAt,
     },
   });
 }

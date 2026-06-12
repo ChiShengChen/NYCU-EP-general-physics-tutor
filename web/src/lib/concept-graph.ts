@@ -132,6 +132,18 @@ export const CHAPTER_EDGES: ChapterEdge[] = [
   { from: "ch07", to: "ch37" },
 ];
 
+/**
+ * Category lookup keyed by chapter number. Used by chapter-preview's
+ * card colouring so it stays in sync with knowledge-graph and the
+ * prereq-path API without needing a parallel hardcoded `if (ch <= 32)`
+ * boundary table. Unknown chapters fall back to "modern" so future
+ * additions don't crash the UI before this file is updated.
+ */
+export function categoryForChapter(chapter: number): ChapterCategory {
+  const node = CHAPTER_NODES.find((n) => n.chapter === chapter);
+  return node?.category ?? "modern";
+}
+
 export function chapterIdOf(n: number): string {
   return `ch${String(n).padStart(2, "0")}`;
 }

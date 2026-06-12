@@ -6,6 +6,7 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { PreviewSchema, type PreviewConcept } from "@/lib/preview-schema";
 import { restoreLatexEscapes } from "@/lib/restore-latex";
 import { useStudentId } from "@/lib/use-student-id";
+import { categoryForChapter } from "@/lib/concept-graph";
 import { ThemeToggle } from "./theme-provider";
 
 /** Auto-wrap raw LaTeX in $$..$$ when the model forgot the delimiters,
@@ -33,14 +34,10 @@ interface CachedPreview {
 
 /* ─── Category palette (mirror knowledge-graph) ─── */
 
-function categoryFor(ch: number): "mechanics" | "waves_fluid" | "thermo" | "em" | "optics" | "modern" {
-  if (ch <= 12) return "mechanics";
-  if (ch <= 16) return "waves_fluid";
-  if (ch <= 20) return "thermo";
-  if (ch <= 32) return "em";
-  if (ch <= 36) return "optics";
-  return "modern";
-}
+// Category lookup goes through concept-graph.ts so the hardcoded
+// boundaries here can't drift away from the chapter graph's actual
+// assignments when a new chapter lands.
+const categoryFor = categoryForChapter;
 
 const CATEGORY_STYLE = {
   mechanics:   { card: "bg-blue-50/50 border-blue-200 dark:border-blue-800",     pill: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300",     accent: "text-blue-700 dark:text-blue-300",    label: "力學" },

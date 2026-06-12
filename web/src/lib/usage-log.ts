@@ -86,11 +86,33 @@ export const DAILY_LIMIT_ANON = 5_000;
 const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
 
 /** ISO timestamp of the most recent 00:00 Asia/Taipei boundary. */
-function startOfDayTaipei(): string {
+export function startOfDayTaipei(): string {
   const now = Date.now();
   const taipei = new Date(now + TAIPEI_OFFSET_MS);
   taipei.setUTCHours(0, 0, 0, 0);
   return new Date(taipei.getTime() - TAIPEI_OFFSET_MS).toISOString();
+}
+
+/** Tier lookup (auth vs anon) decoupled from today's-usage scan so
+ *  callers that already have the relevant `token_usage` rows in memory
+ *  (e.g. /api/usage/me, which fetches the whole month for sparkline +
+ *  endpoint breakdown) can compute `used` themselves and skip a second
+ *  table scan. */
+export async function getDailyLimit(studentId: string | null | undefined): Promise<{
+  limit: number;
+  isAuthenticated: boolean;
+}> {
+  if (!studentId || studentId.length === 0) {
+    return { limit: DAILY_LIMIT_ANON, isAuthenticated: false };
+  }
+  const supabase = createServiceClient();
+  const { data: profile } = await supabase
+    .from("student_profiles")
+    .select("auth_user_id")
+    .eq("id", studentId)
+    .maybeSingle();
+  const isAuthenticated = !!profile?.auth_user_id;
+  return { limit: isAuthenticated ? DAILY_LIMIT_AUTH : DAILY_LIMIT_ANON, isAuthenticated };
 }
 
 export interface QuotaStatus {

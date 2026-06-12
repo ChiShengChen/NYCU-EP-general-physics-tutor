@@ -13,13 +13,7 @@
  */
 
 import type { ComponentType } from "react";
-import { FreeFallSim } from "@/components/simulators/free-fall";
-import { SpringSim } from "@/components/simulators/spring";
-import { RCCircuitSim } from "@/components/simulators/rc-circuit";
-import { ProjectileSim } from "@/components/simulators/projectile";
-import { CollisionSim } from "@/components/simulators/collision";
-import { EFieldSim } from "@/components/simulators/efield";
-import { LensSim } from "@/components/simulators/lens";
+import dynamic from "next/dynamic";
 
 export type SimKey = "free-fall" | "spring" | "rc" | "projectile" | "collision" | "efield" | "lens";
 
@@ -27,6 +21,31 @@ interface SimComponentProps {
   onBack?: () => void;
   inline?: boolean;
 }
+
+/* Lazy-load each simulator so the gallery picker (and any page that
+ * imports the SIMS registry indirectly via teaching-mode's embed
+ * lookup) doesn't bundle ~2 KLOC of physics + SVG it might never
+ * render. `ssr: false` because every sim is "use client" and depends
+ * on requestAnimationFrame.
+ *
+ * Note on type narrowing: next/dynamic widens props to PropsOf<...>,
+ * but the registry consumer (`<Component inline />` / `<Component
+ * onBack={...} />`) only uses the props that match every sim's
+ * signature, so a single `ComponentType<SimComponentProps>` is enough. */
+function lazySim(
+  loader: () => Promise<{ [k: string]: ComponentType<SimComponentProps> }>,
+  name: string,
+): ComponentType<SimComponentProps> {
+  return dynamic(() => loader().then((m) => m[name]), { ssr: false }) as unknown as ComponentType<SimComponentProps>;
+}
+
+const FreeFallSim    = lazySim(() => import("@/components/simulators/free-fall"),   "FreeFallSim");
+const SpringSim      = lazySim(() => import("@/components/simulators/spring"),      "SpringSim");
+const RCCircuitSim   = lazySim(() => import("@/components/simulators/rc-circuit"),  "RCCircuitSim");
+const ProjectileSim  = lazySim(() => import("@/components/simulators/projectile"),  "ProjectileSim");
+const CollisionSim   = lazySim(() => import("@/components/simulators/collision"),   "CollisionSim");
+const EFieldSim      = lazySim(() => import("@/components/simulators/efield"),      "EFieldSim");
+const LensSim        = lazySim(() => import("@/components/simulators/lens"),        "LensSim");
 
 interface SimMeta {
   key: SimKey;
