@@ -45,8 +45,15 @@ jobs:
       - name: Install
         run: npm ci --ignore-scripts
 
-      - name: Type check
-        run: npx tsc --noEmit
+      # tsconfig.json excludes tests + vitest.config so the Next.js prod
+      # build (on Vercel) never has to resolve test-only deps. CI runs the
+      # production typecheck first, then a separate pass via tsconfig.test
+      # so test files still get type-checked end-to-end.
+      - name: Type check (prod)
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: Type check (tests)
+        run: npx tsc --noEmit -p tsconfig.test.json
 
       - name: Lint
         run: npx eslint .
