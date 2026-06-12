@@ -77,11 +77,16 @@ export async function GET() {
     totalTokens += r.total_tokens;
     totalCost += c;
 
-    const s = byStudent.get(r.student_id) ?? { calls: 0, total: 0, cost: 0 };
+    // token_usage.student_id is `on delete set null`, so a row whose
+    // profile has been deleted shows up with student_id=null. Bucket
+    // those under a sentinel so the panel still totals them rather than
+    // crashing on `null.slice(...)` later.
+    const sid = r.student_id ?? "__deleted__";
+    const s = byStudent.get(sid) ?? { calls: 0, total: 0, cost: 0 };
     s.calls += 1;
     s.total += r.total_tokens;
     s.cost += c;
-    byStudent.set(r.student_id, s);
+    byStudent.set(sid, s);
 
     const e = byEndpoint.get(r.endpoint) ?? { calls: 0, total: 0, cost: 0 };
     e.calls += 1;
@@ -103,11 +108,17 @@ export async function GET() {
     .sort(([, a], [, b]) => b.total - a.total)
     .slice(0, TOP_STUDENTS)
     .map(([sid, v]) => {
+      if (sid === "__deleted__") {
+        return {
+          label: "已刪除帳號",
+          isAuthenticated: false,
+          calls: v.calls,
+          totalTokens: v.total,
+          costUsd: Number(v.cost.toFixed(4)),
+        };
+      }
       const p = profilesById.get(sid);
-      const label =
-        p?.email ??
-        p?.name ??
-        `匿名 ${sid.slice(0, 8)}`;
+      const label = p?.email ?? p?.name ?? `匿名 ${sid.slice(0, 8)}`;
       return {
         label,
         isAuthenticated: !!p?.email,
