@@ -1,7 +1,9 @@
 import { google } from "@ai-sdk/google";
 import { streamText, tool, convertToModelMessages } from "ai";
 import { logUsage, checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
+import { captureRouteError } from "@/lib/sentry";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { retrieveChunks, formatChunksForPrompt, type RetrievedChunk } from "@/lib/rag";
@@ -174,6 +176,12 @@ export async function POST(req: Request) {
   // Quota gate: same daily token cap that all the JSON routes use, but
   // here it has to happen before streamText() — once that returns its
   // ReadableStream we can't cleanly inject a 429 mid-stream.
+  const rate = checkIpRateLimit(req);
+  if (!rate.allowed) {
+    const ipResp = ipRateLimitedResponse(rate);
+    return NextResponse.json(ipResp.body, { status: ipResp.status });
+  }
+
   const quota = await checkDailyQuota(studentId);
   if (quota.blocked) {
     const r = quotaExceededResponse(quota);
@@ -288,7 +296,7 @@ export async function POST(req: Request) {
         },
       );
     } catch (err) {
-      console.error("[chat] convertToModelMessages fallback failed:", err);
+      captureRouteError(err, { endpoint: "/api/chat", studentId, meta: { stage: "convertToModelMessages-fallback" } });
       return NextResponse.json({ error: "invalid messages payload" }, { status: 400 });
     }
   }

@@ -2,6 +2,7 @@ import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,6 +23,12 @@ export async function GET(req: NextRequest) {
   const querySid = req.nextUrl.searchParams.get("studentId");
   const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
+
+  const rate = checkIpRateLimit(req);
+  if (!rate.allowed) {
+    const ipResp = ipRateLimitedResponse(rate);
+    return NextResponse.json(ipResp.body, { status: ipResp.status });
+  }
 
   const quota = await checkDailyQuota(studentId);
   if (quota.blocked) {

@@ -5,6 +5,7 @@ import { retrieveChunks, formatChunksForPrompt } from "@/lib/rag";
 import { restoreLatexInObject } from "@/lib/restore-latex";
 import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
+import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
 import { NextResponse } from "next/server";
 
@@ -40,6 +41,12 @@ export async function POST(req: Request) {
   const { studentId } = await resolveStudentId(body.studentId);
   if (!conceptA || !conceptB) {
     return NextResponse.json({ error: "both conceptA and conceptB required" }, { status: 400 });
+  }
+
+  const rate = checkIpRateLimit(req);
+  if (!rate.allowed) {
+    const ipResp = ipRateLimitedResponse(rate);
+    return NextResponse.json(ipResp.body, { status: ipResp.status });
   }
 
   const quota = await checkDailyQuota(studentId);

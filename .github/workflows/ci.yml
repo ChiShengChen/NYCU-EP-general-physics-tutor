@@ -1,0 +1,52 @@
+name: CI
+
+# Runs TypeScript + ESLint on every PR and on pushes to main so a broken
+# tsc / lint regression can't sneak through to a Vercel deploy. The job
+# is keyed to web/ because that's the Next.js app's working directory;
+# changes outside web/ (Python pipeline, supabase/migrations, docs) skip
+# this job entirely to keep the action quota low.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths:
+      - "web/**"
+      - ".github/workflows/ci.yml"
+
+# Cancel in-flight runs for the same PR / branch when a new push arrives —
+# we only care about the latest state.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck-and-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # --ignore-scripts dodges the unrs-resolver postinstall noise we
+      # also hit locally; nothing in the build path actually needs the
+      # native binaries it would install.
+      - name: Install
+        run: npm ci --ignore-scripts
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npx eslint .
