@@ -473,6 +473,10 @@ function MiniStat({ label, value }: { label: string; value: string }) {
 
 function ReportsView() {
   const [status, setStatus] = useState<"open" | "resolved" | "all">("open");
+  // Which report card has the student-drilldown drawer open underneath
+  // it. One at a time keeps the panel readable when the moderator is
+  // scrolling a long queue.
+  const [expandedReportId, setExpandedReportId] = useState<number | null>(null);
   const { data, error, isLoading, mutate } = useSWR<ReportsData>(apiKey("/api/admin/reports", { status }));
 
   if (isLoading) return <Centered>載入中...</Centered>;
@@ -533,9 +537,23 @@ function ReportsView() {
                     ✓ {r.resolved_by_email} · {new Date(r.resolved_at).toLocaleDateString("zh-TW")}
                   </span>
                 )}
-                <span className="ml-auto text-[10px] text-slate-400">
-                  {r.student_id ? `學生 ${r.student_id.slice(0, 8)}` : "匿名"}
-                </span>
+                {r.student_id ? (
+                  <button
+                    onClick={() =>
+                      setExpandedReportId((curr) => (curr === r.id ? null : r.id))
+                    }
+                    className={`ml-auto text-[10px] px-2 py-0.5 rounded-full border ${
+                      expandedReportId === r.id
+                        ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300"
+                        : "border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    }`}
+                    title="點擊查看這位學生的 token / 對話 / 測驗紀錄"
+                  >
+                    {expandedReportId === r.id ? "▾" : "▸"} 學生 {r.student_id.slice(0, 8)}
+                  </button>
+                ) : (
+                  <span className="ml-auto text-[10px] text-slate-400">匿名</span>
+                )}
               </div>
 
               {r.question_text && (
@@ -557,6 +575,12 @@ function ReportsView() {
                 <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-1">
                   <span className="font-medium">處理備註：</span> {r.resolution_note}
                 </p>
+              )}
+
+              {expandedReportId === r.id && r.student_id && (
+                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                  <StudentDetail id={r.student_id} label={`學生 ${r.student_id.slice(0, 8)}`} />
+                </div>
               )}
 
               <div className="flex justify-end gap-2 mt-2">
