@@ -121,10 +121,15 @@ function sanitizeElement(el: Element): void {
     }
   }
 
-  // Recurse into surviving children.
-  for (const child of Array.from(el.children)) {
-    sanitizeElement(child);
+  // Recurse into surviving element children. Use childNodes + nodeType
+  // filter instead of `.children` so this works with both real browsers
+  // and @xmldom (which doesn't implement HTMLCollection.children).
+  const kids: Element[] = [];
+  for (let i = 0; i < el.childNodes.length; i++) {
+    const n = el.childNodes[i];
+    if (n.nodeType === 1) kids.push(n as Element);
   }
+  for (const child of kids) sanitizeElement(child);
 }
 
 /**

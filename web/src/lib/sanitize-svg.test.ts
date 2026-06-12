@@ -3,11 +3,12 @@ import { DOMParser as XmlDomParser, XMLSerializer as XmlDomSerializer } from "@x
 
 // sanitize-svg uses DOMParser + (in non-browser envs) XMLSerializer.
 // Stub both via @xmldom before importing the module under test so its
-// `typeof DOMParser === "undefined"` check passes.
-// @ts-expect-error: stubbing browser globals on the test runtime
-globalThis.DOMParser = XmlDomParser;
-// @ts-expect-error: stubbing browser globals on the test runtime
-globalThis.XMLSerializer = XmlDomSerializer;
+// `typeof DOMParser === "undefined"` check passes. Cast through `unknown`
+// rather than ts-expect-error because the latter is flagged as "unused"
+// in newer TS versions when the assignment happens to type-check.
+const g = globalThis as unknown as { DOMParser: unknown; XMLSerializer: unknown };
+g.DOMParser = XmlDomParser;
+g.XMLSerializer = XmlDomSerializer;
 
 import { sanitizeSvg } from "./sanitize-svg";
 
