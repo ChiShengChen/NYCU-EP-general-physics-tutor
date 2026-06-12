@@ -8,6 +8,22 @@ import { createServiceClient } from "@/lib/supabase/server";
 
 export const maxDuration = 60;
 
+/* Shared closing discipline appended to every chat-mode prompt below.
+ * Gemini 2.5 Flash has a habit of narrating its tool use and internal
+ * planning in English ("Now I need to silently update the student
+ * model...", "The user asked for an explanation..."), which leaked
+ * verbatim into the student-facing reply. The wording here is the
+ * minimum that reliably suppresses that behaviour without restricting
+ * the legitimate use of English in physics terminology / citations. */
+const OUTPUT_DISCIPLINE = `
+
+⚠️ **輸出規範（絕對不可違反）**：
+- 你**看得到的回覆文字就是學生會看到的全部**。不要寫任何「meta-commentary」（例：「The user asked for…」、「Now I need to…」、「I will choose…」、「My plan is…」）。
+- 工具呼叫（如 updateStudentModel、sketchVisualUnderstanding）會在背景靜默執行；**絕對不要用文字描述「我要呼叫 X 工具」、「我現在去更新學生模型」等內容**。
+- 整段回答用**繁體中文**；專有名詞 / 公式可附英文，但**不要寫整段英文段落來總結或自述思路**。
+- 如果你發現自己快寫出 "The user…" 或 "Now I…" 這種句子，**立刻停下來**並改寫成對學生說話的方式（或乾脆刪掉）。
+`;
+
 const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教。
 
 你的角色：
@@ -46,7 +62,8 @@ const QA_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（
 
 以下是從教材中檢索到的相關內容：
 
-{context}`;
+{context}
+${OUTPUT_DISCIPLINE}`;
 
 const QA_SOCRATIC_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，正在「**蘇格拉底模式**」中。
 
@@ -76,7 +93,8 @@ const QA_SOCRATIC_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」
 
 教材內容（可供你引導時參照）：
 
-{context}`;
+{context}
+${OUTPUT_DISCIPLINE}`;
 
 const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，現在正在「教學模式」中。
 
@@ -101,7 +119,8 @@ const TEACHING_SYSTEM_PROMPT = `你是交通大學電物系「普通物理」課
 
 當前講義內容（Ch{chapter}, Page {page}）：
 
-{context}`;
+{context}
+${OUTPUT_DISCIPLINE}`;
 
 const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「**費曼學習法**」。
 學生選擇了要練習的概念：**{concept}**。
@@ -140,7 +159,8 @@ const FEYNMAN_SYSTEM_PROMPT = `你正在跟一位準備考試的學生練習「*
 
 教材內容（你內心知道正確答案，但表面上裝不懂；用這份內容來判斷學生講對沒）：
 
-{context}`;
+{context}
+${OUTPUT_DISCIPLINE}`;
 
 export async function POST(req: Request) {
   const { messages, studentId, mode, chapterNumber, pageNumber, sessionId, socratic, concept } = await req.json();
@@ -263,7 +283,8 @@ export async function POST(req: Request) {
       updateStudentModel: tool({
         description:
           "After answering, assess the student's understanding and update their learning profile. " +
-          "Call this silently after every substantive answer.",
+          "Call this BEHIND THE SCENES — do NOT write any user-visible text describing this call or your plan to call it. " +
+          "No meta-commentary like 'Now I need to update the student model' should ever appear in the response.",
         inputSchema: z.object({
           concept: z.string().describe("The physics concept discussed (e.g., 'Newtons_Second_Law', 'Conservation_of_Momentum', 'Gauss_Law', 'Faradays_Law', 'Simple_Harmonic_Motion')"),
           masteryScore: z.number().min(0).max(1).describe("Estimated mastery: 0=no understanding, 0.5=partial, 1=solid"),

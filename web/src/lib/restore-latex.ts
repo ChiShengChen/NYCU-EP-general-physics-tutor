@@ -53,6 +53,44 @@ export function restoreLatexEscapes(text: string): string {
   );
 }
 
+/**
+ * Strip Gemini's accidental English meta-commentary from the tail of a
+ * chat response.
+ *
+ * Symptom: the model writes a perfectly good Chinese answer, then tacks
+ * on a paragraph like "The user asked for an explanation… Now I need to
+ * silently update the student model…" — its own internal planning,
+ * leaked into the visible reply. The system prompt already forbids it,
+ * but Gemini Flash occasionally forgets, so this is the belt-and-braces
+ * removal on the render side.
+ *
+ * Heuristic: walk paragraphs from the BOTTOM up. A paragraph is "meta"
+ * when it contains no Chinese characters AND looks like English prose
+ * (≥3 ASCII words). As soon as we hit a paragraph that has Chinese in
+ * it — i.e. the real answer — we stop. That way an answer that
+ * legitimately ends in a citation like "(Newton, 1687)" survives, while
+ * a 4-paragraph English thought-dump at the tail gets cleanly trimmed.
+ */
+export function stripMetaCommentary(text: string): string {
+  if (!text) return text;
+  const paragraphs = text.split(/\n{2,}/);
+  let dropFrom = paragraphs.length;
+  for (let i = paragraphs.length - 1; i >= 0; i--) {
+    const p = paragraphs[i].trim();
+    if (!p) {
+      dropFrom = i;
+      continue;
+    }
+    const hasChinese = /[一-鿿]/.test(p);
+    if (hasChinese) break;
+    const asciiWords = (p.match(/[A-Za-z]+/g) ?? []).length;
+    if (asciiWords < 3) break;
+    dropFrom = i;
+  }
+  if (dropFrom === paragraphs.length) return text;
+  return paragraphs.slice(0, dropFrom).join("\n\n").trimEnd();
+}
+
 /** Walk an object/array and apply restoreLatexEscapes to every string value.
  *  Use right after generateObject() to fix LaTeX in all text fields. */
 export function restoreLatexInObject<T>(value: T): T {

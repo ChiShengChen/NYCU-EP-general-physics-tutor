@@ -14,7 +14,7 @@ import { type UIMessage, DefaultChatTransport } from "ai";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ThemeToggle } from "./theme-provider";
-import { restoreLatexEscapes } from "@/lib/restore-latex";
+import { restoreLatexEscapes, stripMetaCommentary } from "@/lib/restore-latex";
 
 interface FeynmanModeProps {
   onBack: () => void;
@@ -302,7 +302,7 @@ function FeynmanChat({
                   ) : (
                     <>
                       <p className="text-[10px] font-medium text-amber-700 dark:text-amber-300 mb-1">🐣 學弟/妹</p>
-                      <MarkdownRenderer content={restoreLatexEscapes(text)} />
+                      <MarkdownRenderer content={restoreLatexEscapes(stripMetaCommentary(text))} />
                     </>
                   )}
                 </div>
