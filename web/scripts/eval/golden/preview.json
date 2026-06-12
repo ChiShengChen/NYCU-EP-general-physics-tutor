@@ -1,0 +1,42 @@
+{
+  "$schema": "../schema.json",
+  "name": "preview",
+  "description": "Golden set for /api/preview — 章節預習卡. Each case fires a real call against the deployed endpoint and the runner asserts the shape + the content includes the must-mention key concepts. We don't pin exact wording; physics phrasing varies and Gemini is sampling.",
+  "cases": [
+    {
+      "chapter": 4,
+      "label": "Ch04 牛頓運動定律",
+      "mustMentionAny": ["F = ma", "F=ma", "\\vec{F}", "牛頓第二", "second law", "慣性"],
+      "minConcepts": 5,
+      "maxConcepts": 7
+    },
+    {
+      "chapter": 7,
+      "label": "Ch07 位能與能量守恆",
+      "mustMentionAny": ["位能", "potential energy", "保守力", "conservative", "能量守恆"],
+      "minConcepts": 5,
+      "maxConcepts": 7
+    },
+    {
+      "chapter": 13,
+      "label": "Ch13 簡諧運動",
+      "mustMentionAny": ["簡諧", "SHM", "harmonic", "\\omega", "週期"],
+      "minConcepts": 5,
+      "maxConcepts": 7
+    },
+    {
+      "chapter": 19,
+      "label": "Ch19 熱力學第一定律",
+      "mustMentionAny": ["第一定律", "first law", "內能", "internal energy", "Q = \\Delta U", "Q-W"],
+      "minConcepts": 5,
+      "maxConcepts": 7
+    },
+    {
+      "chapter": 21,
+      "label": "Ch21 電荷與電場",
+      "mustMentionAny": ["庫侖", "Coulomb", "電場", "\\vec{E}", "電荷"],
+      "minConcepts": 5,
+      "maxConcepts": 7
+    }
+  ]
+}
