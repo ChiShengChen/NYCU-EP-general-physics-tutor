@@ -193,6 +193,11 @@ function UsageView() {
   // Pagination for the student usage table. 1-indexed because that's
   // what the page selector shows the admin.
   const [studentsPage, setStudentsPage] = useState(1);
+  // Plain-text search over the rendered student label (email / name /
+  // anon prefix). Case-insensitive and trimmed. Empty string = no
+  // filter. Filtering changes the visible list so pagination + selected
+  // student get reset whenever the query changes.
+  const [studentQuery, setStudentQuery] = useState("");
 
   if (isLoading) return <Centered>載入中...</Centered>;
   if (error) {
@@ -203,11 +208,15 @@ function UsageView() {
   if (!data) return null;
 
   const maxDaily = Math.max(1, ...data.daily.map((d) => d.tokens));
-  const totalStudents = data.topStudents.length;
+  const q = studentQuery.trim().toLowerCase();
+  const filteredStudents = q
+    ? data.topStudents.filter((s) => s.label.toLowerCase().includes(q))
+    : data.topStudents;
+  const totalStudents = filteredStudents.length;
   const totalPages = Math.max(1, Math.ceil(totalStudents / STUDENTS_PER_PAGE));
   const safePage = Math.min(studentsPage, totalPages);
   const pageStart = (safePage - 1) * STUDENTS_PER_PAGE;
-  const pageStudents = data.topStudents.slice(pageStart, pageStart + STUDENTS_PER_PAGE);
+  const pageStudents = filteredStudents.slice(pageStart, pageStart + STUDENTS_PER_PAGE);
   const selectedStudent = data.topStudents.find((s) => s.id && s.id === selectedId) ?? null;
 
   // Friendly label for headers / file names. windowDays=0 is the
@@ -270,7 +279,29 @@ function UsageView() {
         </div>
       </Section>
 
-      <Section title={`🔝 學生用量排行（共 ${totalStudents} 人，第 ${safePage} / ${totalPages} 頁）`}>
+      <Section
+        title={`🔝 學生用量排行（${
+          q ? `${totalStudents} / ${data.topStudents.length}` : `共 ${totalStudents}`
+        } 人，第 ${safePage} / ${totalPages} 頁）`}
+      >
+        <div className="mb-3">
+          <input
+            type="search"
+            value={studentQuery}
+            onChange={(e) => {
+              setStudentQuery(e.target.value);
+              setStudentsPage(1);
+              setSelectedId(null);
+            }}
+            placeholder="搜尋學生（email / 名字 / 匿名 prefix）"
+            className="w-full max-w-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400"
+          />
+        </div>
+        {totalStudents === 0 ? (
+          <p className="text-xs text-slate-500 dark:text-slate-400 py-6 text-center">
+            {q ? `沒有符合「${studentQuery}」的學生` : "這個區間沒有資料"}
+          </p>
+        ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-xs min-w-[420px]">
             <thead>
@@ -312,6 +343,7 @@ function UsageView() {
             </tbody>
           </table>
         </div>
+        )}
 
         {totalPages > 1 && (
           <Pagination
