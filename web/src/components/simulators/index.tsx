@@ -58,6 +58,9 @@ function Picker({ onBack, onPick }: { onBack: () => void; onPick: (k: SimKey) =>
             選一個現象來玩。每個模擬都是純 SVG，手機上也跑得動，旁邊滑桿改參數立刻看到結果。
             進教學模式時，對應章節的頁面下方也會有同款 sim 可以展開。
           </p>
+          <p className="text-xs text-emerald-700 dark:text-emerald-300 mb-6 text-center">
+            📐 光學操作題：自動測驗選 Ch33 / Ch34 時，會出現要你親手拖滑桿調出指定成像的題目，用的就是這裡的透鏡、球面鏡、折射模擬器。
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {SIMS.map((meta) => (
               <button

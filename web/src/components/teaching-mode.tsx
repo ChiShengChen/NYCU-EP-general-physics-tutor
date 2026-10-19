@@ -61,13 +61,18 @@ interface TeachingModeProps {
    *  picker. Used when the user enters via a deep link from the concept
    *  graph or the prereq-gap analyzer ("→ 進入教學模式複習這章"). */
   initialChapter?: number;
+  /** Together with initialChapter, open straight onto this slide. Used by
+   *  the AI 錯題分析 "📖 ChXX p.N" citations. Ignored without a chapter. */
+  initialPage?: number;
 }
 
-export function TeachingMode({ onBack, initialChapter }: TeachingModeProps) {
+export function TeachingMode({ onBack, initialChapter, initialPage }: TeachingModeProps) {
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [loadingChapters, setLoadingChapters] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(initialChapter ?? null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    initialChapter !== undefined && initialPage !== undefined && initialPage >= 1 ? initialPage : 1,
+  );
   const [totalPages, setTotalPages] = useState(0);
   const [pageChunks, setPageChunks] = useState<PageChunk[]>([]);
   const [loadingPage, setLoadingPage] = useState(false);

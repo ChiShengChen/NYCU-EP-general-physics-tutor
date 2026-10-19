@@ -9,10 +9,14 @@
  *   - preview / hint / notes-quiz / chapter-preview → MODEL_LIGHT
  *       (Gemini Flash-Lite: ~half the cost of Flash, fine for short
  *        deterministic outputs)
- *   - chat / quiz / reflection / regen / compare / study-plan / class
+ *   - chat / quiz / reflection / regen / compare / study-plan / class /
+ *     oral (口試 question generation + examiner turns) /
+ *     analysis (錯題分析 — one call per attempt, cached)
  *       → MODEL_STANDARD (Gemini Flash, the default)
  *   - exam grading / export-report → MODEL_PREMIUM
- *       (Gemini Pro for higher-stakes outputs)
+ *       (Gemini Pro for higher-stakes outputs; the oral route also
+ *        grades its final rubric with pickModel("exam") so the score
+ *        that lands in `attempts` comes from the premium tier)
  *
  * Every env var is optional. Resolution order:
  *   MODEL_<MODE>  →  per-tier (MODEL_LIGHT / STANDARD / PREMIUM)
@@ -36,6 +40,8 @@ export type AiMode =
   | "compare"
   | "notes-quiz"
   | "study-plan"
+  | "oral"
+  | "analysis"
   | "export";
 
 const MODE_TIER: Record<AiMode, "light" | "standard" | "premium"> = {
@@ -49,6 +55,8 @@ const MODE_TIER: Record<AiMode, "light" | "standard" | "premium"> = {
   regen: "standard",
   compare: "standard",
   "study-plan": "standard",
+  oral: "standard",
+  analysis: "standard",
   exam: "premium",
   export: "premium",
 };
@@ -71,6 +79,8 @@ const ENV_VAR_BY_MODE: Record<AiMode, string> = {
   compare: "MODEL_COMPARE",
   "notes-quiz": "MODEL_NOTES_QUIZ",
   "study-plan": "MODEL_STUDY_PLAN",
+  oral: "MODEL_ORAL",
+  analysis: "MODEL_ANALYSIS",
   export: "MODEL_EXPORT",
 };
 

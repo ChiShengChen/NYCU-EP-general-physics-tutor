@@ -8,6 +8,7 @@ import { HintPanel } from "./hint-panel";
 import { ReportQuestionButton } from "./report-question-button";
 import { RegenerateQuestionButton } from "./regenerate-question-button";
 import { ThemeToggle } from "./theme-provider";
+import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
 import { stripOptionLetter } from "@/lib/strip-option-letter";
 
 /* ─── Types ─── */
@@ -52,9 +53,12 @@ type ExamState = "select" | "loading" | "exam" | "grading" | "results";
 
 interface ExamModeProps {
   onBack: () => void;
+  /** Deep link into 教學模式 at a specific slide, used by the AI 錯題分析
+   *  panel's "📖 ChXX p.N" citations on the results page. */
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
 }
 
-export function ExamMode({ onBack }: ExamModeProps) {
+export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
   const [state, setState] = useState<ExamState>("select");
   const [examType, setExamType] = useState<"midterm" | "final">("midterm");
   const [exam, setExam] = useState<Exam | null>(null);
@@ -64,6 +68,10 @@ export function ExamMode({ onBack }: ExamModeProps) {
   const [hintUsage, setHintUsage] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
+  /** ISO timestamp taken right before grading. The attempt row is inserted
+   *  server-side in after(), so the results page has no attempt id; the
+   *  analysis panel uses this to find the row it should attach to. */
+  const [gradedAt, setGradedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoSubmitRef = useRef(false);
@@ -128,6 +136,7 @@ export function ExamMode({ onBack }: ExamModeProps) {
     if (!exam) return;
     if (timerRef.current) clearInterval(timerRef.current);
     setState("grading");
+    setGradedAt(new Date().toISOString());
 
     try {
       const res = await fetch("/api/exam", {
@@ -239,6 +248,8 @@ export function ExamMode({ onBack }: ExamModeProps) {
             answers={answers}
             gradeResult={gradeResult}
             examType={examType}
+            gradedAt={gradedAt}
+            onNavigateToTeaching={onNavigateToTeaching}
             onRetry={() => setState("select")}
             onBack={onBack}
           />
@@ -609,6 +620,8 @@ function ExamResults({
   answers,
   gradeResult,
   examType,
+  gradedAt,
+  onNavigateToTeaching,
   onRetry,
   onBack,
 }: {
@@ -616,6 +629,8 @@ function ExamResults({
   answers: Record<number, string>;
   gradeResult: GradeResult;
   examType: string;
+  gradedAt: string | null;
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
   onRetry: () => void;
   onBack: () => void;
 }) {
@@ -669,6 +684,14 @@ function ExamResults({
         <h3 className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-2">💡 AI 批改總評</h3>
         <MarkdownRenderer content={gradeResult.overallFeedback} />
       </div>
+
+      {/* AI 錯題分析 — only meaningful when something was wrong */}
+      {gradedAt && gradeResult.results.some((r) => !r.isCorrect) && (
+        <AttemptAnalysisPanel
+          locate={{ kind: "exam", since: gradedAt }}
+          onNavigateToTeaching={onNavigateToTeaching}
+        />
+      )}
 
       {/* Per-question results */}
       <div className="space-y-4">

@@ -18,7 +18,7 @@ type HomeStats = {
 };
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "admin") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "admin") => void;
 }
 
 function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
@@ -307,6 +307,26 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
           </div>
           <span className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
             上傳筆記 →
+          </span>
+        </button>
+
+        {/* Oral-exam banner — strict AI examiner, 3 questions with up to
+            2 follow-ups each, rubric-graded and saved to 測驗紀錄. */}
+        <button
+          onClick={() => onSelectMode("oral")}
+          className="w-full max-w-5xl mb-5 flex items-center gap-4 text-left p-4 rounded-2xl border border-rose-200 dark:border-rose-800 bg-gradient-to-r from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30 hover:shadow-md hover:border-rose-300 dark:hover:border-rose-700 transition-all"
+        >
+          <span className="text-3xl shrink-0">🎤</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
+              口試模擬 <span className="text-[10px] font-normal text-rose-600 dark:text-rose-300 ml-1">NEW</span>
+            </div>
+            <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+              AI 考官出 3 題（概念 · 推導 · 情境），每題最多追問 2 次，不給提示。結束後依正確性 / 完整性 / 表達評分。
+            </div>
+          </div>
+          <span className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 transition-colors">
+            開始口試 →
           </span>
         </button>
 

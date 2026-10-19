@@ -8,13 +8,14 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { ConfidenceSelector } from "./confidence-selector";
 import { ReportQuestionButton } from "./report-question-button";
 import { ThemeToggle } from "./theme-provider";
+import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
 import { stripOptionLetter } from "@/lib/strip-option-letter";
 
 /* ─── Types ─── */
 
 interface AttemptSummary {
   id: number;
-  kind: "quiz" | "exam";
+  kind: "quiz" | "exam" | "oral";
   exam_type: "midterm" | "final" | null;
   title: string;
   total_score: number;
@@ -26,7 +27,9 @@ interface AttemptSummary {
 
 interface Question {
   id: number;
-  type: "multiple_choice" | "short_answer";
+  /** multiple_choice | short_answer | oral | interactive_optics — kept
+   *  open so new kinds render as a generic "answer vs reference" card. */
+  type: string;
   concept: string;
   difficulty?: string;
   question: string;
@@ -66,11 +69,29 @@ function formatDate(iso: string): string {
 
 function kindLabel(a: AttemptSummary): string {
   if (a.kind === "exam") return a.exam_type === "midterm" ? "期中考模擬" : "期末考模擬";
+  if (a.kind === "oral") return "口試模擬";
   return "自動測驗";
 }
 
 function kindEmoji(a: AttemptSummary): string {
-  return a.kind === "exam" ? "🎓" : "📝";
+  if (a.kind === "exam") return "🎓";
+  if (a.kind === "oral") return "🎤";
+  return "📝";
+}
+
+function questionTypeLabel(type: string): string {
+  switch (type) {
+    case "multiple_choice": return "選擇題";
+    case "oral": return "口試題";
+    case "interactive_optics": return "光路操作題";
+    default: return "簡答題";
+  }
+}
+
+/** Quiz scores are per-question fractions (0.5 is common); exam / oral
+ *  totals are whole points. */
+function scoreDigits(kind: AttemptSummary["kind"]): number {
+  return kind === "quiz" ? 1 : 0;
 }
 
 function scoreBadgeColor(pct: number): string {
@@ -84,9 +105,11 @@ function scoreBadgeColor(pct: number): string {
 
 interface AttemptsHistoryProps {
   onBack: () => void;
+  /** Deep link into 教學模式 at a specific slide (from AI 錯題分析 citations). */
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
 }
 
-export function AttemptsHistory({ onBack }: AttemptsHistoryProps) {
+export function AttemptsHistory({ onBack, onNavigateToTeaching }: AttemptsHistoryProps) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const studentId = useStudentId() ?? "";
   const { data, isLoading } = useSWR<{ attempts: AttemptSummary[] }>(
@@ -102,6 +125,7 @@ export function AttemptsHistory({ onBack }: AttemptsHistoryProps) {
         studentId={studentId}
         onBack={() => setSelectedId(null)}
         onBackToModes={onBack}
+        onNavigateToTeaching={onNavigateToTeaching}
       />
     );
   }
@@ -155,7 +179,7 @@ export function AttemptsHistory({ onBack }: AttemptsHistoryProps) {
                   <div className={`shrink-0 px-3 py-1.5 rounded-xl text-sm font-semibold border ${scoreBadgeColor(a.percentage)}`}>
                     {a.grade ?? `${a.percentage}%`}
                     <div className="text-xs font-normal opacity-75">
-                      {a.total_score.toFixed(a.kind === "exam" ? 0 : 1)}/{a.max_score.toFixed(0)}
+                      {a.total_score.toFixed(scoreDigits(a.kind))}/{a.max_score.toFixed(0)}
                     </div>
                   </div>
                 </button>
@@ -175,11 +199,13 @@ function AttemptDetailView({
   studentId,
   onBack,
   onBackToModes,
+  onNavigateToTeaching,
 }: {
   attemptId: number;
   studentId: string;
   onBack: () => void;
   onBackToModes: () => void;
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
 }) {
   const { data: detail, isLoading: loading } = useSWR<{ attempt: AttemptDetail | null }>(
     apiKey("/api/attempts", { studentId, id: attemptId }),
@@ -234,7 +260,7 @@ function AttemptDetailView({
               </div>
               <div>
                 <div className="text-sm text-slate-600 dark:text-slate-300">
-                  總分 <span className="font-semibold">{attempt.total_score.toFixed(attempt.kind === "exam" ? 0 : 1)}</span> / {attempt.max_score.toFixed(0)}
+                  總分 <span className="font-semibold">{attempt.total_score.toFixed(scoreDigits(attempt.kind))}</span> / {attempt.max_score.toFixed(0)}
                 </div>
                 <div className="text-xs text-slate-400 dark:text-slate-500">{kindLabel(attempt)} · {formatDate(attempt.created_at)}</div>
                 <div className="text-xs text-slate-400 dark:text-slate-500">答對 {correctCount} / {attempt.questions.length} 題</div>
@@ -249,6 +275,11 @@ function AttemptDetailView({
               </div>
             )}
           </div>
+
+          {/* AI 錯題分析 (cached per attempt; only when something was wrong) */}
+          {correctCount < attempt.questions.length && (
+            <AttemptAnalysisPanel attemptId={attempt.id} onNavigateToTeaching={onNavigateToTeaching} />
+          )}
 
           {/* Questions */}
           {attempt.questions.map((q, idx) => {
@@ -267,7 +298,7 @@ function AttemptDetailView({
                   </span>
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-200">第 {idx + 1} 題</span>
                   <span className="text-xs text-slate-400 dark:text-slate-500">
-                    {q.type === "multiple_choice" ? "選擇題" : "簡答題"}
+                    {questionTypeLabel(q.type)}
                     {q.sourceChapter ? ` · Ch${String(q.sourceChapter).padStart(2, "0")}` : ""}
                     {q.points ? ` · ${q.points} 分` : ""}
                   </span>
@@ -329,7 +360,7 @@ function AttemptDetailView({
                   </div>
                 )}
 
-                {q.type === "short_answer" && (
+                {q.type !== "multiple_choice" && (
                   <div className="space-y-2 mb-3">
                     <div className="px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm">
                       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-2">你的回答</span>

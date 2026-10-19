@@ -15,7 +15,7 @@
 import type { ComponentType } from "react";
 import dynamic from "next/dynamic";
 
-export type SimKey = "free-fall" | "spring" | "rc" | "projectile" | "collision" | "efield" | "lens";
+export type SimKey = "free-fall" | "spring" | "rc" | "projectile" | "collision" | "efield" | "lens" | "mirror" | "refraction";
 
 interface SimComponentProps {
   onBack?: () => void;
@@ -31,12 +31,15 @@ interface SimComponentProps {
  * Note on type narrowing: next/dynamic widens props to PropsOf<...>,
  * but the registry consumer (`<Component inline />` / `<Component
  * onBack={...} />`) only uses the props that match every sim's
- * signature, so a single `ComponentType<SimComponentProps>` is enough. */
+ * signature, so a single `ComponentType<SimComponentProps>` is enough.
+ * The loader is typed loosely because sim modules also export their
+ * controlled `*Canvas` core + `compute*` helpers (used by the 光學操作題
+ * quiz component), which don't share the sim signature. */
 function lazySim(
-  loader: () => Promise<{ [k: string]: ComponentType<SimComponentProps> }>,
+  loader: () => Promise<Record<string, unknown>>,
   name: string,
 ): ComponentType<SimComponentProps> {
-  return dynamic(() => loader().then((m) => m[name]), { ssr: false }) as unknown as ComponentType<SimComponentProps>;
+  return dynamic(() => loader().then((m) => m[name] as ComponentType<SimComponentProps>), { ssr: false }) as unknown as ComponentType<SimComponentProps>;
 }
 
 const FreeFallSim    = lazySim(() => import("@/components/simulators/free-fall"),   "FreeFallSim");
@@ -46,6 +49,8 @@ const ProjectileSim  = lazySim(() => import("@/components/simulators/projectile"
 const CollisionSim   = lazySim(() => import("@/components/simulators/collision"),   "CollisionSim");
 const EFieldSim      = lazySim(() => import("@/components/simulators/efield"),      "EFieldSim");
 const LensSim        = lazySim(() => import("@/components/simulators/lens"),        "LensSim");
+const MirrorSim      = lazySim(() => import("@/components/simulators/mirror"),      "MirrorSim");
+const RefractionSim  = lazySim(() => import("@/components/simulators/refraction"),  "RefractionSim");
 
 interface SimMeta {
   key: SimKey;
@@ -132,6 +137,26 @@ export const SIMS: SimMeta[] = [
     accent: "text-emerald-700 dark:text-emerald-300",
     Component: LensSim,
   },
+  {
+    key: "mirror",
+    title: "球面鏡成像",
+    subtitle: "Spherical mirror imaging",
+    emoji: "🪞",
+    blurb: "凹面鏡 / 凸面鏡，f = R/2。物放在 C、F 內外各成什麼像？化妝鏡與路口廣角鏡一次看懂。",
+    chapters: "Ch34",
+    accent: "text-emerald-700 dark:text-emerald-300",
+    Component: MirrorSim,
+  },
+  {
+    key: "refraction",
+    title: "折射與全反射",
+    subtitle: "Snell's law · TIR",
+    emoji: "💎",
+    blurb: "調 n₁、n₂ 與入射角看折射光怎麼彎。n₁ > n₂ 時超過臨界角折射光消失——光纖與鑽石閃光的原理。",
+    chapters: "Ch33",
+    accent: "text-sky-700 dark:text-sky-300",
+    Component: RefractionSim,
+  },
 ];
 
 interface PageMapping {
@@ -159,6 +184,7 @@ const PAGE_MAPPINGS: PageMapping[] = [
   { chapter: 24, page: null, simKey: "rc" },
   { chapter: 26, page: null, simKey: "rc" },
   // Optics
+  { chapter: 33, page: null, simKey: "refraction" },
   { chapter: 34, page: null, simKey: "lens" },
 ];
 

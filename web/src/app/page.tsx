@@ -23,9 +23,10 @@ import { LibraryView } from "@/components/library-view";
 import { GoalsView } from "@/components/goals-view";
 import { SimulatorsMode } from "@/components/simulators";
 import { NotesQuiz } from "@/components/notes-quiz";
+import { OralExam } from "@/components/oral-exam";
 import { AdminPanel } from "@/components/admin-panel";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "admin" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "admin" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -48,12 +49,16 @@ export default function Home() {
    *  graph or prereq-gap analyzer, the target chapter rides along here so
    *  TeachingMode can pre-select it instead of showing the chapter picker. */
   const [teachingInitialChapter, setTeachingInitialChapter] = useState<number | undefined>(undefined);
+  /** Optional slide to land on alongside teachingInitialChapter. Set by the
+   *  AI 錯題分析 "📖 ChXX p.N" citations; undefined = first page. */
+  const [teachingInitialPage, setTeachingInitialPage] = useState<number | undefined>(undefined);
 
   const goHome = useCallback(() => {
     setMode(null);
     setResume(null);
     setChatSessionId(null);
     setTeachingInitialChapter(undefined);
+    setTeachingInitialPage(undefined);
   }, []);
 
   // ModeSelector dispatcher: intercept "qa" cold-entry to mint a new session.
@@ -63,13 +68,16 @@ export default function Home() {
       setChatSessionId(crypto.randomUUID());
     }
     setTeachingInitialChapter(undefined);
+    setTeachingInitialPage(undefined);
     setMode(m);
   }, []);
 
-  // Deep link → teaching mode with a specific chapter pre-selected. Used by
-  // the knowledge graph and the prereq-gap analyzer.
-  const navigateToTeaching = useCallback((chapter: number) => {
+  // Deep link → teaching mode with a specific chapter (and optionally a
+  // page) pre-selected. Used by the knowledge graph, the prereq-gap
+  // analyzer, and the AI 錯題分析 lecture-page citations.
+  const navigateToTeaching = useCallback((chapter: number, page?: number) => {
     setTeachingInitialChapter(chapter);
+    setTeachingInitialPage(page);
     setMode("teaching");
   }, []);
 
@@ -137,9 +145,9 @@ export default function Home() {
       />
     );
   }
-  if (mode === "teaching") return <TeachingMode onBack={goHome} initialChapter={teachingInitialChapter} />;
-  if (mode === "quiz") return <QuizMode onBack={goHome} />;
-  if (mode === "exam") return <ExamMode onBack={goHome} />;
+  if (mode === "teaching") return <TeachingMode onBack={goHome} initialChapter={teachingInitialChapter} initialPage={teachingInitialPage} />;
+  if (mode === "quiz") return <QuizMode onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
+  if (mode === "exam") return <ExamMode onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
   if (mode === "graph") {
     return (
       <KnowledgeGraph
@@ -172,8 +180,8 @@ export default function Home() {
       />
     );
   }
-  if (mode === "attempts") return <AttemptsHistory onBack={goHome} />;
-  if (mode === "wrong") return <WrongNotebook onBack={goHome} />;
+  if (mode === "attempts") return <AttemptsHistory onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
+  if (mode === "wrong") return <WrongNotebook onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
   if (mode === "preview") return <ChapterPreview onBack={goHome} />;
   if (mode === "feynman") return <FeynmanMode onBack={goHome} />;
   if (mode === "calibration") return <CalibrationView onBack={goHome} />;
@@ -184,6 +192,7 @@ export default function Home() {
   if (mode === "goals") return <GoalsView onBack={goHome} />;
   if (mode === "sim") return <SimulatorsMode onBack={goHome} />;
   if (mode === "notes-quiz") return <NotesQuiz onBack={goHome} />;
+  if (mode === "oral") return <OralExam onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
   if (mode === "admin") return <AdminPanel onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;

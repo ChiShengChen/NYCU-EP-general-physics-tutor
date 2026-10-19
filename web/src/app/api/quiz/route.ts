@@ -10,6 +10,16 @@ import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
+import {
+  evaluateOpticsTask,
+  formatOpticsAnswer,
+  formatQuantity,
+  generateOpticsTask,
+  opticsSimForChapter,
+  seededRng,
+  OPTICS_TEMPLATE_COUNT,
+  type OpticsSimKind,
+} from "@/lib/optics";
 import { NextResponse, after } from "next/server";
 
 export const maxDuration = 60;
@@ -39,6 +49,52 @@ const QuizSchema = z.object({
   questions: z.array(QuizQuestionSchema).describe("5 quiz questions"),
 });
 
+/* Interactive optics tasks are NOT produced by the LLM (the prompt above is
+ * untouched) — the server appends them with generateOpticsTask() after the
+ * LLM batches. These schemas describe the response / grade-body shape and
+ * validate the task payload the client echoes back at grading time. */
+
+const OpticsTaskSchema = z.object({
+  sim: z.enum(["lens", "mirror", "refraction"]),
+  adjustable: z.array(z.object({
+    key: z.string(), label: z.string(), unit: z.string().optional(),
+    min: z.number(), max: z.number(), step: z.number(), initial: z.number(),
+  })),
+  fixed: z.array(z.object({ key: z.string(), label: z.string(), unit: z.string().optional(), value: z.number() })),
+  target: z.array(z.object({
+    description: z.string(),
+    check: z.object({
+      quantity: z.string(),
+      op: z.enum(["eq", "gte", "lte", "between"]),
+      value: z.number(),
+      value2: z.number().optional(),
+      tolerance: z.number().optional(),
+    }),
+  })),
+});
+
+const InteractiveOpticsQuestionSchema = z.object({
+  id: z.number(),
+  type: z.literal("interactive_optics"),
+  concept: z.string(),
+  difficulty: z.enum(["easy", "medium", "hard"]),
+  question: z.string(),
+  /** Short textual description of one valid configuration. */
+  correctAnswer: z.string(),
+  explanation: z.string(),
+  sourceChapter: z.number(),
+  optics: OpticsTaskSchema,
+});
+
+type QuizResponseQuestion = z.infer<typeof QuizQuestionSchema> | z.infer<typeof InteractiveOpticsQuestionSchema>;
+
+/** Client → server payload for interactive questions: final slider values
+ *  plus the client's own verdict (informational only — never trusted). */
+const OpticsResultsSchema = z.record(
+  z.string(),
+  z.object({ values: z.record(z.string(), z.number()), isCorrect: z.boolean().optional() }),
+);
+
 const GradeResultSchema = z.object({
   results: z.array(
     z.object({
@@ -50,6 +106,46 @@ const GradeResultSchema = z.object({
   ),
   overallFeedback: z.string().describe("Overall encouragement and study advice in Traditional Chinese"),
 });
+
+/* ─── Interactive optics helpers ─── */
+
+/**
+ * Build `count` interactive tasks for the optics sims a chapter maps to
+ * (Ch33 → refraction, Ch34 → lens + mirror). Sims and templates are
+ * rotated so two tasks from the same chapter never duplicate each other.
+ * Ids are placeholders — the caller re-ids the merged list.
+ */
+function buildOpticsQuestions(chapter: number, count: number): QuizResponseQuestion[] {
+  const sims = opticsSimForChapter(chapter);
+  if (sims.length === 0 || count <= 0) return [];
+  // Fresh seed per request; the task itself is deterministic given the seed.
+  const seed = (Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+  const rng = seededRng(seed);
+  const out: QuizResponseQuestion[] = [];
+  const templateOffset = Math.floor(rng() * 16);
+  for (let i = 0; i < count; i++) {
+    const sim: OpticsSimKind = sims[i % sims.length];
+    // Spread the picks across the template bank when the same sim repeats.
+    const templateIndex = (templateOffset + Math.floor(i / sims.length)) % OPTICS_TEMPLATE_COUNT[sim];
+    const g = generateOpticsTask(sim, rng, templateIndex);
+    out.push({
+      id: 0,
+      type: "interactive_optics",
+      concept: g.concept,
+      difficulty: g.difficulty,
+      question: g.question,
+      correctAnswer: g.correctAnswer,
+      explanation: g.explanation,
+      sourceChapter: chapter,
+      optics: g.task,
+    });
+  }
+  return out;
+}
+
+function isInteractive(q: QuizResponseQuestion): q is z.infer<typeof InteractiveOpticsQuestionSchema> {
+  return q.type === "interactive_optics";
+}
 
 /* ─── POST /api/quiz — Generate or Grade ─── */
 
@@ -165,8 +261,11 @@ ${context}
       }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/synthesis-SA" }),
     ]);
 
-    const synthMerged = synthBatches.flatMap((b) => b.object.questions)
-      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..5
+    // One interactive optics task per included optics chapter (Ch33 / Ch34),
+    // appended after the LLM questions so the synthesis prompt stays untouched.
+    const synthOptics = sortedChapters.flatMap((ch) => buildOpticsQuestions(ch, 1));
+    const synthMerged = ([...synthBatches.flatMap((b) => b.object.questions), ...synthOptics] as QuizResponseQuestion[])
+      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..N
     const quiz = {
       title: synthBatches.find((b) => b.object.title)?.object.title ?? `${chLabels} 綜合應用`,
       description: synthBatches.find((b) => b.object.description)?.object.description ?? `${chLabels} 跨章節綜合應用 5 題`,
@@ -237,11 +336,14 @@ ${context}
       }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/chapter-4" }),
     ]);
 
-    const merged = batches.flatMap((b) => b.object.questions)
-      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..20
+    // Ch33 / Ch34 get two interactive optics tasks on top of the 20 LLM
+    // questions (deterministic, client-graded with physics formulas).
+    const chapterOptics = buildOpticsQuestions(chapter, 2);
+    const merged = ([...batches.flatMap((b) => b.object.questions), ...chapterOptics] as QuizResponseQuestion[])
+      .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..N
     const quiz = {
       title: batches.find((b) => b.object.title)?.object.title ?? `${chLabel} 章節測驗`,
-      description: batches.find((b) => b.object.description)?.object.description ?? `針對第 ${chapter} 章的 20 題測驗`,
+      description: batches.find((b) => b.object.description)?.object.description ?? `針對第 ${chapter} 章的 ${merged.length} 題測驗`,
       questions: merged,
     };
 
@@ -355,18 +457,63 @@ ${extraGuidance}`;
 
 /* ─── Grade Quiz ─── */
 
+/**
+ * Deterministic grading for one interactive optics question. The client's
+ * verdict is ignored; we re-run evaluateOpticsTask on the submitted slider
+ * values (clamped to the task's ranges inside the evaluator).
+ */
+function gradeOpticsQuestion(
+  q: z.infer<typeof InteractiveOpticsQuestionSchema>,
+  submission: { values: Record<string, number> } | undefined,
+): z.infer<typeof GradeResultSchema>["results"][number] {
+  const targetList = q.optics.target.map((t) => `「${t.description}」`).join("、");
+  if (!submission) {
+    return { questionId: q.id, isCorrect: false, score: 0, feedback: `未提交任何設定。目標是 ${targetList}；參考設定：${q.correctAnswer}。` };
+  }
+  const verdict = evaluateOpticsTask(q.optics, submission.values);
+  const achievedLines = verdict.perTarget
+    .map((t, i) => `${t.ok ? "✓" : "✗"} ${t.description} → 實際 ${formatQuantity(q.optics.target[i].check.quantity, t.actual)}`)
+    .join("\n");
+  const feedback = verdict.isCorrect
+    ? `你的設定（${formatOpticsAnswer(q.optics, submission.values)}）達成了所有目標：\n${achievedLines}`
+    : `你的設定（${formatOpticsAnswer(q.optics, submission.values)}）還沒達成全部目標：\n${achievedLines}\n\n參考設定：${q.correctAnswer}。`;
+  return { questionId: q.id, isCorrect: verdict.isCorrect, score: verdict.isCorrect ? 1 : 0, feedback };
+}
+
 async function handleGrade(body: {
   studentId?: string;
-  questions: z.infer<typeof QuizSchema>["questions"];
+  questions: QuizResponseQuestion[];
   answers: Record<number, string>;
   confidences?: Record<number, number>;
   hintUsage?: Record<number, number>;
+  /** Interactive optics submissions keyed by question id (see OpticsResultsSchema). */
+  opticsResults?: unknown;
   quizTitle?: string;
 }) {
   const { studentId, questions, answers, confidences, hintUsage, quizTitle } = body;
 
+  // Split interactive optics questions out of the LLM payload: they are
+  // graded here with physics formulas, then merged back by questionId.
+  const opticsResults = OpticsResultsSchema.safeParse(body.opticsResults ?? {});
+  const submissions = opticsResults.success ? opticsResults.data : {};
+  const opticsGraded: z.infer<typeof GradeResultSchema>["results"] = [];
+  const llmQuestions: z.infer<typeof QuizSchema>["questions"] = [];
+  for (const q of questions) {
+    if (!isInteractive(q)) { llmQuestions.push(q); continue; }
+    const parsed = InteractiveOpticsQuestionSchema.safeParse(q);
+    if (!parsed.success) {
+      opticsGraded.push({ questionId: q.id, isCorrect: false, score: 0, feedback: "這題的模擬器資料損毀，無法批改。" });
+      continue;
+    }
+    const submission = submissions[String(q.id)];
+    opticsGraded.push(gradeOpticsQuestion(parsed.data, submission));
+    // Make sure the persisted answers column reads sensibly even if the
+    // client only sent raw slider values.
+    if (submission && !answers[q.id]) answers[q.id] = formatOpticsAnswer(parsed.data.optics, submission.values);
+  }
+
   // Build grading prompt
-  const questionsWithAnswers = questions.map((q) => ({
+  const questionsWithAnswers = llmQuestions.map((q) => ({
     id: q.id,
     type: q.type,
     concept: q.concept,
@@ -375,10 +522,14 @@ async function handleGrade(body: {
     studentAnswer: answers[q.id] ?? "(未作答)",
   }));
 
-  const { object: gradeResultRaw } = await withLLMRetry(() => generateObject({
-    model: google(pickModel("quiz")),
-    schema: GradeResultSchema,
-    prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
+  // Skip the LLM entirely when every question was interactive (keeps the
+  // 60s budget and avoids an empty-payload prompt).
+  const llmGrade: z.infer<typeof GradeResultSchema> = llmQuestions.length === 0
+    ? { results: [], overallFeedback: "這份測驗全部是光學操作題，已用物理公式自動批改。想加強的話可以回到模擬器多玩幾組物距 / 焦距組合。" }
+    : restoreLatexInObject((await withLLMRetry(() => generateObject({
+      model: google(pickModel("quiz")),
+      schema: GradeResultSchema,
+      prompt: `你是交通大學電物系「普通物理」課程（楊本立老師）的 AI 助教，請批改以下測驗。
 
 學生的作答：
 ${JSON.stringify(questionsWithAnswers, null, 2)}
@@ -390,8 +541,14 @@ ${JSON.stringify(questionsWithAnswers, null, 2)}
 - 每題給具體的繁體中文回饋，解釋為什麼對或錯
 - 如果學生答錯，引用正確的概念和公式
 - 整體回饋要鼓勵學生，並建議接下來可以複習哪些概念`,
-  }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/grade" });
-  const gradeResult = restoreLatexInObject(gradeResultRaw);
+    }), { studentId, endpoint: "/api/quiz", model: MODEL_NAME, label: "quiz/grade" })).object);
+
+  // Merge deterministic optics results with the LLM's, ordered by id so
+  // the client / attempts row read like a single grading pass.
+  const gradeResult: z.infer<typeof GradeResultSchema> = {
+    ...llmGrade,
+    results: [...llmGrade.results, ...opticsGraded].sort((a, b) => a.questionId - b.questionId),
+  };
 
   // Persist mastery + attempts AFTER the response goes out. The LLM grading
   // alone can eat 40+s of the 60s Vercel budget, so serial DB writes here

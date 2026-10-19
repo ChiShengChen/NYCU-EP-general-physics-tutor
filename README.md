@@ -66,7 +66,8 @@
 | :--- | :--- |
 | `lecture_chunks` | 講義切片 + 768 維向量（pgvector），給 `retrieveChunks` 用 |
 | `student_profiles` | 學生帳號（auth_user_id, email, display_name, last_signed_in_at） |
-| `attempts` | 測驗/考試紀錄（jsonb questions + results + total_score） |
+| `attempts` | 測驗/考試/口試紀錄（kind = quiz / exam / **oral**；jsonb questions + results + total_score；口試另存 **transcript**） |
+| `attempt_analyses` | 每份 attempt 的 **AI 錯題分析** cache（錯因分類 + 講義頁碼 + 複習順序，含 prompt_version） |
 | `chat_messages` | 自由問答歷史（session_id, role, content） |
 | `student_state` | 概念掌握度（concept text, mastery_score 0–1） |
 | `reflections` | 學習反思 + AI 回饋 |
@@ -75,15 +76,15 @@
 | `question_reports` | 學生回報題目品質（含 resolved_at / resolved_by_email） |
 | `chapter_previews` | 章節預習卡 cache（含 **prompt_version** 自動失效） |
 
-完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 019）。
+完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 021；020 = attempts 加 `oral` kind + transcript，021 = `attempt_analyses`）。
 
 **模式分級（`web/src/lib/models.ts`）**
 
 ```
 light    preview / chapter-preview / hint / notes-quiz   → Flash-Lite（最便宜）
 standard chat / quiz / reflection / regen / compare /    → Flash（預設）
-         study-plan
-premium  exam / export                                   → Pro（最貴最準）
+         study-plan / oral（口試出題 + 追問）/ analysis（錯題分析）
+premium  exam / export（口試最後評分也走 exam 層）        → Pro（最貴最準）
 ```
 
 可用 `MODEL_LIGHT` / `MODEL_STANDARD` / `MODEL_PREMIUM` 覆寫一整層，或用 `MODEL_<MODE>` 微調單個 endpoint。沒設就走 legacy `CHAT_MODEL` 或硬編碼 fallback。
@@ -118,6 +119,8 @@ premium  exam / export                                   → Pro（最貴最準�
 | `CHAT_MODEL` | Legacy 全域，沒設模式 / 層 fallback 時用 |
 | `PROMPT_VERSION` | 每次改 prompt 就 bump，會記到 `token_usage` 做 A/B 對照 |
 | `PREVIEW_PROMPT_VERSION` | 章節預習專用 prompt 版本，bump 後 cache 自動失效 |
+| `ANALYSIS_PROMPT_VERSION` | 錯題分析 prompt 版本，bump 後 `attempt_analyses` cache 自動失效 |
+| `MODEL_ORAL` / `MODEL_ANALYSIS` | 口試 / 錯題分析的單一 endpoint override（預設走 standard 層） |
 
 ### 監測 / 選用
 
@@ -177,6 +180,9 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - **學習儀表板**：mastery / streak / token 用量 / 弱點
 - **對話歷史**：續聊任一場 session
 - **錯題本**：自動收集答錯題，可一鍵 regenerate 變體
+- **AI 錯題分析**：測驗 / 考試 / 口試結束後一鍵分析——每題錯因分類（概念 / 計算 / 審題 / 不完整）、正確思路、**對應講義 Ch/Page（點了直接開教學模式那一頁）**、跨題共同錯誤模式與複習順序。結果快取在 `attempt_analyses`，測驗紀錄與錯題本都看得到；`lib/attempt-analysis.ts` 是純 server 函式，之後接 email 報告可直接重用
+- **口試模擬**：AI 考官出 3 題（概念解釋 / 推導 / 情境應用），每題最多追問 2 次、不給提示；結束後依正確性 /4 · 完整性 /3 · 表達 /3 評分並給模範答案。範圍可選 1–3 章或依弱點；存成 `attempts.kind = 'oral'`
+- **光學操作題**：Ch33 / Ch34 的自動測驗會多出 2 題「在光路圖上調到目標」的互動題（薄透鏡 / 球面鏡 / 折射與全反射），學生拉滑桿達成條件後提交，由薄透鏡 / 鏡公式 / Snell 定律在 server 端判定，不經 LLM
 - **章節重點**：講義 OCR + 重點整理
 - **校準回顧**：答題前自評信心 vs 實際對錯，校準學習觀感
 - **每日 5 分鐘小複習**：依遺忘曲線挑題
@@ -184,7 +190,7 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - **學習反思日誌**：寫日記 + AI 個別回饋
 - **資料庫**：整合 library 檢索
 - **學習目標管理**：日 / 週 / 月目標追蹤
-- **物理模擬器**：互動式 simulators（PhET-style）
+- **物理模擬器**：互動式 simulators（PhET-style）：自由落體、拋體、碰撞、彈簧、電場、RC 電路、薄透鏡、球面鏡、折射 / 全反射
 - **手寫筆記出題**：拍照上傳 → AI 出題回測筆記內容
 - **🛡️ 後台**（僅 admins）：見下一節
 
@@ -242,3 +248,5 @@ Vercel 接到 push 自動部署 main。改 env var 後**需要手動 Redeploy**�
 - [ ] 老師自訂題庫（teacher role + 上傳介面）— 需要先談 schema
 - [ ] eval harness 擴充到 chat / exam（目前只有 preview）
 - [ ] pg_dump 自動備份（cron 或 Supabase Edge Function）
+- [ ] 考完試自動 email 錯題分析報告（`renderAnalysisText()` 已可產出純文字版；還需 Resend/SMTP + cron）
+- [ ] 口試加語音（TTS 唸題 + 現有語音輸入）；ScopeSelector 文案仍寫「20 題」，Ch33/34 實際為 22 題

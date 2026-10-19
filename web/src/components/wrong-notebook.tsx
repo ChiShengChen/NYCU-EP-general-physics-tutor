@@ -6,12 +6,14 @@ import { apiKey } from "@/lib/api";
 import { useStudentId } from "@/lib/use-student-id";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ThemeToggle } from "./theme-provider";
+import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
 
 /* ─── Types ─── */
 
 interface Question {
   id: number;
-  type: "multiple_choice" | "short_answer";
+  /** multiple_choice | short_answer | oral | interactive_optics */
+  type: string;
   concept?: string;
   question: string;
   options?: string[];
@@ -24,7 +26,7 @@ interface Question {
 interface WrongItem {
   attemptId: number;
   attemptTitle: string;
-  attemptKind: "quiz" | "exam";
+  attemptKind: "quiz" | "exam" | "oral";
   attemptCreatedAt: string;
   question: Question;
   studentAnswer: string;
@@ -53,9 +55,11 @@ function chapterLabel(ch?: number): string {
 
 interface WrongNotebookProps {
   onBack: () => void;
+  /** Deep link into 教學模式 at a specific slide (from AI 錯題分析 citations). */
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
 }
 
-export function WrongNotebook({ onBack }: WrongNotebookProps) {
+export function WrongNotebook({ onBack, onNavigateToTeaching }: WrongNotebookProps) {
   const [filterChapter, setFilterChapter] = useState<number | null>(null);
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const studentId = useStudentId() ?? "";
@@ -153,7 +157,7 @@ export function WrongNotebook({ onBack }: WrongNotebookProps) {
                       </span>
                       <span>{chapterLabel(q.sourceChapter)}</span>
                       <span>·</span>
-                      <span>{q.type === "multiple_choice" ? "選擇" : "簡答"}</span>
+                      <span>{q.type === "multiple_choice" ? "選擇" : q.type === "oral" ? "口試" : q.type === "interactive_optics" ? "光路" : "簡答"}</span>
                       {q.concept && (
                         <>
                           <span>·</span>
@@ -195,7 +199,7 @@ export function WrongNotebook({ onBack }: WrongNotebookProps) {
                         </div>
                       )}
 
-                      {q.type === "short_answer" && (
+                      {q.type !== "multiple_choice" && (
                         <div className="space-y-2">
                           <div className="px-3 py-2 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 text-sm">
                             <span className="text-xs font-medium text-rose-700 dark:text-rose-300 mr-2">你的回答</span>
@@ -223,6 +227,14 @@ export function WrongNotebook({ onBack }: WrongNotebookProps) {
                           </div>
                         </details>
                       )}
+
+                      {/* AI 錯題分析 for just this question: errorType, fix, 講義頁 */}
+                      <AttemptAnalysisPanel
+                        attemptId={it.attemptId}
+                        questionId={q.id}
+                        variant="inline"
+                        onNavigateToTeaching={onNavigateToTeaching}
+                      />
                     </div>
                   )}
                 </div>

@@ -9,12 +9,15 @@ import { ReportQuestionButton } from "./report-question-button";
 import { RegenerateQuestionButton } from "./regenerate-question-button";
 import { stripOptionLetter } from "@/lib/strip-option-letter";
 import { ThemeToggle } from "./theme-provider";
+import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
+import { OpticsTaskView, type OpticsSubmission } from "./optics-task";
+import { evaluateOpticsTask, formatOpticsAnswer, formatQuantity, type OpticsTask } from "@/lib/optics";
 
 /* ─── Types ─── */
 
 interface QuizQuestion {
   id: number;
-  type: "multiple_choice" | "short_answer";
+  type: "multiple_choice" | "short_answer" | "interactive_optics";
   concept: string;
   difficulty: "easy" | "medium" | "hard";
   question: string;
@@ -22,6 +25,8 @@ interface QuizQuestion {
   correctAnswer: string;
   explanation: string;
   sourceChapter: number;
+  /** Only for `interactive_optics` — the simulator task the student manipulates. */
+  optics?: OpticsTask;
 }
 
 interface Quiz {
@@ -54,10 +59,16 @@ interface ChapterInfo {
 
 interface QuizModeProps {
   onBack: () => void;
+  /** Deep link into 教學模式 at a specific slide, used by the AI 錯題分析
+   *  panel's "📖 ChXX p.N" citations on the results page. */
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
 }
 
-export function QuizMode({ onBack }: QuizModeProps) {
+export function QuizMode({ onBack, onNavigateToTeaching }: QuizModeProps) {
   const [state, setState] = useState<QuizState>("select");
+  /** ISO timestamp taken right before grading; the attempt row is written
+   *  in after() so the analysis panel locates it by kind + time. */
+  const [gradedAt, setGradedAt] = useState<string | null>(null);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isIntroQuiz, setIsIntroQuiz] = useState(false);
   const [scopeChapter, setScopeChapter] = useState<number | null>(null);  // null = full range
@@ -66,6 +77,9 @@ export function QuizMode({ onBack }: QuizModeProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
   const [hintUsage, setHintUsage] = useState<Record<number, number>>({});
+  // Final slider values + client verdict for interactive_optics questions
+  // (server re-evaluates; the verdict here only drives local UI).
+  const [opticsResults, setOpticsResults] = useState<Record<number, OpticsSubmission>>({});
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -97,6 +111,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setAnswers({});
     setConfidences({});
     setHintUsage({});
+    setOpticsResults({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(spec.mode === "chapter" ? (spec.chapter ?? null) : null);
@@ -133,6 +148,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
     setAnswers({});
     setConfidences({});
     setHintUsage({});
+    setOpticsResults({});
     setGradeResult(null);
     setCurrentQuestion(0);
     setScopeChapter(null);
@@ -142,6 +158,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
   const handleSubmit = useCallback(async () => {
     if (!quiz) return;
     setState("grading");
+    setGradedAt(new Date().toISOString());
 
     try {
       const res = await fetch("/api/quiz", {
@@ -154,6 +171,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
           answers,
           confidences,
           hintUsage,
+          opticsResults,
           quizTitle: quiz.title,
         }),
       });
@@ -168,7 +186,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
       setState("answering");
       console.error("Quiz grading error:", err);
     }
-  }, [quiz, answers, studentId, confidences, hintUsage]);
+  }, [quiz, answers, studentId, confidences, hintUsage, opticsResults]);
 
   const answeredCount = quiz ? quiz.questions.filter((q) => answers[q.id]?.trim()).length : 0;
   const totalQuestions = quiz?.questions.length ?? 0;
@@ -224,6 +242,12 @@ export function QuizMode({ onBack }: QuizModeProps) {
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
             answeredCount={answeredCount}
+            opticsResults={opticsResults}
+            onOpticsSubmit={(qid, task, values, verdict) => {
+              setOpticsResults({ ...opticsResults, [qid]: { values, isCorrect: verdict.isCorrect } });
+              // Human-readable string so progress dots / 錯題本 / 測驗紀錄 treat it like any answer.
+              setAnswers({ ...answers, [qid]: formatOpticsAnswer(task, values) });
+            }}
             onReplaceQuestion={(oldId, newQ) => {
               setQuiz({
                 ...quiz,
@@ -234,6 +258,7 @@ export function QuizMode({ onBack }: QuizModeProps) {
               const a = { ...answers }; delete a[qid]; setAnswers(a);
               const c = { ...confidences }; delete c[qid]; setConfidences(c);
               const h = { ...hintUsage }; delete h[qid]; setHintUsage(h);
+              const o = { ...opticsResults }; delete o[qid]; setOpticsResults(o);
             }}
           />
         )}
@@ -242,7 +267,10 @@ export function QuizMode({ onBack }: QuizModeProps) {
           <ResultsState
             quiz={quiz}
             answers={answers}
+            opticsResults={opticsResults}
             gradeResult={gradeResult}
+            gradedAt={gradedAt}
+            onNavigateToTeaching={onNavigateToTeaching}
             onRetry={restart}
             onBack={onBack}
           />
@@ -444,6 +472,8 @@ function AnsweringState({
   setCurrentQuestion,
   onSubmit,
   answeredCount,
+  opticsResults,
+  onOpticsSubmit,
   onReplaceQuestion,
   onResetForQuestion,
 }: {
@@ -459,6 +489,8 @@ function AnsweringState({
   setCurrentQuestion: (n: number) => void;
   onSubmit: () => void;
   answeredCount: number;
+  opticsResults: Record<number, OpticsSubmission>;
+  onOpticsSubmit: (qid: number, task: OpticsTask, values: Record<string, number>, verdict: ReturnType<typeof evaluateOpticsTask>) => void;
   onReplaceQuestion: (oldId: number, newQ: QuizQuestion) => void;
   onResetForQuestion: (qid: number) => void;
 }) {
@@ -519,10 +551,12 @@ function AnsweringState({
             className={`px-2 py-0.5 rounded-full text-xs font-medium ${
               q.type === "multiple_choice"
                 ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-300"
-                : "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-300"
+                : q.type === "interactive_optics"
+                  ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-300"
+                  : "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-300"
             }`}
           >
-            {q.type === "multiple_choice" ? "選擇題" : "簡答題"}
+            {q.type === "multiple_choice" ? "選擇題" : q.type === "interactive_optics" ? "📐 光學操作題" : "簡答題"}
           </span>
           <span
             className={`px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -536,25 +570,37 @@ function AnsweringState({
             {q.difficulty === "easy" ? "基礎" : q.difficulty === "medium" ? "中等" : "進階"}
           </span>
           <span className="text-xs text-slate-400 dark:text-slate-500">Ch{String(q.sourceChapter).padStart(2, "0")}</span>
-          <span className="ml-auto flex items-center gap-2">
-            <RegenerateQuestionButton
-              question={q}
-              onReplace={(newQ) => onReplaceQuestion(q.id, newQ as QuizQuestion)}
-              onResetForQuestion={onResetForQuestion}
-            />
-            <ReportQuestionButton
-              questionId={q.id}
-              question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
-            />
-          </span>
+          {/* Regen is LLM-based and report targets LLM output — neither
+              applies to deterministic interactive tasks. */}
+          {q.type !== "interactive_optics" && (
+            <span className="ml-auto flex items-center gap-2">
+              <RegenerateQuestionButton
+                question={q}
+                onReplace={(newQ) => onReplaceQuestion(q.id, newQ as QuizQuestion)}
+                onResetForQuestion={onResetForQuestion}
+              />
+              <ReportQuestionButton
+                questionId={q.id}
+                question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
+              />
+            </span>
+          )}
         </div>
 
         <div className="mb-5">
           <MarkdownRenderer content={`**${q.id}.** ${q.question}`} />
         </div>
 
-        {/* Multiple choice options */}
-        {q.type === "multiple_choice" && q.options ? (
+        {/* Interactive optics: drag sliders in the simulator, then 提交 locks them */}
+        {q.type === "interactive_optics" && q.optics ? (
+          <OpticsTaskView
+            key={`optics-${q.id}`}
+            task={q.optics}
+            submitted={opticsResults[q.id] ?? null}
+            onSubmit={(values, verdict) => onOpticsSubmit(q.id, q.optics!, values, verdict)}
+            onReset={() => onResetForQuestion(q.id)}
+          />
+        ) : q.type === "multiple_choice" && q.options ? (
           <div className="space-y-2">
             {q.options.map((option, i) => {
               const letter = String.fromCharCode(65 + i); // A, B, C, D
@@ -650,13 +696,19 @@ function AnsweringState({
 function ResultsState({
   quiz,
   answers,
+  opticsResults,
   gradeResult,
+  gradedAt,
+  onNavigateToTeaching,
   onRetry,
   onBack,
 }: {
   quiz: Quiz;
   answers: Record<number, string>;
+  opticsResults: Record<number, OpticsSubmission>;
   gradeResult: GradeResult;
+  gradedAt: string | null;
+  onNavigateToTeaching?: (chapter: number, page: number) => void;
   onRetry: () => void;
   onBack: () => void;
 }) {
@@ -705,6 +757,14 @@ function ResultsState({
         <MarkdownRenderer content={gradeResult.overallFeedback} />
       </div>
 
+      {/* AI 錯題分析 — only meaningful when something was wrong */}
+      {gradedAt && correctCount < gradeResult.results.length && (
+        <AttemptAnalysisPanel
+          locate={{ kind: "quiz", since: gradedAt }}
+          onNavigateToTeaching={onNavigateToTeaching}
+        />
+      )}
+
       {/* Per-question results */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">詳細結果</h3>
@@ -745,6 +805,11 @@ function ResultsState({
                 </div>
               </div>
 
+              {/* Interactive optics: per-target achieved vs required */}
+              {q.type === "interactive_optics" && q.optics && (
+                <OpticsResultTargets task={q.optics} submission={opticsResults[q.id]} />
+              )}
+
               {/* Feedback */}
               <div className="bg-slate-50 dark:bg-slate-900 rounded-xl px-4 py-3 text-sm">
                 <MarkdownRenderer content={result.feedback} />
@@ -779,6 +844,34 @@ function ResultsState({
           返回首頁
         </button>
       </div>
+    </div>
+  );
+}
+
+/* ─── Interactive optics: per-target breakdown in the results view ─── */
+
+/** Re-evaluates the submitted slider values client-side (same formulas the
+ *  server used) so each target shows 達成 / 未達成 next to the actual value.
+ *  Kept outside ResultsState so that function's diff stays minimal. */
+function OpticsResultTargets({ task, submission }: { task: OpticsTask; submission?: OpticsSubmission }) {
+  if (!submission) {
+    return (
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">（未提交任何設定）</p>
+    );
+  }
+  const verdict = evaluateOpticsTask(task, submission.values);
+  return (
+    <div className="mb-3 rounded-xl border border-emerald-100 dark:border-emerald-900 bg-emerald-50/40 dark:bg-emerald-950/20 px-3 py-2 text-xs space-y-1">
+      <p className="font-semibold text-emerald-800 dark:text-emerald-200">🎯 目標達成狀況</p>
+      {verdict.perTarget.map((t, i) => (
+        <div key={i} className="flex items-baseline gap-2">
+          <span className={t.ok ? "text-green-600 dark:text-green-300" : "text-red-500 dark:text-red-300"}>{t.ok ? "✓" : "✗"}</span>
+          <span className="text-slate-700 dark:text-slate-200 flex-1">{t.description}</span>
+          <span className="tabular-nums text-slate-500 dark:text-slate-400">
+            實際 {formatQuantity(task.target[i].check.quantity, t.actual)}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
