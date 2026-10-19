@@ -6,6 +6,7 @@ import { apiKey } from "@/lib/api";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { ThemeToggle } from "./theme-provider";
 import { CHAPTER_NODES } from "@/lib/concept-graph";
+import { AdminQuestionBank } from "./admin-question-bank";
 
 /**
  * 「管理員後台」 — two-tab triage panel for the people whose emails are
@@ -105,7 +106,7 @@ interface Report {
 }
 interface ReportsData { reports: Report[] }
 
-type Tab = "usage" | "reports" | "class";
+type Tab = "usage" | "reports" | "class" | "bank";
 
 interface ClassData {
   windowDays: number;
@@ -117,7 +118,17 @@ interface ClassData {
   };
   perChapter: { chapter: number; correct: number; total: number; correctRatio: number; students: number }[];
   weakConcepts: { concept: string; avgMastery: number; studentCount: number; attemptCount: number }[];
+  errorTypes: {
+    analysedAttempts: number;
+    analysedStudents: number;
+    overall: ErrorCounts;
+    byChapter: ({ chapter: number; total: number } & ErrorCounts)[];
+    topPages: { chapter: number; page: number; sectionTitle: string; count: number }[];
+  };
 }
+
+type ErrorTypeKey = "concept" | "calculation" | "reading" | "incomplete" | "unanswered";
+type ErrorCounts = Record<ErrorTypeKey, number>;
 
 export function AdminPanel({ onBack }: { onBack: () => void }) {
   const [tab, setTab] = useState<Tab>("usage");
@@ -154,12 +165,18 @@ export function AdminPanel({ onBack }: { onBack: () => void }) {
           >
             🚩 問題回報
           </button>
+          <button
+            onClick={() => setTab("bank")}
+            className={`px-3 py-1.5 rounded-lg ${tab === "bank" ? "bg-indigo-600 text-white" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          >
+            📚 題庫
+          </button>
         </div>
         <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        {tab === "usage" ? <UsageView /> : tab === "class" ? <ClassView /> : <ReportsView />}
+        {tab === "usage" ? <UsageView /> : tab === "class" ? <ClassView /> : tab === "bank" ? <AdminQuestionBank /> : <ReportsView />}
       </div>
     </div>
   );
@@ -740,6 +757,25 @@ function MiniStat({ label, value }: { label: string; value: string }) {
 
 /* ─── Class dashboard tab ─── */
 
+/**
+ * Fixed order + fixed hue per error type so the stacked segments and the
+ * legend never re-colour when a chapter happens to lack one type. The
+ * five 600-step hues were checked for colour-blind separation and ≥3:1
+ * contrast on both the white and slate-900 card surfaces, so the same
+ * class works in dark mode without a `dark:` twin.
+ */
+const ERROR_TYPE_META: { key: ErrorTypeKey; label: string; tone: string }[] = [
+  { key: "concept", label: "概念錯", tone: "bg-rose-600" },
+  { key: "calculation", label: "計算錯", tone: "bg-amber-600" },
+  { key: "reading", label: "審題錯", tone: "bg-sky-600" },
+  { key: "incomplete", label: "不完整", tone: "bg-violet-600" },
+  { key: "unanswered", label: "未作答", tone: "bg-teal-600" },
+];
+
+function chapterTag(ch: number): string {
+  return `Ch${String(ch).padStart(2, "0")}`;
+}
+
 function ClassView() {
   const [range, setRange] = useState<RangeValue>("30");
   const { data, error, isLoading } = useSWR<ClassData>(apiKey("/api/admin/class", { days: range }));
@@ -756,6 +792,9 @@ function ClassView() {
   const exportDays = range === "all" ? "365" : range;
   const labelByChapter = new Map(CHAPTER_NODES.map((n) => [n.chapter, n.label]));
   const chapterMap = new Map(data.perChapter.map((p) => [p.chapter, p]));
+  const { errorTypes } = data;
+  const errorTotal = ERROR_TYPE_META.reduce((sum, m) => sum + errorTypes.overall[m.key], 0);
+  const maxChapterErrors = Math.max(1, ...errorTypes.byChapter.map((c) => c.total));
 
   return (
     <div className="max-w-5xl mx-auto space-y-5">
@@ -840,6 +879,101 @@ function ClassView() {
           <Legend tone="bg-emerald-300 dark:bg-emerald-700/70" label="≥ 80%" />
           <Legend tone="bg-slate-100 dark:bg-slate-800" label="無紀錄" />
         </div>
+      </Section>
+
+      <Section title={`🧭 全班錯因分布（${rangeLabel}）`}>
+        {errorTypes.analysedAttempts === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500 py-4 text-center">
+            還沒有學生產生過錯題分析
+          </p>
+        ) : (
+          <>
+            <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
+              {errorTotal === 0
+                ? "已分析的測驗全部答對，沒有錯題可統計"
+                : ERROR_TYPE_META.map((m) =>
+                    `${m.label} ${Math.round((errorTypes.overall[m.key] / errorTotal) * 100)}%`,
+                  ).join(" · ")}
+              <span className="text-slate-400 dark:text-slate-500">
+                {" "}· 已分析 {errorTypes.analysedAttempts} 份（{errorTypes.analysedStudents} 位學生）
+              </span>
+            </p>
+            {errorTypes.byChapter.length > 0 && (
+              <div className="space-y-1.5">
+                {errorTypes.byChapter.map((row) => {
+                  // Bar length = this chapter's share of the busiest
+                  // chapter; segments split that length by error type.
+                  // The 1px gaps show the card surface so adjacent hues
+                  // never touch, which keeps the split legible even when
+                  // two neighbours are close in lightness.
+                  const rowTitle = `${chapterTag(row.chapter)} ${labelByChapter.get(row.chapter) ?? ""}：共 ${row.total} 題錯 · ${
+                    ERROR_TYPE_META.map((m) => `${m.label} ${row[m.key]}`).join(" · ")
+                  }`;
+                  return (
+                    <div key={row.chapter} className="flex items-center gap-2 text-[10px]">
+                      <span
+                        className="font-mono w-9 shrink-0 text-slate-500 dark:text-slate-400"
+                        title={labelByChapter.get(row.chapter) ?? ""}
+                      >
+                        {chapterTag(row.chapter)}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className="flex gap-px h-4 rounded overflow-hidden"
+                          style={{ width: `${Math.max(4, (row.total / maxChapterErrors) * 100)}%` }}
+                          title={rowTitle}
+                        >
+                          {ERROR_TYPE_META.map((m) =>
+                            row[m.key] > 0 ? (
+                              <div
+                                key={m.key}
+                                className={`${m.tone} h-full`}
+                                style={{ flexGrow: row[m.key] }}
+                                title={`${chapterTag(row.chapter)} ${m.label}：${row[m.key]} 題（${Math.round((row[m.key] / row.total) * 100)}%）`}
+                              />
+                            ) : null,
+                          )}
+                        </div>
+                      </div>
+                      <span className="w-8 shrink-0 text-right tabular-nums text-slate-500 dark:text-slate-400">
+                        {row.total}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="flex justify-end gap-3 mt-3 text-[10px] text-slate-500 dark:text-slate-400 flex-wrap">
+              {ERROR_TYPE_META.map((m) => (
+                <Legend key={m.key} tone={m.tone} label={`${m.label} ${errorTypes.overall[m.key]}`} />
+              ))}
+            </div>
+            {errorTypes.topPages.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">
+                  📖 最常被點名的講義頁 Top {errorTypes.topPages.length}
+                </h3>
+                <Table
+                  headers={["講義頁", "章節", "被點名次數"]}
+                  rows={errorTypes.topPages.map((p) => [
+                    <span key="0">
+                      <span className="font-mono text-[11px]">{chapterTag(p.chapter)} p.{p.page}</span>
+                      {p.sectionTitle && (
+                        <span className="ml-1 text-slate-500 dark:text-slate-400 truncate inline-block max-w-[260px] align-middle">
+                          〈{p.sectionTitle}〉
+                        </span>
+                      )}
+                    </span>,
+                    <span key="1" className="text-[10px] text-slate-400 dark:text-slate-500">
+                      {labelByChapter.get(p.chapter) ?? "—"}
+                    </span>,
+                    String(p.count),
+                  ])}
+                />
+              </div>
+            )}
+          </>
+        )}
       </Section>
 
       <Section title="🥶 全班最弱概念 Top 20">

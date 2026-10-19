@@ -9,7 +9,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "eval": "node scripts/eval/run.mjs"
+    "eval": "node scripts/eval/run.mjs",
+    "e2e": "playwright test -c e2e/playwright.config.ts",
+    "e2e:install": "playwright install --with-deps chromium"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.58",
@@ -35,6 +37,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

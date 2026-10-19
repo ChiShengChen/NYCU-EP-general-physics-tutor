@@ -1,0 +1,26 @@
+{
+  "$schema": "../schema.json",
+  "name": "exam",
+  "description": "Golden set for /api/exam — 期中 / 期末模擬考. For each examType the runner calls action=generate, checks the exam shape (15 regular questions, sequential ids, 4 options per MC, sourceChapter within chapterRange, points sum within pointsRange), then calls action=grade with a canned answer set (MC → \"A\", short answers → cannedShortAnswer, interactive optics → sliders at initial values via opticsResults) and checks the grade result (one entry per question, totals consistent, grade letter, Traditional-Chinese feedback).",
+  "defaults": {
+    "expectedQuestions": 15,
+    "pointsRange": [80, 100]
+  },
+  "cannedShortAnswer": {
+    "midterm": "先畫受力圖並選定座標軸，對每個物體列出牛頓第二定律 $\\sum \\vec{F} = m\\vec{a}$；若系統只受保守力作功，則改用機械能守恆 $K_1 + U_1 = K_2 + U_2$ 解題，最後檢查單位與極限情況是否合理。",
+    "final": "先判斷系統的對稱性並選擇適當的高斯面或安培迴路，寫出對應的 Maxwell 方程式（例如 $\\oint \\vec{E}\\cdot d\\vec{A} = Q_{enc}/\\varepsilon_0$），代入邊界條件後化簡；若是熱力學題則由第一定律 $\\Delta U = Q - W$ 出發，再檢查正負號與單位。",
+    "default": "先寫出相關的物理定律與假設，代入題目條件後化簡，最後檢查單位與極限情況是否合理。"
+  },
+  "cases": [
+    {
+      "examType": "midterm",
+      "label": "期中考 Ch01–Ch16",
+      "chapterRange": [1, 16]
+    },
+    {
+      "examType": "final",
+      "label": "期末考 Ch17–Ch37",
+      "chapterRange": [17, 37]
+    }
+  ]
+}

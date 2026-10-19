@@ -1,0 +1,62 @@
+{
+  "$schema": "../schema.json",
+  "name": "chat",
+  "description": "Golden set for /api/chat — 自由問答 (RAG Q&A branch). Seven fixed Traditional-Chinese questions across 力學 / 熱學 / 電磁, one carrying a deliberate misconception. Each reply is streamed, text parts are collected and graded on: non-empty, Traditional Chinese dominant (CJK ratio after stripping math), cites a chapter (Ch\\d\\d or 第…章), no meta-commentary leak, balanced LaTeX `$`, length bounds, and an optional recall floor. Don't pin exact wording — Gemini is sampling.",
+  "defaults": {
+    "minChars": 80,
+    "maxChars": 6000,
+    "minCjkRatio": 0.5
+  },
+  "cases": [
+    {
+      "id": "mech-friction-incline",
+      "label": "力學 · 斜面靜摩擦方向",
+      "topic": "mechanics",
+      "question": "一個木塊靜止放在粗糙斜面上，摩擦力的方向是沿斜面往上還是往下？請用受力圖說明理由。",
+      "mustMentionAny": ["摩擦", "斜面", "重力"]
+    },
+    {
+      "id": "mech-heavier-falls-faster",
+      "label": "力學 · 迷思：重的掉得快",
+      "topic": "mechanics",
+      "misconception": true,
+      "question": "我覺得比較重的物體一定掉得比較快，因為它受到的重力比較大，這樣想對嗎？",
+      "mustMentionAny": ["空氣阻力", "相同", "一樣", "同時", "伽利略", "質量無關", "與質量"]
+    },
+    {
+      "id": "mech-energy-conservation",
+      "label": "力學 · 保守力與機械能守恆",
+      "topic": "mechanics",
+      "question": "為什麼只有保守力作功時機械能才會守恆？能從功能定理推導一下嗎？",
+      "mustMentionAny": ["保守力", "位能", "功能定理", "動能"]
+    },
+    {
+      "id": "thermo-isothermal-vs-adiabatic",
+      "label": "熱學 · 等溫 vs 絕熱膨脹作功",
+      "topic": "thermo",
+      "question": "理想氣體從同一個初態膨脹到同一個末體積，等溫過程和絕熱過程哪一個對外作的功比較大？為什麼？",
+      "mustMentionAny": ["等溫", "絕熱", "功", "壓力"]
+    },
+    {
+      "id": "thermo-fridge-entropy",
+      "label": "熱學 · 冰箱與熱力學第二定律",
+      "topic": "thermo",
+      "question": "熱力學第二定律說熵不會減少，那冰箱把裡面變冷、熵變小，不是違反第二定律嗎？",
+      "mustMentionAny": ["總熵", "環境", "外界", "作功", "功", "孤立"]
+    },
+    {
+      "id": "em-gauss-symmetry",
+      "label": "電磁 · 高斯定律適用情境",
+      "topic": "em",
+      "question": "高斯定律在什麼情況下可以方便地算出電場？請舉一個具體例子並寫出算式。",
+      "mustMentionAny": ["對稱", "高斯面", "球", "無限長", "平面"]
+    },
+    {
+      "id": "em-conductor-equilibrium",
+      "label": "電磁 · 導體靜電平衡內部電場為零",
+      "topic": "em",
+      "question": "為什麼導體在靜電平衡時內部電場一定是零？多餘的電荷又為什麼都跑到表面？",
+      "mustMentionAny": ["自由電子", "表面", "靜電平衡", "等電位", "電位"]
+    }
+  ]
+}

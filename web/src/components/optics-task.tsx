@@ -166,3 +166,30 @@ export function OpticsTaskView({ task, submitted, onSubmit, onReset }: OpticsTas
     </div>
   );
 }
+
+/* ─── Per-target breakdown in the results view (quiz + exam) ─── */
+
+/** Re-evaluates the submitted slider values client-side (same formulas the
+ *  server used) so each target shows 達成 / 未達成 next to the actual value. */
+export function OpticsResultTargets({ task, submission }: { task: OpticsTask; submission?: OpticsSubmission }) {
+  if (!submission) {
+    return (
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">（未提交任何設定）</p>
+    );
+  }
+  const verdict = evaluateOpticsTask(task, submission.values);
+  return (
+    <div className="mb-3 rounded-xl border border-emerald-100 dark:border-emerald-900 bg-emerald-50/40 dark:bg-emerald-950/20 px-3 py-2 text-xs space-y-1">
+      <p className="font-semibold text-emerald-800 dark:text-emerald-200">🎯 目標達成狀況</p>
+      {verdict.perTarget.map((t, i) => (
+        <div key={i} className="flex items-baseline gap-2">
+          <span className={t.ok ? "text-green-600 dark:text-green-300" : "text-red-500 dark:text-red-300"}>{t.ok ? "✓" : "✗"}</span>
+          <span className="text-slate-700 dark:text-slate-200 flex-1">{t.description}</span>
+          <span className="tabular-nums text-slate-500 dark:text-slate-400">
+            實際 {formatQuantity(task.target[i].check.quantity, t.actual)}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}

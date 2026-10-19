@@ -13,24 +13,9 @@
 
 import { Suspense } from "react";
 import Link from "next/link";
+import { runHealthChecks, type HealthPayload, type HealthCheck as Check } from "@/lib/health";
 
 export const dynamic = "force-dynamic";
-
-interface Check {
-  ok: boolean;
-  critical: boolean;
-  status: "ok" | "degraded" | "down";
-  latencyMs: number | null;
-  detail?: string;
-}
-
-interface HealthPayload {
-  status: "ok" | "degraded" | "down";
-  env: string;
-  commit: string | null;
-  checkedAt: string;
-  checks: Record<string, Check>;
-}
 
 const STATUS_TONE: Record<HealthPayload["status"], string> = {
   ok: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-900 dark:text-emerald-100 border-emerald-300 dark:border-emerald-700",
@@ -45,15 +30,11 @@ const STATUS_LABEL: Record<HealthPayload["status"], string> = {
 };
 
 async function fetchHealth(): Promise<HealthPayload | { error: string }> {
-  // We can't import the route handler directly without crossing the
-  // Server / Edge boundary, so use a relative fetch. cache: "no-store"
-  // because rendering a stale status during an outage defeats the page.
+  // Run the checks in-process. Fetching `/api/health-check` over HTTP via
+  // VERCEL_URL hit Vercel's deployment-protection SSO page in production
+  // and the status page rendered as broken even when the API was fine.
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ??
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-    const res = await fetch(`${baseUrl}/api/health-check`, { cache: "no-store" });
-    return (await res.json()) as HealthPayload;
+    return await runHealthChecks();
   } catch (err) {
     return { error: err instanceof Error ? err.message : String(err) };
   }

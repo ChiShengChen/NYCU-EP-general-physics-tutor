@@ -27,3 +27,8 @@ supabase/.temp/
 
 # Allow docs screenshots
 !docs/*.png
+
+# Playwright E2E artifacts
+web/test-results/
+web/playwright-report/
+web/e2e/.auth/

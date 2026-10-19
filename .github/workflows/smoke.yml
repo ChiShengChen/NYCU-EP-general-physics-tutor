@@ -1,0 +1,67 @@
+name: E2E smoke
+
+# Playwright smoke suite against a *deployed* URL — it never builds or
+# starts the app itself. Two triggers:
+#
+#   - deployment_status (success): Vercel marks each deploy via the GitHub
+#     Deployments API; we read `environment_url` so previews and production
+#     each get smoked right after they go live.
+#   - workflow_dispatch: point it at any URL by hand.
+#
+# All LLM-backed API routes are aborted inside the tests (see
+# web/e2e/fixtures.ts), so a run costs zero Gemini quota.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Deployed URL to smoke-test"
+        required: true
+        default: "https://nycu-ep-general-physics-tutor.vercel.app"
+  deployment_status:
+
+concurrency:
+  group: smoke-${{ github.event.deployment_status.environment_url || inputs.base_url }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    # deployment_status fires for pending / failure too; only test successes.
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    env:
+      E2E_BASE_URL: ${{ github.event.deployment_status.environment_url || inputs.base_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Test the commit that was deployed, not the default branch tip.
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci --ignore-scripts
+
+      - name: Install Chromium
+        run: npm run e2e:install
+
+      - name: Smoke test ${{ env.E2E_BASE_URL }}
+        run: npm run e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: |
+            web/playwright-report
+            web/test-results
+          retention-days: 14

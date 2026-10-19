@@ -10,6 +10,7 @@ import { withLLMRetry } from "@/lib/llm-retry";
 import { checkDailyQuota, quotaExceededResponse } from "@/lib/usage-log";
 import { checkIpRateLimit, ipRateLimitedResponse } from "@/lib/rate-limit";
 import { resolveStudentId } from "@/lib/resolve-student-id";
+import { TEACHER_MIX_RATIO, mixTeacherQuestions, pickTeacherQuestions } from "@/lib/teacher-questions";
 import {
   evaluateOpticsTask,
   formatOpticsAnswer,
@@ -238,6 +239,10 @@ ${context}
 - 概念要真正交織，不要做成「第一段考 ChA、第二段考 ChB」的拼接`;
 
     const synthModel = google(pickModel("quiz"));
+    // Teacher-bank sample for these chapters (up to 30% of the 5 LLM
+    // questions). Kicked off before the LLM batches so the cheap DB query
+    // overlaps with generation; swapped in type-for-type below.
+    const synthTeacherPool = pickTeacherQuestions({ chapters: sortedChapters, count: Math.round(5 * TEACHER_MIX_RATIO) });
     const synthBatches = await Promise.all([
       withLLMRetry(() => generateObject({
         model: synthModel,
@@ -264,7 +269,10 @@ ${context}
     // One interactive optics task per included optics chapter (Ch33 / Ch34),
     // appended after the LLM questions so the synthesis prompt stays untouched.
     const synthOptics = sortedChapters.flatMap((ch) => buildOpticsQuestions(ch, 1));
-    const synthMerged = ([...synthBatches.flatMap((b) => b.object.questions), ...synthOptics] as QuizResponseQuestion[])
+    // Replace LLM questions with teacher ones (MC↔MC, SA↔SA); replaced
+    // entries carry `source: "teacher"` so the client shows the 老師題 badge.
+    const synthLlm = mixTeacherQuestions(synthBatches.flatMap((b) => b.object.questions), await synthTeacherPool);
+    const synthMerged = ([...synthLlm, ...synthOptics] as QuizResponseQuestion[])
       .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..N
     const quiz = {
       title: synthBatches.find((b) => b.object.title)?.object.title ?? `${chLabels} 綜合應用`,
@@ -313,6 +321,9 @@ ${context}
     // finish faster (each ~10-15s instead of 25-40s for a 10-question call),
     // dropping total wall time enough to stay clear of Vercel's 60s budget.
     const model = google(pickModel("quiz"));
+    // Teacher-bank sample for this chapter (up to 30% of the 20 LLM
+    // questions), fetched in parallel with the LLM batches.
+    const chapterTeacherPool = pickTeacherQuestions({ chapters: [chapter], count: Math.round(20 * TEACHER_MIX_RATIO) });
     const batches = await Promise.all([
       withLLMRetry(() => generateObject({
         model,
@@ -339,7 +350,9 @@ ${context}
     // Ch33 / Ch34 get two interactive optics tasks on top of the 20 LLM
     // questions (deterministic, client-graded with physics formulas).
     const chapterOptics = buildOpticsQuestions(chapter, 2);
-    const merged = ([...batches.flatMap((b) => b.object.questions), ...chapterOptics] as QuizResponseQuestion[])
+    // Swap in teacher questions type-for-type (tagged `source: "teacher"`).
+    const chapterLlm = mixTeacherQuestions(batches.flatMap((b) => b.object.questions), await chapterTeacherPool);
+    const merged = ([...chapterLlm, ...chapterOptics] as QuizResponseQuestion[])
       .map((q, idx) => ({ ...q, id: idx + 1 }));  // re-id 1..N
     const quiz = {
       title: batches.find((b) => b.object.title)?.object.title ?? `${chLabel} 章節測驗`,

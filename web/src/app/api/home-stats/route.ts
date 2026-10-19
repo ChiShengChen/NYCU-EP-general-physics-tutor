@@ -49,39 +49,17 @@ export async function GET(req: NextRequest) {
     ? Math.round(((state ?? []).reduce((s, r) => s + (r.mastery_score ?? 0), 0) / reviewedConcepts) * 100)
     : null;
 
-  // 3) daily due — mirror the /api/daily-review filter (wrong + ≥1 day ago, deduped)
-  const cutoff = new Date(Date.now() - 60 * 86400_000).toISOString();
-  const { data: dueAttempts } = await supabase
-    .from("attempts")
-    .select("questions, results, created_at")
+  // 3) daily due — SM-2 cards whose due_at has passed (same source of
+  //    truth as /api/daily-review). Cards are seeded by that route's sync
+  //    step, so a student who has never opened 每日複習 may see 0 here
+  //    even with wrong answers on record; the banner copy covers that.
+  //    Capped at 5 to match the daily-review batch size.
+  const { count: dueCardCount } = await supabase
+    .from("review_cards")
+    .select("id", { count: "exact", head: true })
     .eq("student_id", studentId)
-    .gte("created_at", cutoff)
-    .order("created_at", { ascending: false })
-    .limit(200);
-
-  const seen = new Set<string>();
-  let dailyDueCount = 0;
-  const now = Date.now();
-  for (const a of (dueAttempts ?? []) as {
-    questions: { id: number; question?: string }[];
-    results: { questionId: number; isCorrect: boolean }[];
-    created_at: string;
-  }[]) {
-    const daysSince = (now - new Date(a.created_at).getTime()) / 86400_000;
-    if (daysSince < 1) continue;
-    const qById = new Map(a.questions.map((q) => [q.id, q] as const));
-    for (const r of a.results) {
-      if (r.isCorrect) continue;
-      const q = qById.get(r.questionId);
-      if (!q?.question) continue;
-      const key = q.question.slice(0, 200);
-      if (seen.has(key)) continue;
-      seen.add(key);
-      dailyDueCount++;
-      if (dailyDueCount >= 5) break;  // matches daily-review cap
-    }
-    if (dailyDueCount >= 5) break;
-  }
+    .lte("due_at", new Date().toISOString());
+  const dailyDueCount = Math.min(5, dueCardCount ?? 0);
 
   return NextResponse.json({
     attemptsCount,

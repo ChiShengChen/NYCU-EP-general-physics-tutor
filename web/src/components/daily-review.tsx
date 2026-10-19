@@ -1,9 +1,12 @@
 "use client";
 
-/* 📅 每日 5 分鐘小複習 — spaced-repetition retrieval practice over past
- * wrong answers. Reveal → think → click to see answer → self-rate. The
- * self-rating nudges the per-concept mastery_score, so this loop feeds
- * the AI study plan & dashboard. */
+/* 📅 每日 5 分鐘小複習 — SM-2 spaced repetition over past wrong answers.
+ * Every wrong question is a card with its own due date (see
+ * /api/daily-review + lib/sm2.ts). Reveal → think → see answer →
+ * self-rate; the rating is posted right away, the server reschedules the
+ * card and we show 「下次 N 天後再見」. The rating also nudges the
+ * per-concept mastery_score, so this loop feeds the AI study plan &
+ * dashboard. */
 
 import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -14,7 +17,8 @@ import { ThemeToggle } from "./theme-provider";
 
 interface Question {
   id: number;
-  type: "multiple_choice" | "short_answer";
+  /** multiple_choice | short_answer | oral | interactive_optics */
+  type: string;
   concept?: string;
   question?: string;
   options?: string[];
@@ -24,12 +28,47 @@ interface Question {
 }
 
 interface ReviewItem {
+  cardId: number;
   attemptId: number;
   attemptTitle: string;
+  attemptKind: "quiz" | "exam" | "oral";
   daysSinceMistake: number;
   question: Question;
+  studentAnswer: string;
   feedback: string;
+  ease: number;
+  intervalDays: number;
+  repetitions: number;
+  lapses: number;
+  dueAt: string;
+  lastReviewedAt: string | null;
 }
+
+interface DailyReviewResponse {
+  count: number;
+  items: ReviewItem[];
+  dueCount: number;
+  nextDueAt: string | null;
+  forecast: { today: number; tomorrow: number; next7Days: number };
+  totalCards: number;
+}
+
+/** What POST /api/daily-review returns after one rating. */
+interface Outcome {
+  quality: number;
+  lapsed: boolean;
+  intervalDays: number;
+  dueAt: string;
+}
+
+/* Self-rating buttons → SM-2 quality. 3 is the pass/fail boundary:
+ * 完全忘 lapses the card back to tomorrow, the other three stretch it. */
+const RATINGS = [
+  { q: 1, label: "完全忘", cls: "bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-800 dark:text-rose-200 hover:bg-rose-100 dark:hover:bg-rose-900/40" },
+  { q: 3, label: "有點忘", cls: "bg-amber-50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/40" },
+  { q: 4, label: "我會",   cls: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-100 dark:hover:bg-emerald-900/40" },
+  { q: 5, label: "秒答",   cls: "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-300 dark:border-indigo-700 text-indigo-800 dark:text-indigo-200 hover:bg-indigo-100 dark:hover:bg-indigo-900/40" },
+] as const;
 
 const TODAY_KEY = (studentId: string) => `physics_tutor_daily_done_${studentId}_${new Date().toISOString().slice(0, 10)}`;
 const STREAK_KEY = (studentId: string) => `physics_tutor_daily_streak_${studentId}`;
@@ -53,14 +92,30 @@ function bumpStreak(studentId: string) {
   return streak;
 }
 
+/** "10/22" in the viewer's local timezone. */
+function fmtMonthDay(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getMonth() + 1}/${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/** 「下次 3 天後再見（10/22）」 / 「明天再見一次」 for the outcome line. */
+function outcomeText(o: Outcome): string {
+  if (o.lapsed) return `🔁 沒關係，明天再見一次（${fmtMonthDay(o.dueAt)}）`;
+  if (o.intervalDays <= 1) return `📆 明天再見（${fmtMonthDay(o.dueAt)}）`;
+  return `📆 下次 ${o.intervalDays} 天後再見（${fmtMonthDay(o.dueAt)}）`;
+}
+
 interface DailyReviewProps {
   onBack: () => void;
 }
 
 export function DailyReview({ onBack }: DailyReviewProps) {
   const studentId = useStudentId() ?? "";
-  const { data, isLoading } = useSWR<{ items: ReviewItem[] }>(
+  const { data, isLoading, mutate } = useSWR<DailyReviewResponse>(
     apiKey("/api/daily-review", { studentId }),
+    // The batch is the session: don't let a focus/reconnect revalidate
+    // swap the cards out from under the student mid-review.
+    { revalidateOnFocus: false, revalidateOnReconnect: false },
   );
   // Memoize so the `finish` callback's deps stay stable when SWR returns
   // a structurally-equal payload on revalidation.
@@ -69,31 +124,49 @@ export function DailyReview({ onBack }: DailyReviewProps) {
 
   const [idx, setIdx] = useState(0);
   const [revealed, setRevealed] = useState<Record<number, boolean>>({});
-  const [ratings, setRatings] = useState<Record<number, -1 | 0 | 1>>({});
+  const [outcomes, setOutcomes] = useState<Record<number, Outcome>>({});
+  const [posting, setPosting] = useState<number | null>(null);
+  const [postError, setPostError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [streak, setStreak] = useState(0);
 
-  const finish = useCallback(async () => {
+  const rate = useCallback(async (i: number, cardId: number, quality: number) => {
+    if (!studentId || outcomes[i] || posting !== null) return;
+    setPosting(i);
+    setPostError(null);
+    try {
+      const res = await fetch("/api/daily-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId, cardId, quality }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const o = (await res.json()) as Outcome;
+      setOutcomes((prev) => ({ ...prev, [i]: { quality, lapsed: o.lapsed, intervalDays: o.intervalDays, dueAt: o.dueAt } }));
+    } catch {
+      setPostError("評分沒有送出，請再點一次。");
+    } finally {
+      setPosting(null);
+    }
+  }, [studentId, outcomes, posting]);
+
+  const finish = useCallback(() => {
     if (!studentId || !items) return;
-    const body = {
-      action: "record",
-      studentId,
-      items: items.map((it, i) => ({
-        concept: it.question.concept,
-        knewIt: ratings[i] ?? 0,
-      })),
-    };
-    await fetch("/api/daily-review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
     if (typeof window !== "undefined") {
       localStorage.setItem(TODAY_KEY(studentId), "1");
     }
     setStreak(bumpStreak(studentId));
     setDone(true);
-  }, [items, ratings, studentId]);
+  }, [items, studentId]);
+
+  /** Pull the next batch of due cards (when more than 5 were due). */
+  const nextBatch = useCallback(async () => {
+    setIdx(0);
+    setRevealed({});
+    setOutcomes({});
+    setDone(false);
+    await mutate();
+  }, [mutate]);
 
   if (loading) {
     return (
@@ -104,22 +177,48 @@ export function DailyReview({ onBack }: DailyReviewProps) {
   }
 
   if (!items || items.length === 0) {
+    const hasCards = (data?.totalCards ?? 0) > 0;
     return (
       <Wrapper onBack={onBack} title="今日 5 分鐘">
-        <div className="text-center text-slate-500 dark:text-slate-400 py-12 max-w-md mx-auto space-y-3">
-          <p className="text-3xl">🌱</p>
-          <p className="font-medium">沒有需要複習的題目</p>
-          <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
-            這個區塊會自動撈出你過去測驗 / 考試中答錯的題目，依遺忘曲線挑出最該再看的給你。
-            目前要不是還沒答錯過題、就是你最近才剛做過 — 先去「自動測驗」或「考試模擬」累積一些資料再回來吧！
-          </p>
+        <div className="max-w-2xl mx-auto space-y-4">
+          {data && <ForecastBar data={data} />}
+          <div className="text-center text-slate-500 dark:text-slate-400 py-12 max-w-md mx-auto space-y-3">
+            {hasCards ? (
+              <>
+                <p className="text-3xl">🎉</p>
+                <p className="font-medium text-slate-700 dark:text-slate-200">今天沒有到期的卡片</p>
+                {data?.nextDueAt ? (
+                  <p className="text-sm">下一張：<strong>{fmtMonthDay(data.nextDueAt)}</strong></p>
+                ) : null}
+                <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                  共有 {data?.totalCards} 張卡片在排程中。答對的卡片會越隔越久才回來，忘記的則隔天就會再出現。
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl">🌱</p>
+                <p className="font-medium">還沒有複習卡片</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                  你在「自動測驗」「考試模擬」「口試模擬」答錯的題目會自動變成複習卡片，依間隔重複（SM-2）排程：
+                  記得的越隔越久，忘的隔天再來。先去累積一些資料再回來吧！
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </Wrapper>
     );
   }
 
   if (done) {
-    const knownCount = Object.values(ratings).filter((v) => v === 1).length;
+    const knownCount = Object.values(outcomes).filter((o) => o.quality >= 4).length;
+    const remaining = Math.max(0, (data?.dueCount ?? 0) - items.length);
+    // Earliest upcoming card: whichever is sooner, the server's nextDueAt
+    // (computed before this batch) or one of the cards we just rescheduled.
+    const candidates = [data?.nextDueAt, ...Object.values(outcomes).map((o) => o.dueAt)]
+      .filter((x): x is string => typeof x === "string")
+      .map((x) => new Date(x).getTime());
+    const nextDue = candidates.length > 0 ? new Date(Math.min(...candidates)).toISOString() : null;
     return (
       <Wrapper onBack={onBack} title="今日 5 分鐘 — 完成">
         <div className="text-center py-12 max-w-md mx-auto space-y-3">
@@ -133,12 +232,27 @@ export function DailyReview({ onBack }: DailyReviewProps) {
               🔥 連續複習 <strong>{streak}</strong> 天
             </div>
           )}
-          <button
-            onClick={onBack}
-            className="block mx-auto mt-4 px-5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
-          >
-            回首頁
-          </button>
+          {remaining > 0 ? (
+            <p className="text-xs text-slate-500 dark:text-slate-400">還有 {remaining} 張卡片今天到期。</p>
+          ) : nextDue ? (
+            <p className="text-xs text-slate-500 dark:text-slate-400">下一張：{fmtMonthDay(nextDue)}</p>
+          ) : null}
+          <div className="flex items-center justify-center gap-2 mt-4">
+            {remaining > 0 && (
+              <button
+                onClick={nextBatch}
+                className="px-5 py-2 rounded-xl border border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 text-sm font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950/30"
+              >
+                再複習 {Math.min(5, remaining)} 題
+              </button>
+            )}
+            <button
+              onClick={onBack}
+              className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
+            >
+              回首頁
+            </button>
+          </div>
         </div>
       </Wrapper>
     );
@@ -147,6 +261,7 @@ export function DailyReview({ onBack }: DailyReviewProps) {
   const it = items[idx];
   const q = it.question;
   const isRevealed = !!revealed[idx];
+  const outcome = outcomes[idx];
   const total = items.length;
 
   const isLast = idx === total - 1;
@@ -156,16 +271,28 @@ export function DailyReview({ onBack }: DailyReviewProps) {
   return (
     <Wrapper onBack={onBack} title={`今日 5 分鐘 — ${idx + 1} / ${total}`}>
       <div className="max-w-2xl mx-auto space-y-4">
+        {data && <ForecastBar data={data} />}
+
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm space-y-3">
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
             <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-medium">
               ⏳ {it.daysSinceMistake} 天前答錯
             </span>
+            {it.repetitions > 0 && (
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-medium">
+                ✓ 已連續答對 {it.repetitions} 次
+              </span>
+            )}
+            {it.lapses > 0 && (
+              <span className="px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-medium">
+                🔁 忘過 {it.lapses} 次
+              </span>
+            )}
             {q.sourceChapter && (
               <span>Ch{String(q.sourceChapter).padStart(2, "0")}</span>
             )}
             {q.concept && <span className="truncate max-w-[200px]">{q.concept}</span>}
-            <span className="ml-auto">{q.type === "multiple_choice" ? "選擇" : "簡答"}</span>
+            <span className="ml-auto">{q.type === "multiple_choice" ? "選擇" : q.type === "oral" ? "口試" : q.type === "interactive_optics" ? "光路" : "簡答"}</span>
           </div>
 
           <div className="text-sm text-slate-800 dark:text-slate-100">
@@ -216,10 +343,17 @@ export function DailyReview({ onBack }: DailyReviewProps) {
                 </div>
               )}
 
-              {q.type === "short_answer" && q.correctAnswer && (
+              {q.type !== "multiple_choice" && q.correctAnswer && (
                 <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-sm">
                   <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300 mr-2">參考答案</span>
                   <MarkdownRenderer content={q.correctAnswer} />
+                </div>
+              )}
+
+              {it.studentAnswer && (
+                <div className="px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300">
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-2">你當時答</span>
+                  <MarkdownRenderer content={it.studentAnswer} />
                 </div>
               )}
 
@@ -234,21 +368,29 @@ export function DailyReview({ onBack }: DailyReviewProps) {
 
               <div className="pt-2 border-t border-slate-100 dark:border-slate-700 space-y-2">
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-300">這次你會了嗎？</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { v: -1 as const, label: "完全忘", cls: "bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-800 dark:text-rose-200 hover:bg-rose-100 dark:bg-rose-900/40" },
-                    { v: 0  as const, label: "有點忘", cls: "bg-amber-50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:bg-amber-900/40" },
-                    { v: 1  as const, label: "我會",   cls: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/40" },
-                  ].map((opt) => (
+                <div className="grid grid-cols-4 gap-2">
+                  {RATINGS.map((opt) => (
                     <button
-                      key={opt.v}
-                      onClick={() => setRatings({ ...ratings, [idx]: opt.v })}
-                      className={`px-2 py-1.5 rounded-xl border text-xs font-medium transition-colors ${opt.cls} ${ratings[idx] === opt.v ? "ring-2 ring-offset-1 ring-slate-400" : ""}`}
+                      key={opt.q}
+                      onClick={() => rate(idx, it.cardId, opt.q)}
+                      disabled={!!outcome || posting !== null}
+                      className={`px-2 py-1.5 rounded-xl border text-xs font-medium transition-colors ${opt.cls} ${outcome?.quality === opt.q ? "ring-2 ring-offset-1 ring-slate-400" : ""} ${outcome && outcome.quality !== opt.q ? "opacity-40" : ""} disabled:cursor-not-allowed`}
                     >
                       {opt.label}
                     </button>
                   ))}
                 </div>
+                {posting === idx && (
+                  <p className="text-xs text-slate-400 dark:text-slate-500">排程中...</p>
+                )}
+                {postError && !outcome && (
+                  <p className="text-xs text-rose-600 dark:text-rose-400">{postError}</p>
+                )}
+                {outcome && (
+                  <p className={`text-xs font-medium ${outcome.lapsed ? "text-rose-700 dark:text-rose-300" : "text-emerald-700 dark:text-emerald-300"}`}>
+                    {outcomeText(outcome)}
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -266,7 +408,7 @@ export function DailyReview({ onBack }: DailyReviewProps) {
           {isLast ? (
             <button
               onClick={finish}
-              disabled={!isRevealed || ratings[idx] === undefined}
+              disabled={!outcome}
               className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               完成今日複習 ✓
@@ -274,7 +416,7 @@ export function DailyReview({ onBack }: DailyReviewProps) {
           ) : (
             <button
               onClick={next}
-              disabled={!isRevealed || ratings[idx] === undefined}
+              disabled={!outcome}
               className="px-3 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               下一題 →
@@ -283,6 +425,23 @@ export function DailyReview({ onBack }: DailyReviewProps) {
         </div>
       </div>
     </Wrapper>
+  );
+}
+
+/** Due count + forecast strip at the top of the review. */
+function ForecastBar({ data }: { data: DailyReviewResponse }) {
+  const { forecast } = data;
+  return (
+    <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 dark:text-slate-400 px-1">
+      <span className="font-medium text-slate-700 dark:text-slate-200">
+        📬 到期 <strong className="text-indigo-600 dark:text-indigo-300">{data.dueCount}</strong> 張
+      </span>
+      <span className="text-slate-300 dark:text-slate-600">|</span>
+      <span>今天 {forecast.today}</span>
+      <span>明天 {forecast.tomorrow}</span>
+      <span>7 天內 {forecast.next7Days}</span>
+      <span className="ml-auto">共 {data.totalCards} 張卡片</span>
+    </div>
   );
 }
 

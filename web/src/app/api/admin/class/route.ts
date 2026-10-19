@@ -21,6 +21,13 @@ export const maxDuration = 30;
  *  - activeStudents  count of distinct student_ids with ≥1 attempt in
  *                    the window.
  *  - totalAttempts / avgScore for the headline tiles.
+ *  - errorTypes      class-wide rollup of the AI 錯題分析 cache
+ *                    (attempt_analyses). Each analysed wrong question
+ *                    carries an errorType (concept / calculation /
+ *                    reading / incomplete / unanswered) and 1–3 cited
+ *                    lecture pages; we count types per sourceChapter
+ *                    (looked up from the parent attempt's questions[])
+ *                    and tally which (chapter, page) gets cited most.
  *
  * Same gating + window semantics as /api/admin/usage so toggling range
  * in the panel feels consistent.
@@ -30,7 +37,20 @@ const DEFAULT_DAYS = 30;
 const MAX_DAYS = 365;
 const ALL_DAYS = 365 * 5;
 const ATTEMPT_LIMIT = 1000;
+const ANALYSIS_LIMIT = 1000;
 const WEAK_CONCEPTS_TOP = 20;
+const TOP_PAGES = 15;
+
+const ERROR_TYPES = ["concept", "calculation", "reading", "incomplete", "unanswered"] as const;
+type ErrorType = (typeof ERROR_TYPES)[number];
+type ErrorCounts = Record<ErrorType, number>;
+
+function emptyCounts(): ErrorCounts {
+  return { concept: 0, calculation: 0, reading: 0, incomplete: 0, unanswered: 0 };
+}
+function isErrorType(v: unknown): v is ErrorType {
+  return typeof v === "string" && (ERROR_TYPES as readonly string[]).includes(v);
+}
 
 interface AttemptRow {
   student_id: string;
@@ -52,6 +72,24 @@ interface ResultShape {
   score?: number;
 }
 
+/** attempt_analyses row with the parent attempt embedded. attempt_id is
+ *  the PK so PostgREST returns the parent as a single object, but we
+ *  tolerate the array form in case the relationship cache ever flips. */
+interface AnalysisRow {
+  attempt_id: number;
+  student_id: string;
+  analysis: unknown;
+  attempts: { questions: unknown } | { questions: unknown }[] | null;
+}
+/** Subset of AttemptAnalysis["questions"][number] (lib/attempt-analysis)
+ *  we read here. Kept loose — rows written by older prompt versions are
+ *  still counted, so don't trust the shape blindly. */
+interface AnalysedQuestionShape {
+  questionId?: number | string;
+  errorType?: string;
+  lecturePages?: { chapter?: unknown; page?: unknown; sectionTitle?: unknown }[];
+}
+
 export async function GET(req: NextRequest) {
   const { isAdmin } = await getAdminContext();
   if (!isAdmin) return NextResponse.json({ error: "forbidden" }, { status: 403 });
@@ -71,6 +109,7 @@ export async function GET(req: NextRequest) {
     { data: attemptRows, error: attemptErr },
     { data: stateRows, error: stateErr },
     { count: totalStudents },
+    { data: analysisRows, error: analysisErr },
   ] = await Promise.all([
     supabase
       .from("attempts")
@@ -84,12 +123,24 @@ export async function GET(req: NextRequest) {
     supabase
       .from("student_profiles")
       .select("id", { count: "exact", head: true }),
+    // `attempts!inner` + a filter on the embedded column keeps the window
+    // anchored to when the test was taken, not when the analysis was
+    // (re)generated — a prompt-version bump re-analyses old attempts and
+    // shouldn't make last semester's errors look like this month's.
+    supabase
+      .from("attempt_analyses")
+      .select("attempt_id, student_id, analysis, attempts!inner(questions)")
+      .gte("attempts.created_at", cutoff)
+      .order("created_at", { ascending: false })
+      .limit(ANALYSIS_LIMIT),
   ]);
 
   if (attemptErr) return NextResponse.json({ error: attemptErr.message }, { status: 500 });
   if (stateErr) return NextResponse.json({ error: stateErr.message }, { status: 500 });
+  if (analysisErr) return NextResponse.json({ error: analysisErr.message }, { status: 500 });
 
   const attempts = (attemptRows ?? []) as AttemptRow[];
+  const analyses = (analysisRows ?? []) as unknown as AnalysisRow[];
 
   // ─── Per-chapter correctness ratio ────────────────────────
   type ChapterAgg = { correct: number; total: number; students: Set<string> };
@@ -163,6 +214,76 @@ export async function GET(req: NextRequest) {
     .sort((a, b) => a.avgMastery - b.avgMastery)
     .slice(0, WEAK_CONCEPTS_TOP);
 
+  // ─── Error-type rollup from attempt_analyses ──────────────
+  // analysis.questions[] only contains the wrong questions, so every
+  // entry is one classified mistake. Chapter comes from the parent
+  // attempt's questions[].sourceChapter (matched by questionId); for
+  // older rows without sourceChapter we fall back to the chapter of the
+  // first cited lecture page, which the analyser restricted to the same
+  // chapter anyway.
+  type PageAgg = { chapter: number; page: number; sectionTitle: string; count: number };
+  const overallErrors = emptyCounts();
+  const errorsByChapter = new Map<number, ErrorCounts>();
+  const pageHits = new Map<string, PageAgg>();
+  const analysedStudents = new Set<string>();
+
+  for (const row of analyses) {
+    analysedStudents.add(row.student_id);
+    const analysis = row.analysis as { questions?: unknown } | null;
+    const analysed = Array.isArray(analysis?.questions)
+      ? (analysis.questions as AnalysedQuestionShape[])
+      : [];
+    const parent = Array.isArray(row.attempts) ? row.attempts[0] : row.attempts;
+    const questions = Array.isArray(parent?.questions) ? (parent.questions as QuestionShape[]) : [];
+    const chapterByQuestionId = new Map<string, number>();
+    for (const q of questions) {
+      if (q.id !== undefined && typeof q.sourceChapter === "number") {
+        chapterByQuestionId.set(String(q.id), q.sourceChapter);
+      }
+    }
+
+    for (const qa of analysed) {
+      if (!isErrorType(qa.errorType)) continue;
+      overallErrors[qa.errorType] += 1;
+
+      const pages = Array.isArray(qa.lecturePages) ? qa.lecturePages : [];
+      const firstCited = pages.find((p) => typeof p.chapter === "number")?.chapter as number | undefined;
+      const ch = chapterByQuestionId.get(String(qa.questionId)) ?? firstCited ?? null;
+      if (ch != null && ch >= 1 && ch <= 50) {
+        const slot = errorsByChapter.get(ch) ?? emptyCounts();
+        slot[qa.errorType] += 1;
+        errorsByChapter.set(ch, slot);
+      }
+
+      for (const p of pages) {
+        if (typeof p.chapter !== "number" || typeof p.page !== "number") continue;
+        const key = `${p.chapter}:${p.page}`;
+        const hit = pageHits.get(key) ?? { chapter: p.chapter, page: p.page, sectionTitle: "", count: 0 };
+        hit.count += 1;
+        // First non-empty title wins; the analyser copies section_title
+        // verbatim from the chunk so they should all agree anyway.
+        if (!hit.sectionTitle && typeof p.sectionTitle === "string") hit.sectionTitle = p.sectionTitle;
+        pageHits.set(key, hit);
+      }
+    }
+  }
+
+  const errorTypes = {
+    analysedAttempts: analyses.length,
+    analysedStudents: analysedStudents.size,
+    overall: overallErrors,
+    byChapter: Array.from(errorsByChapter.entries())
+      .sort(([a], [b]) => a - b)
+      .map(([chapter, c]) => ({
+        chapter,
+        total: ERROR_TYPES.reduce((sum, t) => sum + c[t], 0),
+        ...c,
+      })),
+    topPages: Array.from(pageHits.values())
+      .sort((a, b) => b.count - a.count || a.chapter - b.chapter || a.page - b.page)
+      .slice(0, TOP_PAGES),
+  };
+
   return NextResponse.json({
     windowDays: reportedDays,
     totals: {
@@ -173,5 +294,6 @@ export async function GET(req: NextRequest) {
     },
     perChapter,
     weakConcepts,
+    errorTypes,
   });
 }

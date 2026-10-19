@@ -10,8 +10,8 @@ import { RegenerateQuestionButton } from "./regenerate-question-button";
 import { stripOptionLetter } from "@/lib/strip-option-letter";
 import { ThemeToggle } from "./theme-provider";
 import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
-import { OpticsTaskView, type OpticsSubmission } from "./optics-task";
-import { evaluateOpticsTask, formatOpticsAnswer, formatQuantity, type OpticsTask } from "@/lib/optics";
+import { OpticsTaskView, OpticsResultTargets, type OpticsSubmission } from "./optics-task";
+import { evaluateOpticsTask, formatOpticsAnswer, type OpticsTask } from "@/lib/optics";
 
 /* ─── Types ─── */
 
@@ -27,6 +27,8 @@ interface QuizQuestion {
   sourceChapter: number;
   /** Only for `interactive_optics` — the simulator task the student manipulates. */
   optics?: OpticsTask;
+  /** "teacher" when the question came from the admin question bank (shows the 老師題 badge). */
+  source?: "teacher";
 }
 
 interface Quiz {
@@ -337,7 +339,7 @@ function ScopeSelector({
 
       {/* Chapter grid */}
       <div>
-        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">或選擇特定章節（單章測驗，20 題）</h3>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">或選擇特定章節（單章測驗 20 題；Ch33 / Ch34 另加 2 題光學操作題）</h3>
         {chapters.length === 0 ? (
           <div className="text-center text-sm text-slate-400 dark:text-slate-500 py-8">載入章節列表中...</div>
         ) : (
@@ -570,6 +572,14 @@ function AnsweringState({
             {q.difficulty === "easy" ? "基礎" : q.difficulty === "medium" ? "中等" : "進階"}
           </span>
           <span className="text-xs text-slate-400 dark:text-slate-500">Ch{String(q.sourceChapter).padStart(2, "0")}</span>
+          {q.source === "teacher" && (
+            <span
+              className="px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300"
+              title="這題來自老師自訂題庫"
+            >
+              👩‍🏫 老師題
+            </span>
+          )}
           {/* Regen is LLM-based and report targets LLM output — neither
               applies to deterministic interactive tasks. */}
           {q.type !== "interactive_optics" && (
@@ -844,34 +854,6 @@ function ResultsState({
           返回首頁
         </button>
       </div>
-    </div>
-  );
-}
-
-/* ─── Interactive optics: per-target breakdown in the results view ─── */
-
-/** Re-evaluates the submitted slider values client-side (same formulas the
- *  server used) so each target shows 達成 / 未達成 next to the actual value.
- *  Kept outside ResultsState so that function's diff stays minimal. */
-function OpticsResultTargets({ task, submission }: { task: OpticsTask; submission?: OpticsSubmission }) {
-  if (!submission) {
-    return (
-      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">（未提交任何設定）</p>
-    );
-  }
-  const verdict = evaluateOpticsTask(task, submission.values);
-  return (
-    <div className="mb-3 rounded-xl border border-emerald-100 dark:border-emerald-900 bg-emerald-50/40 dark:bg-emerald-950/20 px-3 py-2 text-xs space-y-1">
-      <p className="font-semibold text-emerald-800 dark:text-emerald-200">🎯 目標達成狀況</p>
-      {verdict.perTarget.map((t, i) => (
-        <div key={i} className="flex items-baseline gap-2">
-          <span className={t.ok ? "text-green-600 dark:text-green-300" : "text-red-500 dark:text-red-300"}>{t.ok ? "✓" : "✗"}</span>
-          <span className="text-slate-700 dark:text-slate-200 flex-1">{t.description}</span>
-          <span className="tabular-nums text-slate-500 dark:text-slate-400">
-            實際 {formatQuantity(task.target[i].check.quantity, t.actual)}
-          </span>
-        </div>
-      ))}
     </div>
   );
 }

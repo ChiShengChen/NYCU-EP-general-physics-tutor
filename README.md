@@ -76,7 +76,7 @@
 | `question_reports` | 學生回報題目品質（含 resolved_at / resolved_by_email） |
 | `chapter_previews` | 章節預習卡 cache（含 **prompt_version** 自動失效） |
 
-完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 021；020 = attempts 加 `oral` kind + transcript，021 = `attempt_analyses`）。
+完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 023；020 = attempts 加 `oral` kind + transcript，021 = `attempt_analyses`，022 = `review_cards`（SM-2），023 = `teacher_questions`）。
 
 **模式分級（`web/src/lib/models.ts`）**
 
@@ -120,6 +120,7 @@ premium  exam / export（口試最後評分也走 exam 層）        → Pro（�
 | `PROMPT_VERSION` | 每次改 prompt 就 bump，會記到 `token_usage` 做 A/B 對照 |
 | `PREVIEW_PROMPT_VERSION` | 章節預習專用 prompt 版本，bump 後 cache 自動失效 |
 | `ANALYSIS_PROMPT_VERSION` | 錯題分析 prompt 版本，bump 後 `attempt_analyses` cache 自動失效 |
+| `TEACHER_MIX_RATIO` | 老師題庫混入測驗 / 考試的比例（預設 0.3；題庫沒題就自動跳過） |
 | `MODEL_ORAL` / `MODEL_ANALYSIS` | 口試 / 錯題分析的單一 endpoint override（預設走 standard 層） |
 
 ### 監測 / 選用
@@ -163,8 +164,9 @@ python scripts/chunk_and_embed.py
 # 7) 跑單元測試
 cd web && npm test
 
-# 8) （選用）改完 prompt 後跑 eval 看有沒有回歸
+# 8) （選用）改完 prompt 後跑 eval 看有沒有回歸（preview / chat / exam / oral 四種模式，會燒真實 token）
 PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
+npm run eval -- --only chat --dry-run   # 只跑單一模式 / 不打 server 只驗 request builder；詳見 web/scripts/eval/README.md
 ```
 
 ## 學習模式（20+）
@@ -172,12 +174,12 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - **章節預習**：5–7 張概念卡，1 分鐘掃完一章重點（cache 過 → 不重 call）
 - **教學模式**：依講義逐頁學習，AI 講解 + Vision PDF 截圖
 - **自由問答**：純 chat，可上傳手寫照片給 AI 看 + 語音輸入
-- **自動測驗**：依弱點概念出選擇/簡答題，含 hint 三層提示
+- **自動測驗**：依弱點概念出選擇/簡答題，含 hint 三層提示；單章 / 跨章會混入老師題庫的題目（👩‍🏫 標記）
 - **費曼模式**：學生講給 AI 聽，AI 找漏洞反問
-- **考試模擬**：midterm / final，含分數 + grading rubric + AI 回饋
+- **考試模擬**：midterm / final，含分數 + grading rubric + AI 回饋；期末考另加 2 題光學操作題（各 5 分，總分 100），兩種考試都會混入老師題；總分 / 等第由 server 重算不信 LLM
 - **概念圖譜**：36 章 dependency graph，點節點看先修 path
 - **AI 學習計畫**：依 mastery + 目標生成每日讀書清單
-- **學習儀表板**：mastery / streak / token 用量 / 弱點
+- **學習儀表板**：mastery / streak / token 用量 / 弱點；**深入分析**：題型 × 正確率、章節 × 正確率、錯因分布（來自錯題分析）、時段 × 正確率、提示依賴；**班級百分位**（只給「全班前 N%」+ 直方圖，≥5 人才顯示，不露任何他人資料）
 - **對話歷史**：續聊任一場 session
 - **錯題本**：自動收集答錯題，可一鍵 regenerate 變體
 - **AI 錯題分析**：測驗 / 考試 / 口試結束後一鍵分析——每題錯因分類（概念 / 計算 / 審題 / 不完整）、正確思路、**對應講義 Ch/Page（點了直接開教學模式那一頁）**、跨題共同錯誤模式與複習順序。結果快取在 `attempt_analyses`，測驗紀錄與錯題本都看得到；`lib/attempt-analysis.ts` 是純 server 函式，之後接 email 報告可直接重用
@@ -185,7 +187,7 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - **光學操作題**：Ch33 / Ch34 的自動測驗會多出 2 題「在光路圖上調到目標」的互動題（薄透鏡 / 球面鏡 / 折射與全反射），學生拉滑桿達成條件後提交，由薄透鏡 / 鏡公式 / Snell 定律在 server 端判定，不經 LLM
 - **章節重點**：講義 OCR + 重點整理
 - **校準回顧**：答題前自評信心 vs 實際對錯，校準學習觀感
-- **每日 5 分鐘小複習**：依遺忘曲線挑題
+- **每日 5 分鐘小複習**：**SM-2 間隔重複**——每題錯題自動變成一張卡（`review_cards`），有自己的 due date / ease / interval；到期才出現，自評「完全忘 / 有點忘 / 我會 / 秒答」決定下次間隔；首頁顯示今日到期數與 7 天預測
 - **概念對照**：兩個易混概念 side-by-side 比較
 - **學習反思日誌**：寫日記 + AI 個別回饋
 - **資料庫**：整合 library 檢索
@@ -216,6 +218,7 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - 註冊 / 活躍學生數、測驗總數、平均答對率
 - **章節答對率熱圖**（1–36 章，紅 / 橙 / 綠分色）
 - **全班最弱概念 Top 20**（每概念 ≥2 位學生才計）
+- **🧭 全班錯因分布**：聚合所有學生的錯題分析——每章「概念錯 / 計算錯 / 審題錯 / 不完整 / 未作答」堆疊長條、全班總覽百分比、最常被點名的講義頁 Top 15。比答對率更能指出該怎麼講
 - ⬇ Bulk CSV：全班 attempts、全班 tokens
 
 ### 🚩 問題回報
@@ -223,6 +226,12 @@ PROMPT_EVAL_BASE_URL=http://localhost:3000 npm run eval
 - 篩 open / resolved / all
 - 標記已處理（含備註），自動記 `resolved_by_email`
 - **每張卡片可展開那位學生的 StudentDetail 抽屜**，triage 時看脈絡
+
+### 📚 題庫（老師自訂題目）
+
+- 逐題表單（選擇 / 簡答、章節、難度、解析、tags）或 **CSV 批次匯入**（可下載範本；壞的列會逐列回報，不會整檔失敗）
+- 依章節篩選、搜尋、停用 / 啟用、刪除、CSV 匯出
+- 自動測驗（單章 / 跨章）與考試模擬會依章節把老師題**混入 AI 題**（預設 30%，`TEACHER_MIX_RATIO`），UI 顯示 👩‍🏫 老師題 標記；配分沿用被替換的題位
 
 ## 監測 / 維運
 
@@ -240,13 +249,28 @@ GitHub Actions 跑 `npx tsc --noEmit`（prod + tests 兩套 tsconfig）、`npx e
 
 Vercel 接到 push 自動部署 main。改 env var 後**需要手動 Redeploy**才會生效（不要勾 Use existing Build Cache）。
 
+### E2E smoke
+
+Playwright（`web/e2e/`）對**已部署的 URL** 跑一輪冒煙測試：首頁所有模式卡、鍵盤 `4` / `Esc`、教學模式 Ch05 投影片載入與翻頁、各選擇畫面、概念圖譜節點、9 個模擬器（SVG 無 `NaN`、滑桿會動讀數）、`/health-check` 與 `/api/health-check`。所有會打 Gemini 的 `/api/*` route 都在測試裡被 `page.route(...).abort()` 擋掉，任何 `console.error` / 未捕捉例外都會讓測試失敗，所以跑一次零 token 成本。
+
+```bash
+cd web && npm run e2e:install                      # 第一次：裝 Chromium
+E2E_BASE_URL=https://nycu-ep-general-physics-tutor.vercel.app npm run e2e
+npx playwright show-report playwright-report       # 看失敗截圖 / trace
+```
+
+沒設 `E2E_BASE_URL` 就打 `http://localhost:3000`（先 `npm run dev`）。GitHub Actions 的 [`smoke.yml`](.github/workflows/smoke.yml) 在每次 Vercel deployment 成功後自動對 `environment_url` 跑，也可以 `workflow_dispatch` 手動指定 `base_url`；失敗時 `playwright-report` 會上傳成 artifact。
+
 ## 已知 TODO
 
 - [ ] 概念圖譜為自動產生的初版（每章一個頭條概念），需要老師/同學 review 並調整節點與先修邊
 - [ ] 期中／期末考的章節範圍依實際課程進度可能要再切分（目前預設 midterm = Ch01–Ch16, final = Ch17–Ch31）
 - [ ] 教學模式 Header 目前只顯示 `Ch{NN}`，可加上中文章節標題
-- [ ] 老師自訂題庫（teacher role + 上傳介面）— 需要先談 schema
-- [ ] eval harness 擴充到 chat / exam（目前只有 preview）
+- [x] 老師自訂題庫（後台 📚 題庫 tab + CSV 匯入，migration 023）
+- [ ] 概念圖譜編輯介面（老師拖節點 / 加先修邊）
+- [ ] IP 限流改 Upstash Redis（現在 in-memory per-instance，Vercel 多實例形同沒有）
+- [ ] 考古題模式（需老師提供歷年考題）
+- [x] eval harness 擴充到 chat / exam / oral（`web/scripts/eval/`，regex / shape 檢查；LLM-as-judge 仍未做）
 - [ ] pg_dump 自動備份（cron 或 Supabase Edge Function）
 - [ ] 考完試自動 email 錯題分析報告（`renderAnalysisText()` 已可產出純文字版；還需 Resend/SMTP + cron）
 - [ ] 口試加語音（TTS 唸題 + 現有語音輸入）；ScopeSelector 文案仍寫「20 題」，Ch33/34 實際為 22 題

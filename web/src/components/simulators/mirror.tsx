@@ -106,9 +106,14 @@ export function MirrorCanvas({ R, dO, hO }: MirrorCanvasProps) {
 
   // Ray 3: through F (or aimed at F behind a convex mirror), reflects
   // parallel at the height where it meets the mirror: y_M = h_o f/(f − d_o).
+  // When d_o = f the "through F" ray is parallel to the axis and never
+  // meets the mirror in this construction (division by zero → ±Infinity
+  // SVG coordinates). Skip drawing it instead of emitting a broken line;
+  // the readouts already say the image is at infinity.
   const r3HitY = (hO * f) / (f - dO);
-  const r3Hit = toPx(0, r3HitY);
-  const r3End = toPx(xLeftCm, r3HitY);
+  const r3Finite = Number.isFinite(r3HitY) && Math.abs(r3HitY) < 1e4;
+  const r3Hit = toPx(0, r3Finite ? r3HitY : 0);
+  const r3End = toPx(xLeftCm, r3Finite ? r3HitY : 0);
 
   const imgPx = finiteDI ? toPx(-dI, hI) : null;
   const virtual = finiteDI && dI < 0;
@@ -158,15 +163,19 @@ export function MirrorCanvas({ R, dO, hO }: MirrorCanvasProps) {
       <line x1={vertex.x} y1={vertex.y} x2={r2End.x} y2={r2End.y} className="stroke-rose-500" strokeWidth={1.5} />
 
       {/* Ray 3: through F → parallel */}
-      <line x1={obj.x} y1={obj.y} x2={r3Hit.x} y2={r3Hit.y} className="stroke-amber-500" strokeWidth={1.5} />
-      <line x1={r3Hit.x} y1={r3Hit.y} x2={r3End.x} y2={r3End.y} className="stroke-amber-500" strokeWidth={1.5} />
+      {r3Finite && (
+        <>
+          <line x1={obj.x} y1={obj.y} x2={r3Hit.x} y2={r3Hit.y} className="stroke-amber-500" strokeWidth={1.5} />
+          <line x1={r3Hit.x} y1={r3Hit.y} x2={r3End.x} y2={r3End.y} className="stroke-amber-500" strokeWidth={1.5} />
+        </>
+      )}
 
       {/* Virtual extensions behind the mirror (dashed) */}
       {virtual && imgPx && extX !== null && (
         <>
           <line x1={r1Hit.x} y1={r1Hit.y} x2={extX} y2={r1Hit.y + ((imgPx.y - r1Hit.y) * (extX - r1Hit.x)) / (imgPx.x - r1Hit.x || 1)} className="stroke-indigo-400" strokeWidth={1} strokeDasharray="3 3" />
           <line x1={vertex.x} y1={vertex.y} x2={extX} y2={vertex.y + ((imgPx.y - vertex.y) * (extX - vertex.x)) / (imgPx.x - vertex.x || 1)} className="stroke-rose-400" strokeWidth={1} strokeDasharray="3 3" />
-          <line x1={r3Hit.x} y1={r3Hit.y} x2={extX} y2={r3Hit.y} className="stroke-amber-400" strokeWidth={1} strokeDasharray="3 3" />
+          {r3Finite && <line x1={r3Hit.x} y1={r3Hit.y} x2={extX} y2={r3Hit.y} className="stroke-amber-400" strokeWidth={1} strokeDasharray="3 3" />}
         </>
       )}
 

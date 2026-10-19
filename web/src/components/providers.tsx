@@ -14,11 +14,22 @@ import { apiFetcher } from "@/lib/api";
  *   testing. `dedupingInterval` of 30s coalesces the half-dozen
  *   `studentId`-keyed home requests fired during a single navigation.
  */
+/**
+ * Only string keys are real URLs. `useObject` (AI SDK) registers an
+ * internal `useSWR([api, id], null)` whose `null` fetcher falls through
+ * to this global one; without this guard the array key got stringified
+ * into `fetch("/api/preview,_r_0_")` → a 404 on every 章節預習 visit.
+ */
+function globalFetcher(key: unknown) {
+  if (typeof key !== "string") return Promise.resolve(undefined);
+  return apiFetcher(key);
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SWRConfig
       value={{
-        fetcher: apiFetcher,
+        fetcher: globalFetcher,
         revalidateOnFocus: false,
         revalidateOnReconnect: true,
         dedupingInterval: 30_000,

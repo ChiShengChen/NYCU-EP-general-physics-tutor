@@ -18,6 +18,9 @@ import {
   Tooltip,
   BarChart,
   Bar,
+  Cell,
+  PieChart,
+  Pie,
 } from "recharts";
 import { useChartColors, ThemeToggle } from "./theme-provider";
 
@@ -50,11 +53,71 @@ interface Stats {
   totalStudyMinutes: number;
 }
 
+/* 深入分析 — mirrors the `analytics` / `classRank` keys of /api/dashboard. */
+
+type QuestionType = "multiple_choice" | "short_answer" | "oral" | "interactive_optics";
+type ErrorType = "concept" | "calculation" | "reading" | "incomplete" | "unanswered";
+
+interface TypeAccuracy {
+  type: QuestionType;
+  accuracy: number;
+  count: number;
+}
+
+interface ChapterAccuracy {
+  chapter: number;
+  title: string;
+  accuracy: number;
+  count: number;
+}
+
+interface ErrorTypeStats {
+  counts: { type: ErrorType; count: number }[];
+  analyzedAttempts: number;
+  takeaway: string;
+}
+
+interface HourBucket {
+  key: string;
+  label: string;
+  range: string;
+  attempts: number;
+  accuracy: number | null;
+}
+
+interface HintStats {
+  hintedCount: number;
+  noHintCount: number;
+  hintedShare: number;
+  hintedAccuracy: number | null;
+  noHintAccuracy: number | null;
+}
+
+interface Analytics {
+  attemptsScanned: number;
+  totalQuestions: number;
+  byType: TypeAccuracy[];
+  byChapter: ChapterAccuracy[];
+  errorTypes: ErrorTypeStats;
+  byHour: HourBucket[];
+  hints: HintStats;
+}
+
+interface ClassRank {
+  classSize: number;
+  /** null when the class is below the privacy floor (or you have no mastery yet). */
+  percentile: number | null;
+  yourBucket: number | null;
+  histogram: number[];
+}
+
 interface DashboardData {
   mastery: MasteryItem[];
   activityHeatmap: ActivityItem[];
   trendLine: TrendItem[];
   stats: Stats;
+  analytics: Analytics;
+  classRank: ClassRank;
 }
 
 interface CohortChapter {
@@ -154,6 +217,7 @@ export function Dashboard({ onBack }: DashboardProps) {
             <ActivitySection activity={data.activityHeatmap} />
             {cohort && <CohortCompareSection cohort={cohort} />}
             <MasteryTable mastery={data.mastery} />
+            <DeepAnalysisSection analytics={data.analytics} classRank={data.classRank} />
           </div>
         )}
       </div>
@@ -468,5 +532,388 @@ function MasteryTable({ mastery }: { mastery: MasteryItem[] }) {
         </table>
       </div>
     </div>
+  );
+}
+
+/* ─── 📊 深入分析 ─── */
+
+/** Shared card chrome for the deep-analysis grid. */
+function AnalysisCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">{title}</h3>
+      {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">{subtitle}</p>}
+      {children}
+    </div>
+  );
+}
+
+function CardEmpty({ message, height = "h-48" }: { message: string; height?: string }) {
+  return (
+    <div className={`flex items-center justify-center ${height} text-slate-400 dark:text-slate-500 text-sm text-center px-4`}>
+      {message}
+    </div>
+  );
+}
+
+/** Same thresholds the MasteryTable uses so "green" means the same thing
+ *  everywhere on the page. */
+function accuracyFill(pct: number): string {
+  return pct >= 80 ? "#22c55e" : pct >= 60 ? "#eab308" : "#ef4444";
+}
+function accuracyText(pct: number): string {
+  return pct >= 80
+    ? "text-green-600 dark:text-green-300"
+    : pct >= 60
+      ? "text-yellow-600 dark:text-yellow-300"
+      : "text-red-500";
+}
+
+const TYPE_LABELS: Record<QuestionType, string> = {
+  multiple_choice: "選擇題",
+  short_answer: "簡答題",
+  oral: "口試",
+  interactive_optics: "光學操作",
+};
+
+const ERROR_LABELS: Record<ErrorType, string> = {
+  concept: "概念誤解",
+  calculation: "計算錯誤",
+  reading: "審題錯誤",
+  incomplete: "回答不完整",
+  unanswered: "未作答",
+};
+// Fixed per-entity hues (never cycled) — validated for CVD separation and
+// >= 3:1 against both card surfaces.
+const ERROR_COLORS: Record<ErrorType, string> = {
+  concept: "#4f46e5",
+  calculation: "#d97706",
+  reading: "#0284c7",
+  incomplete: "#9333ea",
+  unanswered: "#0d9488",
+};
+
+/** Only time buckets with this many attempts are shown — fewer and the
+ *  accuracy is one lucky quiz away from flipping colour. */
+const MIN_HOUR_ATTEMPTS = 3;
+
+function DeepAnalysisSection({ analytics, classRank }: { analytics: Analytics; classRank: ClassRank }) {
+  return (
+    <section className="space-y-4">
+      <div className="flex items-baseline gap-2 pt-2">
+        <h2 className="text-base font-semibold text-slate-800 dark:text-slate-100">📊 深入分析</h2>
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          依最近 {analytics.attemptsScanned} 次測驗 / 考試 / 口試（共 {analytics.totalQuestions} 題）
+        </span>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <TypeAccuracyCard byType={analytics.byType} />
+        <ChapterWeaknessCard byChapter={analytics.byChapter} />
+        <ErrorTypeCard errorTypes={analytics.errorTypes} />
+        <HourAccuracyCard byHour={analytics.byHour} />
+        <HintDependenceCard hints={analytics.hints} />
+        <ClassRankCard classRank={classRank} />
+      </div>
+    </section>
+  );
+}
+
+/* 1. 題型 × 正確率 */
+
+function TypeAccuracyCard({ byType }: { byType: TypeAccuracy[] }) {
+  const colors = useChartColors();
+  const rows = byType.map((t) => ({ ...t, label: TYPE_LABELS[t.type] }));
+
+  return (
+    <AnalysisCard title="🧩 題型 × 正確率" subtitle="每種題型的答對率，括號內是題數。">
+      {rows.length === 0 ? (
+        <CardEmpty message="還沒有測驗紀錄" />
+      ) : (
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={rows} barCategoryGap="30%">
+            <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 11, fill: colors.axisTick }}
+              tickFormatter={(label: string) => {
+                const r = rows.find((x) => x.label === label);
+                return r ? `${label} (${r.count})` : label;
+              }}
+            />
+            <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: colors.axisLine }} unit="%" />
+            <Tooltip
+              cursor={{ fill: colors.grid, opacity: 0.4 }}
+              formatter={(value, _name, item) =>
+                [`${value}%（${item?.payload?.count ?? 0} 題）`, "正確率"] as [string, string]
+              }
+              contentStyle={{ borderRadius: 12, border: `1px solid ${colors.tooltipBorder}`, background: colors.tooltipBg, color: colors.tooltipText }}
+            />
+            <Bar dataKey="accuracy" radius={[6, 6, 0, 0]}>
+              {rows.map((r) => (
+                <Cell key={r.type} fill={accuracyFill(r.accuracy)} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+    </AnalysisCard>
+  );
+}
+
+/* 2. 章節 × 正確率（最弱 8 章） */
+
+function ChapterWeaknessCard({ byChapter }: { byChapter: ChapterAccuracy[] }) {
+  // The API already sorts weakest-first; just take the head.
+  const rows = byChapter.slice(0, 8);
+
+  return (
+    <AnalysisCard title="📚 章節 × 正確率" subtitle="答對率最低的 8 章，優先複習這些。">
+      {rows.length === 0 ? (
+        <CardEmpty message="題目還沒標上章節，做幾份章節測驗後就會出現" />
+      ) : (
+        <div className="space-y-2">
+          {rows.map((c) => (
+            <div key={c.chapter} className="grid grid-cols-12 gap-2 items-center text-xs">
+              <div className="col-span-4 truncate">
+                <span className="font-mono text-slate-500 dark:text-slate-400">Ch{String(c.chapter).padStart(2, "0")}</span>
+                {c.title && <span className="ml-1.5 text-slate-700 dark:text-slate-200">{c.title}</span>}
+              </div>
+              <div className="col-span-6 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                <div className="h-full rounded-full" style={{ width: `${c.accuracy}%`, background: accuracyFill(c.accuracy) }} />
+              </div>
+              <div className="col-span-2 text-right tabular-nums">
+                <span className={`font-medium ${accuracyText(c.accuracy)}`}>{c.accuracy}%</span>
+                <span className="ml-1 text-slate-400 dark:text-slate-500">/{c.count}題</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </AnalysisCard>
+  );
+}
+
+/* 3. 錯因分布 */
+
+function ErrorTypeCard({ errorTypes }: { errorTypes: ErrorTypeStats }) {
+  const colors = useChartColors();
+  const total = errorTypes.counts.reduce((s, c) => s + c.count, 0);
+  const slices = errorTypes.counts
+    .filter((c) => c.count > 0)
+    .map((c) => ({ ...c, label: ERROR_LABELS[c.type] }));
+
+  return (
+    <AnalysisCard
+      title="🔍 錯因分布"
+      subtitle={total > 0 ? `來自 ${errorTypes.analyzedAttempts} 份 AI 錯題分析，共 ${total} 題錯題。` : undefined}
+    >
+      {total === 0 ? (
+        <CardEmpty message={errorTypes.takeaway} />
+      ) : (
+        <>
+          <div className="flex items-center gap-4">
+            <div className="w-36 h-36 shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={slices}
+                    dataKey="count"
+                    nameKey="label"
+                    innerRadius="58%"
+                    outerRadius="100%"
+                    paddingAngle={2}
+                    stroke="none"
+                    isAnimationActive={false}
+                  >
+                    {slices.map((s) => (
+                      <Cell key={s.type} fill={ERROR_COLORS[s.type]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name) => [`${value} 題`, String(name)] as [string, string]}
+                    contentStyle={{ borderRadius: 12, border: `1px solid ${colors.tooltipBorder}`, background: colors.tooltipBg, color: colors.tooltipText }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <ul className="flex-1 space-y-1.5 text-xs">
+              {slices.map((s) => (
+                <li key={s.type} className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: ERROR_COLORS[s.type] }} />
+                  <span className="text-slate-700 dark:text-slate-200">{s.label}</span>
+                  <span className="ml-auto tabular-nums text-slate-500 dark:text-slate-400">
+                    {s.count} 題 · {Math.round((s.count / total) * 100)}%
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="mt-3 text-xs text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl px-3 py-2">
+            💡 {errorTypes.takeaway}
+          </p>
+        </>
+      )}
+    </AnalysisCard>
+  );
+}
+
+/* 4. 時段 × 正確率 */
+
+function HourAccuracyCard({ byHour }: { byHour: HourBucket[] }) {
+  const colors = useChartColors();
+  const rows = byHour
+    .filter((b) => b.attempts >= MIN_HOUR_ATTEMPTS && b.accuracy !== null)
+    .map((b) => ({ ...b, accuracy: b.accuracy as number, axis: `${b.label} ${b.range}` }));
+
+  return (
+    <AnalysisCard title="🕐 時段 × 正確率" subtitle={`你在一天哪個時段答得最好（台北時間；每時段至少 ${MIN_HOUR_ATTEMPTS} 次測驗才計）。`}>
+      {rows.length === 0 ? (
+        <CardEmpty message={`每個時段累積 ${MIN_HOUR_ATTEMPTS} 次測驗後就能比較`} />
+      ) : (
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={rows} barCategoryGap="30%">
+            <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
+            <XAxis dataKey="axis" tick={{ fontSize: 11, fill: colors.axisTick }} />
+            <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: colors.axisLine }} unit="%" />
+            <Tooltip
+              cursor={{ fill: colors.grid, opacity: 0.4 }}
+              formatter={(value, _name, item) =>
+                [`${value}%（${item?.payload?.attempts ?? 0} 次測驗）`, "正確率"] as [string, string]
+              }
+              contentStyle={{ borderRadius: 12, border: `1px solid ${colors.tooltipBorder}`, background: colors.tooltipBg, color: colors.tooltipText }}
+            />
+            <Bar dataKey="accuracy" radius={[6, 6, 0, 0]}>
+              {rows.map((r) => (
+                <Cell key={r.key} fill={accuracyFill(r.accuracy)} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+    </AnalysisCard>
+  );
+}
+
+/* 5. 提示依賴 */
+
+function HintDependenceCard({ hints }: { hints: HintStats }) {
+  const total = hints.hintedCount + hints.noHintCount;
+  const gap =
+    hints.hintedAccuracy !== null && hints.noHintAccuracy !== null
+      ? hints.hintedAccuracy - hints.noHintAccuracy
+      : null;
+  const verdict =
+    total === 0 ? null :
+    hints.hintedShare >= 50 ? "超過一半的題目用了提示——試著先自己想 2 分鐘再開提示。" :
+    gap !== null && gap < -15 ? "用提示的題反而答得比較差——提示通常出現在你本來就不穩的題，這些是弱點。" :
+    gap !== null && gap > 15 ? "提示對你很有效，而且用得節制，可以繼續這樣用。" :
+    "提示用得不多，答對率也穩定，不太依賴提示。";
+
+  return (
+    <AnalysisCard title="💡 提示依賴" subtitle="選擇 / 簡答題中用了提示的比例，以及用與不用的答對率差異。">
+      {total === 0 ? (
+        <CardEmpty message="還沒有可以提示的題目" />
+      ) : (
+        <>
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800 p-3 text-center">
+              <p className="text-xl font-bold text-indigo-600 dark:text-indigo-300">{hints.hintedShare}%</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">用了提示</p>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500">{hints.hintedCount} / {total} 題</p>
+            </div>
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800 p-3 text-center">
+              <p className={`text-xl font-bold ${hints.hintedAccuracy === null ? "text-slate-400" : accuracyText(hints.hintedAccuracy)}`}>
+                {hints.hintedAccuracy === null ? "—" : `${hints.hintedAccuracy}%`}
+              </p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">有提示答對率</p>
+            </div>
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800 p-3 text-center">
+              <p className={`text-xl font-bold ${hints.noHintAccuracy === null ? "text-slate-400" : accuracyText(hints.noHintAccuracy)}`}>
+                {hints.noHintAccuracy === null ? "—" : `${hints.noHintAccuracy}%`}
+              </p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">無提示答對率</p>
+            </div>
+          </div>
+          <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex">
+            <div className="h-full bg-indigo-500" style={{ width: `${hints.hintedShare}%` }} />
+          </div>
+          <div className="mt-1 flex items-center gap-3 text-[10px] text-slate-400 dark:text-slate-500">
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-indigo-500" />用了提示</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700" />沒用提示</span>
+          </div>
+          {verdict && <p className="mt-3 text-xs text-slate-600 dark:text-slate-300">{verdict}</p>}
+        </>
+      )}
+    </AnalysisCard>
+  );
+}
+
+/* 6. 班級百分位 */
+
+function ClassRankCard({ classRank }: { classRank: ClassRank }) {
+  const colors = useChartColors();
+
+  if (classRank.percentile === null) {
+    return (
+      <AnalysisCard title="🏅 班級百分位">
+        <CardEmpty
+          height="h-32"
+          message={
+            classRank.classSize > 0 && classRank.yourBucket === null && classRank.classSize >= 5
+              ? "做過測驗、有掌握度紀錄後才能比較"
+              : "班上同學再多一點就能比較（至少 5 位同學有測驗紀錄才會顯示，保護匿名性）"
+          }
+        />
+      </AnalysisCard>
+    );
+  }
+
+  // 「前 N%」 reads better than 「贏過 N%」 — flip the percentile.
+  const topPct = Math.max(1, 100 - classRank.percentile);
+  const rows = classRank.histogram.map((count, i) => ({
+    bucket: i,
+    label: `${i * 10}`,
+    count,
+    mine: i === classRank.yourBucket,
+  }));
+
+  return (
+    <AnalysisCard
+      title="🏅 班級百分位"
+      subtitle={`全班 ${classRank.classSize} 位同學的平均掌握度分布；只顯示你的相對位置，不顯示任何人的名字。`}
+    >
+      <p className="text-sm text-slate-700 dark:text-slate-200 mb-2">
+        你的掌握度在全班<span className="mx-1 text-lg font-bold text-indigo-600 dark:text-indigo-300">前 {topPct}%</span>
+      </p>
+      <ResponsiveContainer width="100%" height={150}>
+        <BarChart data={rows} barCategoryGap="12%">
+          <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 10, fill: colors.axisTick }}
+            tickFormatter={(v: string) => `${v}%`}
+            interval={0}
+          />
+          <YAxis tick={{ fontSize: 10, fill: colors.axisLine }} allowDecimals={false} width={28} />
+          <Tooltip
+            cursor={{ fill: colors.grid, opacity: 0.4 }}
+            formatter={(value, _name, item) =>
+              [`${value} 人${item?.payload?.mine ? "（含你）" : ""}`, "同學數"] as [string, string]
+            }
+            labelFormatter={(label) => `掌握度 ${label}–${Number(label) + 10}%`}
+            contentStyle={{ borderRadius: 12, border: `1px solid ${colors.tooltipBorder}`, background: colors.tooltipBg, color: colors.tooltipText }}
+          />
+          <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+            {rows.map((r) => (
+              <Cell key={r.bucket} fill={r.mine ? "#6366f1" : colors.axisLine} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="mt-1 flex items-center gap-3 text-[10px] text-slate-400 dark:text-slate-500">
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-indigo-500" />你所在的區間</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500" />其他同學</span>
+      </div>
+    </AnalysisCard>
   );
 }

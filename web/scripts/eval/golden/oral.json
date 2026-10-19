@@ -1,0 +1,17 @@
+{
+  "$schema": "../schema.json",
+  "name": "oral",
+  "description": "Golden set for /api/oral-exam — 口試模擬, scoped to Ch05 (牛頓定律應用). The runner calls action=start, answers each of the three questions with a canned reply keyed by question kind, follows up to maxFollowUps examiner probes with canned follow-up replies, runs a synthetic cap probe (transcript already carrying maxFollowUps follow-ups must be closed with action=next), then calls action=finish and checks the rubric result.",
+  "chapters": [5],
+  "maxFollowUps": 2,
+  "elapsedSeconds": 60,
+  "cannedAnswers": {
+    "concept": "我的理解是：牛頓第二定律 $\\sum \\vec{F} = m\\vec{a}$ 要在慣性座標系才成立，合力是所有外力的向量和，加速度和合力同方向。摩擦力的部分，靜摩擦力的大小不是固定值，而是「需要多少就提供多少」，上限是 $\\mu_s N$；物體開始滑動後變成動摩擦力 $\\mu_k N$，通常比靜摩擦的上限小。常見的誤解是把靜摩擦力直接寫成 $\\mu_s N$。",
+    "derivation": "我會先畫受力圖。以斜面上的物體為例，沿斜面方向取 $x$ 軸、垂直斜面取 $y$ 軸。垂直方向沒有加速度，所以 $N - mg\\cos\\theta = 0$，得到 $N = mg\\cos\\theta$。沿斜面方向：$mg\\sin\\theta - f = ma$。若剛好要滑動，$f = \\mu_s N = \\mu_s mg\\cos\\theta$，代回去得到 $a = g(\\sin\\theta - \\mu_s\\cos\\theta)$；臨界角滿足 $\\tan\\theta_c = \\mu_s$。前提是物體可視為質點、斜面固定不動。",
+    "application": "如果是等速率圓周運動的情境，例如汽車過彎，向心力要由摩擦力提供，$f = mv^2/r$。摩擦力上限是 $\\mu_s N = \\mu_s mg$，所以最大安全速率是 $v_{max} = \\sqrt{\\mu_s g r}$；超過就會往外側滑出去。如果路面有傾斜角 $\\theta$，正向力的水平分量也會貢獻向心力，無摩擦時 $\\tan\\theta = v^2/(rg)$，所以同樣的半徑可以用更高的速率過彎。",
+    "followup": [
+      "補充一下：這個結論的前提是系統只受我剛才列出的那些力，而且摩擦係數在運動過程中是常數；如果條件改變，受力圖要重新畫。",
+      "我想前提是物體可以視為質點，而且參考座標系是慣性系。如果在加速的車廂裡看，就要另外加上假想力才能用同樣的式子。"
+    ]
+  }
+}

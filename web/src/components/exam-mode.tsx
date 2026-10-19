@@ -9,13 +9,15 @@ import { ReportQuestionButton } from "./report-question-button";
 import { RegenerateQuestionButton } from "./regenerate-question-button";
 import { ThemeToggle } from "./theme-provider";
 import { AttemptAnalysisPanel } from "./attempt-analysis-panel";
+import { OpticsTaskView, OpticsResultTargets, type OpticsSubmission } from "./optics-task";
 import { stripOptionLetter } from "@/lib/strip-option-letter";
+import { evaluateOpticsTask, formatOpticsAnswer, type OpticsTask } from "@/lib/optics";
 
 /* ─── Types ─── */
 
 interface ExamQuestion {
   id: number;
-  type: "multiple_choice" | "short_answer";
+  type: "multiple_choice" | "short_answer" | "interactive_optics";
   concept: string;
   difficulty: "easy" | "medium" | "hard";
   question: string;
@@ -24,6 +26,10 @@ interface ExamQuestion {
   explanation: string;
   sourceChapter: number;
   points: number;
+  /** Only for `interactive_optics` — the simulator task the student manipulates. */
+  optics?: OpticsTask;
+  /** "teacher" when the question came from the 老師題庫 instead of the LLM. */
+  source?: "teacher";
 }
 
 interface Exam {
@@ -66,6 +72,9 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [confidences, setConfidences] = useState<Record<number, number>>({});
   const [hintUsage, setHintUsage] = useState<Record<number, number>>({});
+  // Final slider values + client verdict for interactive_optics questions
+  // (server re-evaluates; the verdict here only drives local UI).
+  const [opticsResults, setOpticsResults] = useState<Record<number, OpticsSubmission>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [gradeResult, setGradeResult] = useState<GradeResult | null>(null);
   /** ISO timestamp taken right before grading. The attempt row is inserted
@@ -109,6 +118,7 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
     setAnswers({});
     setConfidences({});
     setHintUsage({});
+    setOpticsResults({});
     setGradeResult(null);
     setCurrentQuestion(0);
 
@@ -149,6 +159,7 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
           answers,
           confidences,
           hintUsage,
+          opticsResults,
           examType,
           examTitle: exam.title,
         }),
@@ -164,7 +175,7 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
       setState("exam");
       console.error("Exam grading error:", err);
     }
-  }, [exam, answers, studentId, examType, confidences, hintUsage]);
+  }, [exam, answers, studentId, examType, confidences, hintUsage, opticsResults]);
 
   // Auto-submit when time runs out. Must come after handleSubmit so we
   // can include it in the effect's dependency list cleanly.
@@ -228,6 +239,12 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
             setCurrentQuestion={setCurrentQuestion}
             onSubmit={handleSubmit}
             answeredCount={answeredCount}
+            opticsResults={opticsResults}
+            onOpticsSubmit={(qid, task, values, verdict) => {
+              setOpticsResults({ ...opticsResults, [qid]: { values, isCorrect: verdict.isCorrect } });
+              // Human-readable string so progress dots / 錯題本 / 測驗紀錄 treat it like any answer.
+              setAnswers({ ...answers, [qid]: formatOpticsAnswer(task, values) });
+            }}
             onReplaceQuestion={(oldId, newQ) => {
               setExam({
                 ...exam,
@@ -238,6 +255,7 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
               const a = { ...answers }; delete a[qid]; setAnswers(a);
               const c = { ...confidences }; delete c[qid]; setConfidences(c);
               const h = { ...hintUsage }; delete h[qid]; setHintUsage(h);
+              const o = { ...opticsResults }; delete o[qid]; setOpticsResults(o);
             }}
           />
         )}
@@ -246,6 +264,7 @@ export function ExamMode({ onBack, onNavigateToTeaching }: ExamModeProps) {
           <ExamResults
             exam={exam}
             answers={answers}
+            opticsResults={opticsResults}
             gradeResult={gradeResult}
             examType={examType}
             gradedAt={gradedAt}
@@ -319,7 +338,7 @@ function ExamSelector({
           <span className="text-3xl mb-2">📘</span>
           <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">期中考模擬</h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Ch01 ~ Ch16（力學、振盪、流體、波動、聲學）</p>
-          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">50 分鐘 | 7 選擇 + 3 簡答</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">75 分鐘 | 12 選擇 + 3 簡答</p>
         </button>
 
         <button
@@ -332,8 +351,8 @@ function ExamSelector({
         >
           <span className="text-3xl mb-2">📗</span>
           <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">期末考模擬</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Ch17 ~ Ch31（熱學、電磁學、電路）</p>
-          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">60 分鐘 | 7 選擇 + 3 簡答</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Ch17 ~ Ch37（熱學、電磁學、電路、光學）</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">90 分鐘 | 12 選擇 + 3 簡答 + 2 光學操作題</p>
         </button>
       </div>
 
@@ -343,7 +362,7 @@ function ExamSelector({
           <li>• 考試開始後即計時，時間到自動交卷</li>
           <li>• 作答過程中不會顯示正確答案</li>
           <li>• 交卷後 AI 統一批改並給予回饋</li>
-          <li>• 選擇題每題 8 分，簡答題每題 10 分</li>
+          <li>• 選擇題每題 5 分，簡答題每題 10 分；期末考另有 2 題光學操作題（每題 5 分，在光路圖上調到目標後提交，由公式自動判定）</li>
           <li>• 成績會更新你的概念掌握度</li>
         </ul>
       </div>
@@ -406,6 +425,8 @@ function ExamView({
   setCurrentQuestion,
   onSubmit,
   answeredCount,
+  opticsResults,
+  onOpticsSubmit,
   onReplaceQuestion,
   onResetForQuestion,
 }: {
@@ -422,6 +443,8 @@ function ExamView({
   onResetForQuestion: (qid: number) => void;
   onSubmit: () => void;
   answeredCount: number;
+  opticsResults: Record<number, OpticsSubmission>;
+  onOpticsSubmit: (qid: number, task: OpticsTask, values: Record<string, number>, verdict: ReturnType<typeof evaluateOpticsTask>) => void;
 }) {
   const total = exam.questions.length;
   const [showConfirm, setShowConfirm] = useState(false);
@@ -476,30 +499,51 @@ function ExamView({
             className={`px-2 py-0.5 rounded-full text-xs font-medium ${
               q.type === "multiple_choice"
                 ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-300"
-                : "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-300"
+                : q.type === "interactive_optics"
+                  ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-300"
+                  : "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-300"
             }`}
           >
-            {q.type === "multiple_choice" ? "選擇題" : "簡答題"}
+            {q.type === "multiple_choice" ? "選擇題" : q.type === "interactive_optics" ? "📐 光學操作題" : "簡答題"}
           </span>
           <span className="text-xs text-slate-400 dark:text-slate-500">{q.points} 分</span>
-          <span className="ml-auto flex items-center gap-2">
-            <RegenerateQuestionButton
-              question={q}
-              onReplace={(newQ) => onReplaceQuestion(q.id, newQ as ExamQuestion)}
-              onResetForQuestion={onResetForQuestion}
-            />
-            <ReportQuestionButton
-              questionId={q.id}
-              question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
-            />
-          </span>
+          {q.source === "teacher" && (
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+              👩‍🏫 老師題
+            </span>
+          )}
+          {/* Regen is LLM-based and report targets LLM output — neither
+              applies to deterministic interactive tasks. */}
+          {q.type !== "interactive_optics" && (
+            <span className="ml-auto flex items-center gap-2">
+              <RegenerateQuestionButton
+                question={q}
+                onReplace={(newQ) => onReplaceQuestion(q.id, newQ as ExamQuestion)}
+                onResetForQuestion={onResetForQuestion}
+              />
+              <ReportQuestionButton
+                questionId={q.id}
+                question={{ question: q.question, correctAnswer: q.correctAnswer, sourceChapter: q.sourceChapter }}
+              />
+            </span>
+          )}
         </div>
 
         <div className="mb-5">
           <MarkdownRenderer content={`**${q.id}.** ${q.question}`} />
         </div>
 
-        {q.type === "multiple_choice" && q.options ? (
+        {/* Interactive optics: drag sliders in the simulator, then 提交 locks
+            them. The exam timer keeps running underneath. */}
+        {q.type === "interactive_optics" && q.optics ? (
+          <OpticsTaskView
+            key={`exam-optics-${q.id}`}
+            task={q.optics}
+            submitted={opticsResults[q.id] ?? null}
+            onSubmit={(values, verdict) => onOpticsSubmit(q.id, q.optics!, values, verdict)}
+            onReset={() => onResetForQuestion(q.id)}
+          />
+        ) : q.type === "multiple_choice" && q.options ? (
           <div className="space-y-2">
             {q.options.map((option, i) => {
               const letter = String.fromCharCode(65 + i);
@@ -544,13 +588,16 @@ function ExamView({
           </div>
         )}
 
-        {/* Confidence calibration */}
-        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
-          <ConfidenceSelector
-            value={confidences[q.id] ?? null}
-            onChange={(v) => setConfidences({ ...confidences, [q.id]: v })}
-          />
-        </div>
+        {/* Confidence calibration — the live readouts on an optics task
+            already tell the student how close they are, so skip it there. */}
+        {q.type !== "interactive_optics" && (
+          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+            <ConfidenceSelector
+              value={confidences[q.id] ?? null}
+              onChange={(v) => setConfidences({ ...confidences, [q.id]: v })}
+            />
+          </div>
+        )}
       </div>
 
       {/* Navigation */}
@@ -618,6 +665,7 @@ function ExamView({
 function ExamResults({
   exam,
   answers,
+  opticsResults,
   gradeResult,
   examType,
   gradedAt,
@@ -627,6 +675,7 @@ function ExamResults({
 }: {
   exam: Exam;
   answers: Record<number, string>;
+  opticsResults: Record<number, OpticsSubmission>;
   gradeResult: GradeResult;
   examType: string;
   gradedAt: string | null;
@@ -732,6 +781,11 @@ function ExamResults({
                   <span className="font-medium text-green-700 dark:text-green-300">{q.correctAnswer}</span>
                 </div>
               </div>
+
+              {/* Interactive optics: per-target achieved vs required */}
+              {q.type === "interactive_optics" && q.optics && (
+                <OpticsResultTargets task={q.optics} submission={opticsResults[q.id]} />
+              )}
 
               <div className="bg-slate-50 dark:bg-slate-900 rounded-xl px-4 py-3 text-sm">
                 <MarkdownRenderer content={result.feedback} />
