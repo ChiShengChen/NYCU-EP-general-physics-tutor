@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   const { studentId } = await resolveStudentId(querySid);
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
 
-  const rate = checkIpRateLimit(req);
+  const rate = await checkIpRateLimit(req);
   if (!rate.allowed) {
     const ipResp = ipRateLimitedResponse(rate);
     return NextResponse.json(ipResp.body, { status: ipResp.status });

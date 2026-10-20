@@ -7,6 +7,7 @@ import { MarkdownRenderer } from "./markdown-renderer";
 import { ThemeToggle } from "./theme-provider";
 import { CHAPTER_NODES } from "@/lib/concept-graph";
 import { AdminQuestionBank } from "./admin-question-bank";
+import { AdminGraphEditor } from "./admin-graph-editor";
 
 /**
  * 「管理員後台」 — two-tab triage panel for the people whose emails are
@@ -106,7 +107,7 @@ interface Report {
 }
 interface ReportsData { reports: Report[] }
 
-type Tab = "usage" | "reports" | "class" | "bank";
+type Tab = "usage" | "reports" | "class" | "bank" | "graph";
 
 interface ClassData {
   windowDays: number;
@@ -171,12 +172,18 @@ export function AdminPanel({ onBack }: { onBack: () => void }) {
           >
             📚 題庫
           </button>
+          <button
+            onClick={() => setTab("graph")}
+            className={`px-3 py-1.5 rounded-lg ${tab === "graph" ? "bg-indigo-600 text-white" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          >
+            🕸️ 圖譜
+          </button>
         </div>
         <ThemeToggle />
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        {tab === "usage" ? <UsageView /> : tab === "class" ? <ClassView /> : tab === "bank" ? <AdminQuestionBank /> : <ReportsView />}
+        {tab === "usage" ? <UsageView /> : tab === "class" ? <ClassView /> : tab === "bank" ? <AdminQuestionBank /> : tab === "graph" ? <AdminGraphEditor /> : <ReportsView />}
       </div>
     </div>
   );

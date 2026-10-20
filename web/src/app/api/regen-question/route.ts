@@ -56,7 +56,7 @@ export async function POST(req: Request) {
   const reason: string = typeof body.reason === "string" ? body.reason : "";
   const { studentId } = await resolveStudentId(body.studentId);
 
-  const rate = checkIpRateLimit(req);
+  const rate = await checkIpRateLimit(req);
   if (!rate.allowed) {
     const ipResp = ipRateLimitedResponse(rate);
     return NextResponse.json(ipResp.body, { status: ipResp.status });

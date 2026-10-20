@@ -24,9 +24,10 @@ import { GoalsView } from "@/components/goals-view";
 import { SimulatorsMode } from "@/components/simulators";
 import { NotesQuiz } from "@/components/notes-quiz";
 import { OralExam } from "@/components/oral-exam";
+import { PastExams } from "@/components/past-exams";
 import { AdminPanel } from "@/components/admin-panel";
 
-type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "admin" | null;
+type Mode = "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "past-exams" | "admin" | null;
 
 interface ResumeState {
   /** Unique key per resume action, used to re-init useChat. */
@@ -193,6 +194,7 @@ export default function Home() {
   if (mode === "sim") return <SimulatorsMode onBack={goHome} />;
   if (mode === "notes-quiz") return <NotesQuiz onBack={goHome} />;
   if (mode === "oral") return <OralExam onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
+  if (mode === "past-exams") return <PastExams onBack={goHome} onNavigateToTeaching={navigateToTeaching} />;
   if (mode === "admin") return <AdminPanel onBack={goHome} />;
 
   return <ModeSelector onSelectMode={onSelectMode} />;

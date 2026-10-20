@@ -1,0 +1,161 @@
+name: DB backup
+
+# Nightly pg_dump of the Supabase Postgres (public schema). Vercel can't run
+# pg_dump, so this lives in Actions:
+#
+#   1. install postgresql-client-17 from the official PGDG apt repo (pg_dump
+#      can dump any *older* server, so 17 covers Supabase on 15 or 17; bump
+#      the version here if Supabase moves to 18)
+#   2. scripts/backup.sh -> backups/nycu-physics-<stamp>.dump.gz + .schema.sql.gz
+#      (fails if the dump is < 10 KB)
+#   3. upload the dump as a workflow artifact (30 days) unless UPLOAD_ARTIFACT=false
+#   4. if SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY + BACKUP_BUCKET are set, also
+#      PUT it into that Supabase Storage bucket via the Storage REST API
+#
+# Secrets: SUPABASE_DB_URL (required; session-mode pooler, port 5432),
+#          SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / BACKUP_BUCKET (optional).
+# Vars:    UPLOAD_ARTIFACT=false to disable the artifact (mandatory on a public repo).
+# See README -> 監測 / 維運 -> 資料庫備份.
+
+on:
+  schedule:
+    - cron: "30 19 * * *" # 03:30 Asia/Taipei (UTC+8)
+  workflow_dispatch:
+    inputs:
+      upload_artifact:
+        description: "Upload the dump as a workflow artifact (disable on a public repo)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# Never run two dumps at once; a second trigger just waits.
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET || vars.BACKUP_BUCKET }}
+      # Dispatch input wins; otherwise the repo variable; otherwise true.
+      UPLOAD_ARTIFACT: ${{ github.event_name == 'workflow_dispatch' && format('{0}', inputs.upload_artifact) || vars.UPLOAD_ARTIFACT || 'true' }}
+      REPO_PRIVATE: ${{ github.event.repository.private }}
+      BACKUP_DIR: backups
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check config
+        run: |
+          set -euo pipefail
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::secret SUPABASE_DB_URL is not set (Supabase -> Project Settings -> Database -> session pooler, port 5432)"
+            exit 1
+          fi
+          # Mask the whole URL and the password on its own, in case pg_dump echoes part of it.
+          echo "::add-mask::$SUPABASE_DB_URL"
+          pw="$(printf '%s' "$SUPABASE_DB_URL" | sed -nE 's#^[^:]+://[^:/@]+:([^@]*)@.*$#\1#p')"
+          if [ -n "$pw" ]; then echo "::add-mask::$pw"; fi
+
+          if [ -n "$BACKUP_BUCKET" ]; then
+            if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+              echo "::error::BACKUP_BUCKET is set but SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are missing"
+              exit 1
+            fi
+            echo "bucket upload: enabled ($BACKUP_BUCKET)"
+          else
+            echo "bucket upload: disabled (no BACKUP_BUCKET)"
+          fi
+          echo "artifact upload: $UPLOAD_ARTIFACT"
+
+          # A dump on a public repo's artifacts is readable by anyone who can see
+          # the Actions tab: refuse that. (Only an explicit "false" counts as
+          # public so a missing payload field can't block the nightly run.)
+          if [ "$REPO_PRIVATE" = "false" ]; then
+            if [ "$UPLOAD_ARTIFACT" = "true" ]; then
+              echo "::error::repository is public; set repo variable UPLOAD_ARTIFACT=false and use BACKUP_BUCKET instead"
+              exit 1
+            fi
+            if [ -z "$BACKUP_BUCKET" ]; then
+              echo "::error::repository is public and no BACKUP_BUCKET configured; nothing safe to upload to"
+              exit 1
+            fi
+          fi
+
+      - name: Install postgresql-client-17 (PGDG)
+        run: |
+          set -euo pipefail
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl --fail --silent --show-error \
+            -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc \
+            https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
+            | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends postgresql-client-17
+          pg_dump --version
+          pg_restore --version
+
+      - name: pg_dump
+        id: dump
+        run: bash scripts/backup.sh
+
+      - name: Summary
+        run: |
+          {
+            echo "## DB backup ${{ steps.dump.outputs.stamp }}"
+            echo
+            echo "| file | bytes |"
+            echo "| :-- | --: |"
+            echo "| \`${{ steps.dump.outputs.dump }}\` | ${{ steps.dump.outputs.dump_bytes }} |"
+            echo "| \`${{ steps.dump.outputs.schema }}\` | ${{ steps.dump.outputs.schema_bytes }} |"
+            echo
+            echo "- artifact: $UPLOAD_ARTIFACT"
+            echo "- bucket: ${BACKUP_BUCKET:-(none)}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload workflow artifact
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ steps.dump.outputs.stamp }}
+          path: backups/*.gz
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0 # already gzipped
+
+      - name: Upload to Supabase Storage bucket
+        if: env.BACKUP_BUCKET != ''
+        env:
+          DUMP: ${{ steps.dump.outputs.dump }}
+          SCHEMA: ${{ steps.dump.outputs.schema }}
+          STAMP: ${{ steps.dump.outputs.stamp }}
+        run: |
+          set -euo pipefail
+          base="${SUPABASE_URL%/}/storage/v1/object/${BACKUP_BUCKET}"
+          # Object layout: <bucket>/daily/<YYYY>/<file>. x-upsert so a manual re-run
+          # of the same minute overwrites instead of 409ing.
+          year="${STAMP:0:4}"
+          for f in "$DUMP" "$SCHEMA"; do
+            name="$(basename "$f")"
+            echo "PUT ${base}/daily/${year}/${name}"
+            curl --fail-with-body --silent --show-error \
+              --retry 3 --retry-delay 5 --retry-all-errors \
+              -X POST "${base}/daily/${year}/${name}" \
+              -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+              -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+              -H "Content-Type: application/gzip" \
+              -H "x-upsert: true" \
+              --data-binary @"$f"
+            echo
+          done
+          echo "- bucket objects: \`daily/${year}/$(basename "$DUMP")\`, \`daily/${year}/$(basename "$SCHEMA")\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Restore hint
+        run: bash scripts/backup.sh --restore-hint "${{ steps.dump.outputs.dump }}"

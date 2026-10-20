@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import useSWR from "swr";
 import { useTheme, ThemeToggle } from "./theme-provider";
 import { ConceptDetailGraph } from "./concept-detail-graph";
 import { FormulaNetwork } from "./formula-network";
 import {
-  CHAPTER_NODES as NODES,
-  CHAPTER_EDGES as EDGES,
+  STATIC_CHAPTER_GRAPH,
+  type ChapterGraph,
   type ChapterNode as ConceptNode,
 } from "@/lib/concept-graph";
 
@@ -14,9 +15,14 @@ import {
 /* NODES, EDGES, and ChapterCategory now live in `src/lib/concept-graph.ts`
  * so the API route (/api/prereq-path) and this visualization share the
  * same source of truth — adding a chapter only needs editing one file.
- * Layout positions are tuned for a 1100×940 SVG. */
+ * Layout positions are tuned for a 1100×940 SVG.
+ *
+ * The overview tab reads the *merged* graph from /api/concept-graph
+ * (static + admin override, migration 024) through SWR, with the static
+ * graph as `fallbackData` so the page renders instantly and still works
+ * when the API / DB is down. */
 
-const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
+export const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; label: string; svgFill: string; svgStroke: string; svgFillSelected: string; svgStrokeSelected: string }> = {
   mechanics:   { bg: "bg-blue-50 dark:bg-blue-950/30",    border: "border-blue-300 dark:border-blue-700",    text: "text-blue-700 dark:text-blue-300",    label: "力學",            svgFill: "#eff6ff", svgStroke: "#93c5fd", svgFillSelected: "#dbeafe", svgStrokeSelected: "#3b82f6" },
   waves_fluid: { bg: "bg-emerald-50 dark:bg-emerald-950/30", border: "border-emerald-300 dark:border-emerald-700", text: "text-emerald-700 dark:text-emerald-300", label: "振盪、流體與波動", svgFill: "#ecfdf5", svgStroke: "#6ee7b7", svgFillSelected: "#d1fae5", svgStrokeSelected: "#10b981" },
   thermo:      { bg: "bg-amber-50 dark:bg-amber-950/30",   border: "border-amber-300 dark:border-amber-700",   text: "text-amber-700 dark:text-amber-300",   label: "熱學",            svgFill: "#fffbeb", svgStroke: "#fcd34d", svgFillSelected: "#fef3c7", svgStrokeSelected: "#f59e0b" },
@@ -25,7 +31,13 @@ const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string
   modern:      { bg: "bg-slate-50 dark:bg-slate-900",       border: "border-slate-400 dark:border-slate-600",     text: "text-slate-700 dark:text-slate-200",   label: "近代物理",        svgFill: "#f8fafc", svgStroke: "#cbd5e1", svgFillSelected: "#e2e8f0", svgStrokeSelected: "#475569" },
 };
 
-const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em", "optics", "modern"];
+export const CATEGORY_ORDER: Array<ConceptNode["category"]> = ["mechanics", "waves_fluid", "thermo", "em", "optics", "modern"];
+
+/** Shape of GET /api/concept-graph; the extra fields are informational. */
+export interface ChapterGraphResponse extends ChapterGraph {
+  overridden?: boolean;
+  updatedAt?: string | null;
+}
 
 /* ─── Component ─── */
 
@@ -44,11 +56,19 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
   const nodeTextColor = theme === "dark" ? "#e2e8f0" : "#334155";
   const nodeSubColor = theme === "dark" ? "#94a3b8" : "#94a3b8";
 
+  // Merged chapter graph; falls back to the static data while loading or
+  // when the request fails, so NODES / EDGES are never empty.
+  const { data: graph } = useSWR<ChapterGraphResponse>("/api/concept-graph", {
+    fallbackData: STATIC_CHAPTER_GRAPH,
+  });
+  const NODES = graph?.nodes ?? STATIC_CHAPTER_GRAPH.nodes;
+  const EDGES = graph?.edges ?? STATIC_CHAPTER_GRAPH.edges;
+
   const nodeMap = useMemo(() => {
     const m = new Map<string, ConceptNode>();
     NODES.forEach((n) => m.set(n.id, n));
     return m;
-  }, []);
+  }, [NODES]);
 
   const connectedNodes = useMemo(() => {
     const active = hoveredNode ?? selectedNode;
@@ -59,7 +79,7 @@ export function KnowledgeGraph({ onBack, onNavigate }: KnowledgeGraphProps) {
       if (e.to === active) connected.add(e.from);
     });
     return connected;
-  }, [hoveredNode, selectedNode]);
+  }, [hoveredNode, selectedNode, EDGES]);
 
   const selectedNodeData = selectedNode ? nodeMap.get(selectedNode) : null;
 

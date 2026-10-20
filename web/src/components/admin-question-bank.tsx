@@ -77,12 +77,16 @@ function chapterLabel(n: number): string {
   return `Ch${String(n).padStart(2, "0")}${node ? ` ${node.label}` : ""}`;
 }
 
+/** Tag convention for 考古題模式: this marker + a year-term tag like `2024-期中`. */
+const PAST_EXAM_TAG = "考古題";
+
 /** SWR key with only the present filters (apiKey() would null out the fetch on an empty param). */
-function listKey(chapter: number | null, q: string, active: ActiveFilter): string {
+function listKey(chapter: number | null, q: string, active: ActiveFilter, tag: string | null): string {
   const params = new URLSearchParams();
   if (chapter !== null) params.set("chapter", String(chapter));
   if (q) params.set("q", q);
   if (active !== "all") params.set("active", active);
+  if (tag) params.set("tag", tag);
   const qs = params.toString();
   return `/api/admin/questions${qs ? `?${qs}` : ""}`;
 }
@@ -107,8 +111,9 @@ export function AdminQuestionBank() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
 
-  const key = listKey(chapter, query, active);
+  const key = listKey(chapter, query, active, tagFilter);
   const { data, error, isLoading, mutate } = useSWR<BankData>(key);
 
   if (error) {
@@ -240,6 +245,13 @@ export function AdminQuestionBank() {
             {a === "all" ? "全部" : a === "true" ? "啟用中" : "已停用"}
           </Chip>
         ))}
+        <Chip
+          selected={tagFilter === PAST_EXAM_TAG}
+          onClick={() => setTagFilter(tagFilter === PAST_EXAM_TAG ? null : PAST_EXAM_TAG)}
+          title="只看標籤含「考古題」的題目（學生端 📜 考古題模式用）"
+        >
+          📜 考古題
+        </Chip>
       </form>
 
       {actionError && (
@@ -517,6 +529,9 @@ function QuestionForm({
         <div>
           <label className={LABEL_CLS}>標籤（逗號分隔）</label>
           <input value={form.tags} onChange={(e) => set("tags", e.target.value)} className={INPUT_CLS} placeholder="期中, 計算" />
+          <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">
+            要出現在學生端「📜 考古題」：加 <code>{PAST_EXAM_TAG}</code> 再加一個年度-學期標籤，例如 <code>2024-期中</code>、<code>2023-期末</code>。
+          </p>
         </div>
       </div>
 

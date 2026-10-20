@@ -1,9 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { resolveStudentId } from "@/lib/resolve-student-id";
-import { CHAPTER_NODES, findPrereqChapters } from "@/lib/concept-graph";
+import {
+  STATIC_CHAPTER_GRAPH,
+  applyGraphOverride,
+  findPrereqChapters,
+  parseGraphOverride,
+  type ChapterGraph,
+} from "@/lib/concept-graph";
 
 export const maxDuration = 15;
+
+/**
+ * Same merge as /api/concept-graph: static graph + admin override
+ * (migration 024). Any failure falls back to the static graph so the
+ * prereq analysis keeps working when the override table is missing.
+ */
+async function loadChapterGraph(supabase: ReturnType<typeof createServiceClient>): Promise<ChapterGraph> {
+  try {
+    const { data, error } = await supabase
+      .from("concept_graph_overrides")
+      .select("data")
+      .eq("key", "chapter")
+      .maybeSingle();
+    if (error || !data) return STATIC_CHAPTER_GRAPH;
+    const parsed = parseGraphOverride(data.data);
+    if (!parsed.ok) return STATIC_CHAPTER_GRAPH;
+    const applied = applyGraphOverride(STATIC_CHAPTER_GRAPH, parsed.override);
+    return applied.ok ? applied.graph : STATIC_CHAPTER_GRAPH;
+  } catch {
+    return STATIC_CHAPTER_GRAPH;
+  }
+}
 
 /**
  * GET /api/prereq-path?studentId=X&chapter=N
@@ -68,11 +96,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "invalid chapter (1..37)" }, { status: 400 });
   }
 
-  const targetMeta = CHAPTER_NODES.find((n) => n.chapter === chapter);
+  const supabase = createServiceClient();
+  const graph = await loadChapterGraph(supabase);
+  const targetMeta = graph.nodes.find((n) => n.chapter === chapter);
   if (!targetMeta) {
     return NextResponse.json({ error: "unknown chapter" }, { status: 400 });
   }
-  const prereqChapters = findPrereqChapters(chapter);
+  const prereqChapters = findPrereqChapters(chapter, graph);
   const target = { chapter, title: targetMeta.label };
 
   // No prereqs in graph → just tell the client. This is normal for entry
@@ -83,7 +113,6 @@ export async function GET(req: NextRequest) {
 
   // Pull recent attempts (a 120-day window is enough to be representative
   // without dragging in stale data from prior semesters).
-  const supabase = createServiceClient();
   const cutoff = new Date(Date.now() - 120 * 86400_000).toISOString();
   const { data: attemptsData, error } = await supabase
     .from("attempts")
@@ -121,7 +150,7 @@ export async function GET(req: NextRequest) {
   }
 
   const prereqs: PrereqEntry[] = prereqChapters.map((ch) => {
-    const meta = CHAPTER_NODES.find((n) => n.chapter === ch);
+    const meta = graph.nodes.find((n) => n.chapter === ch);
     const agg = perChapter.get(ch)!;
     const accuracy = agg.total > 0 ? agg.correct / agg.total : null;
     return {

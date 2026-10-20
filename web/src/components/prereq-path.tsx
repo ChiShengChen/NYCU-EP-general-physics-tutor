@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { apiKey } from "@/lib/api";
-import { CHAPTER_NODES } from "@/lib/concept-graph";
+import { STATIC_CHAPTER_GRAPH, type ChapterGraph } from "@/lib/concept-graph";
 
 /**
  * Prereq-gap analyzer.
@@ -68,6 +68,14 @@ interface PrereqPathPanelProps {
 export function PrereqPathPanel({ studentId, onNavigateToChapter }: PrereqPathPanelProps) {
   const [chapter, setChapter] = useState<number | null>(null);
 
+  // Chapter list comes from the merged graph (static + admin override) so a
+  // chapter the teacher hid or renamed matches what the API will return;
+  // the static graph is the fallback while loading / offline.
+  const { data: graph } = useSWR<ChapterGraph>("/api/concept-graph", {
+    fallbackData: STATIC_CHAPTER_GRAPH,
+  });
+  const chapters = graph?.nodes ?? STATIC_CHAPTER_GRAPH.nodes;
+
   const { data, isLoading, error } = useSWR<PrereqPathResponse>(
     apiKey("/api/prereq-path", { studentId, chapter }),
   );
@@ -95,7 +103,7 @@ export function PrereqPathPanel({ studentId, onNavigateToChapter }: PrereqPathPa
           className="flex-1 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
         >
           <option value="">— 選擇章節 —</option>
-          {CHAPTER_NODES.map((c) => (
+          {chapters.map((c) => (
             <option key={c.chapter} value={c.chapter}>
               Ch{String(c.chapter).padStart(2, "0")} · {c.label}
             </option>

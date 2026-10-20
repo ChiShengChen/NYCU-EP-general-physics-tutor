@@ -260,7 +260,11 @@ export function questionToCsvRow(q: {
   ];
 }
 
-/** Two example rows (one MC, one SA) that ship in the downloadable template. */
+/**
+ * Two example rows (one MC, one SA) that ship in the downloadable template.
+ * The SA row shows the 考古題 convention: `考古題` + a year-term tag
+ * (`2023-期末`) makes the row appear in the student-facing 📜 考古題 mode.
+ */
 export const TEACHER_CSV_TEMPLATE_ROWS: (string | number)[][] = [
   [
     4, "multiple_choice", "牛頓第二定律", "easy",
@@ -272,6 +276,6 @@ export const TEACHER_CSV_TEMPLATE_ROWS: (string | number)[][] = [
     7, "short_answer", "能量守恆", "medium",
     "從高度 $h$ 靜止釋放的物體落地時的速率為何？（忽略空氣阻力）",
     "", "", "", "",
-    "$v = \\sqrt{2gh}$", "位能 $mgh$ 全數轉為動能 $\\tfrac12 mv^2$，解得 $v=\\sqrt{2gh}$。", 1, "",
+    "$v = \\sqrt{2gh}$", "位能 $mgh$ 全數轉為動能 $\\tfrac12 mv^2$，解得 $v=\\sqrt{2gh}$。", 1, "考古題;2023-期末",
   ],
 ];

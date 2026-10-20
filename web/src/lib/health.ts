@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { getIpRateLimitBackend, pingIpRateLimitStore } from "@/lib/rate-limit";
 
 /**
  * Health probe logic shared by `/api/health-check` (JSON for uptime
@@ -98,6 +99,19 @@ export async function runHealthChecks(): Promise<HealthPayload> {
       const count = raw.split(",").map((s) => s.trim()).filter(Boolean).length;
       if (count === 0) return { ok: false, detail: "ADMIN_EMAILS empty" };
       return { ok: true, detail: `${count} admin(s)` };
+    }),
+
+    // IP rate-limit store: reports which backend this instance picked.
+    // With Upstash configured we do a real PING so `latencyMs` is the
+    // Redis round-trip. Optional — the limiter fails open when Redis is
+    // unreachable, so a failure here degrades the burst guard, nothing
+    // else. In-memory is always "ok" but worth seeing on the status page
+    // since it means the cap is per-instance only.
+    check("rate-limit-store", false, async () => {
+      const backend = getIpRateLimitBackend();
+      if (backend === "in-memory") return { ok: true, detail: "in-memory (per-instance)" };
+      await pingIpRateLimitStore();
+      return { ok: true, detail: "upstash PONG" };
     }),
   ];
 

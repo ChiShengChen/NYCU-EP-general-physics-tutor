@@ -16,7 +16,7 @@ export const maxDuration = 20;
 /**
  * Admin CRUD for the teacher question bank (`teacher_questions`).
  *
- * GET    /api/admin/questions?chapter=&q=&active=true|false|all&format=csv
+ * GET    /api/admin/questions?chapter=&q=&tag=&active=true|false|all&format=csv
  *        → { questions: Row[], counts: {chapter,total,active}[], total }
  *        Newest first, capped at 200. `counts` covers the whole bank (not
  *        just the filtered page) so the chapter chips stay stable while
@@ -77,6 +77,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "invalid active" }, { status: 400 });
   }
   const term = (params.get("q") ?? "").trim().slice(0, 100);
+  // `tag=考古題` → rows whose tags array contains it (the 📜 考古題 quick filter).
+  const tag = (params.get("tag") ?? "").trim().slice(0, 50);
   const wantCsv = params.get("format") === "csv";
 
   const supabase = createServiceClient();
@@ -88,6 +90,7 @@ export async function GET(req: NextRequest) {
   if (chapter !== null) q = q.eq("chapter", chapter);
   if (active === "true") q = q.eq("is_active", true);
   if (active === "false") q = q.eq("is_active", false);
+  if (tag) q = q.contains("tags", [tag]);
   if (term) {
     const p = likePattern(term);
     q = q.or(`question.ilike.${p},concept.ilike.${p},explanation.ilike.${p}`);

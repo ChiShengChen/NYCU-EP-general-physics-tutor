@@ -178,7 +178,7 @@ export async function POST(req: Request) {
   // Quota gate: same daily token cap that all the JSON routes use, but
   // here it has to happen before streamText() — once that returns its
   // ReadableStream we can't cleanly inject a 429 mid-stream.
-  const rate = checkIpRateLimit(req);
+  const rate = await checkIpRateLimit(req);
   if (!rate.allowed) {
     const ipResp = ipRateLimitedResponse(rate);
     return NextResponse.json(ipResp.body, { status: ipResp.status });

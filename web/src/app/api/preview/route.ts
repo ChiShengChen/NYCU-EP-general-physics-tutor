@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid chapter" }, { status: 400 });
   }
 
-  const rate = checkIpRateLimit(req);
+  const rate = await checkIpRateLimit(req);
   if (!rate.allowed) {
     const ipResp = ipRateLimitedResponse(rate);
     return NextResponse.json(ipResp.body, { status: ipResp.status });

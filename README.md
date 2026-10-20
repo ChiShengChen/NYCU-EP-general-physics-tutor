@@ -42,7 +42,7 @@
 │                                                                  │
 │  跨切面（每個 AI route 都會經過）：                                 │
 │    1. initBreadcrumbs()        → AsyncLocalStorage 開新 scope     │
-│    2. checkIpRateLimit()       → IP 滑動視窗 60/5min（breadcrumb）│
+│    2. checkIpRateLimit()       → IP 滑動視窗 60/5min（Upstash/mem）│
 │    3. resolveStudentId()       → 以 auth session 蓋過 body id     │
 │    4. checkDailyQuota()        → 2M auth / 5K anon（breadcrumb）  │
 │    5. pickModel(mode)          → 依模式分 light/std/premium 模型   │
@@ -76,7 +76,7 @@
 | `question_reports` | 學生回報題目品質（含 resolved_at / resolved_by_email） |
 | `chapter_previews` | 章節預習卡 cache（含 **prompt_version** 自動失效） |
 
-完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 023；020 = attempts 加 `oral` kind + transcript，021 = `attempt_analyses`，022 = `review_cards`（SM-2），023 = `teacher_questions`）。
+完整 migration 列表見 [`supabase/migrations/`](supabase/migrations/)（目前到 024；020 = attempts 加 `oral` kind + transcript，021 = `attempt_analyses`，022 = `review_cards`（SM-2），023 = `teacher_questions`，024 = `concept_graph_overrides` + history）。
 
 **模式分級（`web/src/lib/models.ts`）**
 
@@ -130,6 +130,8 @@ premium  exam / export（口試最後評分也走 exam 層）        → Pro（�
 | `SENTRY_DSN` | 啟用 server-side error report + breadcrumbs |
 | `NEXT_PUBLIC_SENTRY_DSN` | 啟用 client error hook |
 | `BRAVE_SEARCH_API_KEY` | Web 搜尋 tool（chat 模式選用） |
+| `UPSTASH_REDIS_REST_URL` | IP rate limit 改用 Upstash Redis（跨 Vercel 實例一致）；Upstash Console → Database → REST API |
+| `UPSTASH_REDIS_REST_TOKEN` | 同上；兩個都設才啟用，缺一就退回 in-memory |
 
 ## 快速入門
 
@@ -194,6 +196,7 @@ npm run eval -- --only chat --dry-run   # 只跑單一模式 / 不打 server 只
 - **學習目標管理**：日 / 週 / 月目標追蹤
 - **物理模擬器**：互動式 simulators（PhET-style）：自由落體、拋體、碰撞、彈簧、電場、RC 電路、薄透鏡、球面鏡、折射 / 全反射
 - **手寫筆記出題**：拍照上傳 → AI 出題回測筆記內容
+- **📜 考古題**：老師題庫裡標籤含 `考古題` + 年度-學期（`2024-期中` / `2023-期末`）的題目，依年度分組成一份份考題。每題可「對答案」（選擇題 server 直接比對、簡答題一次 AI 評分 0 / 0.5 / 1）、「📖 這題在講義哪裡」（RAG 找該章最相關 3 頁，點了直接開教學模式那一頁，不經 LLM）、「🔁 出一題類似的」（同概念同題型的變體，可再作答）。進度「已作答 n / N」存 localStorage；不寫 `attempts`，只更新 `student_state` 掌握度
 - **🛡️ 後台**（僅 admins）：見下一節
 
 ## 🛡️ 管理員後台
@@ -232,22 +235,67 @@ npm run eval -- --only chat --dry-run   # 只跑單一模式 / 不打 server 只
 - 逐題表單（選擇 / 簡答、章節、難度、解析、tags）或 **CSV 批次匯入**（可下載範本；壞的列會逐列回報，不會整檔失敗）
 - 依章節篩選、搜尋、停用 / 啟用、刪除、CSV 匯出
 - 自動測驗（單章 / 跨章）與考試模擬會依章節把老師題**混入 AI 題**（預設 30%，`TEACHER_MIX_RATIO`），UI 顯示 👩‍🏫 老師題 標記；配分沿用被替換的題位
+- **考古題標籤慣例**：一題要出現在學生端 📜 考古題，tags 要同時有 `考古題` 和一個「年度-學期」標籤（`2024-期中`、`2023-期末`，格式 `YYYY-任意文字`；CSV 的 tags 欄用 `;` 分隔，例如 `考古題;2024-期中`）。學生端依年度-學期分組、最新在前；只有 `考古題` 沒年度的會歸到「未分年度」。題庫 tab 有「📜 考古題」快速篩選。不需要新 migration
+
+### 🕸️ 圖譜（概念圖譜人工校對）
+
+- 章節先修圖譜的 **React Flow 編輯畫布**：拖把手連線 = 加先修邊（先修 → 後續）、點邊 = 移除、點節點 = 改標題 / 分類 / 隱藏；每一步都即時用 `applyGraphOverride()` 檢查，形成循環會直接列出循環路徑並拒絕
+- 右側「未儲存變更」逐項列出 diff（可逐項 ↩ 撤銷）→ 儲存 PUT `/api/admin/graph`；「還原預設」清空覆寫；歷史紀錄保留每次儲存，可「回復到此版本」
+- 程式內建的靜態圖譜仍是預設，老師改的只是存在 `concept_graph_overrides`（migration 024）的 **diff**；學生端 概念圖譜 / 前置缺口分析 / `/api/prereq-path` 都讀 `/api/concept-graph`（static + override 合併、`max-age=60`），DB 掛了就自動退回靜態圖譜
 
 ## 監測 / 維運
 
-- **`/health-check` 頁**：Supabase ping、Gemini key 在不在、OAuth env、Sentry 設定、admin 設定。每 30 秒自動 refresh。
+- **`/health-check` 頁**：Supabase ping、Gemini key 在不在、OAuth env、Sentry 設定、admin 設定、rate-limit store（in-memory / upstash + PING 延遲）。每 30 秒自動 refresh。
 - **`/api/health-check`**：純 JSON 給 uptime monitor 用，critical 失敗回 503。
 - **Sentry breadcrumbs**：每個 route 自動記 rate-limit / quota / ai.call 軌跡，throw 時連同 stack 送出。
 - **Daily quota**：登入 2M / 匿名 5K（Asia/Taipei 00:00 重置）。
-- **IP rate limit**：滑動視窗 60 calls / 5 min（in-memory，per-instance）。
+- **IP rate limit**：滑動視窗 60 calls / 5 min。設了 `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` 就走 Upstash Redis（sorted-set sliding log，一次 `/pipeline` REST call，無 SDK 依賴，跨實例一致）；沒設就退回 in-memory（per-instance，Vercel 多實例下只是軟性防護）。Redis 失敗或 800 ms 沒回就 **fail open**（放行 + 每分鐘最多一則 `console.warn` + breadcrumb），不會因為 Redis 掛掉把學生擋在外面——daily quota 仍然兜底。
 - **CSP**：見 [`next.config.ts`](web/next.config.ts)。
 - **RLS**：跑過 migration 016，每位學生只能讀寫自己的 row（admin 走 service-role 略過）。
+
+### 資料庫備份（pg_dump）
+
+Vercel 跑不了 `pg_dump`，所以放在 GitHub Actions：[`backup.yml`](.github/workflows/backup.yml) 每天 **03:30 Asia/Taipei**（cron `30 19 * * *` UTC）跑 [`scripts/backup.sh`](scripts/backup.sh)，也可以在 Actions 頁 **Run workflow** 手動觸發。流程：裝 PGDG 的 `postgresql-client-17`（`pg_dump` 可以 dump 比自己舊的 server，Supabase 在 15 或 17 都行）→ `pg_dump --no-owner --no-privileges --format=custom --schema=public`（資料 + schema）加一份 `--schema-only` 純 SQL（方便 diff）→ gzip → 上傳成 workflow artifact（保留 30 天）→ 若有設 bucket 再 `curl` 到 Supabase Storage。dump 小於 10 KB 或沒有任何 `TABLE DATA` 直接 fail；連線字串會被 mask。
+
+**GitHub Secrets**（repo → Settings → Secrets and variables → Actions → Secrets）：
+
+| 名稱 | 必要 | 來源 |
+| :--- | :---: | :--- |
+| `SUPABASE_DB_URL` | ✅ | Supabase → **Project Settings → Database → Connection string**，Method 選 **Session pooler**（port **5432**）、格式選 URI，把 `[YOUR-PASSWORD]` 換成 DB 密碼。不要用 Transaction pooler（6543），`pg_dump` 不支援；Direct connection 也可以但需要 IPv6。 |
+| `SUPABASE_URL` | 選用 | 同 `NEXT_PUBLIC_SUPABASE_URL`（`https://<ref>.supabase.co`），bucket 上傳用 |
+| `SUPABASE_SERVICE_ROLE_KEY` | 選用 | 同 Vercel 那把，bucket 上傳用 |
+| `BACKUP_BUCKET` | 選用 | Supabase Storage 的 **private** bucket 名稱（先在 Dashboard → Storage 建好，例如 `db-backups`）。三個都設了才會上傳，物件路徑 `daily/<YYYY>/<檔名>`，同名會 upsert |
+
+**Repo Variables**：`UPLOAD_ARTIFACT=false` 關掉 artifact 上傳（手動跑時也可以用 input 覆蓋，預設 `true`）。
+
+> ⚠️ **Artifact 存在 GitHub 上**，dump 裡有學生資料，所以只有 repo 是 **private** 才可以用 artifact。如果 repo 改成 public，**必須**設 `BACKUP_BUCKET`（走 Storage）並把 `UPLOAD_ARTIFACT` 設成 `false`；workflow 偵測到 public repo + artifact 開著會直接 fail，不會上傳。
+
+**下載與還原**：
+
+```bash
+# 1) 拿 dump：Actions → DB backup → 某次 run → Artifacts，或用 gh
+gh run list --workflow backup.yml --limit 5
+gh run download <run-id> --dir backups/
+#    bucket 版：Supabase Dashboard → Storage → db-backups → daily/<YYYY>/ 下載
+
+# 2) 本機需要 pg_restore ≥ 17（brew install postgresql@17）
+scripts/restore.sh backups/nycu-physics-20261019-0330.dump.gz "$TARGET_DB_URL"   # 會要你打 restore 確認；--yes 跳過、--jobs 4 平行
+scripts/backup.sh --restore-hint backups/nycu-physics-20261019-0330.dump.gz     # 只印對應的 pg_restore 指令
+```
+
+還原用 `pg_restore --clean --if-exists --no-owner --no-privileges --schema=public`：dump 裡有的 public 物件會被 DROP 再建，目標庫才有的不動。**建議先還原到一個新開的 Supabase project 驗證**，再碰正式庫。注意：
+
+- 只備份 `public` schema。`auth.users`（登入帳號）由 Supabase 管理不在 dump 裡，還原到新 project 時 `student_id` 對應的帳號要另外處理（Supabase 自己的每日備份仍然有）。
+- Supabase 若升到 Postgres 18，`pg_dump` 17 會拒絕，要把 workflow 裡的 `postgresql-client-17` 跟著升。
+- 本機也可以直接跑：`SUPABASE_DB_URL='...' scripts/backup.sh`，輸出到 `./backups/`（`BACKUP_DIR` 可改）；記得不要把 dump commit 進 repo。
 
 ## CI / Workflow
 
 GitHub Actions 跑 `npx tsc --noEmit`（prod + tests 兩套 tsconfig）、`npx eslint .`、`npm test`。任何 `web/**` 變動都會跑。設定見 [`.github/workflows/ci.yml`](.github/workflows/ci.yml)。
 
 Vercel 接到 push 自動部署 main。改 env var 後**需要手動 Redeploy**才會生效（不要勾 Use existing Build Cache）。
+
+另外兩支 workflow：[`smoke.yml`](.github/workflows/smoke.yml)（E2E，見下）與 [`backup.yml`](.github/workflows/backup.yml)（每日 pg_dump，見[資料庫備份](#資料庫備份pg_dump)）。
 
 ### E2E smoke
 
@@ -263,14 +311,14 @@ npx playwright show-report playwright-report       # 看失敗截圖 / trace
 
 ## 已知 TODO
 
-- [ ] 概念圖譜為自動產生的初版（每章一個頭條概念），需要老師/同學 review 並調整節點與先修邊
+- [x] 概念圖譜為自動產生的初版（每章一個頭條概念），需要老師/同學 review 並調整節點與先修邊 → 後台 🕸️ 圖譜 tab（migration 024）
 - [ ] 期中／期末考的章節範圍依實際課程進度可能要再切分（目前預設 midterm = Ch01–Ch16, final = Ch17–Ch31）
 - [ ] 教學模式 Header 目前只顯示 `Ch{NN}`，可加上中文章節標題
 - [x] 老師自訂題庫（後台 📚 題庫 tab + CSV 匯入，migration 023）
-- [ ] 概念圖譜編輯介面（老師拖節點 / 加先修邊）
-- [ ] IP 限流改 Upstash Redis（現在 in-memory per-instance，Vercel 多實例形同沒有）
-- [ ] 考古題模式（需老師提供歷年考題）
+- [x] 概念圖譜編輯介面（老師拖節點 / 加先修邊）→ 後台 🕸️ 圖譜 tab
+- [x] IP 限流改 Upstash Redis（設 `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` 即啟用，否則 in-memory fallback）
+- [x] 考古題模式（老師在題庫加 `考古題` + `YYYY-期中/期末` 標籤即可，`/api/past-exams` + `past-exams.tsx`）
 - [x] eval harness 擴充到 chat / exam / oral（`web/scripts/eval/`，regex / shape 檢查；LLM-as-judge 仍未做）
-- [ ] pg_dump 自動備份（cron 或 Supabase Edge Function）
+- [x] pg_dump 自動備份（GitHub Actions [`backup.yml`](.github/workflows/backup.yml) 每日 03:30 Asia/Taipei，artifact 30 天 + 選用 Supabase Storage bucket；`scripts/backup.sh` / `scripts/restore.sh`）
 - [ ] 考完試自動 email 錯題分析報告（`renderAnalysisText()` 已可產出純文字版；還需 Resend/SMTP + cron）
 - [ ] 口試加語音（TTS 唸題 + 現有語音輸入）；ScopeSelector 文案仍寫「20 題」，Ch33/34 實際為 22 題

@@ -32,3 +32,6 @@ supabase/.temp/
 web/test-results/
 web/playwright-report/
 web/e2e/.auth/
+
+# local pg_dump output from scripts/backup.sh
+backups/

@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   if (!studentId) return NextResponse.json({ error: "studentId required" }, { status: 400 });
   if (!Number.isInteger(attemptId)) return NextResponse.json({ error: "attemptId required" }, { status: 400 });
 
-  const rate = checkIpRateLimit(req);
+  const rate = await checkIpRateLimit(req);
   if (!rate.allowed) {
     const ipResp = ipRateLimitedResponse(rate);
     return NextResponse.json(ipResp.body, { status: ipResp.status });

@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 /**
  * Chapter-level dependency graph for the prerequisite path feature.
  *
@@ -8,9 +10,19 @@
  * imports from this module. Keep `NODES` and `EDGES` in sync if you add a
  * new chapter — both the visualization and the prereq path traversal
  * read from the same arrays.
+ *
+ * Since migration 024 the static arrays are the *default* only: admins can
+ * store a `GraphOverride` (node title / group / hidden + added / removed
+ * edges) in `concept_graph_overrides`, and `applyGraphOverride()` merges it
+ * on top at read time. `/api/concept-graph` serves the merged result;
+ * client components start from `STATIC_CHAPTER_GRAPH` and swap in the
+ * merged graph when it arrives, so a DB outage never blanks the page.
+ * Everything in this module stays pure (no Supabase) so it is unit-testable
+ * and safe to import from client bundles.
  */
 
-export type ChapterCategory = "mechanics" | "waves_fluid" | "thermo" | "em" | "optics" | "modern";
+export const CHAPTER_CATEGORIES = ["mechanics", "waves_fluid", "thermo", "em", "optics", "modern"] as const;
+export type ChapterCategory = (typeof CHAPTER_CATEGORIES)[number];
 
 export interface ChapterNode {
   id: string;        // "ch01"
@@ -152,21 +164,301 @@ export function chapterNumOf(id: string): number {
   return parseInt(id.slice(2), 10);
 }
 
+/* ─── Merged graph + admin override ─── */
+
+export interface ChapterGraph {
+  nodes: ChapterNode[];
+  edges: ChapterEdge[];
+}
+
+/** The shipped default. Consumers use this as the SWR fallback for `/api/concept-graph`. */
+export const STATIC_CHAPTER_GRAPH: ChapterGraph = { nodes: CHAPTER_NODES, edges: CHAPTER_EDGES };
+
+/** Per-node edits. `title` → `label`, `group` → `category`; `hidden` drops the node and its edges. */
+export interface GraphNodeOverride {
+  title?: string;
+  chapter?: number;
+  group?: ChapterCategory;
+  hidden?: boolean;
+}
+
+export interface GraphOverride {
+  nodes: Record<string, GraphNodeOverride>;
+  edges: { added: ChapterEdge[]; removed: ChapterEdge[] };
+}
+
+export const EMPTY_GRAPH_OVERRIDE: GraphOverride = { nodes: {}, edges: { added: [], removed: [] } };
+
+export const GRAPH_TITLE_MAX = 40;
+
+const EdgeSchema = z.object({
+  from: z.string().trim().min(1).max(20),
+  to: z.string().trim().min(1).max(20),
+});
+
+const NodeOverrideSchema = z.object({
+  title: z.string().trim().min(1, "標題不可空白").max(GRAPH_TITLE_MAX).optional(),
+  chapter: z.number().int().min(1).max(99).optional(),
+  group: z.enum(CHAPTER_CATEGORIES).optional(),
+  hidden: z.boolean().optional(),
+});
+
+const GraphOverrideSchema = z.object({
+  nodes: z.record(z.string().max(20), NodeOverrideSchema).default({}),
+  edges: z
+    .object({
+      added: z.array(EdgeSchema).max(500).default([]),
+      removed: z.array(EdgeSchema).max(500).default([]),
+    })
+    .default({ added: [], removed: [] }),
+});
+
+export type GraphOverrideParseResult =
+  | { ok: true; override: GraphOverride }
+  | { ok: false; error: string };
+
+/**
+ * Shape-check an untrusted override document (request body / DB row). This
+ * only validates types; semantic checks (unknown nodes, cycles, …) live in
+ * `applyGraphOverride` so the admin UI gets one consistent error message.
+ */
+export function parseGraphOverride(raw: unknown): GraphOverrideParseResult {
+  const parsed = GraphOverrideSchema.safeParse(raw ?? {});
+  if (!parsed.success) {
+    const msg = parsed.error.issues
+      .map((i) => (i.path.length ? `${i.path.join(".")}: ${i.message}` : i.message))
+      .join("；");
+    return { ok: false, error: `override 格式錯誤：${msg}` };
+  }
+  return { ok: true, override: parsed.data };
+}
+
+export function edgeKey(e: ChapterEdge): string {
+  return `${e.from}->${e.to}`;
+}
+
+export function isEmptyGraphOverride(o: GraphOverride): boolean {
+  return (
+    Object.keys(o.nodes).length === 0 &&
+    o.edges.added.length === 0 &&
+    o.edges.removed.length === 0
+  );
+}
+
+/**
+ * Canonical form of an override relative to `base`: drops node entries that
+ * change nothing, `added` edges the base already has, `removed` edges the
+ * base never had, and duplicates; sorts everything so two overrides with
+ * the same effect serialize identically (the editor's "dirty" check and the
+ * history list both compare JSON).
+ */
+export function normalizeGraphOverride(override: GraphOverride, base: ChapterGraph = STATIC_CHAPTER_GRAPH): GraphOverride {
+  const baseNode = new Map(base.nodes.map((n) => [n.id, n] as const));
+  const baseEdges = new Set(base.edges.map(edgeKey));
+
+  const nodes: Record<string, GraphNodeOverride> = {};
+  for (const id of Object.keys(override.nodes).sort()) {
+    const o = override.nodes[id];
+    const b = baseNode.get(id);
+    if (!o || !b) continue;
+    const out: GraphNodeOverride = {};
+    const title = o.title?.trim();
+    if (title && title !== b.label) out.title = title;
+    if (o.chapter !== undefined && o.chapter !== b.chapter) out.chapter = o.chapter;
+    if (o.group !== undefined && o.group !== b.category) out.group = o.group;
+    if (o.hidden) out.hidden = true;
+    if (Object.keys(out).length > 0) nodes[id] = out;
+  }
+
+  const dedupe = (list: ChapterEdge[], keep: (k: string) => boolean): ChapterEdge[] => {
+    const seen = new Set<string>();
+    const out: ChapterEdge[] = [];
+    for (const e of list) {
+      const k = edgeKey(e);
+      if (seen.has(k) || !keep(k)) continue;
+      seen.add(k);
+      out.push({ from: e.from, to: e.to });
+    }
+    return out.sort((a, b) => edgeKey(a).localeCompare(edgeKey(b)));
+  };
+  const removed = dedupe(override.edges.removed, (k) => baseEdges.has(k));
+  const removedKeys = new Set(removed.map(edgeKey));
+  // An edge that is both "removed" and "added" is just the base edge again.
+  const added = dedupe(override.edges.added, (k) => !baseEdges.has(k) && !removedKeys.has(k));
+
+  return { nodes, edges: { added, removed } };
+}
+
+export type ApplyGraphResult =
+  | { ok: true; graph: ChapterGraph }
+  | { ok: false; error: string; cycle?: string[] };
+
+/**
+ * Merge `override` onto `base` and return the resulting graph, or a
+ * human-readable (zh-TW) error when the override is invalid:
+ *   - every node id in `override.nodes` / edges must exist in `base`
+ *   - no self edges
+ *   - chapter numbers must stay unique
+ *   - the merged graph must be a DAG; on a cycle the message lists it
+ *     (e.g. 「Ch04 牛頓運動定律 → Ch06 功與動能 → Ch04 牛頓運動定律」)
+ * Hidden nodes are dropped together with every edge touching them. Pure:
+ * neither input is mutated.
+ */
+export function applyGraphOverride(base: ChapterGraph, override: GraphOverride): ApplyGraphResult {
+  const baseIds = new Set(base.nodes.map((n) => n.id));
+
+  const unknownNodes = Object.keys(override.nodes).filter((id) => !baseIds.has(id));
+  if (unknownNodes.length) {
+    return { ok: false, error: `未知節點：${unknownNodes.join("、")}` };
+  }
+  for (const [list, label] of [
+    [override.edges.added, "新增"],
+    [override.edges.removed, "移除"],
+  ] as const) {
+    for (const e of list) {
+      if (!baseIds.has(e.from) || !baseIds.has(e.to)) {
+        return { ok: false, error: `${label}的邊引用未知節點：${e.from} → ${e.to}` };
+      }
+      if (e.from === e.to) {
+        return { ok: false, error: `${label}的邊不可指向自己：${e.from}` };
+      }
+    }
+  }
+
+  // Nodes.
+  const nodes: ChapterNode[] = [];
+  const hidden = new Set<string>();
+  for (const n of base.nodes) {
+    const o = override.nodes[n.id];
+    if (!o) {
+      nodes.push({ ...n });
+      continue;
+    }
+    if (o.hidden) {
+      hidden.add(n.id);
+      continue;
+    }
+    const title = o.title?.trim();
+    if (o.title !== undefined && !title) {
+      return { ok: false, error: `${n.id} 的標題不可空白` };
+    }
+    if (title && title.length > GRAPH_TITLE_MAX) {
+      return { ok: false, error: `${n.id} 的標題超過 ${GRAPH_TITLE_MAX} 字` };
+    }
+    if (o.chapter !== undefined && (!Number.isInteger(o.chapter) || o.chapter < 1)) {
+      return { ok: false, error: `${n.id} 的章節編號無效：${o.chapter}` };
+    }
+    if (o.group !== undefined && !CHAPTER_CATEGORIES.includes(o.group)) {
+      return { ok: false, error: `${n.id} 的分類無效：${o.group}` };
+    }
+    nodes.push({
+      ...n,
+      label: title ?? n.label,
+      chapter: o.chapter ?? n.chapter,
+      category: o.group ?? n.category,
+    });
+  }
+  const seenChapter = new Map<number, string>();
+  for (const n of nodes) {
+    const dup = seenChapter.get(n.chapter);
+    if (dup) {
+      return { ok: false, error: `章節編號重複：${dup} 與 ${n.id} 都是 Ch${n.chapter}` };
+    }
+    seenChapter.set(n.chapter, n.id);
+  }
+
+  // Edges.
+  const removed = new Set(override.edges.removed.map(edgeKey));
+  const edgeMap = new Map<string, ChapterEdge>();
+  for (const e of base.edges) {
+    if (!removed.has(edgeKey(e))) edgeMap.set(edgeKey(e), { from: e.from, to: e.to });
+  }
+  for (const e of override.edges.added) {
+    if (!removed.has(edgeKey(e))) edgeMap.set(edgeKey(e), { from: e.from, to: e.to });
+  }
+  const edges = Array.from(edgeMap.values()).filter((e) => !hidden.has(e.from) && !hidden.has(e.to));
+
+  const cycle = findCycle(nodes.map((n) => n.id), edges);
+  if (cycle) {
+    const label = new Map(nodes.map((n) => [n.id, `Ch${String(n.chapter).padStart(2, "0")} ${n.label}`] as const));
+    const pretty = cycle.map((id) => label.get(id) ?? id).join(" → ");
+    return { ok: false, error: `先修關係形成循環：${pretty}`, cycle };
+  }
+
+  return { ok: true, graph: { nodes, edges } };
+}
+
+/**
+ * Iterative DFS cycle finder. Returns the cycle as a closed walk
+ * (`[a, b, c, a]`) or null when the graph is a DAG. Visits nodes in the
+ * order given so the reported cycle is deterministic.
+ */
+export function findCycle(nodeIds: string[], edges: ChapterEdge[]): string[] | null {
+  const out = new Map<string, string[]>();
+  for (const id of nodeIds) out.set(id, []);
+  for (const e of edges) {
+    if (!out.has(e.from)) out.set(e.from, []);
+    out.get(e.from)!.push(e.to);
+  }
+  const WHITE = 0, GREY = 1, BLACK = 2;
+  const color = new Map<string, number>();
+  const parent = new Map<string, string | null>();
+
+  for (const start of out.keys()) {
+    if ((color.get(start) ?? WHITE) !== WHITE) continue;
+    const stack: Array<{ id: string; next: number }> = [{ id: start, next: 0 }];
+    color.set(start, GREY);
+    parent.set(start, null);
+    while (stack.length) {
+      const top = stack[stack.length - 1];
+      const neighbours = out.get(top.id) ?? [];
+      if (top.next < neighbours.length) {
+        const nb = neighbours[top.next++];
+        const c = color.get(nb) ?? WHITE;
+        if (c === WHITE) {
+          color.set(nb, GREY);
+          parent.set(nb, top.id);
+          stack.push({ id: nb, next: 0 });
+        } else if (c === GREY) {
+          // Back edge: unwind the parent chain from top.id back to nb.
+          const path = [nb];
+          let cur: string | null = top.id;
+          const seg: string[] = [];
+          while (cur && cur !== nb) {
+            seg.push(cur);
+            cur = parent.get(cur) ?? null;
+          }
+          seg.reverse();
+          return [...path, ...seg, nb];
+        }
+      } else {
+        color.set(top.id, BLACK);
+        stack.pop();
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Walk the chapter dependency graph backwards from `target` and return all
  * transitive prerequisites in topological order (deeper prereqs first,
  * direct prereqs closer to the target last). Cycles are guarded against
  * defensively, though the source data should be a DAG.
  *
+ * `graph` defaults to the static data; pass the merged graph (static +
+ * admin override) to honour teacher edits.
+ *
  * Returned list does NOT include the target chapter itself.
  */
-export function findPrereqChapters(target: number): number[] {
-  const targetId = chapterIdOf(target);
+export function findPrereqChapters(target: number, graph: ChapterGraph = STATIC_CHAPTER_GRAPH): number[] {
+  const chapterOf = new Map(graph.nodes.map((n) => [n.id, n.chapter] as const));
+  const targetId = graph.nodes.find((n) => n.chapter === target)?.id ?? chapterIdOf(target);
 
   // Reverse adjacency: for each node, the set of chapters that point TO it
   // (i.e. its direct prereqs).
   const incoming = new Map<string, Set<string>>();
-  for (const e of CHAPTER_EDGES) {
+  for (const e of graph.edges) {
     if (!incoming.has(e.to)) incoming.set(e.to, new Set());
     incoming.get(e.to)!.add(e.from);
   }
@@ -187,7 +479,7 @@ export function findPrereqChapters(target: number): number[] {
 
   // Sort by chapter number for a stable, syllabus-aligned reading order.
   return Array.from(visited)
-    .map(chapterNumOf)
+    .map((id) => chapterOf.get(id) ?? chapterNumOf(id))
     .filter((n) => Number.isFinite(n))
     .sort((a, b) => a - b);
 }

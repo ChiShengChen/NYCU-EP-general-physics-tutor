@@ -18,7 +18,7 @@ type HomeStats = {
 };
 
 interface ModeSelectorProps {
-  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "admin") => void;
+  onSelectMode: (mode: "teaching" | "qa" | "quiz" | "exam" | "graph" | "study-plan" | "dashboard" | "history" | "attempts" | "wrong" | "preview" | "feynman" | "calibration" | "daily" | "compare" | "reflection" | "library" | "goals" | "sim" | "notes-quiz" | "oral" | "past-exams" | "admin") => void;
 }
 
 function StatPill({ emoji, label, value }: { emoji: string; label: string; value: string }) {
@@ -379,7 +379,7 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
         </div>
 
         {/* Bottom row: 5 utility modes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 max-w-6xl w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl w-full">
           <button
             onClick={() => onSelectMode("dashboard")}
             className="group flex flex-row items-center text-left p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:border-indigo-700 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
@@ -421,6 +421,17 @@ export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
             <div>
               <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100">錯題本</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">所有答錯題目集中複習，依章節篩選</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelectMode("past-exams")}
+            className="group flex flex-row items-center text-left p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-amber-300 dark:hover:border-amber-700 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer gap-4"
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform shrink-0">📜</span>
+            <div>
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100">考古題</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">歷年考題逐題練，看講義哪頁、出類似題</p>
             </div>
           </button>
 
